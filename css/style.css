@@ -6,6 +6,7 @@
    3. Componenti comuni (contenitore, pulsanti, link, etichette)
    4. Sezioni, nell'ordine in cui compaiono nella pagina
    5. Caso studio (mockup del telefono)
+   5b. Vetro e forme di luce (estetica "liquid glass")
    6. Tablet e desktop
    7. Animazioni (tutte in un solo posto, e spente se l'utente lo chiede)
    ========================================================================== */
@@ -50,13 +51,28 @@
 }
 
 :root {
-  /* Palette: solo questi tre colori, più varianti derivate (trasparenze e oro scurito) */
-  --nero: #0E0E0E;
-  --avorio: #F5F1E8;
-  --oro: #B79B6B;
-  /* Oro scurito (metà oro, metà nero): l'oro puro su avorio ha contrasto 2,3 e non è leggibile come testo.
-     Questo ha contrasto 6,4 su avorio. */
-  --oro-scuro: #63553D;
+  /* Palette: tutta su navy, con un solo accento (champagne spento) */
+  --sfondo: #050A18;      /* navy molto scuro e profondo */
+  --superficie: #0A1430;  /* navy delle superfici */
+  --testo: #F2EEE6;       /* bianco sporco */
+  --accento: #C9B27C;     /* champagne spento: dettagli e bagliori */
+
+  /* Gli stessi colori in forma "r, g, b", per poterli usare con una trasparenza (rgba) */
+  --testo-rgb: 242, 238, 230;
+  --accento-rgb: 201, 178, 124;
+  /* Tinta blu dei bagliori sullo sfondo: si usa solo con trasparenze, mai per testo o bordi */
+  --blu-luce-rgb: 44, 78, 184;
+
+  --testo-tenue: rgba(var(--testo-rgb), 0.74);  /* testo secondario: stesso colore, opacità ridotta */
+  --linea: rgba(var(--testo-rgb), 0.16);        /* bordi e filetti sottili */
+  --filo: var(--accento);
+
+  /* Vetro ("liquid glass"): superficie navy semitrasparente, bordo sottile, riflesso in alto */
+  --vetro-fondo: rgba(10, 20, 48, 0.58);
+  --vetro-fallback: rgba(10, 20, 48, 0.94);     /* dove backdrop-filter non è supportato */
+  --vetro-bordo: rgba(var(--testo-rgb), 0.18);
+  --vetro-riflesso: rgba(var(--testo-rgb), 0.1);
+  --vetro-sfocatura: 14px;
 
   --font-titoli: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
   --font-testo: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -72,26 +88,9 @@
   --testo-base: clamp(1.0625rem, 1.02rem + 0.2vw, 1.125rem); /* da 17px a 18px */
 }
 
-/* Ogni sezione dichiara un "tema": scuro o chiaro. I componenti leggono questi valori. */
-.tema-scuro {
-  --testo: var(--avorio);
-  --testo-tenue: rgba(245, 241, 232, 0.72);
-  --linea: rgba(245, 241, 232, 0.2);
-  --accento: var(--oro);
-  --filo: var(--oro);
-  background: var(--nero);
-  color: var(--testo);
-}
-
-.tema-chiaro {
-  --testo: var(--nero);
-  --testo-tenue: rgba(14, 14, 14, 0.72);
-  --linea: rgba(14, 14, 14, 0.2);
-  --accento: var(--oro-scuro);
-  --filo: var(--oro);
-  background: var(--avorio);
-  color: var(--testo);
-}
+/* Le sezioni alternano due navy pieni (nessuna trasparenza: il vetro è solo dove serve) */
+.fondo-profondo { background: var(--sfondo); }
+.fondo-superficie { background: var(--superficie); }
 
 
 /* ==========================================================================
@@ -103,7 +102,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  background: var(--nero);
+  background: var(--sfondo);
 }
 
 body {
@@ -112,8 +111,8 @@ body {
   font-size: var(--testo-base);
   line-height: 1.7;
   font-weight: 400;
-  color: var(--avorio);
-  background: var(--nero);
+  color: var(--testo);
+  background: var(--sfondo);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -168,7 +167,7 @@ strong { font-weight: 600; color: var(--testo); }
 
 a { color: inherit; }
 
-::selection { background: var(--oro); color: var(--nero); }
+::selection { background: var(--accento); color: var(--sfondo); }
 
 /* Focus ben visibile da tastiera: nessuna animazione, compare subito */
 :focus-visible {
@@ -183,12 +182,12 @@ a { color: inherit; }
   top: 0.75rem;
   z-index: 100;
   padding: 0.75rem 1rem;
-  background: var(--avorio);
-  color: var(--nero);
+  background: var(--testo);
+  color: var(--sfondo);
   text-decoration: none;
   transform: translateY(-200%);
 }
-.salta:focus { transform: none; outline: 2px solid var(--oro); outline-offset: 2px; }
+.salta:focus { transform: none; outline: 2px solid var(--accento); outline-offset: 2px; }
 
 
 /* ==========================================================================
@@ -202,7 +201,13 @@ a { color: inherit; }
   padding-inline: var(--gutter);
 }
 
-.sezione { padding-block: var(--spazio-sezione); }
+.sezione {
+  position: relative;
+  isolation: isolate;   /* i bagliori stanno dietro ai contenuti ma dentro la sezione */
+  overflow: clip;       /* i bagliori non possono mai allargare la pagina */
+  padding-block: var(--spazio-sezione);
+  scroll-margin-top: 4rem;
+}
 
 /* Piccola etichetta sopra i titoli, con un filo oro a sinistra */
 .eyebrow {
@@ -236,8 +241,8 @@ h2 + p { margin-top: 2rem; }
   justify-content: center;
   min-height: 3.25rem;
   padding: 0.75rem 1.75rem;
-  background: var(--oro);
-  color: var(--nero);
+  background: var(--accento);
+  color: var(--sfondo);
   font-weight: 500;
   font-size: 1rem;
   letter-spacing: 0.01em;
@@ -249,7 +254,7 @@ h2 + p { margin-top: 2rem; }
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--avorio);
+  background: var(--testo);
   opacity: 0;
 }
 
@@ -286,16 +291,23 @@ h2 + p { margin-top: 2rem; }
 
 /* ----- Intestazione ----- */
 .testata {
-  position: absolute;
-  inset: 0 0 auto 0;
-  z-index: 10;
-  color: var(--avorio);
+  position: fixed;
+  top: 0.75rem;
+  inset-inline: 0;
+  z-index: 50;
+  padding-inline: var(--gutter);
+  pointer-events: none;   /* ai lati della pillola si può cliccare ciò che sta sotto */
 }
 .testata-interno {
+  pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 4.5rem;
+  max-width: var(--colonna);
+  min-height: 3.5rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  border-radius: 999px;
 }
 .marchio,
 .link-testata {
@@ -316,7 +328,7 @@ h2 + p { margin-top: 2rem; }
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--oro);
+  color: var(--accento);
 }
 .link-testata::after {
   content: "";
@@ -325,7 +337,7 @@ h2 + p { margin-top: 2rem; }
   right: 0;
   bottom: 0.6rem;
   height: 1px;
-  background: var(--oro);
+  background: var(--accento);
   transform-origin: left center;
 }
 @media (hover: hover) {
@@ -347,7 +359,7 @@ h2 + p { margin-top: 2rem; }
 }
 .hero h1 em {
   font-style: italic;
-  color: var(--oro);
+  color: var(--accento);
 }
 .azioni-hero {
   display: flex;
@@ -500,24 +512,26 @@ h2 + p { margin-top: 2rem; }
 .etichetta-fittizio span {
   display: inline-block;
   padding: 0.55rem 0.9rem;
-  border: 1px solid var(--oro);
+  border: 1px solid var(--accento);
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--oro);
+  color: var(--accento);
   line-height: 1.4;
 }
 
 .scheda {
   display: grid;
   margin-top: clamp(2.5rem, 6vw, 4rem);
-  border-top: 1px solid var(--linea);
+  padding-inline: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 1.25rem;
 }
 .scheda > div {
   padding-block: 1.5rem;
   border-bottom: 1px solid var(--linea);
 }
+.scheda > div:last-child { border-bottom: 0; }
 .scheda dt { margin-top: 0; }
 .scheda dd { margin-top: 0.5rem; }
 
@@ -575,7 +589,7 @@ h2 + p { margin-top: 2rem; }
   content: "";
   position: absolute;
   inset: -1px;
-  border: 1px solid var(--oro);
+  border: 1px solid var(--accento);
   opacity: 0;
   pointer-events: none;
 }
@@ -603,9 +617,7 @@ h2 + p { margin-top: 2rem; }
   position: relative;
   width: min(100%, 20.5rem);
   padding: 0.625rem;
-  border: 1px solid rgba(245, 241, 232, 0.4);
   border-radius: 2.75rem;
-  background: var(--nero);
 }
 /* Tacca in alto */
 .telefono::before {
@@ -618,7 +630,7 @@ h2 + p { margin-top: 2rem; }
   height: 1.25rem;
   margin-left: -2.25rem;
   border-radius: 1rem;
-  background: rgba(245, 241, 232, 0.16);
+  background: rgba(var(--testo-rgb), 0.16);
 }
 .schermo {
   position: relative;
@@ -626,7 +638,8 @@ h2 + p { margin-top: 2rem; }
   padding: 2.9rem 0 0;
   border: 1px solid var(--linea);
   border-radius: 2.15rem;
-  color: var(--avorio);
+  background: rgba(5, 10, 24, 0.4);   /* schermo: navy un po' più scuro del vetro */
+  color: var(--testo);
 }
 .schermo p, .schermo li { max-width: none; color: inherit; }
 
@@ -642,13 +655,13 @@ h2 + p { margin-top: 2rem; }
   place-items: center;
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid var(--oro);
+  border: 1px solid var(--accento);
   border-radius: 50%;
   font-family: var(--font-titoli);
   font-style: italic;
   font-size: 1.375rem;
   line-height: 1;
-  color: var(--oro);
+  color: var(--accento);
 }
 .avatar-piccolo { width: 1.75rem; height: 1.75rem; font-size: 1rem; }
 .nome { font-weight: 600; font-size: 0.9375rem; line-height: 1.3; }
@@ -674,11 +687,11 @@ h2 + p { margin-top: 2rem; }
   place-items: center;
   width: 3rem;
   height: 3rem;
-  border: 1px solid var(--oro);
+  border: 1px solid var(--accento);
   border-radius: 50%;
   font-family: var(--font-titoli);
   font-size: 1.25rem;
-  color: var(--oro);
+  color: var(--accento);
 }
 
 /* Pila dei post: senza JS i quattro post sono uno sotto l'altro;
@@ -723,11 +736,11 @@ h2 + p { margin-top: 2rem; }
 }
 .esempio-chip {
   padding: 0.1rem 0.5rem;
-  border: 1px solid var(--oro);
+  border: 1px solid var(--accento);
   font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--oro);
+  color: var(--accento);
 }
 
 /* Copertine dei post: solo CSS, nessuna immagine */
@@ -743,18 +756,21 @@ h2 + p { margin-top: 2rem; }
   content: "";
   position: absolute;
   inset: 0.6rem;
-  border: 1px solid var(--oro);
+  border: 1px solid var(--accento);
   opacity: 0.55;
   pointer-events: none;
 }
 .copertina-scura {
-  background: var(--nero);
-  color: var(--avorio);
+  background: var(--sfondo);
+  color: var(--testo);
   border-block: 1px solid var(--linea);
 }
-.copertina-chiara {
-  background: var(--avorio);
-  color: var(--nero);
+.copertina-superficie {
+  background:
+    radial-gradient(ellipse 90% 70% at 15% 0%, rgba(var(--accento-rgb), 0.18), rgba(var(--accento-rgb), 0) 70%),
+    var(--superficie);
+  color: var(--testo);
+  border-block: 1px solid var(--linea);
 }
 .copertina p { max-width: none; color: inherit; }
 .copertina-formato {
@@ -784,8 +800,7 @@ h2 + p { margin-top: 2rem; }
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
-.copertina-scura .copertina-piede { color: var(--oro); }
-.copertina-chiara .copertina-piede { color: var(--oro-scuro); }
+.copertina-scura .copertina-piede { color: var(--accento); }
 
 .azioni-post {
   display: flex;
@@ -800,13 +815,13 @@ h2 + p { margin-top: 2rem; }
   font-size: 0.8125rem;
   line-height: 1.55;
 }
-.didascalia strong { color: var(--avorio); }
+.didascalia strong { color: var(--testo); }
 .avviso {
   display: block;
   margin-top: 0.6rem;
   font-style: normal;
   font-weight: 600;
-  color: var(--oro);
+  color: var(--accento);
 }
 
 /* Senza JS l'anteprima non serve: i post sono già tutti visibili uno sotto l'altro */
@@ -819,7 +834,7 @@ h2 + p { margin-top: 2rem; }
   border-top: 1px solid var(--linea);
 }
 .js .anteprima { display: flex; }
-.riga-finta { flex: 0 0 5.5rem; height: 0.5rem; background: rgba(245, 241, 232, 0.2); }
+.riga-finta { flex: 0 0 5.5rem; height: 0.5rem; background: rgba(var(--testo-rgb), 0.2); }
 
 /* Logica dei post */
 .logica-pila { margin-top: 3rem; }
@@ -966,7 +981,7 @@ h2 + p { margin-top: 2rem; }
   padding: 0.5rem 1rem 0;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--oro);
+  color: var(--accento);
 }
 .profilo .storie { margin-top: 1rem; border-bottom: 0; padding-bottom: 0.25rem; }
 
@@ -991,7 +1006,7 @@ h2 + p { margin-top: 2rem; }
 .tessera i {
   display: block;
   height: 0.28rem;
-  background: rgba(245, 241, 232, 0.3);
+  background: rgba(var(--testo-rgb), 0.3);
 }
 .tessera-densa i:nth-child(odd) { width: 100%; }
 .tessera-densa i:nth-child(even) { width: 78%; }
@@ -1001,15 +1016,15 @@ h2 + p { margin-top: 2rem; }
 .tessera-serie {
   position: relative;
   justify-content: flex-end;
-  background: var(--nero);
-  color: var(--avorio);
+  background: var(--sfondo);
+  color: var(--testo);
   border-color: var(--linea);
 }
 .tessera-serie::after {
   content: "";
   position: absolute;
   inset: 3px;
-  border: 1px solid var(--oro);
+  border: 1px solid var(--accento);
   opacity: 0.55;
 }
 .tessera-serie b {
@@ -1018,10 +1033,20 @@ h2 + p { margin-top: 2rem; }
   font-size: 1.0625rem;
   line-height: 1.05;
 }
-.tessera-chiara { background: var(--avorio); color: var(--nero); }
+.tessera-superficie {
+  background:
+    radial-gradient(ellipse 90% 70% at 15% 0%, rgba(var(--accento-rgb), 0.18), rgba(var(--accento-rgb), 0) 70%),
+    var(--superficie);
+  color: var(--testo);
+}
 
 /* Strategia: quattro righe, con il titolo a sinistra e il testo a destra quando c'è spazio */
-.strategia .righe { margin-top: 2rem; border-top: 1px solid var(--linea); }
+.strategia .righe {
+  margin-top: 2rem;
+  padding-inline: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 1.25rem;
+}
+.strategia .righe > div:last-child { border-bottom: 0; }
 .strategia .righe > div {
   display: grid;
   gap: 0.6rem 3rem;
@@ -1066,9 +1091,8 @@ h2 + p { margin-top: 2rem; }
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
-  scrollbar-color: var(--oro) transparent;
-  border-top: 1px solid var(--linea);
-  border-bottom: 1px solid var(--linea);
+  scrollbar-color: var(--accento) transparent;
+  border-radius: 1.25rem;
 }
 .striscia { display: flex; }
 .cella {
@@ -1080,8 +1104,7 @@ h2 + p { margin-top: 2rem; }
   width: 10.75rem;
   padding: 1rem 1rem 1.25rem;
   border-left: 1px solid var(--linea);
-  border-top: 2px solid var(--oro);
-  margin-top: -1px;
+  border-top: 2px solid var(--accento);
   max-width: none;
   scroll-snap-align: start;
   font-size: 0.875rem;
@@ -1095,7 +1118,7 @@ h2 + p { margin-top: 2rem; }
   text-transform: uppercase;
   color: var(--accento);
 }
-.cella .glifo { width: 1.75rem; height: 1.75rem; color: var(--oro); }
+.cella .glifo { width: 1.75rem; height: 1.75rem; color: var(--accento); }
 .cella .formato {
   font-size: 0.8125rem;
   font-weight: 600;
@@ -1121,6 +1144,112 @@ h2 + p { margin-top: 2rem; }
   font-size: 0.8125rem;
   line-height: 1.35;
   color: var(--testo-tenue);
+}
+
+
+/* ==========================================================================
+   Vetro ("liquid glass"). Usato SOLO su: navigazione, schede del caso studio,
+   telefoni-mockup. Tutto il resto resta navy pieno.
+   Regole: mai animare blur o backdrop-filter; senza supporto si usa un fondo
+   semi-opaco; con "riduci trasparenza" si usa un navy pieno.
+   ========================================================================== */
+
+.testata-interno,
+.scheda,
+.strategia .righe,
+.striscia-scorri,
+.telefono {
+  /* Fallback: dove backdrop-filter non esiste il fondo è quasi opaco, quindi il testo resta leggibile */
+  background-color: var(--vetro-fallback);
+  border: 1px solid var(--vetro-bordo);
+  box-shadow: inset 0 1px 0 rgba(var(--testo-rgb), 0.22);   /* riflesso sottile sul bordo alto */
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .testata-interno,
+  .scheda,
+  .strategia .righe,
+  .striscia-scorri,
+  .telefono {
+    background-color: var(--vetro-fondo);
+    /* Leggero riflesso in alto: una luce che svanisce in fretta */
+    background-image: linear-gradient(to bottom, var(--vetro-riflesso), rgba(var(--testo-rgb), 0) 38%);
+    -webkit-backdrop-filter: blur(var(--vetro-sfocatura)) saturate(130%);
+    backdrop-filter: blur(var(--vetro-sfocatura)) saturate(130%);
+  }
+}
+
+/* Chi ha attivato "riduci trasparenza" (dove il browser lo supporta) vede superfici piene */
+@media (prefers-reduced-transparency: reduce) {
+  .testata-interno,
+  .scheda,
+  .strategia .righe,
+  .striscia-scorri,
+  .telefono {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-image: none;
+    background-color: var(--superficie);
+  }
+}
+
+
+/* ==========================================================================
+   Forme di luce sullo sfondo: gradienti radiali morbidi (già "sfocati" nella
+   sfumatura, nessun filter: blur) in un solo layer per sezione. Non si animano.
+   Servono a dare al vetro qualcosa da sfocare.
+   ========================================================================== */
+
+.sezione::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
+/* Ogni bagliore è un cerchio sfumato: si indicano il raggio e il centro (in % della sezione).
+   Due tipi: blu (tinta del navy) e champagne. */
+:root {
+  --blu-sfumatura: rgba(var(--blu-luce-rgb), 0.5), rgba(var(--blu-luce-rgb), 0.28) 36%, rgba(var(--blu-luce-rgb), 0.1) 68%, rgba(var(--blu-luce-rgb), 0);
+  --champagne-sfumatura: rgba(var(--accento-rgb), 0.2), rgba(var(--accento-rgb), 0.09) 38%, rgba(var(--accento-rgb), 0.03) 70%, rgba(var(--accento-rgb), 0);
+  --raggio-grande: min(42rem, 105vw);
+  --raggio-medio: min(30rem, 80vw);
+}
+
+#inizio::before {
+  background-image:
+    radial-gradient(circle var(--raggio-grande) at 92% 8%, var(--blu-sfumatura)),
+    radial-gradient(circle var(--raggio-medio) at 4% 96%, var(--champagne-sfumatura));
+}
+#problemi::before {
+  background-image: radial-gradient(circle var(--raggio-medio) at 4% 62%, var(--blu-sfumatura));
+}
+#clienti::before {
+  background-image: radial-gradient(circle var(--raggio-medio) at 96% 30%, var(--champagne-sfumatura));
+}
+#metodo::before {
+  background-image: radial-gradient(circle var(--raggio-medio) at 96% 55%, var(--blu-sfumatura));
+}
+/* Il caso studio è lunghissimo e contiene quasi tutto il vetro: ha più bagliori, distribuiti lungo la sezione */
+#caso-studio::before {
+  background-image:
+    radial-gradient(circle var(--raggio-grande) at 95% 3%, var(--blu-sfumatura)),
+    radial-gradient(circle var(--raggio-medio) at 3% 13%, var(--champagne-sfumatura)),
+    radial-gradient(circle var(--raggio-grande) at 97% 27%, var(--blu-sfumatura)),
+    radial-gradient(circle var(--raggio-medio) at 3% 41%, var(--champagne-sfumatura)),
+    radial-gradient(circle var(--raggio-grande) at 5% 56%, var(--blu-sfumatura)),
+    radial-gradient(circle var(--raggio-grande) at 97% 72%, var(--blu-sfumatura)),
+    radial-gradient(circle var(--raggio-medio) at 4% 88%, var(--champagne-sfumatura));
+}
+#chi-sono::before {
+  background-image: radial-gradient(circle var(--raggio-medio) at 6% 45%, var(--champagne-sfumatura));
+}
+#contatti::before {
+  background-image:
+    radial-gradient(circle var(--raggio-grande) at 5% 100%, var(--blu-sfumatura)),
+    radial-gradient(circle var(--raggio-medio) at 96% 5%, var(--champagne-sfumatura));
 }
 
 
