@@ -7,7 +7,7 @@ Obiettivo del sito: convincere un creator, il titolare di un'attività locale o 
 ## Posizionamento (nessun target unico)
 - Il posizionamento poggia sul tipo di problema che risolve, non sul settore: (1) rendere riconoscibile un profilo; (2) trasformare l'attenzione in contatti, prenotazioni o iscrizioni.
 - Tre tipi di cliente, un solo metodo: cambiano canali e obiettivo, non il modo di ragionare.
-- Il design resta elegante e sobrio ma non deve parlare solo di lusso né richiamare un solo settore.
+- Il design è elegante e di lusso discreto (vedi sezione Design), ma i contenuti non richiamano un solo settore.
 - Il primo passo offerto è una breve call conoscitiva gratuita di 15 minuti. Il contatto avviene via email o messaggio su Instagram, senza calendario di prenotazione.
 
 ## Lingua
@@ -34,12 +34,16 @@ Tutto il testo del sito è in italiano, tono sobrio, elegante, diretto. Niente e
 - Il sito deve restare leggibile anche senza JavaScript (JS solo come miglioramento).
 
 ## Design
+Questa sezione sostituisce la vecchia estetica (nero caldo, avorio, oro): non va più usata.
 - Mobile-first: quasi tutto il traffico arriverà da Instagram su telefono. Progetta prima per 390px di larghezza, poi adatta a tablet e desktop. Nessun overflow orizzontale a 390px.
-- Stile: eleganza sobria. Molto spazio vuoto, tipografia come protagonista, poche cose ma curate. Una idea per schermata, sezioni alternate nero caldo e avorio, bordi sottili, niente ombre pesanti.
+- Stile: elegante, di lusso discreto, con superfici di vetro ("liquid glass") usate con parsimonia. Molto spazio vuoto, tipografia come protagonista, una idea per schermata, bordi sottili, nessuna ombra pesante.
+- Palette (variabili CSS), tutta su navy: sfondo #050A18 (navy molto scuro e profondo), superfici #0A1430, testo #F2EEE6 (bianco sporco), testo secondario = lo stesso colore a opacità ridotta, un solo accento champagne spento #C9B27C per dettagli e bagliori. Nessun altro colore: le forme di luce dello sfondo usano solo tinte blu dello stesso navy e dell'accento a bassa opacità. Valori confermati con una misura sul rendering reale: testo secondario a opacità 0.74; tinta blu dei bagliori rgb(44, 78, 184); vetro = #0A1430 al 58% con blur di 14px. Contrasti di base: testo su sfondo 17:1, testo secondario 9.4:1, accento 9.5:1. Sul rendering reale il minimo è 5.8:1 fuori dal vetro, 6.7:1 sul vetro e 6.8:1 sulla navigazione (tutti sopra 4.5:1).
+- Sfondo: forme di luce morbide (gradienti radiali in blu e champagne tenui) in layer separati, già sfocati (sfumatura nel gradiente, nessun filter: blur a runtime), dietro ai contenuti. Servono a dare al vetro qualcosa da sfocare. Pochi layer, mai animati.
+- Vetro: backdrop-filter con il prefisso -webkit-backdrop-filter, bordo sottile semitrasparente, leggero riflesso in alto, nessuna ombra pesante. Usarlo SOLO su navigazione, schede del caso studio e telefono-mockup; tutto il resto resta navy pieno. Prevedere sempre un fallback con sfondo semi-opaco dove backdrop-filter non è supportato e rispettare prefers-reduced-transparency. Non animare mai blur o backdrop-filter.
+- Contrasto: il testo su vetro deve avere almeno 4.5:1, verificato sul punto più chiaro dello sfondo sotto ogni scheda.
 - Tipografia: titoli molto grandi in Cormorant Garamond (con clamp()), testo in Inter 17-18px, massimo 65 caratteri per riga.
-- Palette (variabili CSS): nero caldo #0E0E0E, avorio #F5F1E8, oro spento #B79B6B per gli accenti. Niente altri colori. Sono ammesse solo varianti derivate dalla palette (trasparenze, oro scurito mescolandolo al nero) quando serve il contrasto: l'oro puro su avorio non è leggibile come testo.
 - Font: Cormorant Garamond per i titoli, Inter per il testo. Usali in locale (self-hosted in assets/fonts), senza collegamenti a Google Fonts.
-- Niente emoji, niente gradienti appariscenti, niente ombre pesanti, niente stock photo generiche.
+- Niente emoji, niente stock photo generiche. Non copiare grafica, icone o marchi di nessuna azienda reale.
 - Le immagini mancanti si sostituiscono con segnaposto neutri e puliti, chiaramente sostituibili.
 - Aree toccabili di almeno 44px.
 
@@ -52,7 +56,8 @@ Tutto il testo del sito è in italiano, tono sobrio, elegante, diretto. Niente e
 ## Qualità richiesta
 - Accessibilità: HTML semantico, contrasto sufficiente, focus visibile, testo alternativo alle immagini, navigabile da tastiera.
 - Prestazioni: nessuna libreria esterna salvo necessità motivata, immagini ottimizzate e con loading="lazy", obiettivo Lighthouse 95+ su mobile.
-- SEO e condivisione: title, meta description, Open Graph, favicon.
+- SEO e condivisione: title, meta description, Open Graph (compresi og:image e og:url), favicon, meta theme-color uguale al colore di sfondo.
+- Indirizzo pubblico: https://matteorp.github.io/portfolio-matteo/ (pagina di progetto su GitHub Pages, quindi in una sottocartella). Tutti i percorsi nei file sono relativi; fanno eccezione og:image e og:url, che richiedono l'indirizzo assoluto.
 - Privacy: nessun cookie, nessun tracker, nessun form con backend. Il contatto avviene via link mailto e link a Instagram.
 
 ## Modo di lavorare
