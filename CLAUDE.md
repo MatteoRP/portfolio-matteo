@@ -7,7 +7,7 @@ Obiettivo del sito: convincere un creator, il titolare di un'attività locale o 
 ## Posizionamento (nessun target unico)
 - Il posizionamento poggia sul tipo di problema che risolve, non sul settore: (1) rendere riconoscibile un profilo; (2) trasformare l'attenzione in contatti, prenotazioni o iscrizioni.
 - Tre tipi di cliente, un solo metodo: cambiano canali e obiettivo, non il modo di ragionare.
-- Il design è elegante e di lusso discreto (vedi sezione Design), ma i contenuti non richiamano un solo settore.
+- Il design è elegante e tecnico (vedi sezione Design), ma i contenuti non richiamano un solo settore.
 - Il primo passo offerto è una breve call conoscitiva gratuita di 15 minuti. Il contatto avviene via email o messaggio su Instagram, senza calendario di prenotazione.
 
 ## Lingua
@@ -34,18 +34,21 @@ Tutto il testo del sito è in italiano, tono sobrio, elegante, diretto. Niente e
 - Il sito deve restare leggibile anche senza JavaScript (JS solo come miglioramento).
 
 ## Design
-Questa sezione sostituisce la vecchia estetica (nero caldo, avorio, oro): non va più usata.
+Questa sezione sostituisce le estetiche precedenti (nero caldo/avorio/oro e navy/champagne): non vanno più usate.
 - Mobile-first: quasi tutto il traffico arriverà da Instagram su telefono. Progetta prima per 390px di larghezza, poi adatta a tablet e desktop. Nessun overflow orizzontale a 390px.
-- Stile: elegante, di lusso discreto, con superfici di vetro ("liquid glass") usate con parsimonia. Molto spazio vuoto, tipografia come protagonista, una idea per schermata, bordi sottili, nessuna ombra pesante.
-- Palette (variabili CSS), tutta su navy: sfondo #050A18 (navy molto scuro e profondo), superfici #0A1430, testo #F2EEE6 (bianco sporco), testo secondario = lo stesso colore a opacità ridotta, un solo accento champagne spento #C9B27C per dettagli e bagliori. Nessun altro colore: le forme di luce dello sfondo usano solo tinte blu dello stesso navy e dell'accento a bassa opacità. Valori confermati con una misura sul rendering reale: testo secondario a opacità 0.74; tinta blu dei bagliori rgb(44, 78, 184); vetro = #0A1430 al 58% con blur di 14px. Contrasti di base: testo su sfondo 17:1, testo secondario 9.4:1, accento 9.5:1. Sul rendering reale il minimo è 5.8:1 fuori dal vetro, 6.7:1 sul vetro e 6.8:1 sulla navigazione (tutti sopra 4.5:1).
-- Sfondo: forme di luce morbide (gradienti radiali in blu e champagne tenui) in layer separati, già sfocati (sfumatura nel gradiente, nessun filter: blur a runtime), dietro ai contenuti. Servono a dare al vetro qualcosa da sfocare. Pochi layer, mai animati.
-- Vetro: backdrop-filter con il prefisso -webkit-backdrop-filter, bordo sottile semitrasparente, leggero riflesso in alto, nessuna ombra pesante. Usarlo SOLO su navigazione, schede del caso studio e telefono-mockup; tutto il resto resta navy pieno. Prevedere sempre un fallback con sfondo semi-opaco dove backdrop-filter non è supportato e rispettare prefers-reduced-transparency. Non animare mai blur o backdrop-filter.
-- Contrasto: il testo su vetro deve avere almeno 4.5:1, verificato sul punto più chiaro dello sfondo sotto ogni scheda.
+- Stile: sistema "nero e cobalto con reticolo a punti". Elegante, tipografia protagonista, molto spazio vuoto, una idea per schermata, bordi sottili, nessuna ombra pesante.
+- Palette (variabili CSS): sfondo #06070B (nero); testo #F3F1EC; testo secondario = lo stesso colore a opacità 0.74; un solo accento cobalto #5C8DFF (contrasto 6,4:1 sullo sfondo). Nessun altro colore e nessuna luce di altro colore.
+- Superfici piatte: rgba(255,255,255,0.03) con bordo 1px rgba(255,255,255,0.09). Valgono per scheda del caso studio, strategia, strisce del calendario e simili.
+- Vetro ("liquid glass"): backdrop-filter con il prefisso -webkit-backdrop-filter, SOLO sul telefono-mockup e sulla navigazione a pillola. Fallback con sfondo semi-opaco dove backdrop-filter non è supportato; con prefers-reduced-transparency il vetro diventa nero pieno. Non animare mai blur o backdrop-filter.
+- Reticolo di sfondo, solo CSS, nessuna immagine. Strato base: celle da 28px, punti bianchi agli incroci, linee quasi invisibili, un punto più grande ogni 112px, dissolto verso i bordi con una maschera radiale ellittica (anche con -webkit-mask-image). Strato "lente", solo in hero e nel caso studio: lo stesso reticolo con punti e linee cobalto, visibile solo in un cerchio di 170px (variabili --mx e --my; per ora fermo, in alto a destra nella hero). Luce ambiente: una macchia radiale cobalto dietro al contenuto, più una luce fissa dietro a ciascun telefono, perché il vetro abbia qualcosa da sfocare.
+- Hero: la parola chiave in corsivo ha una sfumatura dal bianco al cobalto (con fallback a colore pieno cobalto); si torna al colore pieno se la sfumatura riduce la leggibilità. Etichette in cobalto con un quadratino davanti. Pulsante principale con bordo cobalto; hover e focus: fondo cobalto al 16% e alone.
+- Contrasto: il testo deve avere almeno 4.5:1 su ogni sfondo, misurato sul rendering reale (testo nascosto, pixel dietro a ogni elemento). I singoli punti del reticolo (1-4px) non contano come sfondo: si misura sul pixel più chiaro dopo aver escluso il 3% più luminoso, e si riporta a parte il caso peggiore.
 - Tipografia: titoli molto grandi in Cormorant Garamond (con clamp()), testo in Inter 17-18px, massimo 65 caratteri per riga.
 - Font: Cormorant Garamond per i titoli, Inter per il testo. Usali in locale (self-hosted in assets/fonts), senza collegamenti a Google Fonts.
 - Niente emoji, niente stock photo generiche. Non copiare grafica, icone o marchi di nessuna azienda reale.
 - Le immagini mancanti si sostituiscono con segnaposto neutri e puliti, chiaramente sostituibili.
 - Aree toccabili di almeno 44px.
+- Prestazioni: pochi layer, mai animati; Lighthouse mobile con prestazioni almeno 90.
 
 ## Animazioni
 - Poche, lente, sobrie: comparsa graduale allo scroll (IntersectionObserver), hover discreti, transizioni di 600-800ms con easing cubic-bezier(0.22, 1, 0.36, 1).
