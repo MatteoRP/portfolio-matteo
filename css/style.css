@@ -1,0 +1,1048 @@
+/* ==========================================================================
+   Portfolio di Matteo Rapeso: foglio di stile
+   Struttura del file:
+   1. Font e variabili
+   2. Base (reset leggero, tipografia)
+   3. Componenti comuni (contenitore, pulsanti, link, etichette)
+   4. Sezioni, nell'ordine in cui compaiono nella pagina
+   5. Caso studio (mockup del telefono)
+   6. Tablet e desktop
+   7. Animazioni (tutte in un solo posto, e spente se l'utente lo chiede)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. FONT E VARIABILI
+   I font sono nella cartella assets/fonts (nessun collegamento a servizi esterni).
+   ========================================================================== */
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../assets/fonts/cormorant-garamond-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../assets/fonts/cormorant-garamond-latin-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../assets/fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Inter è un font "variabile": un solo file contiene tutti i pesi da 100 a 900 */
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/inter-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Palette: solo questi tre colori, più varianti derivate (trasparenze e oro scurito) */
+  --nero: #0E0E0E;
+  --avorio: #F5F1E8;
+  --oro: #B79B6B;
+  /* Oro scurito (metà oro, metà nero): l'oro puro su avorio ha contrasto 2,3 e non è leggibile come testo.
+     Questo ha contrasto 6,4 su avorio. */
+  --oro-scuro: #63553D;
+
+  --font-titoli: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  --font-testo: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Animazioni: durata e curva scelte una volta sola e usate ovunque */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --durata: 700ms;
+
+  /* Misure */
+  --colonna: 1180px;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --spazio-sezione: clamp(5.5rem, 16vw, 11rem);
+  --testo-base: clamp(1.0625rem, 1.02rem + 0.2vw, 1.125rem); /* da 17px a 18px */
+}
+
+/* Ogni sezione dichiara un "tema": scuro o chiaro. I componenti leggono questi valori. */
+.tema-scuro {
+  --testo: var(--avorio);
+  --testo-tenue: rgba(245, 241, 232, 0.72);
+  --linea: rgba(245, 241, 232, 0.2);
+  --accento: var(--oro);
+  --filo: var(--oro);
+  background: var(--nero);
+  color: var(--testo);
+}
+
+.tema-chiaro {
+  --testo: var(--nero);
+  --testo-tenue: rgba(14, 14, 14, 0.72);
+  --linea: rgba(14, 14, 14, 0.2);
+  --accento: var(--oro-scuro);
+  --filo: var(--oro);
+  background: var(--avorio);
+  color: var(--testo);
+}
+
+
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--nero);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-testo);
+  font-size: var(--testo-base);
+  line-height: 1.7;
+  font-weight: 400;
+  color: var(--avorio);
+  background: var(--nero);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+
+/* Titoli: Cormorant Garamond, molto grandi, con dimensione fluida (clamp = minimo, ideale, massimo) */
+h1, h2, h3 {
+  font-family: var(--font-titoli);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 1.5rem + 5.6vw, 5.5rem);
+  max-width: 22ch;
+}
+
+h2 {
+  font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5rem);
+  max-width: 18ch;
+}
+
+h3 {
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.12;
+}
+
+h4 {
+  font-family: var(--font-testo);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accento);
+  line-height: 1.5;
+}
+
+em { font-style: italic; }
+
+/* Testo corrente: massimo 65 caratteri per riga */
+p, li, dd {
+  max-width: 65ch;
+  color: var(--testo-tenue);
+}
+
+strong { font-weight: 600; color: var(--testo); }
+
+a { color: inherit; }
+
+::selection { background: var(--oro); color: var(--nero); }
+
+/* Focus ben visibile da tastiera: nessuna animazione, compare subito */
+:focus-visible {
+  outline: 2px solid var(--accento);
+  outline-offset: 4px;
+}
+
+/* Link "Vai al contenuto" per chi naviga da tastiera */
+.salta {
+  position: absolute;
+  left: var(--gutter);
+  top: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--avorio);
+  color: var(--nero);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.salta:focus { transform: none; outline: 2px solid var(--oro); outline-offset: 2px; }
+
+
+/* ==========================================================================
+   3. COMPONENTI COMUNI
+   ========================================================================== */
+
+.contenitore {
+  width: 100%;
+  max-width: calc(var(--colonna) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sezione { padding-block: var(--spazio-sezione); }
+
+/* Piccola etichetta sopra i titoli, con un filo oro a sinistra */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accento);
+}
+.eyebrow::before {
+  content: "";
+  flex: none;
+  width: 2rem;
+  height: 1px;
+  background: var(--filo);
+}
+
+/* Sotto un titolo grande serve più aria */
+h2 + p { margin-top: 2rem; }
+
+/* Pulsante principale: pieno, in oro. Al passaggio del mouse si schiarisce con un velo (solo opacità). */
+.pulsante {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--oro);
+  color: var(--nero);
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.pulsante::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--avorio);
+  opacity: 0;
+}
+
+/* Link di testo con sottolineatura sottile, che si "disegna" con transform */
+.link-testo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  text-decoration: none;
+  color: var(--testo);
+  overflow-wrap: anywhere;
+}
+.link-testo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.55rem;
+  height: 1px;
+  background: var(--accento);
+  transform-origin: left center;
+}
+
+@media (hover: hover) {
+  .pulsante:hover::before { opacity: 0.22; }
+  .link-testo:hover::after { transform: scaleX(0.35); }
+}
+
+
+/* ==========================================================================
+   4. SEZIONI
+   ========================================================================== */
+
+/* ----- Intestazione ----- */
+.testata {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  color: var(--avorio);
+}
+.testata-interno {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4.5rem;
+}
+.marchio,
+.link-testata {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  text-decoration: none;
+}
+.marchio {
+  font-family: var(--font-titoli);
+  font-weight: 500;
+  font-size: 1.375rem;
+  letter-spacing: 0.04em;
+}
+.link-testata {
+  position: relative;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--oro);
+}
+.link-testata::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.6rem;
+  height: 1px;
+  background: var(--oro);
+  transform-origin: left center;
+}
+@media (hover: hover) {
+  .link-testata:hover::after { transform: scaleX(0.35); }
+}
+
+/* ----- Hero ----- */
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  padding-block: 7rem 3rem;
+}
+.hero-interno {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--oro);
+}
+.azioni-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 2rem;
+  margin-top: 2.5rem;
+}
+.nota-hero {
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+}
+.destinatari {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  width: 100%;
+  margin-top: clamp(3rem, 10vh, 5.5rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--linea);
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--testo-tenue);
+}
+.destinatari li { max-width: none; }
+
+/* ----- Cosa risolvo ----- */
+.due-colonne {
+  display: grid;
+  gap: 0;
+  margin-top: clamp(3rem, 8vw, 5rem);
+}
+.problema {
+  padding-block: 2.25rem;
+  border-top: 1px solid var(--linea);
+}
+.problema .numero {
+  margin-bottom: 1.25rem;
+  font-family: var(--font-titoli);
+  font-style: italic;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--accento);
+}
+.problema h3 { margin-bottom: 1.25rem; max-width: 16ch; }
+
+/* ----- Per chi lavoro ----- */
+.elenco-clienti { margin-top: clamp(3rem, 8vw, 5rem); }
+
+.riga-cliente {
+  display: grid;
+  gap: 1.75rem;
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+  border-top: 1px solid var(--linea);
+}
+.riga-cliente:last-child { border-bottom: 1px solid var(--linea); }
+.esempio-riga {
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+}
+.riga-cliente dt,
+.scheda dt,
+.logica dt {
+  margin-top: 1.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accento);
+}
+.riga-cliente dt:first-child,
+.logica dt:first-child { margin-top: 0; }
+.riga-cliente dd,
+.logica dd { margin-top: 0.5rem; }
+
+/* ----- Come lavoro ----- */
+.passi {
+  display: grid;
+  margin-top: clamp(3rem, 8vw, 5rem);
+}
+.passo {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0 1rem;
+  padding-block: 2rem;
+  border-top: 1px solid var(--linea);
+}
+.passo-numero {
+  font-family: var(--font-titoli);
+  font-style: italic;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--accento);
+}
+.passo h3 { margin-bottom: 0.75rem; }
+.rimando { margin-top: 2.5rem; padding-top: 1rem; }
+
+/* ----- Chi sono ----- */
+.chi-griglia {
+  display: grid;
+  gap: 3rem;
+}
+.chi-testo p + p { margin-top: 1.25rem; }
+.chi-testo h2 { max-width: none; }
+
+/* Segnaposto della fotografia: neutro, con proporzioni 4:5 */
+.ritratto { width: min(100%, 15rem); }
+.segnaposto {
+  aspect-ratio: 4 / 5;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--linea);
+  font-family: var(--font-titoli);
+  font-style: italic;
+  font-size: 4rem;
+  color: var(--accento);
+}
+.ritratto figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--testo-tenue);
+}
+
+/* ----- Contatti ----- */
+.azioni-contatti {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-top: 2.75rem;
+}
+
+/* ----- Piè di pagina ----- */
+.piede { border-top: 1px solid var(--linea); padding-block: 2.25rem 2.5rem; }
+.piede-interno {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.piede p { font-size: 0.875rem; max-width: none; }
+
+
+/* ==========================================================================
+   5. CASO STUDIO
+   ========================================================================== */
+
+/* Etichetta ben visibile: il progetto è dimostrativo */
+.etichetta-fittizio { max-width: none; margin-bottom: 2rem; }
+.etichetta-fittizio span {
+  display: inline-block;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--oro);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--oro);
+  line-height: 1.4;
+}
+
+.scheda {
+  display: grid;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  border-top: 1px solid var(--linea);
+}
+.scheda > div {
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--linea);
+}
+.scheda dt { margin-top: 0; }
+.scheda dd { margin-top: 0.5rem; }
+
+/* ----- Vetrina: pulsanti, telefono, logica ----- */
+.vetrina {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "titolo"
+    "guida"
+    "controlli"
+    "telefono"
+    "logica";
+  margin-top: clamp(4rem, 10vw, 7rem);
+}
+.vetrina-titolo { grid-area: titolo; }
+.vetrina-guida { grid-area: guida; margin-top: 1rem; }
+.controlli { grid-area: controlli; }
+.telefono-area { grid-area: telefono; }
+.logica-pila { grid-area: logica; }
+
+/* I pulsanti di scelta servono solo se c'è JavaScript */
+.controlli { display: none; }
+.js .controlli {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+}
+
+.scelta {
+  position: relative;
+  min-height: 3rem;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: 1px solid var(--linea);
+  color: var(--testo);
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+}
+.scelta-n {
+  font-family: var(--font-titoli);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--accento);
+}
+/* Bordo oro che compare sul pulsante attivo: si anima con l'opacità */
+.scelta::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--oro);
+  opacity: 0;
+  pointer-events: none;
+}
+.scelta[aria-pressed="true"]::before { opacity: 1; }
+@media (hover: hover) {
+  .scelta:hover::before { opacity: 0.6; }
+  .scelta[aria-pressed="true"]:hover::before { opacity: 1; }
+}
+
+/* Telefono */
+.telefono-area {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.telefono-area figcaption {
+  margin-top: 1.25rem;
+  max-width: 24rem;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: var(--testo-tenue);
+}
+.telefono {
+  position: relative;
+  width: min(100%, 20.5rem);
+  padding: 0.625rem;
+  border: 1px solid rgba(245, 241, 232, 0.4);
+  border-radius: 2.75rem;
+  background: var(--nero);
+}
+/* Tacca in alto */
+.telefono::before {
+  content: "";
+  position: absolute;
+  top: 1.15rem;
+  left: 50%;
+  z-index: 2;
+  width: 4.5rem;
+  height: 1.25rem;
+  margin-left: -2.25rem;
+  border-radius: 1rem;
+  background: rgba(245, 241, 232, 0.16);
+}
+.schermo {
+  position: relative;
+  overflow: hidden;
+  padding: 2.9rem 0 0;
+  border: 1px solid var(--linea);
+  border-radius: 2.15rem;
+  color: var(--avorio);
+}
+.schermo p, .schermo li { max-width: none; color: inherit; }
+
+.barra-profilo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 1rem 0.9rem;
+}
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--oro);
+  border-radius: 50%;
+  font-family: var(--font-titoli);
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1;
+  color: var(--oro);
+}
+.avatar-piccolo { width: 1.75rem; height: 1.75rem; font-size: 1rem; }
+.nome { font-weight: 600; font-size: 0.9375rem; line-height: 1.3; }
+.stato { font-size: 0.75rem; line-height: 1.3; opacity: 0.72; }
+
+.storie {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 1rem 1rem;
+  border-bottom: 1px solid var(--linea);
+}
+.storia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  opacity: 0.85;
+}
+.storia i {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--oro);
+  border-radius: 50%;
+  font-family: var(--font-titoli);
+  font-size: 1.25rem;
+  color: var(--oro);
+}
+
+/* Pila dei post: senza JS i quattro post sono uno sotto l'altro;
+   con JS sono sovrapposti nella stessa cella e se ne vede uno solo, così l'altezza non cambia mai */
+.js .pila,
+.js .logica-pila { display: grid; }
+.js .pila > [data-post],
+.js .logica-pila > [data-post] {
+  grid-area: 1 / 1;
+  align-self: start;
+  opacity: 0;
+  visibility: hidden;
+}
+.js .vetrina[data-attivo="1"] [data-post="1"],
+.js .vetrina[data-attivo="2"] [data-post="2"],
+.js .vetrina[data-attivo="3"] [data-post="3"],
+.js .vetrina[data-attivo="4"] [data-post="4"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.post { padding-bottom: 0.5rem; }
+.post + .post { margin-top: 1.5rem; }
+.js .post + .post { margin-top: 0; }
+.post-testa {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1rem 0.7rem;
+}
+.post-testa p {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8125rem;
+}
+.esempio-chip {
+  padding: 0.1rem 0.5rem;
+  border: 1px solid var(--oro);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--oro);
+}
+
+/* Copertine dei post: solo CSS, nessuna immagine */
+.copertina {
+  position: relative;
+  aspect-ratio: 6 / 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 1.25rem 1.25rem;
+}
+.copertina::after {
+  content: "";
+  position: absolute;
+  inset: 0.6rem;
+  border: 1px solid var(--oro);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.copertina-scura {
+  background: var(--nero);
+  color: var(--avorio);
+  border-block: 1px solid var(--linea);
+}
+.copertina-chiara {
+  background: var(--avorio);
+  color: var(--nero);
+}
+.copertina p { max-width: none; color: inherit; }
+.copertina-formato {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.copertina-titolo {
+  font-family: var(--font-titoli);
+  font-size: 2.5rem;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+.copertina-titolo span {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-testo);
+  font-size: 0.8125rem;
+  letter-spacing: 0;
+  line-height: 1.4;
+  opacity: 0.8;
+}
+.copertina-piede {
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.copertina-scura .copertina-piede { color: var(--oro); }
+.copertina-chiara .copertina-piede { color: var(--oro-scuro); }
+
+.azioni-post {
+  display: flex;
+  gap: 0.9rem;
+  padding: 0.75rem 1rem 0.25rem;
+}
+.azioni-post svg { width: 1.5rem; height: 1.5rem; }
+.azioni-post .salva { margin-left: auto; }
+
+.didascalia {
+  padding: 0.25rem 1rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+.didascalia strong { color: var(--avorio); }
+.avviso {
+  display: block;
+  margin-top: 0.6rem;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--oro);
+}
+
+/* Senza JS l'anteprima non serve: i post sono già tutti visibili uno sotto l'altro */
+.anteprima {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  height: 3.25rem;
+  padding: 0.9rem 1rem 0;
+  border-top: 1px solid var(--linea);
+}
+.js .anteprima { display: flex; }
+.riga-finta { flex: 0 0 5.5rem; height: 0.5rem; background: rgba(245, 241, 232, 0.2); }
+
+/* Logica dei post */
+.logica-pila { margin-top: 3rem; }
+.logica h4 {
+  font-family: var(--font-titoli);
+  font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.1rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  line-height: 1.15;
+  color: var(--testo);
+  margin-bottom: 1.5rem;
+}
+.logica .eyebrow { margin-bottom: 1rem; }
+.logica + .logica { margin-top: 3rem; }
+.js .logica + .logica { margin-top: 0; }
+
+/* ----- Blocchi di approfondimento (<details>) ----- */
+.blocchi {
+  margin-top: clamp(4rem, 10vw, 7rem);
+  border-bottom: 1px solid var(--linea);
+}
+.blocco { border-top: 1px solid var(--linea); }
+.blocco > summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "titolo indicatore"
+    "sintesi indicatore";
+  align-items: center;
+  gap: 0.5rem 1rem;
+  min-height: 2.75rem;
+  padding-block: 1.75rem;
+  cursor: pointer;
+  list-style: none;
+}
+.blocco > summary::-webkit-details-marker { display: none; }
+.blocco > summary h3 { grid-area: titolo; font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.25rem); }
+.blocco-sintesi {
+  grid-area: sintesi;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--testo-tenue);
+}
+/* Segno "+" disegnato con due linee; quando il blocco è aperto ruota e diventa "×" */
+.indicatore {
+  grid-area: indicatore;
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--linea);
+  border-radius: 50%;
+}
+.indicatore::before,
+.indicatore::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.875rem;
+  height: 1px;
+  margin: -0.5px 0 0 -0.4375rem;
+  background: var(--accento);
+}
+.indicatore::after { transform: rotate(90deg); }
+.blocco[open] .indicatore { transform: rotate(45deg); }
+
+.corpo { padding-bottom: 2.5rem; }
+.corpo > * + * { margin-top: 1rem; }
+.corpo h4 { margin-top: 2rem; }
+.corpo h4 + * { margin-top: 0.5rem; }
+
+.elenco-semplice li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.elenco-semplice li + li { margin-top: 0.75rem; }
+.elenco-semplice li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85em;
+  width: 0.75rem;
+  height: 1px;
+  background: var(--filo);
+}
+
+.definizioni dt {
+  margin-top: 1.25rem;
+  font-weight: 600;
+  color: var(--testo);
+}
+.definizioni dt:first-child { margin-top: 0; }
+.definizioni dd { margin-top: 0.25rem; }
+
+.calendario li {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0 1rem;
+  padding-block: 0.9rem;
+  border-top: 1px solid var(--linea);
+  max-width: none;
+}
+.calendario .giorno {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accento);
+  padding-top: 0.2rem;
+}
+.calendario .voce { max-width: 60ch; }
+.calendario em { color: var(--testo); }
+
+.nota-fittizio {
+  margin-top: 2.5rem;
+  font-size: 0.9375rem;
+}
+
+
+/* ==========================================================================
+   6. TABLET E DESKTOP (si parte dal telefono, poi si allarga)
+   ========================================================================== */
+
+@media (min-width: 600px) {
+  .js .controlli { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .piede-interno { flex-direction: row; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 2rem; }
+}
+
+@media (min-width: 860px) {
+  .due-colonne {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 clamp(3rem, 7vw, 7rem);
+  }
+
+  .riga-cliente {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem;
+  }
+
+  .passi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(3rem, 7vw, 7rem);
+  }
+
+  .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(3rem, 7vw, 7rem); }
+
+  .chi-griglia {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: start;
+  }
+  .ritratto { width: 100%; justify-self: end; }
+
+  .calendario li { grid-template-columns: 7rem minmax(0, 1fr); }
+}
+
+@media (min-width: 960px) {
+  /* Sul desktop il telefono sta a sinistra; scelta e logica a destra */
+  .vetrina {
+    grid-template-columns: 21rem minmax(0, 1fr);
+    grid-template-areas:
+      "titolo    titolo"
+      "guida     guida"
+      "telefono  controlli"
+      "telefono  logica";
+    /* L'ultima riga prende lo spazio in più, così pulsanti e testo restano vicini */
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: clamp(3rem, 7vw, 7rem);
+    align-items: start;
+  }
+  .js .controlli { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 2.5rem; }
+  .telefono-area { margin-top: 2.5rem; }
+  .logica-pila { margin-top: 2.5rem; }
+}
+
+
+/* ==========================================================================
+   7. ANIMAZIONI
+   Regole: durata 700ms, curva morbida, si animano solo opacity e transform
+   (non spostano mai il layout). Se l'utente ha attivato "riduci movimento",
+   questo blocco non si applica e tutto compare subito, senza animazioni.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Comparsa graduale allo scroll: partono nascosti SOLO se JavaScript è attivo */
+  .js .rivela {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity var(--durata) var(--ease) var(--ritardo, 0ms),
+      transform var(--durata) var(--ease) var(--ritardo, 0ms);
+  }
+  .js .rivela.visibile {
+    opacity: 1;
+    transform: none;
+  }
+  .ritardo-1 { --ritardo: 120ms; }
+  .ritardo-2 { --ritardo: 240ms; }
+  .ritardo-3 { --ritardo: 360ms; }
+
+  /* Hover: veli e sottolineature */
+  .pulsante::before { transition: opacity var(--durata) var(--ease); }
+  .link-testo::after,
+  .link-testata::after { transition: transform var(--durata) var(--ease); }
+  .scelta::before { transition: opacity var(--durata) var(--ease); }
+
+  /* Cambio di post nel telefono: dissolvenza (l'altezza non cambia perché i post sono sovrapposti) */
+  .js .pila > [data-post],
+  .js .logica-pila > [data-post] {
+    transition:
+      opacity var(--durata) var(--ease),
+      visibility 0s linear var(--durata);
+  }
+  .js .vetrina[data-attivo="1"] [data-post="1"],
+  .js .vetrina[data-attivo="2"] [data-post="2"],
+  .js .vetrina[data-attivo="3"] [data-post="3"],
+  .js .vetrina[data-attivo="4"] [data-post="4"] {
+    transition:
+      opacity var(--durata) var(--ease),
+      visibility 0s linear 0s;
+  }
+
+  /* Blocchi apribili: il segno "+" ruota e il contenuto compare con una dissolvenza */
+  .indicatore { transition: transform var(--durata) var(--ease); }
+  .blocco[open] .corpo { animation: compare var(--durata) var(--ease) both; }
+  @keyframes compare {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}

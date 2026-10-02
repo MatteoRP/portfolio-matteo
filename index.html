@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matteo Rapeso | Strategia e contenuti per profili social</title>
+  <meta name="description" content="Strategia e contenuti per profili social: creator, attività locali, startup. Il metodo è mostrato in un caso studio dimostrativo con dati fittizi.">
+  <meta name="theme-color" content="#0E0E0E">
+
+  <!-- Condivisione (Open Graph).
+       ATTENZIONE: og:image dovrebbe essere un indirizzo assoluto (https://tuodominio.it/assets/og-image.png).
+       Il dominio non è ancora noto: dopo la pubblicazione sostituisci il percorso relativo qui sotto.
+       Aggiungi anche <meta property="og:url" content="https://tuodominio.it/"> . -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:title" content="Matteo Rapeso | Strategia e contenuti per profili social">
+  <meta property="og:description" content="Strategia e contenuti per profili social: creator, attività locali, startup. Il metodo è mostrato in un caso studio dimostrativo con dati fittizi.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Matteo Rapeso, strategia e contenuti per profili social">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Icone -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <!-- Font in locale: li carico in anticipo per evitare il lampo di testo con il carattere sbagliato -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Segnala al CSS che JavaScript è attivo (serve per le animazioni: senza JS il sito resta leggibile) -->
+  <script>document.documentElement.className += ' js';</script>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Icone del mockup, definite una sola volta e riutilizzate -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-cuore" viewBox="0 0 24 24"><path d="M12 20s-7.2-4.4-7.2-9.9A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.2 2.5C19.2 15.6 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-commento" viewBox="0 0 24 24"><path d="M20 11.4a7.4 7.4 0 0 1-10.7 6.6L4.5 19.3l1.3-4.2A7.4 7.4 0 1 1 20 11.4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-invia" viewBox="0 0 24 24"><path d="M20.5 4 3.8 10.4l6.2 2.4 2.4 6.2L20.5 4zM10 12.8l4.6-4.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+    <symbol id="i-salva" viewBox="0 0 24 24"><path d="M6.5 4h11v16l-5.5-4-5.5 4V4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <a class="salta" href="#contenuto">Vai al contenuto</a>
+
+  <header class="testata">
+    <div class="contenitore testata-interno">
+      <a class="marchio" href="#inizio">Matteo Rapeso</a>
+      <a class="link-testata" href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti">Scrivimi</a>
+    </div>
+  </header>
+
+  <main id="contenuto">
+
+    <!-- ============ 1. HERO ============ -->
+    <section class="sezione tema-scuro hero" id="inizio" aria-labelledby="titolo-hero">
+      <div class="contenitore hero-interno">
+        <p class="eyebrow rivela">Strategia e contenuti per profili social</p>
+        <h1 id="titolo-hero" class="rivela ritardo-1">Lavoro su strategia e contenuti perché l’attenzione sul tuo profilo possa diventare <em>contatti, prenotazioni o iscrizioni.</em></h1>
+        <div class="azioni-hero rivela ritardo-2">
+          <a class="pulsante" href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti">Scrivimi via email</a>
+          <a class="link-testo" href="https://www.instagram.com/matteorapeso/">Oppure un messaggio su Instagram</a>
+        </div>
+        <p class="nota-hero rivela ritardo-3">Il primo passo è una call conoscitiva gratuita di 15 minuti.</p>
+        <ul class="destinatari rivela ritardo-3" aria-label="A chi mi rivolgo">
+          <li>Creator</li>
+          <li>Attività locali</li>
+          <li>Startup e brand digitali</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 2. COSA RISOLVO ============ -->
+    <section class="sezione tema-chiaro" id="problemi" aria-labelledby="titolo-problemi">
+      <div class="contenitore">
+        <p class="eyebrow rivela">Cosa risolvo</p>
+        <h2 id="titolo-problemi" class="rivela ritardo-1">Parto da un problema, non da un settore.</h2>
+
+        <div class="due-colonne">
+          <article class="problema rivela">
+            <p class="numero" aria-hidden="true">I</p>
+            <h3>Un profilo poco riconoscibile</h3>
+            <p>Chi arriva sul profilo non capisce subito di cosa ti occupi, cosa ti distingue e perché dovrebbe seguirti. Lavoro su posizionamento, linea editoriale e formati ricorrenti, perché ogni contenuto abbia un ruolo preciso.</p>
+          </article>
+          <article class="problema rivela ritardo-1">
+            <p class="numero" aria-hidden="true">II</p>
+            <h3>Attenzione che non diventa azione</h3>
+            <p>Il profilo viene guardato, ma non è chiaro cosa fare dopo: scrivere, prenotare, iscriversi. Lavoro sul percorso che porta dal contenuto al passo successivo: bio, link, inviti all’azione e contenuti pensati per arrivarci.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. PER CHI LAVORO ============ -->
+    <section class="sezione tema-scuro" id="clienti" aria-labelledby="titolo-clienti">
+      <div class="contenitore">
+        <p class="eyebrow rivela">Per chi lavoro</p>
+        <h2 id="titolo-clienti" class="rivela ritardo-1">Tre tipi di cliente, un solo metodo.</h2>
+        <p class="introduzione rivela ritardo-2">Cambiano i canali e l’obiettivo, non il modo di ragionare. Quelli che seguono non sono clienti già seguiti: sono i problemi tipici di ciascun contesto.</p>
+
+        <div class="elenco-clienti">
+          <article class="riga-cliente rivela">
+            <header>
+              <h3>Creator</h3>
+              <p class="esempio-riga">Ad esempio YouTuber</p>
+            </header>
+            <dl>
+              <dt>Il problema tipico</dt>
+              <dd>Il pubblico guarda i video, ma gli altri profili sono gestiti a intermittenza: non hanno una linea riconoscibile e non riportano l’attenzione sul canale principale.</dd>
+              <dt>Cosa faccio</dt>
+              <dd>Definisco il ruolo di ogni canale rispetto a quello principale, una linea editoriale con formati ricorrenti, il riuso dei contenuti lunghi in contenuti brevi e un calendario che una persona sola riesca a mantenere.</dd>
+            </dl>
+          </article>
+
+          <article class="riga-cliente rivela">
+            <header>
+              <h3>Attività locali</h3>
+              <p class="esempio-riga">Ad esempio barbieri, ristoranti, hotel</p>
+            </header>
+            <dl>
+              <dt>Il problema tipico</dt>
+              <dd>Il profilo è una galleria di foto curate ma simili a quelle delle altre attività della zona, e non è chiaro né cosa distingue il posto né come prenotare.</dd>
+              <dt>Cosa faccio</dt>
+              <dd>Definisco l’identità del profilo (cosa mostrare e cosa no), organizzo bio, in evidenza e link attorno alla prenotazione, e imposto contenuti ricorrenti basati sul lavoro quotidiano.</dd>
+            </dl>
+          </article>
+
+          <article class="riga-cliente rivela">
+            <header>
+              <h3>Startup e brand digitali</h3>
+              <p class="esempio-riga">Prodotti e servizi nuovi, online</p>
+            </header>
+            <dl>
+              <dt>Il problema tipico</dt>
+              <dd>Il team conosce il prodotto a fondo e comunica nel proprio linguaggio, mentre chi arriva dai social non capisce cosa offre né perché iscriversi.</dd>
+              <dt>Cosa faccio</dt>
+              <dd>Traduco l’offerta in pochi messaggi chiari, definisco pilastri di contenuto e tono, costruisco il percorso dal contenuto all’iscrizione o alla richiesta di demo, e rivedo i formati sui dati dopo le prime settimane.</dd>
+            </dl>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. COME LAVORO ============ -->
+    <section class="sezione tema-chiaro" id="metodo" aria-labelledby="titolo-metodo">
+      <div class="contenitore">
+        <p class="eyebrow rivela">Come lavoro</p>
+        <h2 id="titolo-metodo" class="rivela ritardo-1">Quattro passi, ognuno con una ragione scritta.</h2>
+
+        <ol class="passi">
+          <li class="passo rivela">
+            <span class="passo-numero" aria-hidden="true">1</span>
+            <div>
+              <h3>Audit</h3>
+              <p>Guardo il profilo come lo vede chi arriva per la prima volta: cosa dice, cosa promette, cosa chiede di fare.</p>
+            </div>
+          </li>
+          <li class="passo rivela ritardo-1">
+            <span class="passo-numero" aria-hidden="true">2</span>
+            <div>
+              <h3>Strategia</h3>
+              <p>Pilastri di contenuto, tono e canali. Ogni scelta ha una motivazione scritta, così si può discutere e correggere.</p>
+            </div>
+          </li>
+          <li class="passo rivela">
+            <span class="passo-numero" aria-hidden="true">3</span>
+            <div>
+              <h3>Calendario e contenuti</h3>
+              <p>Un calendario che chi lo segue riesce davvero a mantenere. Per ogni post, una logica dichiarata: perché esiste e cosa deve far fare.</p>
+            </div>
+          </li>
+          <li class="passo rivela ritardo-1">
+            <span class="passo-numero" aria-hidden="true">4</span>
+            <div>
+              <h3>Revisione</h3>
+              <p>Obiettivi dichiarati come ipotesi, riletti sui dati dopo le prime settimane: cosa tenere, cosa cambiare.</p>
+            </div>
+          </li>
+        </ol>
+
+        <p class="rimando rivela"><a class="link-testo" href="#caso-studio">Questi passi, applicati a un caso dimostrativo</a></p>
+      </div>
+    </section>
+
+    <!-- ============ 5. CASO STUDIO DIMOSTRATIVO ============ -->
+    <section class="sezione tema-scuro" id="caso-studio" aria-labelledby="titolo-caso">
+      <div class="contenitore">
+
+        <p class="etichetta-fittizio rivela"><span>Progetto dimostrativo: attività e dati fittizi</span></p>
+        <p class="eyebrow rivela">Caso studio</p>
+        <h2 id="titolo-caso" class="rivela ritardo-1">Una startup che non esiste, per mostrare come lavoro.</h2>
+        <p class="introduzione rivela ritardo-2">Numerella è un’attività inventata: una startup di educazione finanziaria che vuole ridurre l’analfabetismo finanziario in Italia. Nome, offerta, slogan, fondatori e numeri sono di fantasia e nessun profilo reale esiste. Fa solo divulgazione educativa: nessun consiglio su cosa comprare, nessuna promessa di rendimento, nessuna consulenza personalizzata.</p>
+
+        <dl class="scheda rivela">
+          <div>
+            <dt>Slogan (fittizio)</dt>
+            <dd>«Prima si capisce, poi si decide.»</dd>
+          </div>
+          <div>
+            <dt>Fondatori (fittizi)</dt>
+            <dd>Due, descritti solo per ruolo: un profilo di divulgazione economica e uno di design di prodotto. Il brand non mostra volti.</dd>
+          </div>
+          <div>
+            <dt>Offerta</dt>
+            <dd>Contenuti gratuiti: caroselli e video brevi su Instagram, una newsletter settimanale, un glossario online.</dd>
+          </div>
+          <div>
+            <dt>Cosa non fa</dt>
+            <dd>Non consiglia cosa comprare, non fa previsioni, non offre consulenza personalizzata, non ha link di affiliazione.</dd>
+          </div>
+        </dl>
+
+        <!-- Vetrina: mockup di un feed Instagram in CSS + logica di ogni post -->
+        <div class="vetrina" data-attivo="1">
+          <h3 class="vetrina-titolo rivela">Il feed, in quattro esempi</h3>
+          <p class="vetrina-guida rivela">Scegli un post: da una parte com’è fatto, dall’altra perché esiste.</p>
+
+          <div class="controlli" role="group" aria-label="Scegli il post da mostrare">
+            <button type="button" class="scelta" data-vai="1" aria-pressed="true" aria-controls="post-1 logica-1"><span class="scelta-n">1</span> Inflazione</button>
+            <button type="button" class="scelta" data-vai="2" aria-pressed="false" aria-controls="post-2 logica-2"><span class="scelta-n">2</span> TAN e TAEG</button>
+            <button type="button" class="scelta" data-vai="3" aria-pressed="false" aria-controls="post-3 logica-3"><span class="scelta-n">3</span> Effetto gregge</button>
+            <button type="button" class="scelta" data-vai="4" aria-pressed="false" aria-controls="post-4 logica-4"><span class="scelta-n">4</span> Domande</button>
+          </div>
+
+          <figure class="telefono-area rivela">
+            <div class="telefono">
+              <div class="schermo">
+
+                <div class="barra-profilo">
+                  <span class="avatar" aria-hidden="true">N</span>
+                  <div>
+                    <p class="nome">Numerella</p>
+                    <p class="stato">Profilo fittizio · educazione finanziaria</p>
+                  </div>
+                </div>
+
+                <!-- Evidenza: i quattro pilastri (solo decorazione) -->
+                <div class="storie" aria-hidden="true">
+                  <span class="storia"><i>1</i>Parole</span>
+                  <span class="storia"><i>2</i>Documenti</span>
+                  <span class="storia"><i>3</i>Errori</span>
+                  <span class="storia"><i>4</i>Domande</span>
+                </div>
+
+                <div class="pila">
+
+                  <article class="post" data-post="1" id="post-1">
+                    <header class="post-testa">
+                      <span class="avatar avatar-piccolo" aria-hidden="true">N</span>
+                      <p><strong>Numerella</strong><span class="esempio-chip">Esempio</span></p>
+                    </header>
+                    <div class="copertina copertina-scura">
+                      <p class="copertina-formato">Carosello <span>1 / 6</span></p>
+                      <p class="copertina-titolo">Inflazione<span>in parole semplici</span></p>
+                      <p class="copertina-piede">Le parole dei soldi</p>
+                    </div>
+                    <div class="azioni-post" aria-hidden="true">
+                      <svg><use href="#i-cuore"/></svg><svg><use href="#i-commento"/></svg><svg><use href="#i-invia"/></svg><svg class="salva"><use href="#i-salva"/></svg>
+                    </div>
+                    <p class="didascalia"><strong>Numerella</strong> L’inflazione è l’aumento generale dei prezzi nel tempo. Se lo stesso carrello della spesa passa da 100 a 103 euro, i prezzi sono saliti del 3% (numeri di esempio). Nelle prossime slide: come si misura e perché pesa in modo diverso da persona a persona. In Italia la misura ufficiale è pubblicata dall’Istat. Salva il post per rileggerlo. <em class="avviso">Contenuto educativo, non consulenza finanziaria.</em></p>
+                  </article>
+
+                  <article class="post" data-post="2" id="post-2">
+                    <header class="post-testa">
+                      <span class="avatar avatar-piccolo" aria-hidden="true">N</span>
+                      <p><strong>Numerella</strong><span class="esempio-chip">Esempio</span></p>
+                    </header>
+                    <div class="copertina copertina-chiara">
+                      <p class="copertina-formato">Carosello <span>1 / 7</span></p>
+                      <p class="copertina-titolo">TAN e TAEG<span>due sigle, due cose</span></p>
+                      <p class="copertina-piede">Leggere un documento</p>
+                    </div>
+                    <div class="azioni-post" aria-hidden="true">
+                      <svg><use href="#i-cuore"/></svg><svg><use href="#i-commento"/></svg><svg><use href="#i-invia"/></svg><svg class="salva"><use href="#i-salva"/></svg>
+                    </div>
+                    <p class="didascalia"><strong>Numerella</strong> Compaiono nelle offerte di finanziamento. Il TAN è il tasso annuo nominale: riguarda gli interessi. Il TAEG include anche le spese collegate al finanziamento, quindi dà un’idea più completa del costo. Misurano cose diverse: saperlo è già un modo per leggere meglio un’offerta. <em class="avviso">Contenuto educativo, non consulenza finanziaria.</em></p>
+                  </article>
+
+                  <article class="post" data-post="3" id="post-3">
+                    <header class="post-testa">
+                      <span class="avatar avatar-piccolo" aria-hidden="true">N</span>
+                      <p><strong>Numerella</strong><span class="esempio-chip">Esempio</span></p>
+                    </header>
+                    <div class="copertina copertina-scura">
+                      <p class="copertina-formato">Reel <span>0:30</span></p>
+                      <p class="copertina-titolo">L’effetto gregge<span>perché ci muoviamo come gli altri</span></p>
+                      <p class="copertina-piede">Errori di ragionamento</p>
+                    </div>
+                    <div class="azioni-post" aria-hidden="true">
+                      <svg><use href="#i-cuore"/></svg><svg><use href="#i-commento"/></svg><svg><use href="#i-invia"/></svg><svg class="salva"><use href="#i-salva"/></svg>
+                    </div>
+                    <p class="didascalia"><strong>Numerella</strong> Quando molte persone si muovono nella stessa direzione, tendiamo a pensare che abbiano ragione. In economia comportamentale si chiama effetto gregge. Riconoscerlo non ti dice cosa fare: ti aiuta a notare quando stai scegliendo solo perché lo fanno tutti. <em class="avviso">Contenuto educativo, non consulenza finanziaria.</em></p>
+                  </article>
+
+                  <article class="post" data-post="4" id="post-4">
+                    <header class="post-testa">
+                      <span class="avatar avatar-piccolo" aria-hidden="true">N</span>
+                      <p><strong>Numerella</strong><span class="esempio-chip">Esempio</span></p>
+                    </header>
+                    <div class="copertina copertina-chiara">
+                      <p class="copertina-formato">Carosello <span>1 / 5</span></p>
+                      <p class="copertina-titolo">«Cosa dovrei fare?»<span>perché non rispondiamo</span></p>
+                      <p class="copertina-piede">Domande vere</p>
+                    </div>
+                    <div class="azioni-post" aria-hidden="true">
+                      <svg><use href="#i-cuore"/></svg><svg><use href="#i-commento"/></svg><svg><use href="#i-invia"/></svg><svg class="salva"><use href="#i-salva"/></svg>
+                    </div>
+                    <p class="didascalia"><strong>Numerella</strong> Ci scrivete spesso: «Ho dei risparmi, cosa dovrei fare?». Non possiamo rispondere: non conosciamo la tua situazione e non facciamo consulenza. Possiamo dirti quali domande ti farebbe un professionista abilitato: a cosa servono questi soldi, per quanto tempo, quanto rischio sei disposto a sopportare. Conoscerle aiuta a parlare con chi può consigliarti davvero. <em class="avviso">Contenuto educativo, non consulenza finanziaria.</em></p>
+                  </article>
+
+                </div>
+
+                <!-- Anteprima del post successivo, tagliata dalla cornice (solo decorazione) -->
+                <div class="anteprima" aria-hidden="true">
+                  <span class="avatar avatar-piccolo"></span><span class="riga-finta"></span>
+                </div>
+
+              </div>
+            </div>
+            <figcaption>Mockup in CSS. Profilo, post e testi sono esempi dimostrativi: non esiste alcun profilo reale.</figcaption>
+          </figure>
+
+          <div class="logica-pila rivela">
+            <article class="logica" data-post="1" id="logica-1">
+              <p class="eyebrow">Post 1 · Carosello</p>
+              <h4>Inflazione, in parole semplici</h4>
+              <dl>
+                <dt>Pilastro</dt>
+                <dd>Le parole dei soldi.</dd>
+                <dt>Logica</dt>
+                <dd>Definizione, esempio numerico dichiarato come tale e fonte indicata. Nessuna indicazione su cosa fare.</dd>
+                <dt>Passo successivo</dt>
+                <dd>Salvare il post o iscriversi alla newsletter.</dd>
+              </dl>
+            </article>
+            <article class="logica" data-post="2" id="logica-2">
+              <p class="eyebrow">Post 2 · Carosello</p>
+              <h4>TAN e TAEG, due sigle e due cose</h4>
+              <dl>
+                <dt>Pilastro</dt>
+                <dd>Leggere un documento.</dd>
+                <dt>Logica</dt>
+                <dd>Chiarisce due sigle senza nominare prodotti e senza dire cosa scegliere.</dd>
+                <dt>Passo successivo</dt>
+                <dd>L’ultima slide rimanda alla newsletter della domenica, dove si spiega come si legge un preventivo.</dd>
+              </dl>
+            </article>
+            <article class="logica" data-post="3" id="logica-3">
+              <p class="eyebrow">Post 3 · Reel di 30 secondi</p>
+              <h4>L’effetto gregge</h4>
+              <dl>
+                <dt>Pilastro</dt>
+                <dd>Errori di ragionamento.</dd>
+                <dt>Logica</dt>
+                <dd>Un errore di ragionamento astratto, senza strumenti finanziari né esempi di mercato. Il tono resta calmo: spiega un meccanismo, non mette paura.</dd>
+                <dt>Passo successivo</dt>
+                <dd>Seguire la serie e rispondere alla storia della settimana.</dd>
+              </dl>
+            </article>
+            <article class="logica" data-post="4" id="logica-4">
+              <p class="eyebrow">Post 4 · Carosello</p>
+              <h4>«Cosa dovrei fare?»</h4>
+              <dl>
+                <dt>Pilastro</dt>
+                <dd>Domande vere.</dd>
+                <dt>Logica</dt>
+                <dd>È il post più delicato e il più utile da mostrare: davanti a una richiesta di consiglio personale, il profilo spiega il proprio limite e lo trasforma in contenuto educativo. In un caso reale andrebbe verificato da un professionista del settore.</dd>
+                <dt>Passo successivo</dt>
+                <dd>Scrivere una domanda di carattere generale; per il proprio caso personale, rivolgersi a un professionista abilitato.</dd>
+              </dl>
+            </article>
+          </div>
+        </div>
+
+        <!-- Blocchi di approfondimento: chiusi di default per non allungare la pagina su telefono -->
+        <div class="blocchi">
+
+          <details class="blocco rivela">
+            <summary>
+              <h3>Audit del profilo</h3>
+                <span class="blocco-sintesi">Un profilo ipotetico, costruito per mostrare il metodo</span>
+              <span class="indicatore" aria-hidden="true"></span>
+            </summary>
+            <div class="corpo">
+              <p>Stato di partenza immaginato per illustrare il metodo: non è l’analisi di un profilo reale.</p>
+              <ul class="elenco-semplice">
+                <li>La bio è generica («educazione finanziaria per tutti»: non dice a chi parla né perché seguirlo).</li>
+                <li>Argomenti da principiante e da esperto sono mescolati allo stesso livello.</li>
+                <li>Le grafiche hanno testo fitto, difficile da leggere da telefono.</li>
+                <li>Non ci sono serie ricorrenti e manca un passo successivo (newsletter, glossario).</li>
+                <li>Il tono oscilla tra scolastico e allarmistico, senza avvisi né fonti.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="blocco rivela">
+            <summary>
+              <h3>Strategia</h3>
+                <span class="blocco-sintesi">Pubblico, pilastri, tono, canali e regole fisse</span>
+              <span class="indicatore" aria-hidden="true"></span>
+            </summary>
+            <div class="corpo">
+              <h4>Pubblico di partenza</h4>
+              <p>Ipotesi da verificare: adulti non esperti che evitano l’argomento perché lo percepiscono come tecnico o noioso. Le domande che arrivano dalle storie diranno se è corretta.</p>
+
+              <h4>Quattro pilastri</h4>
+              <dl class="definizioni">
+                <dt>1. Le parole dei soldi</dt>
+                <dd>Il glossario in 30 secondi: inflazione, interesse, tasso, rata.</dd>
+                <dt>2. Leggere un documento</dt>
+                <dd>Busta paga, estratto conto, preventivo: cosa significa ogni voce.</dd>
+                <dt>3. Errori di ragionamento</dt>
+                <dd>I bias comportamentali, senza citare strumenti finanziari.</dd>
+                <dt>4. Domande vere</dt>
+                <dd>Risposte di carattere generale alle domande dei lettori. Mai sul caso personale.</dd>
+              </dl>
+
+              <h4>Tono</h4>
+              <p>Calmo, a frasi brevi, con esempi quotidiani. Mai «devi» o «dovresti», mai toni da allarme. Il gergo compare solo dopo essere stato spiegato.</p>
+
+              <h4>Regole fisse</h4>
+              <ul class="elenco-semplice">
+                <li>Nessuna previsione e nessun nome di prodotto o di piattaforma.</li>
+                <li>Nessuna schermata di guadagni e nessuna collaborazione commerciale non dichiarata.</li>
+                <li>Ogni dato rimanda a una fonte e ogni numero di esempio è dichiarato tale.</li>
+                <li>In un caso reale, le definizioni verrebbero verificate su fonti ufficiali (Istat, Banca d’Italia) prima della pubblicazione.</li>
+              </ul>
+
+              <h4>Canali</h4>
+              <dl class="definizioni">
+                <dt>Instagram, canale principale</dt>
+                <dd>I caroselli didattici si salvano e si rileggono. È una scelta di formato, non un dato di mercato.</dd>
+                <dt>Newsletter</dt>
+                <dd>Approfondimento e relazione diretta, indipendente dall’algoritmo. È dove l’attenzione diventa iscrizione.</dd>
+                <dt>Esclusi per ora</dt>
+                <dd>TikTok e YouTube (produzione video troppo pesante per un team minimo), LinkedIn (il pubblico di partenza è privato, non aziendale), gruppi Telegram o Discord (rischio di derive da «segnali»). Da rivedere dopo otto settimane.</dd>
+              </dl>
+            </div>
+          </details>
+
+          <details class="blocco rivela">
+            <summary>
+              <h3>Calendario di due settimane</h3>
+                <span class="blocco-sintesi">Tre post, una storia e una newsletter a settimana</span>
+              <span class="indicatore" aria-hidden="true"></span>
+            </summary>
+            <div class="corpo">
+              <p>Piano di lavoro, non contenuti pubblicati. Il ritmo è un’ipotesi di impegno sostenibile per una squadra piccolissima.</p>
+
+              <h4>Settimana 1</h4>
+              <ul class="calendario">
+                <li><span class="giorno">Lunedì</span><span class="voce"><strong>Carosello.</strong> Cos’è l’inflazione, in 6 slide. <em>Le parole dei soldi.</em></span></li>
+                <li><span class="giorno">Martedì</span><span class="voce"><strong>Storia.</strong> Sondaggio: quale parola dei soldi ti suona più oscura? <em>Raccolta di temi.</em></span></li>
+                <li><span class="giorno">Mercoledì</span><span class="voce"><strong>Reel di 30 secondi.</strong> Interesse semplice e composto, con un esempio numerico dichiarato come tale. <em>Le parole dei soldi.</em></span></li>
+                <li><span class="giorno">Venerdì</span><span class="voce"><strong>Carosello.</strong> Le voci principali di una busta paga. <em>Leggere un documento.</em></span></li>
+                <li><span class="giorno">Domenica</span><span class="voce"><strong>Newsletter.</strong> Il glossario della settimana e le risposte al sondaggio.</span></li>
+              </ul>
+
+              <h4>Settimana 2</h4>
+              <ul class="calendario">
+                <li><span class="giorno">Lunedì</span><span class="voce"><strong>Carosello.</strong> TAN e TAEG: due sigle, due cose diverse. <em>Leggere un documento.</em></span></li>
+                <li><span class="giorno">Martedì</span><span class="voce"><strong>Storia.</strong> Domanda aperta: cosa vorresti capire di un preventivo? <em>Domande vere.</em></span></li>
+                <li><span class="giorno">Mercoledì</span><span class="voce"><strong>Reel di 30 secondi.</strong> L’effetto gregge: perché ci muoviamo come gli altri. <em>Errori di ragionamento.</em></span></li>
+                <li><span class="giorno">Venerdì</span><span class="voce"><strong>Carosello.</strong> Perché non rispondiamo a «cosa dovrei fare?». <em>Domande vere.</em></span></li>
+                <li><span class="giorno">Domenica</span><span class="voce"><strong>Newsletter.</strong> Come si legge un preventivo.</span></li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="blocco rivela">
+            <summary>
+              <h3>Obiettivi, come ipotesi</h3>
+                <span class="blocco-sintesi">Nessun risultato: solo ciò che si vorrebbe verificare</span>
+              <span class="indicatore" aria-hidden="true"></span>
+            </summary>
+            <div class="corpo">
+              <p>Ipotesi di lavoro su otto settimane. I numeri sono inventati, non derivano da benchmark e non sono risultati.</p>
+              <ul class="elenco-semplice">
+                <li><strong>Newsletter:</strong> obiettivo ipotetico di 300 iscritti, partendo da zero.</li>
+                <li><strong>Salvataggi dei caroselli:</strong> crescita rispetto alle prime due settimane. Se la linea editoriale funziona, i post più didattici dovrebbero essere salvati di più.</li>
+                <li><strong>Domande:</strong> almeno una a settimana dalle storie, come segnale di interesse reale.</li>
+                <li><strong>Processo:</strong> nessun contenuto pubblicato senza avviso e senza fonte.</li>
+              </ul>
+              <p>A ogni revisione mi chiederei quali pilastri non funzionano e se uno dei canali esclusi vada riconsiderato.</p>
+            </div>
+          </details>
+
+          <details class="blocco rivela">
+            <summary>
+              <h3>Come cambierebbe per altri clienti</h3>
+                <span class="blocco-sintesi">Lo stesso metodo per un creator e per un’attività locale</span>
+              <span class="indicatore" aria-hidden="true"></span>
+            </summary>
+            <div class="corpo">
+              <h4>Un creator, ad esempio YouTuber</h4>
+              <p>Il canale principale è il video: i contenuti brevi diventano un ponte verso quello lungo. Il tono è personale, non del brand. L’obiettivo diventa il ritorno sul canale e l’iscrizione, non la newsletter.</p>
+              <h4>Un’attività locale, ad esempio un barbiere o un ristorante</h4>
+              <p>L’obiettivo è la prenotazione: bio, link e storie portano a un numero o a un modulo. I contenuti mostrano il lavoro quotidiano e il luogo. Il ritmo è più basso, la zona geografica conta e la newsletter probabilmente non serve.</p>
+            </div>
+          </details>
+
+        </div>
+
+        <p class="nota-fittizio rivela">Numerella è un progetto dimostrativo: attività e dati fittizi. Non descrive un cliente e non presenta risultati.</p>
+      </div>
+    </section>
+
+    <!-- ============ 6. CHI SONO ============ -->
+    <section class="sezione tema-chiaro" id="chi-sono" aria-labelledby="titolo-chi">
+      <div class="contenitore chi-griglia">
+        <div class="chi-testo">
+          <p class="eyebrow rivela">Chi sono</p>
+          <h2 id="titolo-chi" class="rivela ritardo-1">Matteo Rapeso</h2>
+          <p class="rivela ritardo-2">Mi occupo di strategia e contenuti per profili social. Analizzo come un profilo si presenta, definisco una linea editoriale, pianifico i contenuti e rivedo il lavoro sui dati disponibili.</p>
+          <p class="rivela ritardo-2">Mi rivolgo a creator, attività locali e startup e brand digitali.</p>
+          <p class="rivela ritardo-2">Questo sito è il mio primo progetto: non mostra clienti né risultati reali, ma il metodo con cui lavoro, applicato a un caso dimostrativo.</p>
+        </div>
+
+        <!-- SEGNAPOSTO: per inserire la fotografia, sostituisci tutto il blocco <figure> con:
+             <img src="assets/matteo.jpg" alt="Ritratto di Matteo Rapeso" width="800" height="1000" loading="lazy">
+             (formato verticale 4:5, file ottimizzato sotto i 150 KB) -->
+        <figure class="ritratto rivela ritardo-1">
+          <div class="segnaposto" role="img" aria-label="Segnaposto: qui andrà una fotografia di Matteo Rapeso">
+            <span aria-hidden="true">MR</span>
+          </div>
+          <figcaption>Fotografia da inserire</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ 7. CONTATTI ============ -->
+    <section class="sezione tema-scuro" id="contatti" aria-labelledby="titolo-contatti">
+      <div class="contenitore">
+        <p class="eyebrow rivela">Contatti</p>
+        <h2 id="titolo-contatti" class="rivela ritardo-1">Scrivimi.</h2>
+        <p class="introduzione rivela ritardo-2">Il primo passo è una call conoscitiva gratuita di 15 minuti. Scrivimi per email o con un messaggio su Instagram, indicando il link al profilo e l’obiettivo che hai in mente: ti rispondo per accordarci su un orario.</p>
+        <div class="azioni-contatti rivela ritardo-3">
+          <a class="pulsante" href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti">rapeso.matteo@gmail.com</a>
+          <a class="link-testo" href="https://www.instagram.com/matteorapeso/">@matteorapeso su Instagram</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="piede tema-scuro">
+    <div class="contenitore piede-interno">
+      <p>© 2026 Matteo Rapeso</p>
+      <p>Nessun cookie, nessun tracker.</p>
+      <p>Numerella è un progetto dimostrativo: attività e dati fittizi.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
