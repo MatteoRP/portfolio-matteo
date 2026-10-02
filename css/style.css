@@ -684,9 +684,13 @@ h2 + p { margin-top: 2rem; }
 /* Pila dei post: senza JS i quattro post sono uno sotto l'altro;
    con JS sono sovrapposti nella stessa cella e se ne vede uno solo, così l'altezza non cambia mai */
 .js .pila,
-.js .logica-pila { display: grid; }
+.js .logica-pila,
+.js .stati,
+.js .confronto-note { display: grid; }
 .js .pila > [data-post],
-.js .logica-pila > [data-post] {
+.js .logica-pila > [data-post],
+.js .stati > [data-stato],
+.js .confronto-note > [data-stato] {
   grid-area: 1 / 1;
   align-self: start;
   opacity: 0;
@@ -695,7 +699,9 @@ h2 + p { margin-top: 2rem; }
 .js .vetrina[data-attivo="1"] [data-post="1"],
 .js .vetrina[data-attivo="2"] [data-post="2"],
 .js .vetrina[data-attivo="3"] [data-post="3"],
-.js .vetrina[data-attivo="4"] [data-post="4"] {
+.js .vetrina[data-attivo="4"] [data-post="4"],
+.js .confronto[data-attivo="prima"] [data-stato="prima"],
+.js .confronto[data-attivo="dopo"] [data-stato="dopo"] {
   opacity: 1;
   visibility: visible;
 }
@@ -901,36 +907,220 @@ h2 + p { margin-top: 2rem; }
   background: var(--filo);
 }
 
-.definizioni dt {
-  margin-top: 1.25rem;
-  font-weight: 600;
-  color: var(--testo);
-}
-.definizioni dt:first-child { margin-top: 0; }
-.definizioni dd { margin-top: 0.25rem; }
-
-.calendario li {
-  display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
-  gap: 0 1rem;
-  padding-block: 0.9rem;
-  border-top: 1px solid var(--linea);
-  max-width: none;
-}
-.calendario .giorno {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accento);
-  padding-top: 0.2rem;
-}
-.calendario .voce { max-width: 60ch; }
-.calendario em { color: var(--testo); }
-
 .nota-fittizio {
   margin-top: 2.5rem;
   font-size: 0.9375rem;
+}
+
+
+/* ----- Passi sempre visibili del caso studio: audit, strategia, calendario ----- */
+.confronto,
+.strategia,
+.calendario-caso { margin-top: clamp(4rem, 10vw, 7rem); }
+
+.confronto {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "testo"
+    "interruttore"
+    "telefono"
+    "note";
+}
+.confronto-testo { grid-area: testo; }
+.confronto-testo p { margin-top: 1rem; }
+.confronto-testo .elenco-semplice { margin-top: 1.5rem; }
+.interruttore { grid-area: interruttore; }
+.confronto .telefono-area { grid-area: telefono; }
+.confronto-note { grid-area: note; margin-top: 2rem; }
+.confronto-note p { font-size: 0.9375rem; }
+
+/* Come i pulsanti del feed: servono solo con JavaScript */
+.interruttore { display: none; }
+.js .interruttore {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+}
+
+/* Profilo nel telefono (prima / dopo) */
+.stati { display: block; }
+.profilo { padding-bottom: 1.25rem; }
+.stati > .profilo + .profilo { margin-top: 1.5rem; border-top: 1px solid var(--linea); padding-top: 1.25rem; }
+.js .stati > .profilo + .profilo { margin-top: 0; border-top: 0; padding-top: 0; }
+.profilo-testa {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 1rem 0.9rem;
+}
+.profilo-testa .esempio-chip { margin-left: auto; }
+.avatar-grande { width: 3.25rem; height: 3.25rem; font-size: 1.75rem; }
+.bio {
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.schermo .bio-link {
+  padding: 0.5rem 1rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--oro);
+}
+.profilo .storie { margin-top: 1rem; border-bottom: 0; padding-bottom: 0.25rem; }
+
+/* Piccola griglia di post: prima disordinata (testo fitto), dopo ordinata (una serie) */
+.mini-griglia {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  margin-top: 1.25rem;
+  padding: 0 1px;
+}
+.tessera {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.5rem;
+  border: 1px solid var(--linea);
+  overflow: hidden;
+}
+.tessera i {
+  display: block;
+  height: 0.28rem;
+  background: rgba(245, 241, 232, 0.3);
+}
+.tessera-densa i:nth-child(odd) { width: 100%; }
+.tessera-densa i:nth-child(even) { width: 78%; }
+.tessera-densa i:nth-child(3n) { width: 90%; }
+.tessera-densa:nth-child(2) { justify-content: flex-start; }
+.tessera-densa:nth-child(3) { justify-content: flex-end; }
+.tessera-serie {
+  position: relative;
+  justify-content: flex-end;
+  background: var(--nero);
+  color: var(--avorio);
+  border-color: var(--linea);
+}
+.tessera-serie::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid var(--oro);
+  opacity: 0.55;
+}
+.tessera-serie b {
+  font-family: var(--font-titoli);
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.05;
+}
+.tessera-chiara { background: var(--avorio); color: var(--nero); }
+
+/* Strategia: quattro righe, con il titolo a sinistra e il testo a destra quando c'è spazio */
+.strategia .righe { margin-top: 2rem; border-top: 1px solid var(--linea); }
+.strategia .righe > div {
+  display: grid;
+  gap: 0.6rem 3rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--linea);
+}
+.strategia dt {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accento);
+}
+.pilastri { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.pilastri li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  max-width: none;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--linea);
+  color: var(--testo);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+.pilastri li span {
+  font-family: var(--font-titoli);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--accento);
+}
+
+/* Calendario: una striscia per settimana. Sul telefono si scorre di lato, sul desktop i sette giorni stanno affiancati. */
+.calendario-caso > p { margin-top: 1rem; }
+.settimana { margin-top: 2.5rem; }
+.settimana h4 { margin-bottom: 0.25rem; }
+.suggerimento { margin-top: 0.25rem; font-size: 0.875rem; }
+.striscia-scorri {
+  margin-top: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--oro) transparent;
+  border-top: 1px solid var(--linea);
+  border-bottom: 1px solid var(--linea);
+}
+.striscia { display: flex; }
+.cella {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 10.75rem;
+  padding: 1rem 1rem 1.25rem;
+  border-left: 1px solid var(--linea);
+  border-top: 2px solid var(--oro);
+  margin-top: -1px;
+  max-width: none;
+  scroll-snap-align: start;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.cella:first-child { border-left: 0; }
+.cella .giorno {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accento);
+}
+.cella .glifo { width: 1.75rem; height: 1.75rem; color: var(--oro); }
+.cella .formato {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--testo);
+}
+.cella .tema { color: var(--testo); }
+.cella .pilastro-nome {
+  margin-top: auto;
+  font-family: var(--font-titoli);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: var(--testo-tenue);
+}
+.cella-vuota {
+  width: 5.5rem;
+  border-top-color: var(--linea);
+  justify-content: flex-start;
+}
+.cella-vuota .riposo {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--testo-tenue);
 }
 
 
@@ -968,7 +1158,7 @@ h2 + p { margin-top: 2rem; }
   }
   .ritratto { width: 100%; justify-self: end; }
 
-  .calendario li { grid-template-columns: 7rem minmax(0, 1fr); }
+  .strategia .righe > div { grid-template-columns: 12rem minmax(0, 1fr); }
 }
 
 @media (min-width: 960px) {
@@ -988,6 +1178,29 @@ h2 + p { margin-top: 2rem; }
   .js .controlli { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 2.5rem; }
   .telefono-area { margin-top: 2.5rem; }
   .logica-pila { margin-top: 2.5rem; }
+
+  /* Audit: testo e pulsanti a sinistra, telefono a destra */
+  .confronto {
+    grid-template-columns: minmax(0, 1fr) 21rem;
+    grid-template-areas:
+      "testo        telefono"
+      "interruttore telefono"
+      "note         telefono";
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(3rem, 7vw, 7rem);
+    align-items: start;
+  }
+  .confronto .telefono-area { margin-top: 0; }
+  .js .interruttore { max-width: 26rem; }
+}
+
+@media (min-width: 1100px) {
+  /* Sette giorni affiancati, senza scorrimento */
+  .striscia-scorri { overflow-x: visible; }
+  .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .cella,
+  .cella-vuota { width: auto; }
+  .suggerimento { display: none; }
 }
 
 
@@ -1024,7 +1237,9 @@ h2 + p { margin-top: 2rem; }
 
   /* Cambio di post nel telefono: dissolvenza (l'altezza non cambia perché i post sono sovrapposti) */
   .js .pila > [data-post],
-  .js .logica-pila > [data-post] {
+  .js .logica-pila > [data-post],
+  .js .stati > [data-stato],
+  .js .confronto-note > [data-stato] {
     transition:
       opacity var(--durata) var(--ease),
       visibility 0s linear var(--durata);
@@ -1032,7 +1247,9 @@ h2 + p { margin-top: 2rem; }
   .js .vetrina[data-attivo="1"] [data-post="1"],
   .js .vetrina[data-attivo="2"] [data-post="2"],
   .js .vetrina[data-attivo="3"] [data-post="3"],
-  .js .vetrina[data-attivo="4"] [data-post="4"] {
+  .js .vetrina[data-attivo="4"] [data-post="4"],
+  .js .confronto[data-attivo="prima"] [data-stato="prima"],
+  .js .confronto[data-attivo="dopo"] [data-stato="dopo"] {
     transition:
       opacity var(--durata) var(--ease),
       visibility 0s linear 0s;

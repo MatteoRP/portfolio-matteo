@@ -1,8 +1,10 @@
 /* ==========================================================================
    Portfolio di Matteo Rapeso: JavaScript
-   Fa due sole cose, e il sito funziona anche senza:
+   Fa tre sole cose, e il sito funziona anche senza:
    1. fa comparire gradualmente le sezioni quando si scorre la pagina;
-   2. permette di scegliere quale post mostrare nel telefono del caso studio.
+   2. permette di scegliere cosa mostrare nei telefoni del caso studio
+      (quale post, oppure il profilo prima/dopo);
+   3. rende raggiungibili da tastiera le strisce del calendario, ma solo se scorrono.
    ========================================================================== */
 
 (function () {
@@ -43,19 +45,20 @@
   }
 
 
-  /* ----- 2. Scelta del post nel telefono -----
-     Il CSS mostra il post indicato dall'attributo data-attivo della vetrina.
-     Qui basta cambiare quell'attributo e aggiornare lo stato dei pulsanti. */
+  /* ----- 2. Scelta di cosa mostrare nel telefono -----
+     Ogni contenitore con l'attributo data-attivo (la vetrina dei post e il
+     confronto prima/dopo) mostra ciò che indica quell'attributo: lo decide il CSS.
+     Qui basta cambiare l'attributo e aggiornare lo stato dei pulsanti. */
 
-  var vetrine = document.querySelectorAll('.vetrina');
+  var contenitori = document.querySelectorAll('[data-attivo]');
 
-  vetrine.forEach(function (vetrina) {
-    var pulsanti = vetrina.querySelectorAll('[data-vai]');
+  contenitori.forEach(function (contenitore) {
+    var pulsanti = contenitore.querySelectorAll('[data-vai]');
 
-    function attiva(numero) {
-      vetrina.setAttribute('data-attivo', numero);
+    function attiva(valore) {
+      contenitore.setAttribute('data-attivo', valore);
       pulsanti.forEach(function (pulsante) {
-        pulsante.setAttribute('aria-pressed', String(pulsante.getAttribute('data-vai') === numero));
+        pulsante.setAttribute('aria-pressed', String(pulsante.getAttribute('data-vai') === valore));
       });
     }
 
@@ -65,4 +68,28 @@
       });
     });
   });
+
+
+  /* ----- 3. Strisce del calendario -----
+     Sul telefono la striscia scorre di lato e deve poter essere raggiunta da tastiera
+     (tabindex="0"). Sul desktop i sette giorni stanno affiancati e non c'è nulla da
+     scorrere: in quel caso togliamo il tabindex per non lasciare una tappa inutile. */
+
+  var strisce = document.querySelectorAll('.striscia-scorri');
+
+  function aggiornaStrisce() {
+    strisce.forEach(function (striscia) {
+      if (striscia.scrollWidth > striscia.clientWidth + 1) {
+        striscia.setAttribute('tabindex', '0');
+      } else {
+        striscia.removeAttribute('tabindex');
+      }
+    });
+  }
+
+  aggiornaStrisce();
+  window.addEventListener('resize', aggiornaStrisce);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(aggiornaStrisce); /* i font cambiano le larghezze: ricontrolliamo */
+  }
 })();
