@@ -17,57 +17,85 @@
    I font sono nella cartella assets/fonts (nessun collegamento a servizi esterni).
    ========================================================================== */
 
+/* Newsreader (titoli e testo corrente) è un font "variabile" con due assi: peso (wght) e dimensione ottica (opsz).
+   L'asse opsz cambia il disegno con la grandezza: lettere più robuste e aperte nel testo,
+   più fini e contrastate nei titoli grandi. Il browser lo regola da solo (font-optical-sizing: auto).
+   Ogni font ha due sottoinsiemi: latin (italiano) e latin-ext (altre lingue europee). Il browser scarica
+   il secondo solo se nella pagina compare uno di quei caratteri (unicode-range). */
 @font-face {
-  font-family: "Cormorant Garamond";
-  src: url("../assets/fonts/cormorant-garamond-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Newsreader";
   font-style: normal;
+  font-weight: 200 800;
   font-display: swap;
+  src: url("../assets/fonts/newsreader-latin-ext-opsz-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
 @font-face {
-  font-family: "Cormorant Garamond";
-  src: url("../assets/fonts/cormorant-garamond-latin-400-italic.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("../assets/fonts/newsreader-latin-opsz-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: "Newsreader";
   font-style: italic;
+  font-weight: 200 800;
   font-display: swap;
+  src: url("../assets/fonts/newsreader-latin-ext-opsz-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
 @font-face {
-  font-family: "Cormorant Garamond";
-  src: url("../assets/fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 200 800;
   font-display: swap;
+  src: url("../assets/fonts/newsreader-latin-opsz-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
-/* Inter è un font "variabile": un solo file contiene tutti i pesi da 100 a 900 */
+/* Inter (testo piccolo e di servizio) è variabile: un solo file per sottoinsieme contiene tutti i pesi da 100 a 900 */
 @font-face {
   font-family: "Inter";
-  src: url("../assets/fonts/inter-latin-wght-normal.woff2") format("woff2");
-  font-weight: 100 900;
   font-style: normal;
+  font-weight: 100 900;
   font-display: swap;
+  src: url("../assets/fonts/inter-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
 :root {
   /* Palette: nero e cobalto. Un solo accento, nessun altro colore. */
   --sfondo: #06070B;      /* nero */
   --testo: #F3F1EC;
-  --accento: #5C8DFF;     /* cobalto: contrasto 6,4:1 sullo sfondo */
+  --accento: #5C8DFF;     /* cobalto: SOLO per linee, bordi, punti, luce e testo grande (contrasto 6,4:1 sullo sfondo) */
+  --accento-testo: #9DBBFF; /* cobalto più chiaro per il testo piccolo (contrasto 10,5:1 sullo sfondo) */
 
   /* Gli stessi colori in forma "r, g, b", per poterli usare con una trasparenza (rgba) */
   --testo-rgb: 243, 241, 236;
   --accento-rgb: 92, 141, 255;
 
-  --testo-tenue: rgba(var(--testo-rgb), 0.74);  /* testo secondario: stesso colore, opacità ridotta */
+  --testo-tenue: rgba(var(--testo-rgb), 0.88);  /* testo secondario: stesso colore, opacità 0.88 (il testo corrente è pieno) */
   --superficie: rgba(255, 255, 255, 0.03);      /* superfici piatte (schede) */
   --bordo: rgba(255, 255, 255, 0.09);           /* bordo sottile delle superfici */
   --linea: var(--bordo);                        /* filetti */
   --filo: var(--accento);
 
-  /* Fase leggibilità: velo che attenua il reticolo dietro al testo, e fondo piatto dietro al testo piccolo in cobalto */
-  --velo: 0.74;                 /* 55% -> 14% (punti) e 95% -> 25% (punti grandi) dietro ai contenuti */
+  /* Leggibilità: una fascia nera dietro ai contenuti attenua il reticolo, e un fondo piatto sta dietro al testo piccolo in cobalto */
+  --velo: 0.88;                 /* fascia #06070B all'88%: dietro ai contenuti i punti restano al 6-11%, quasi invisibili */
   --fondo-piatto: var(--sfondo);
 
   /* Vetro ("liquid glass"): SOLO su telefono-mockup e navigazione a pillola */
@@ -82,8 +110,16 @@
   --mx: 78%;
   --my: 20%;
 
-  --font-titoli: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
-  --font-testo: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Newsreader per titoli e testo corrente (da 17px in su); Inter solo per testo piccolo e di servizio */
+  --font-titoli: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-corpo: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-servizio: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Etichette in maiuscolo (eyebrow, voci di elenco, giorni): 13px, spaziatura 0.12em, peso 500.
+     È l'unica eccezione ai 14px minimi del sito. */
+  --etichetta: 0.8125rem;
+  --etichetta-spazio: 0.12em;
+  --etichetta-peso: 500;
 
   /* Animazioni: durata e curva scelte una volta sola e usate ovunque */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* l'unico easing del sito */
@@ -98,7 +134,7 @@
   --colonna: 1180px;
   --gutter: clamp(1.25rem, 5vw, 3rem);
   --spazio-sezione: clamp(5.5rem, 16vw, 11rem);
-  --testo-base: clamp(1.0625rem, 1.02rem + 0.2vw, 1.125rem); /* da 17px a 18px */
+  --testo-base: 1.125rem;       /* testo corrente: 18px già a 390px */
 }
 
 
@@ -116,9 +152,10 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font-testo);
+  font-family: var(--font-corpo);
+  font-optical-sizing: auto;      /* Newsreader: la dimensione ottica segue la grandezza del testo */
   font-size: var(--testo-base);
-  line-height: 1.7;
+  line-height: 1.6;
   font-weight: 400;
   color: var(--testo);
   -webkit-font-smoothing: antialiased;
@@ -128,12 +165,13 @@ body {
 h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 
-/* Titoli: Cormorant Garamond, molto grandi, con dimensione fluida (clamp = minimo, ideale, massimo) */
+/* Titoli: Newsreader, molto grandi, con dimensione fluida (clamp = minimo, ideale, massimo). Peso 400-500. */
 h1, h2, h3 {
   font-family: var(--font-titoli);
+  font-optical-sizing: auto;
   font-weight: 400;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -154,22 +192,24 @@ h3 {
 }
 
 h4 {
-  font-family: var(--font-testo);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
-  color: var(--accento);
+  color: var(--accento-testo);
   line-height: 1.5;
 }
 
 em { font-style: italic; }
 
-/* Testo corrente: massimo 65 caratteri per riga */
+/* Testo corrente: colore pieno, massimo 62 caratteri per riga, un'interlinea di spazio tra i paragrafi.
+   Il testo secondario (note, didascalie) usa --testo-tenue (opacità 0.88) nelle sue regole. */
 p, li, dd {
-  max-width: 65ch;
-  color: var(--testo-tenue);
+  max-width: 62ch;
+  color: var(--testo);
 }
+p + p { margin-top: 1em; }
 
 strong { font-weight: 600; color: var(--testo); }
 
@@ -185,6 +225,7 @@ a { color: inherit; }
 
 /* Link "Vai al contenuto" per chi naviga da tastiera */
 .salta {
+  font-family: var(--font-servizio);
   position: absolute;
   left: var(--gutter);
   top: 0.75rem;
@@ -227,11 +268,12 @@ a { color: inherit; }
   padding: 0.25rem 0.6rem;                       /* fondo piatto dietro al testo cobalto: niente punti né lente sotto le lettere */
   margin: -0.25rem 0 1.5rem -0.6rem;
   background-color: var(--fondo-piatto);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 .eyebrow::before {
   content: "";
@@ -256,6 +298,7 @@ h2 + p { margin-top: 2rem; }
   border: 1px solid var(--accento);
   background: transparent;
   color: var(--testo);
+  font-family: var(--font-servizio);
   font-weight: 500;
   font-size: 1rem;
   letter-spacing: 0.01em;
@@ -370,11 +413,12 @@ h2 + p { margin-top: 2rem; }
 .link-testata {
   position: relative;
   isolation: isolate;
+  font-family: var(--font-servizio);
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accento);
+  color: var(--accento-testo);
   background: linear-gradient(rgba(var(--accento-rgb), 0.35), rgba(var(--accento-rgb), 0.35)) 0 calc(100% - 0.6rem) / 100% 1px no-repeat;
 }
 .link-testata::after {
@@ -416,6 +460,7 @@ h2 + p { margin-top: 2rem; }
   align-items: center;
   min-height: 2.75rem;
   padding-inline: 0.8rem;
+  font-family: var(--font-servizio);
   font-size: 0.9375rem;
   text-decoration: none;
   color: var(--testo-tenue);
@@ -469,17 +514,17 @@ h2 + p { margin-top: 2rem; }
   justify-content: center;
   align-items: flex-start;
 }
-/* Parola chiave: colore pieno cobalto (fallback) */
+/* Parola chiave: colore pieno cobalto chiaro (fallback) */
 .hero h1 em {
   font-style: italic;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
-/* Dove il browser lo supporta: sfumatura dal bianco al cobalto dentro le lettere.
+/* Dove il browser lo supporta: sfumatura dal bianco (#FFFFFF) al cobalto chiaro (#9DBBFF) dentro le lettere.
    box-decoration-break: clone ripete la sfumatura su ogni riga se la frase va a capo. */
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hero h1 em {
     padding-inline-end: 0.08em;   /* il corsivo sporge: senza questo l'ultima lettera verrebbe tagliata */
-    background-image: linear-gradient(100deg, var(--testo) 0%, var(--accento) 100%);
+    background-image: linear-gradient(100deg, #FFFFFF 0%, var(--accento-testo) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -497,7 +542,9 @@ h2 + p { margin-top: 2rem; }
 }
 .nota-hero {
   margin-top: 1.25rem;
+  font-family: var(--font-servizio);
   font-size: 0.9375rem;
+  color: var(--testo-tenue);
 }
 .destinatari {
   display: flex;
@@ -507,12 +554,14 @@ h2 + p { margin-top: 2rem; }
   margin-top: clamp(3rem, 10vh, 5.5rem);
   padding-top: 1.25rem;
   border-top: 1px solid var(--linea);
-  font-size: 0.8125rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
   color: var(--testo-tenue);
 }
-.destinatari li { max-width: none; }
+.destinatari li { max-width: none; color: inherit; }
 
 /* ----- Cosa risolvo ----- */
 .due-colonne {
@@ -546,17 +595,20 @@ h2 + p { margin-top: 2rem; }
 .riga-cliente:last-child { border-bottom: 1px solid var(--linea); }
 .esempio-riga {
   margin-top: 0.75rem;
+  font-family: var(--font-servizio);
   font-size: 0.9375rem;
+  color: var(--testo-tenue);
 }
 .riga-cliente dt,
 .scheda dt,
 .logica dt {
   margin-top: 1.5rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 .riga-cliente dt:first-child,
 .logica dt:first-child { margin-top: 0; }
@@ -632,7 +684,7 @@ h2 + p { margin-top: 2rem; }
   display: grid;
   gap: 3rem;
 }
-.chi-testo p + p { margin-top: 1.25rem; }
+.chi-testo p + p { margin-top: 1em; }
 .chi-testo h2 { max-width: none; }
 
 /* Segnaposto della fotografia: neutro, con proporzioni 4:5 */
@@ -649,7 +701,8 @@ h2 + p { margin-top: 2rem; }
 }
 .ritratto figcaption {
   margin-top: 0.75rem;
-  font-size: 0.8125rem;
+  font-family: var(--font-servizio);
+  font-size: 0.875rem;
   color: var(--testo-tenue);
 }
 
@@ -669,7 +722,7 @@ h2 + p { margin-top: 2rem; }
   flex-direction: column;
   gap: 0.5rem;
 }
-.piede p { font-size: 0.875rem; max-width: none; }
+.piede p { font-family: var(--font-servizio); font-size: 0.875rem; max-width: none; color: var(--testo-tenue); }
 
 
 /* ==========================================================================
@@ -682,11 +735,12 @@ h2 + p { margin-top: 2rem; }
   display: inline-block;
   padding: 0.55rem 0.9rem;
   border: 1px solid var(--accento);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
-  color: var(--accento);
+  color: var(--accento-testo);
   line-height: 1.4;
 }
 
@@ -742,6 +796,7 @@ h2 + p { margin-top: 2rem; }
   border: 1px solid var(--linea);
   color: var(--testo);
   font: inherit;
+  font-family: var(--font-servizio);
   font-size: 0.9375rem;
   line-height: 1.3;
   text-align: left;
@@ -751,7 +806,7 @@ h2 + p { margin-top: 2rem; }
   font-family: var(--font-titoli);
   font-style: italic;
   font-size: 1.25rem;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 /* Bordo oro che compare sul pulsante attivo: si anima con l'opacità */
 .scelta::before {
@@ -778,7 +833,8 @@ h2 + p { margin-top: 2rem; }
 .telefono-area figcaption {
   margin-top: 1.25rem;
   max-width: 24rem;
-  font-size: 0.8125rem;
+  font-family: var(--font-servizio);
+  font-size: 0.875rem;
   text-align: center;
   color: var(--testo-tenue);
 }
@@ -830,11 +886,11 @@ h2 + p { margin-top: 2rem; }
   font-style: italic;
   font-size: 1.375rem;
   line-height: 1;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 .avatar-piccolo { width: 1.75rem; height: 1.75rem; font-size: 1rem; }
-.nome { font-weight: 600; font-size: 0.9375rem; line-height: 1.3; }
-.stato { font-size: 0.75rem; line-height: 1.3; opacity: 0.72; }
+.nome { font-family: var(--font-servizio); font-weight: 600; font-size: 0.9375rem; line-height: 1.3; }
+.stato { font-family: var(--font-servizio); font-size: 0.875rem; line-height: 1.3; opacity: 0.88; }
 
 .storie {
   display: flex;
@@ -842,14 +898,19 @@ h2 + p { margin-top: 2rem; }
   padding: 0.25rem 1rem 1rem;
   border-bottom: 1px solid var(--linea);
 }
+/* Schermi molto stretti (320px): con le etichette a 14px le quattro storie non stanno nel telefono, quindi riduco il margine laterale */
+@media (max-width: 359px) {
+  .storie { padding-inline: 0.625rem; }
+}
 .storia {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.75rem;
+  font-family: var(--font-servizio);
+  font-size: 0.875rem;
   line-height: 1.2;
-  opacity: 0.85;
+  opacity: 0.88;
 }
 .storia i {
   display: grid;
@@ -860,7 +921,7 @@ h2 + p { margin-top: 2rem; }
   border-radius: 50%;
   font-family: var(--font-titoli);
   font-size: 1.25rem;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 
 /* Pila dei post: senza JS i quattro post sono uno sotto l'altro;
@@ -901,15 +962,18 @@ h2 + p { margin-top: 2rem; }
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.8125rem;
+  font-family: var(--font-servizio);
+  font-size: 0.875rem;
 }
 .esempio-chip {
   padding: 0.1rem 0.5rem;
   border: 1px solid var(--accento);
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 
 /* Copertine dei post: solo CSS, nessuna immagine */
@@ -945,8 +1009,10 @@ h2 + p { margin-top: 2rem; }
 .copertina-formato {
   display: flex;
   justify-content: space-between;
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
 }
 .copertina-titolo {
@@ -958,18 +1024,20 @@ h2 + p { margin-top: 2rem; }
 .copertina-titolo span {
   display: block;
   margin-top: 0.6rem;
-  font-family: var(--font-testo);
-  font-size: 0.8125rem;
+  font-family: var(--font-servizio);
+  font-size: 0.875rem;
   letter-spacing: 0;
   line-height: 1.4;
-  opacity: 0.8;
+  opacity: 0.88;
 }
 .copertina-piede {
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
 }
-.copertina-scura .copertina-piede { color: var(--accento); }
+.copertina-scura .copertina-piede { color: var(--accento-testo); }
 
 .azioni-post {
   display: flex;
@@ -981,7 +1049,8 @@ h2 + p { margin-top: 2rem; }
 
 .didascalia {
   padding: 0.25rem 1rem 0.75rem;
-  font-size: 0.8125rem;
+  font-family: var(--font-servizio);
+  font-size: 0.875rem;
   line-height: 1.55;
 }
 .didascalia strong { color: var(--testo); }
@@ -990,7 +1059,7 @@ h2 + p { margin-top: 2rem; }
   margin-top: 0.6rem;
   font-style: normal;
   font-weight: 600;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 
 /* Senza JS l'anteprima non serve: i post sono già tutti visibili uno sotto l'altro */
@@ -1044,6 +1113,7 @@ h2 + p { margin-top: 2rem; }
 .blocco > summary h3 { grid-area: titolo; font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.25rem); }
 .blocco-sintesi {
   grid-area: sintesi;
+  font-family: var(--font-servizio);
   font-size: 0.9375rem;
   line-height: 1.5;
   color: var(--testo-tenue);
@@ -1093,7 +1163,9 @@ h2 + p { margin-top: 2rem; }
 
 .nota-fittizio {
   margin-top: 2.5rem;
+  font-family: var(--font-servizio);
   font-size: 0.9375rem;
+  color: var(--testo-tenue);
 }
 
 
@@ -1117,7 +1189,8 @@ h2 + p { margin-top: 2rem; }
 .interruttore { grid-area: interruttore; }
 .confronto .telefono-area { grid-area: telefono; }
 .confronto-note { grid-area: note; margin-top: 2rem; }
-.confronto-note p { font-size: 0.9375rem; }
+.confronto-note p { font-family: var(--font-servizio); font-size: 0.9375rem; color: var(--testo-tenue); }
+.confronto-note strong { color: var(--testo); }
 
 /* Come i pulsanti del feed: servono solo con JavaScript */
 .interruttore { display: none; }
@@ -1143,14 +1216,16 @@ h2 + p { margin-top: 2rem; }
 .avatar-grande { width: 3.25rem; height: 3.25rem; font-size: 1.75rem; }
 .bio {
   padding: 0 1rem;
+  font-family: var(--font-servizio);
   font-size: 0.875rem;
   line-height: 1.55;
 }
 .schermo .bio-link {
   padding: 0.5rem 1rem 0;
+  font-family: var(--font-servizio);
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 .profilo .storie { margin-top: 1rem; border-bottom: 0; padding-bottom: 0.25rem; }
 
@@ -1223,11 +1298,12 @@ h2 + p { margin-top: 2rem; }
   border-bottom: 1px solid var(--linea);
 }
 .strategia dt {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-family: var(--font-servizio);
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 .pilastri { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .pilastri li {
@@ -1238,6 +1314,7 @@ h2 + p { margin-top: 2rem; }
   padding: 0.5rem 0.9rem;
   border: 1px solid var(--linea);
   color: var(--testo);
+  font-family: var(--font-servizio);
   font-size: 0.9375rem;
   line-height: 1.4;
 }
@@ -1246,14 +1323,14 @@ h2 + p { margin-top: 2rem; }
   font-style: italic;
   font-size: 1.25rem;
   line-height: 1;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 
 /* Calendario: una striscia per settimana. Sul telefono si scorre di lato, sul desktop i sette giorni stanno affiancati. */
 .calendario-caso > p { margin-top: 1rem; }
 .settimana { margin-top: 2.5rem; }
 .settimana h4 { margin-bottom: 0.25rem; }
-.suggerimento { margin-top: 0.25rem; font-size: 0.875rem; }
+.suggerimento { margin-top: 0.25rem; font-family: var(--font-servizio); font-size: 0.875rem; color: var(--testo-tenue); }
 .striscia-scorri {
   margin-top: 1rem;
   overflow-x: auto;
@@ -1276,32 +1353,31 @@ h2 + p { margin-top: 2rem; }
   border-top: 2px solid var(--accento);
   max-width: none;
   scroll-snap-align: start;
+  font-family: var(--font-servizio);
   font-size: 0.875rem;
   line-height: 1.45;
 }
 .cella:first-child { border-left: 0; }
 .cella .giorno {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
-  color: var(--accento);
+  color: var(--accento-testo);
 }
 .cella .glifo { width: 1.75rem; height: 1.75rem; color: var(--accento); }
 .cella .formato {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: var(--etichetta);
+  font-weight: var(--etichetta-peso);
+  letter-spacing: var(--etichetta-spazio);
   text-transform: uppercase;
   color: var(--testo);
 }
 .cella .tema { color: var(--testo); }
 .cella .pilastro-nome {
   margin-top: auto;
-  font-family: var(--font-titoli);
-  font-style: italic;
-  font-size: 1rem;
-  line-height: 1.2;
+  font-size: 0.875rem;
+  line-height: 1.3;
   color: var(--testo-tenue);
 }
 .cella-vuota {
@@ -1310,7 +1386,7 @@ h2 + p { margin-top: 2rem; }
   justify-content: flex-start;
 }
 .cella-vuota .riposo {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   line-height: 1.35;
   color: var(--testo-tenue);
 }
@@ -1417,18 +1493,20 @@ body::before {
   mask-image: radial-gradient(ellipse 94% 76% at 50% 34%, #000 22%, transparent 84%);
 }
 
-/* --- Velo: il reticolo resta FORTE solo nella hero e negli spazi tra le sezioni ---
-   Dietro ai contenuti (paragrafi, schede, calendario, caso studio, contatti) un velo nero lo attenua:
-   il reticolo di base è unico e fisso, il velo lo copre solo dove c'è testo, con bordi sfumati di 3rem.
-   Sta sopra al reticolo e sotto alla lente (z-index -2 contro -1). Occupa tutta la larghezza dello schermo. */
+/* --- Fascia: il reticolo resta FORTE solo nella hero e negli spazi tra le sezioni ---
+   Dietro ai contenuti (paragrafi, schede, calendario, caso studio, contatti) c'è una fascia #06070B
+   all'88%: dietro alle lettere restano punti al 6-11%, quasi invisibili, e nessuna linea o luce.
+   La fascia sta sopra al reticolo, alla lente e alle luci (che stanno a z-index -3) e sotto al testo.
+   Copre la colonna del contenuto (il contenitore, margini compresi) e sfuma in alto e in basso nei 3rem
+   di spazio tra le sezioni. Sugli schermi più larghi della colonna sfuma anche ai lati. */
 .sezione:not(.hero) > .contenitore { position: relative; }
 .sezione:not(.hero) > .contenitore::before {
   content: "";
   position: absolute;
   z-index: -2;
   pointer-events: none;
-  left: calc(50% - 50vw);
-  width: 100vw;
+  left: 0;
+  right: 0;
   top: calc(var(--spazio-sezione) - 3rem);
   bottom: calc(var(--spazio-sezione) - 3rem);
   background: linear-gradient(to bottom,
@@ -1437,7 +1515,14 @@ body::before {
     rgba(6, 7, 11, var(--velo)) calc(100% - 3rem),
     rgba(6, 7, 11, 0));
 }
-/* Piè di pagina: stesso velo (serve un contesto proprio perché il velo stia sopra al reticolo) */
+/* Dove la colonna è più stretta dello schermo il bordo laterale della fascia sfuma (maschera), così non si vede un rettangolo */
+@media (min-width: 1300px) {
+  .sezione:not(.hero) > .contenitore::before {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent);
+  }
+}
+/* Piè di pagina: stessa fascia (serve un contesto proprio perché la fascia stia sopra al reticolo) */
 .piede { position: relative; isolation: isolate; }
 .piede::before {
   content: "";
@@ -1486,7 +1571,7 @@ body::before {
 #caso-studio::after {
   content: "";
   position: absolute;
-  z-index: -1;
+  z-index: -3;
   width: 300px;
   height: 300px;
   pointer-events: none;
@@ -1665,7 +1750,7 @@ body::before {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: -1;
+  z-index: -3;            /* sotto la fascia dei contenuti (z-index -2): nel caso studio la lente si vede solo attorno al testo */
   width: 340px;
   height: 340px;
   overflow: hidden;
