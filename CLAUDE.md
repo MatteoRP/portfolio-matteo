@@ -53,10 +53,25 @@ Questa sezione sostituisce le estetiche precedenti (nero caldo/avorio/oro e navy
 - Prestazioni: pochi layer, mai animati; Lighthouse mobile con prestazioni almeno 90.
 
 ## Animazioni
-- Poche, lente, sobrie: comparsa graduale allo scroll (IntersectionObserver), hover discreti, transizioni di 600-800ms con easing cubic-bezier(0.22, 1, 0.36, 1).
+- Poche, lente, sobrie. Le regole di dettaglio (luce, durate, gesti, budget) sono nella sezione "Sistema di movimento" qui sotto.
 - Nulla che sposti il layout.
-- Rispetta sempre prefers-reduced-motion (se attivo, nessuna animazione).
+- Rispetta sempre prefers-reduced-motion (se attivo, nessuna animazione: vedi sotto).
 - Animare solo transform e opacity, per non rallentare i telefoni.
+- Vietata la sola dissolvenza come effetto di ingresso: ogni elemento entra con un gesto fisico (scorre, sale, si scala, si accende).
+
+## Sistema di movimento
+Regole di coerenza: ogni nuova animazione le rispetta, altrimenti il sito torna a sembrare un insieme di effetti scollegati.
+- **Una sola luce.** Cobalto #5C8DFF e bianco, sempre con lo stesso profilo radiale che sfuma a trasparente al 66-68%. Intensità: ambiente 8-22% (macchie dietro al contenuto), interazione 40-55% (hover, focus, lente), enfasi 100% solo su elementi piccoli (un punto, una cella, una sottolineatura). Nessun'altra luce, nessun altro colore.
+- **Un solo easing**, cubic-bezier(0.22, 1, 0.36, 1), e quattro durate in variabili CSS: --t-fast 250ms (pressione, hover), --t-med 600ms (ingressi, cambi di stato), --t-slow 900ms (titoli, reticolo), --t-ambient 26s (deriva lenta della luce di fondo). Più --t-cella 1300ms per il gesto ricorrente.
+- **Solo transform e opacity.** Mai animati: blur, backdrop-filter, clip-path, larghezza/altezza, top/left. Per rivelare un titolo: contenitore con overflow:hidden e riga interna che passa da translateY(105%) a 0 (non si usa clip-path).
+- **Gesto ricorrente "la cella si accende e svanisce".** Una cella del reticolo (28px) prende bordo e fondo cobalto e svanisce in 1300ms. È il feedback di tutto il sito: titoli di sezione, pressione di pulsanti e link, numero di un passo del metodo. Nel caso studio il cambio di stato del telefono è una pulsazione della luce dietro al telefono (una sola volta), non una cella.
+- **Budget.** Al massimo due animazioni continue visibili insieme: la luce ambiente (deriva lenta) e la lente automatica (solo hero, solo touch). Entrambe si fermano fuori schermo (IntersectionObserver) e a scheda nascosta (visibilitychange). Gli aggiornamenti per frame passano da requestAnimationFrame, con letture del DOM raggruppate prima delle scritture.
+- **Nessuno scroll-jacking.** Lo scroll è sempre quello nativo; nessun scroll-snap sulla pagina (resta solo, con proximity, sulla striscia orizzontale del calendario), nessun evento wheel o touchmove intercettato.
+- **Animazioni guidate dallo scroll** (parallasse della hero, linea e passi di "Come lavoro", luce sul bordo delle schede di "Per chi lavoro"): CSS con animation-timeline (view() / scroll()) dentro @supports. Dove non è supportato, la stessa cosa con IntersectionObserver e requestAnimationFrame, con gli stessi valori.
+- **Ingressi.** Paragrafi e schede: translateY(24px) e scale(0.985) verso la posizione finale, sfalsati di 60ms per posizione. Schede di "Per chi lavoro": entrano da lati alternati (translateX di 20px). Pulsante della hero: scale(0.96) e opacità.
+- **will-change** solo su elementi che stanno per animarsi, e rimosso a fine animazione.
+- **Accessibilità.** Con prefers-reduced-motion: reduce: nessuna animazione continua, nessuna lente automatica, nessuna cella che si accende, nessuna parallasse, ingressi istantanei, lente ferma. Con JavaScript disattivato il sito resta leggibile e completo (le classi di ingresso si applicano solo se JS è attivo, con un controllo di sicurezza che le toglie dopo 3 secondi).
+- **Misure da rifare a ogni modifica del movimento:** Lighthouse mobile (prestazioni almeno 90), registrazione dello scroll in Chromium con CPU rallentata 4x (frame persi), assenza di overflow orizzontale a 390px, aree toccabili di almeno 44px a rivelazione completata.
 
 ## Qualità richiesta
 - Accessibilità: HTML semantico, contrasto sufficiente, focus visibile, testo alternativo alle immagini, navigabile da tastiera.

@@ -8,7 +8,7 @@
    5. Caso studio (mockup del telefono)
    5b. Superfici piatte, vetro, reticolo e luci
    6. Tablet e desktop
-   7. Animazioni (tutte in un solo posto, e spente se l'utente lo chiede)
+   7. Sistema di movimento (strutture e stati; poi le animazioni, spente se l'utente lo chiede)
    ========================================================================== */
 
 
@@ -86,8 +86,13 @@
   --font-testo: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* Animazioni: durata e curva scelte una volta sola e usate ovunque */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --durata: 700ms;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* l'unico easing del sito */
+  --t-fast: 250ms;      /* feedback immediati (pressione, hover) */
+  --t-med: 600ms;       /* ingressi, cambi di stato */
+  --t-slow: 900ms;      /* gesti grandi (titoli, reticolo) */
+  --t-ambient: 26s;     /* deriva lenta della luce ambiente */
+  --t-cella: 1300ms;    /* "la cella si accende e svanisce" */
+  --durata: var(--t-med);
 
   /* Misure */
   --colonna: 1180px;
@@ -282,12 +287,15 @@ h2 + p { margin-top: 2rem; }
 /* Link di testo con sottolineatura sottile, che si "disegna" con transform */
 .link-testo {
   position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
   text-decoration: none;
   color: var(--testo);
   overflow-wrap: anywhere;
+  /* sottolineatura di base, tenue: il cobalto la ricopre in hover e focus */
+  background: linear-gradient(rgba(var(--testo-rgb), 0.3), rgba(var(--testo-rgb), 0.3)) 0 calc(100% - 0.55rem) / 100% 1px no-repeat;
 }
 .link-testo::after {
   content: "";
@@ -297,13 +305,27 @@ h2 + p { margin-top: 2rem; }
   bottom: 0.55rem;
   height: 1px;
   background: var(--accento);
+  transform: scaleX(0);              /* si disegna da sinistra */
   transform-origin: left center;
 }
+/* Alone cobalto (intensità di interazione): stesso profilo di tutte le luci, sfuma a trasparente al 67% */
+.link-testo::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -0.5rem -0.9rem;
+  background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.5), rgba(var(--accento-rgb), 0) 67%);
+  opacity: 0;
+  pointer-events: none;
+}
+.link-testo:focus-visible::after { transform: scaleX(1); }
+.link-testo:focus-visible::before { opacity: 1; }
 
 @media (hover: hover) {
   .pulsante:hover::before,
   .pulsante:hover::after { opacity: 1; }
-  .link-testo:hover::after { transform: scaleX(0.35); }
+  .link-testo:hover::after { transform: scaleX(1); }
+  .link-testo:hover::before { opacity: 1; }
 }
 
 
@@ -321,6 +343,7 @@ h2 + p { margin-top: 2rem; }
   pointer-events: none;   /* ai lati della pillola si può cliccare ciò che sta sotto */
 }
 .testata-interno {
+  position: relative;
   pointer-events: auto;
   display: flex;
   align-items: center;
@@ -346,11 +369,13 @@ h2 + p { margin-top: 2rem; }
 }
 .link-testata {
   position: relative;
+  isolation: isolate;
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accento);
+  background: linear-gradient(rgba(var(--accento-rgb), 0.35), rgba(var(--accento-rgb), 0.35)) 0 calc(100% - 0.6rem) / 100% 1px no-repeat;
 }
 .link-testata::after {
   content: "";
@@ -360,10 +385,74 @@ h2 + p { margin-top: 2rem; }
   bottom: 0.6rem;
   height: 1px;
   background: var(--accento);
+  transform: scaleX(0);
   transform-origin: left center;
 }
+.link-testata::before,
+.voci a::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -0.4rem -0.6rem;
+  background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.5), rgba(var(--accento-rgb), 0) 67%);
+  opacity: 0;
+  pointer-events: none;
+}
+.link-testata:focus-visible::after { transform: scaleX(1); }
+.link-testata:focus-visible::before,
+.voci a:focus-visible::before { opacity: 1; }
 @media (hover: hover) {
-  .link-testata:hover::after { transform: scaleX(0.35); }
+  .link-testata:hover::after { transform: scaleX(1); }
+  .link-testata:hover::before,
+  .voci a:hover::before { opacity: 1; }
+}
+
+/* Voci della navigazione: solo da 1000px in su. Sotto, la traccia a quadratini (uno per sezione). */
+.voci { display: none; }
+.voci a {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: 0.8rem;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  color: var(--testo-tenue);
+}
+.voci a[aria-current="true"] { color: var(--testo); }
+.traccia {
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 0.45rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.traccia i {
+  width: 0.25rem;
+  height: 0.25rem;
+  background: rgba(var(--testo-rgb), 0.3);
+}
+/* Il punto cobalto che indica la sezione attiva: lo posiziona JavaScript con transform */
+.punto-nav {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin: -0.2rem 0 0 -0.2rem;
+  border-radius: 50%;
+  background: var(--accento);
+  box-shadow: 0 0 10px rgba(var(--accento-rgb), 0.8);   /* enfasi: luce al 100% ma su un elemento minuscolo */
+  opacity: 0;
+  pointer-events: none;
+}
+.punto-nav.attivo { opacity: 1; }
+@media (min-width: 1000px) {
+  .voci { display: flex; align-items: center; gap: 0.125rem; }
+  .traccia { display: none; }
 }
 
 /* ----- Hero ----- */
@@ -476,8 +565,28 @@ h2 + p { margin-top: 2rem; }
 
 /* ----- Come lavoro ----- */
 .passi {
+  position: relative;
   display: grid;
+  max-width: 48rem;
   margin-top: clamp(3rem, 8vw, 5rem);
+}
+/* Binario verticale tenue + linea cobalto che lo riempie con lo scroll (scaleY legato al progresso) */
+.passi::before,
+.passi::after {
+  content: "";
+  position: absolute;
+  left: 1.375rem;
+  top: 2rem;
+  bottom: 2rem;
+  width: 1px;
+  pointer-events: none;
+}
+.passi::after { background: var(--linea); }
+.passi::before {
+  z-index: 1;
+  background: var(--accento);
+  transform-origin: top center;
+  transform: scaleY(var(--riempi, 1));   /* senza JavaScript la linea è già piena */
 }
 .passo {
   display: grid;
@@ -486,13 +595,35 @@ h2 + p { margin-top: 2rem; }
   padding-block: 2rem;
   border-top: 1px solid var(--linea);
 }
+/* La cella-numero: un quadrato con bordo sottile; si "accende" quando la linea la raggiunge */
 .passo-numero {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--sfondo);              /* copre il binario dietro il numero */
+  border: 1px solid var(--bordo);
   font-family: var(--font-titoli);
   font-style: italic;
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   line-height: 1;
   color: var(--accento);
 }
+.passo-numero::before,
+.passo-numero::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid rgba(var(--accento-rgb), 0.5);
+  background: rgba(var(--accento-rgb), 0.16);
+  opacity: 0;
+  pointer-events: none;
+}
+.passo.acceso .passo-numero::before { opacity: 1; }
+.js .passo > div { opacity: 0.45; }
+.js .passo.acceso > div { opacity: 1; }
 .passo h3 { margin-bottom: 0.75rem; }
 .rimando { margin-top: 2.5rem; padding-top: 1rem; }
 
@@ -1346,7 +1477,11 @@ body::before {
   mask-image: radial-gradient(circle 170px at var(--mx) var(--my), #000 0%, #000 45%, transparent 100%);
 }
 
-/* --- Luce ambiente: una macchia radiale cobalto (34% al centro, trasparente al 68%), 300px, dietro al contenuto --- */
+/* --- Una sola luce: cobalto, sempre con lo stesso profilo (radiale che sfuma a trasparente al 67%).
+   Il picco del gradiente è 50% (livello "interazione"); l'intensità si sceglie con l'opacità dell'elemento:
+   0.36 = luce ambiente (18%), 1 = interazione (50%). Il livello "enfasi" (100%) è solo per elementi minuscoli. --- */
+
+/* Luce ambiente: una macchia (300px) dietro al contenuto, in hero e nel caso studio */
 #inizio::after,
 #caso-studio::after {
   content: "";
@@ -1355,12 +1490,13 @@ body::before {
   width: 300px;
   height: 300px;
   pointer-events: none;
-  background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.34), rgba(var(--accento-rgb), 0) 68%);
+  background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.5), rgba(var(--accento-rgb), 0) 67%);
+  opacity: 0.36;
 }
 #inizio::after { left: -60px; top: 34%; }
 #caso-studio::after { right: -80px; top: 2%; }
 
-/* --- Luce fissa dietro a ciascun telefono: dà al vetro qualcosa da sfocare --- */
+/* Luce fissa dietro a ciascun telefono: dà al vetro qualcosa da sfocare (e pulsa a ogni cambio di stato) */
 .telefono-area {
   position: relative;
   isolation: isolate;
@@ -1375,7 +1511,8 @@ body::before {
   height: 560px;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.34), rgba(var(--accento-rgb), 0) 68%);
+  background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.5), rgba(var(--accento-rgb), 0) 67%);
+  opacity: 0.36;
 }
 
 
@@ -1399,10 +1536,6 @@ body::before {
     gap: 3rem;
   }
 
-  .passi {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: clamp(3rem, 7vw, 7rem);
-  }
 
   .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(3rem, 7vw, 7rem); }
 
@@ -1460,45 +1593,287 @@ body::before {
 
 
 /* ==========================================================================
-   7. ANIMAZIONI
-   Regole: durata 700ms, curva morbida, si animano solo opacity e transform
-   (non spostano mai il layout). Se l'utente ha attivato "riduci movimento",
-   questo blocco non si applica e tutto compare subito, senza animazioni.
+   7. SISTEMA DI MOVIMENTO
+   Regole di coerenza (le stesse sono in CLAUDE.md):
+   - Una sola luce: cobalto e bianco. Ambiente 8-22%, interazione 40-55%, enfasi 100% (solo su elementi minuscoli).
+   - Un solo easing (--ease) e quattro durate (--t-fast, --t-med, --t-slow, --t-ambient).
+   - Si animano solo transform e opacity. Mai blur, backdrop-filter, clip-path o dimensioni.
+   - Un gesto ricorrente: "la cella si accende e svanisce" (--t-cella).
+   - Al massimo due animazioni continue visibili insieme: luce ambiente e lente automatica.
+   - Nessuno scroll-jacking: lo scroll resta quello del browser.
+   Con "riduci movimento" la parte 7b non si applica: gli ingressi sono istantanei.
    ========================================================================== */
+
+/* ---------- 7a. Strutture e stati (valgono anche senza movimento) ---------- */
+
+/* Titoli divisi in righe da JavaScript: ogni riga ha il suo contenitore che nasconde ciò che sta sotto */
+.riga {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;      /* non taglia le discendenti (p, g, q) */
+  margin-bottom: -0.14em;
+  padding-right: 0.1em;        /* non taglia il corsivo che sporge */
+}
+.riga-interna {
+  display: inline-block;
+  white-space: nowrap;
+}
+.m { display: inline; }
+.m-em { font-style: italic; }
+
+/* Passata di luce sulla parola chiave: ogni parola ha una copia bianca identica, sovrapposta al testo con la sfumatura
+   (la crea JavaScript). Si accende e svanisce una parola dopo l'altra (solo opacità): sembra una luce che attraversa la frase. */
+.luce-parola {
+  position: absolute;
+  white-space: nowrap;
+  font-style: italic;
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* "La cella si accende e svanisce": un quadrato del reticolo con bordo e fondo cobalto.
+   JavaScript ne crea uno dove serve (dentro .celle) e lo toglie a fine animazione. */
+.celle {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cella-accesa {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(var(--accento-rgb), 0.5);
+  background: rgba(var(--accento-rgb), 0.16);
+  opacity: 0;
+}
+
+/* Lente mossa da JavaScript: un riquadro di 340px con la maschera circolare, spostato con transform.
+   Dentro ha il reticolo cobalto, spostato in senso opposto per restare sempre allineato al reticolo di base. */
+:root {
+  --reticolo-cobalto:
+    radial-gradient(circle at 50% 50%, rgba(var(--accento-rgb), 1) 2.3px, rgba(var(--accento-rgb), 0) 3.6px),
+    linear-gradient(to bottom, rgba(var(--accento-rgb), 0) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.4) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.4) calc(50% + 0.5px), rgba(var(--accento-rgb), 0) calc(50% + 0.5px)),
+    linear-gradient(to right, rgba(var(--accento-rgb), 0) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.4) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.4) calc(50% + 0.5px), rgba(var(--accento-rgb), 0));
+}
+.lente {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  width: 340px;
+  height: 340px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-400px, -400px, 0);
+  -webkit-mask-image: radial-gradient(circle 170px at 50% 50%, #000 0%, #000 45%, transparent 100%);
+  mask-image: radial-gradient(circle 170px at 50% 50%, #000 0%, #000 45%, transparent 100%);
+}
+.lente.attiva { opacity: 1; }
+.lente-reticolo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 368px;
+  height: 368px;
+  background-image: var(--reticolo-cobalto);
+  background-size: 28px 28px;
+  background-position: -14px -14px;
+}
+/* Quando la lente la gestisce JavaScript, quella fissa in CSS si spegne */
+.lente-js #inizio::before { display: none; }
+
+/* Per chi lavoro: quando la scheda è al centro dello schermo, il suo bordo alto prende una luce cobalto */
+.riga-cliente { position: relative; }
+.riga-cliente::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  background: var(--accento);
+  box-shadow: 0 0 18px 1px rgba(var(--accento-rgb), 0.5);
+  opacity: var(--luce, 0);
+  pointer-events: none;
+}
+
+/* Il telefono nel caso studio resta fisso mentre si scorrono i passi (solo schermi larghi e alti abbastanza).
+   Su schermi stretti o bassi lo sticky funziona male: resta il comportamento di prima (pulsanti e dissolvenza). */
+@media (min-width: 960px) and (min-height: 600px) {
+  .js .confronto .telefono-area,
+  .js .vetrina .telefono-area {
+    position: sticky;
+    top: 5.5rem;
+    align-self: start;
+    transform-origin: top center;
+    scale: var(--k, 1);                 /* JavaScript la rimpicciolisce se lo schermo è basso */
+  }
+  /* I passi diventano una colonna normale, un pannello per schermata; quello attivo è acceso, gli altri sono spenti */
+  .js .vetrina .logica-pila,
+  .js .confronto-note { display: block; }
+  .js .vetrina .logica-pila > [data-post],
+  .js .confronto-note > [data-stato] {
+    grid-area: auto;
+    min-height: 62svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0.3;
+    visibility: visible;
+    transform: none;
+  }
+  .js .vetrina[data-attivo="1"] .logica-pila > [data-post="1"],
+  .js .vetrina[data-attivo="2"] .logica-pila > [data-post="2"],
+  .js .vetrina[data-attivo="3"] .logica-pila > [data-post="3"],
+  .js .vetrina[data-attivo="4"] .logica-pila > [data-post="4"],
+  .js .confronto[data-attivo="prima"] .confronto-note > [data-stato="prima"],
+  .js .confronto[data-attivo="dopo"] .confronto-note > [data-stato="dopo"] { opacity: 1; }
+  .js .confronto-note > [data-stato] { font-size: 1.0625rem; }
+  .js .confronto-note { margin-top: 0; }
+  .js .logica-pila { margin-top: 1rem; }
+}
+
+
+/* ---------- 7b. Movimento (solo se l'utente non ha chiesto di ridurlo) ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
 
-  /* Comparsa graduale allo scroll: partono nascosti SOLO se JavaScript è attivo */
+  /* --- Ingresso di paragrafi e schede: sale di 24px e ingrandisce da 0,985 a 1 oltre a comparire.
+     Mai solo dissolvenza. Sfalsato di 60ms per indice (JavaScript assegna --ritardo; .ritardo-N è il valore di riserva). --- */
   .js .rivela {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translate3d(0, 24px, 0) scale(0.985);
     transition:
-      opacity var(--durata) var(--ease) var(--ritardo, 0ms),
-      transform var(--durata) var(--ease) var(--ritardo, 0ms);
+      opacity var(--t-med) var(--ease) var(--ritardo, 0ms),
+      transform var(--t-slow) var(--ease) var(--ritardo, 0ms);
   }
   .js .rivela.visibile {
     opacity: 1;
     transform: none;
   }
-  .ritardo-1 { --ritardo: 120ms; }
-  .ritardo-2 { --ritardo: 240ms; }
-  .ritardo-3 { --ritardo: 360ms; }
+  .js .rivela.pre { will-change: transform, opacity; }   /* solo poco prima di animarsi, tolto a fine ingresso */
+  .ritardo-1 { --ritardo: 60ms; }
+  .ritardo-2 { --ritardo: 120ms; }
+  .ritardo-3 { --ritardo: 180ms; }
 
-  /* Hover: veli e sottolineature */
-  .pulsante::before,
-  .pulsante::after { transition: opacity var(--durata) var(--ease); }
-  .link-testo::after,
-  .link-testata::after { transition: transform var(--durata) var(--ease); }
-  .scelta::before { transition: opacity var(--durata) var(--ease); }
+  /* Per chi lavoro: le schede entrano da lati alternati (±20px) */
+  .js .riga-cliente.rivela { transform: translate3d(-20px, 0, 0) scale(0.985); }
+  .js .riga-cliente.rivela:nth-child(even) { transform: translate3d(20px, 0, 0) scale(0.985); }
+  .js .riga-cliente.rivela.visibile { transform: none; }
 
-  /* Cambio di post nel telefono: dissolvenza (l'altezza non cambia perché i post sono sovrapposti) */
-  .js .pila > [data-post],
-  .js .logica-pila > [data-post],
-  .js .stati > [data-stato],
-  .js .confronto-note > [data-stato] {
+  /* --- Titoli di sezione e titolo della hero: la riga interna sale da 105% a 0 dentro il suo contenitore --- */
+  .js .titolo-righe .riga-interna { transform: translate3d(0, 105%, 0); }
+  .js .titolo-righe.visibile .riga-interna {
+    transform: none;
+    transition: transform var(--t-slow) var(--ease) calc(var(--base, 0ms) + var(--i, 0) * 90ms);
+  }
+
+  /* --- Coreografia della hero: una volta sola all'apertura, circa 1,6 secondi.
+     JavaScript aggiunge "hero-pronta" quando i font sono pronti e il titolo è diviso in righe. --- */
+
+  /* 1. Il reticolo entra (opacità 0->1, scala 1,04->1) e un anello di luce si espande dal punto della lente */
+  .js body::before { opacity: 0; }
+  .js.hero-pronta body::before { animation: reticolo-entra var(--t-slow) var(--ease) both; }
+  @keyframes reticolo-entra {
+    from { opacity: 0; scale: 1.04; }
+    to   { opacity: 1; scale: 1; }
+  }
+  .js.hero-pronta::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    left: 78vw;
+    top: 20vh;
+    top: 20svh;
+    width: 280px;
+    height: 280px;
+    margin: -140px 0 0 -140px;
+    pointer-events: none;
+    background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0) 36%, rgba(var(--accento-rgb), 0.5) 56%, rgba(var(--accento-rgb), 0) 67%);
+    opacity: 0;
+    animation: anello var(--t-slow) var(--ease) both;
+  }
+  @keyframes anello {
+    from { opacity: 0.5; transform: scale(0.2); }
+    to   { opacity: 0;   transform: scale(1.6); }
+  }
+
+  /* 2. La navigazione a pillola scende da -14px */
+  .js .testata-interno { opacity: 0; transform: translate3d(0, -14px, 0); }
+  .js.hero-pronta .testata-interno {
+    opacity: 1;
+    transform: none;
     transition:
-      opacity var(--durata) var(--ease),
-      visibility 0s linear var(--durata);
+      opacity var(--t-med) var(--ease) 150ms,
+      transform var(--t-med) var(--ease) 150ms;
+  }
+
+  /* 3. Il titolo appare riga per riga (vedi .titolo-righe sopra: la base è 200ms, poi 90ms per riga) */
+
+  /* 4. Sulla parola chiave una sola passata di luce: una parola dopo l'altra, poi resta ferma */
+  .js.hero-pronta .luce-parola { animation: passata 520ms var(--ease) calc(1000ms + var(--k, 0) * 90ms) 1 both; }
+  @keyframes passata {
+    0%   { opacity: 0; }
+    35%  { opacity: 0.95; }
+    100% { opacity: 0; }
+  }
+
+  /* 5. Il pulsante arriva per ultimo: scala da 0,96 a 1 */
+  .js .hero .azioni-hero.rivela { transform: translate3d(0, 0, 0) scale(0.96); }
+  .js .hero .azioni-hero.rivela.visibile { transform: none; }
+
+  /* --- Feedback: hover e focus con alone, :active con scale(0.98) e una cella che si accende --- */
+  .pulsante::before,
+  .pulsante::after,
+  .link-testo::before,
+  .link-testata::before,
+  .voci a::before { transition: opacity var(--t-med) var(--ease); }
+  .link-testo::after,
+  .link-testata::after { transition: transform var(--t-med) var(--ease); }
+  .scelta::before { transition: opacity var(--t-med) var(--ease); }
+  .pulsante, .scelta, .link-testata, .voci a, .marchio { transition: transform var(--t-fast) var(--ease); }
+  .pulsante:active, .scelta:active, .link-testata:active, .voci a:active, .marchio:active { transform: scale(0.98); }
+
+  /* La cella che si accende e svanisce (1300ms) */
+  .cella-accesa { animation: cella var(--t-cella) var(--ease) var(--ritardo, 0ms) both; }
+  .passo-numero.accendi::after { animation: cella var(--t-cella) var(--ease) both; }
+  @keyframes cella {
+    0%   { opacity: 0; transform: scale(0.88); }
+    22%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+  }
+
+  /* --- Navigazione: il punto cobalto scorre fra le voci (transform) --- */
+  .punto-nav {
+    transition:
+      transform var(--t-med) var(--ease),
+      opacity var(--t-fast) var(--ease);
+  }
+
+  /* --- Lente: compare con una dissolvenza (poi la muove JavaScript con transform) --- */
+  .lente { transition: opacity var(--t-med) var(--ease); }
+
+  /* --- Telefono: dissolvenza interna a ogni cambio di stato (l'altezza non cambia, gli stati sono sovrapposti) --- */
+  .js .pila > [data-post],
+  .js .stati > [data-stato] {
+    transition:
+      opacity var(--t-med) var(--ease),
+      visibility 0s linear var(--t-med);
+  }
+  .js .logica-pila > [data-post],
+  .js .confronto-note > [data-stato] {
+    transform: translate3d(0, 12px, 0);
+    transition:
+      opacity var(--t-med) var(--ease),
+      transform var(--t-med) var(--ease),
+      visibility 0s linear var(--t-med);
   }
   .js .vetrina[data-attivo="1"] [data-post="1"],
   .js .vetrina[data-attivo="2"] [data-post="2"],
@@ -1506,16 +1881,108 @@ body::before {
   .js .vetrina[data-attivo="4"] [data-post="4"],
   .js .confronto[data-attivo="prima"] [data-stato="prima"],
   .js .confronto[data-attivo="dopo"] [data-stato="dopo"] {
+    transform: none;
     transition:
-      opacity var(--durata) var(--ease),
+      opacity var(--t-med) var(--ease),
+      transform var(--t-med) var(--ease),
       visibility 0s linear 0s;
   }
-
-  /* Blocchi apribili: il segno "+" ruota e il contenuto compare con una dissolvenza */
-  .indicatore { transition: transform var(--durata) var(--ease); }
-  .blocco[open] .corpo { animation: compare var(--durata) var(--ease) both; }
-  @keyframes compare {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  /* La luce dietro al telefono pulsa una volta a ogni cambio di stato */
+  .telefono-area.pulsa::before { animation: pulsa-luce 900ms var(--ease) 1; }
+  @keyframes pulsa-luce {
+    0%   { opacity: 0.36; transform: translate(-50%, -50%) scale(1); }
+    35%  { opacity: 1;    transform: translate(-50%, -50%) scale(1.08); }
+    100% { opacity: 0.36; transform: translate(-50%, -50%) scale(1); }
   }
+
+  /* --- Blocchi apribili: il segno ruota e il contenuto sale di 10px mentre compare --- */
+  .indicatore { transition: transform var(--t-med) var(--ease); }
+  .blocco[open] .corpo { animation: compare var(--t-med) var(--ease) both; }
+  @keyframes compare {
+    from { opacity: 0; transform: translate3d(0, 10px, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* --- Come lavoro: il contenuto dei passi si accende quando la linea li raggiunge --- */
+  .js .passo > div { transition: opacity var(--t-med) var(--ease); }
+  .passo-numero::before { transition: opacity var(--t-med) var(--ease); }
+
+  /* --- Luce ambiente: deriva lentissima (26s). Si ferma fuori schermo e a scheda nascosta (classi messe da JavaScript) --- */
+  #inizio::after,
+  #caso-studio::after { animation: ambiente-deriva var(--t-ambient) var(--ease) infinite alternate; }
+  @keyframes ambiente-deriva {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(56px, 38px, 0); }
+  }
+  .sezione.fuori::after,
+  html.scheda-nascosta .sezione::after { animation-play-state: paused; }
+
+  /* --- Uscita dalla hero (parallasse). Il reticolo si sposta a 0,15x, il contenuto a 0,85x e gli altri a velocità diverse:
+     eyebrow 0,88x - titolo 0,85x - pulsante 0,80x - nota 0,75x - destinatari 0,70x
+     (crescono dall'alto in basso, così gli elementi si allontanano e non si sovrappongono).
+     Si usa la proprietà "translate" (separata da "transform") così non litiga con gli ingressi. --- */
+
+  /* Versione guidata dallo scroll (dove il browser la supporta) */
+  @supports (animation-timeline: view()) {
+    .sd body::before { height: calc(100% + 16svh); bottom: auto; }
+    .sd.js.hero-pronta body::before {
+      animation: reticolo-entra var(--t-slow) var(--ease) both, par-reticolo linear both;
+      animation-timeline: auto, scroll(root);
+      animation-range: normal, 0 100svh;
+    }
+    .sd.js .hero .eyebrow  { animation: par-12 linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+    .sd.js .hero #titolo-hero { animation: par-15 linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+    .sd.js .hero .azioni-hero { animation: par-20 linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+    .sd.js .hero .nota-hero { animation: par-25 linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+    .sd.js .hero .destinatari { animation: par-30 linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+    @keyframes par-reticolo { to { translate: 0 -15svh; } }
+    @keyframes par-12 { to { translate: 0 12svh; } }
+    @keyframes par-15 { to { translate: 0 15svh; } }
+    @keyframes par-20 { to { translate: 0 20svh; } }
+    @keyframes par-25 { to { translate: 0 25svh; } }
+    @keyframes par-30 { to { translate: 0 30svh; } }
+
+    /* Timeline con nome: ogni elemento ha la propria, e i suoi pseudo-elementi (che sono minuscoli) la usano.
+       Come lavoro: "block 0% 40%" sposta il bordo basso dello schermo al 60% dell'altezza: la linea è lì davanti. */
+    .sd .passi { view-timeline: --lista block 0% 40%; }
+    .sd .passo { view-timeline: --passo block 0% 40%; }
+    .sd .riga-cliente { view-timeline: --scheda block; }
+
+    /* La linea si riempie quanto avanza il fronte: da quando la lista tocca il fronte, per un tratto lungo quanto la lista
+       (JavaScript scrive l'altezza in --h-lista; 700px è solo il valore di riserva) */
+    .sd .passi::before {
+      animation: riempi linear both;
+      animation-timeline: --lista;
+      animation-range: cover 0px cover var(--h-lista, 700px);
+    }
+    @keyframes riempi { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    /* Ogni passo si accende quando il fronte lo raggiunge (primo 40% della sua altezza) */
+    .sd.js .passo > div {
+      animation: passo-testo linear both;
+      animation-timeline: --passo;
+      animation-range: entry 0% entry 40%;
+    }
+    @keyframes passo-testo { from { opacity: 0.45; } to { opacity: 1; } }
+    .sd.js .passo .passo-numero::before {
+      animation: passo-cella linear both;
+      animation-timeline: --passo;
+      animation-range: entry 0% entry 40%;
+    }
+    @keyframes passo-cella { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Per chi lavoro: luce sul bordo quando la scheda è al centro (cover 50% = centro dello schermo, per qualsiasi altezza) */
+    .sd .riga-cliente::after {
+      animation: luce-scheda linear both;
+      animation-timeline: --scheda;
+      animation-range: cover;
+    }
+    @keyframes luce-scheda {
+      0%, 38% { opacity: 0; }
+      50%     { opacity: 1; }
+      62%, 100% { opacity: 0; }
+    }
+  }
+
+  /* Versione di riserva (senza animation-timeline): JavaScript sposta direttamente gli elementi della hero con "translate"
+     a ogni frame (requestAnimationFrame). Il reticolo qui resta fermo. */
 }

@@ -29,7 +29,15 @@
   <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- Segnala al CSS che JavaScript è attivo (serve per le animazioni: senza JS il sito resta leggibile) -->
-  <script>document.documentElement.className += ' js';</script>
+  <script>
+    document.documentElement.className += ' js';
+    /* Paracadute: se main.js non parte entro 3 secondi (rete lenta, errore), tolgo "js":
+       così nulla resta nascosto in attesa di un'animazione che non arriverà. main.js aggiunge "pronto". */
+    setTimeout(function () {
+      var h = document.documentElement;
+      if (!h.classList.contains('pronto')) h.classList.remove('js');
+    }, 3000);
+  </script>
 
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -52,7 +60,18 @@
   <header class="testata">
     <div class="testata-interno">
       <a class="marchio" href="#inizio">Matteo Rapeso</a>
+      <!-- Voci: usano i nomi delle etichette già presenti nella pagina. Sotto i 1000px non c'è spazio: resta la traccia a quadratini -->
+      <nav class="voci" aria-label="Sezioni della pagina">
+        <a href="#problemi">Cosa risolvo</a>
+        <a href="#clienti">Per chi lavoro</a>
+        <a href="#metodo">Come lavoro</a>
+        <a href="#caso-studio">Caso studio</a>
+        <a href="#chi-sono">Chi sono</a>
+      </nav>
       <a class="link-testata" href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti">Scrivimi</a>
+      <!-- Decorazione: un quadratino per ogni sezione, e il punto cobalto che indica quella attiva -->
+      <span class="traccia" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="punto-nav" aria-hidden="true"></span>
     </div>
   </header>
 
