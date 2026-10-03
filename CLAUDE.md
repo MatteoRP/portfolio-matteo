@@ -29,12 +29,12 @@ Tutto il testo del sito è in italiano, tono sobrio, elegante, diretto. Niente e
 
 ## Stack
 - Solo HTML, CSS e JavaScript vanilla. Nessun framework, nessun build step.
-- File: index.html, css/style.css, js/main.js, cartella assets/ per font (assets/fonts) e immagini (assets/img). riferimento-design.html è l'anteprima di design approvata: non fa parte del sito.
+- File: index.html, css/style.css, js/main.js, cartella assets/ per font (assets/fonts) e immagini (assets/img). L'anteprima di design usata come riferimento (riferimento-design.html) è stata rimossa dal repository: vale quanto scritto in questo file.
 - Il sito deve funzionare aprendo la cartella su qualsiasi hosting statico gratuito (Cloudflare Pages, Netlify, GitHub Pages).
 - Il sito deve restare leggibile anche senza JavaScript (JS solo come miglioramento).
 
 ## Design
-Questa sezione sostituisce tutte le estetiche precedenti (nero caldo/avorio/oro, navy/champagne, nero e cobalto con reticolo a punti, Newsreader): non vanno più usate. L'anteprima approvata è riferimento-design.html: in caso di dubbio su colori, tipografia e impaginazione vale quella.
+Questa sezione sostituisce tutte le estetiche precedenti (nero caldo/avorio/oro, navy/champagne, nero e cobalto con reticolo a punti, Newsreader): non vanno più usate. In caso di dubbio su colori, tipografia e impaginazione vale quanto scritto qui.
 - Mobile-first: quasi tutto il traffico arriverà da Instagram su telefono. Progetta prima per 390px di larghezza, poi adatta a tablet e desktop. Nessun overflow orizzontale a 390px.
 - Stile: editoriale, scuro e caldo. Tipografia protagonista, molto spazio verticale, linee sottili al posto di riquadri e ombre, un solo accento. Mai tutto centrato; gerarchia diversa in ogni sezione.
 - Palette (variabili CSS, definite una sola volta in :root): --bg #0B0B0A, --surface #131311, --fg #F2EEE6, --muted #BEBAB2, --line rgba(242,238,230,.16), --accent #E3D6BF (beige), --accent-ink #0B0B0A (testo sopra l'accento). Un solo accento: il beige. Niente blu, niente arancio, niente gradienti colorati, niente reticolo, niente vetro né backdrop-filter. color-scheme: dark; theme-color #0B0B0A.
@@ -43,7 +43,7 @@ Questa sezione sostituisce tutte le estetiche precedenti (nero caldo/avorio/oro,
   - Inter 400/500: testo.
   - Instrument Serif 400 e 400 corsivo: parole chiave.
   - Geist Mono 400/500: etichette.
-  - Rock Salt 400 (Apache 2.0): annotazioni a gesso, previste nel passo del movimento. Dichiarato nel CSS ma ancora non usato.
+  - Rock Salt 400 (Apache 2.0): annotazioni a gesso (vedi Sistema di movimento).
   - Si precaricano solo tre file: Inter Tight 800, Inter 400, Instrument Serif corsivo. Ogni famiglia ha un fallback con size-adjust (Arial, Times New Roman, Courier New) per evitare salti di layout.
 - Titoli: Inter Tight, 800 per h1 e 700 per h2, letter-spacing -0.035em, line-height circa 0.96, text-wrap: balance. Le parole chiave in Instrument Serif corsivo, colore accento, 1.08em: una o due parole per titolo, mai mezza frase. Nella hero e in "Scrivimi." il corsivo resta com'è.
 - Etichette: Geist Mono maiuscolo, letter-spacing .12em, con una linea sottile davanti.
@@ -56,17 +56,41 @@ Questa sezione sostituisce tutte le estetiche precedenti (nero caldo/avorio/oro,
 - Testo: corpo 18px con interlinea 1.6. Il testo di apertura di una sezione (lead) 19-24px, massimo 34em di larghezza.
 - Leggibilità: nessun testo da leggere sotto 14px, etichette comprese. Eccezione: il testo dentro il telefono-mockup, che è interfaccia disegnata. Contrasto almeno 4.5:1 (3:1 se grande), misurato sul rendering reale e comprese le opacità degli elementi.
 - Ritratto: contenitore 4:5 in bianco e nero (grayscale), sfumato verso il fondo con una mask, con assets/img/ritratto.webp. Finché il file non esiste si vede un segnaposto neutro (nessuna immagine rotta). width/height, loading lazy e alt descrittivo ("Matteo Rapeso, ritratto in bianco e nero").
-- Telefono-mockup del caso studio: oggetto piatto con bordo beige sottile, senza vetro. Verrà rifatto nel passo del movimento.
+- Telefono-mockup del caso studio: oggetto piatto con bordo beige sottile, senza vetro; il suo funzionamento è descritto in Sistema di movimento.
 - Niente emoji, niente stock photo generiche. Non copiare grafica, icone o marchi di nessuna azienda reale.
 - Le immagini mancanti si sostituiscono con segnaposto neutri e puliti, chiaramente sostituibili.
 - Aree toccabili di almeno 44px.
 - Prestazioni: Lighthouse mobile con prestazioni almeno 90 (obiettivo 95) e accessibilità almeno 95.
 
-## Movimento
-Stato attuale: la pagina è statica. Ogni sezione compare nel suo stato finale: nessun reveal allo scroll, nessuna etichetta che si scrive, nessun numero che sale, nessuna luce o cursore animati. Il movimento è un passo successivo, definito in un prompt a parte; il riferimento-design.html ne mostra l'intenzione (ingresso dei titoli per parole, annotazioni a gesso, evidenziatore, luce beige, barra a segmenti, telefono fisso con passi).
-- Sono ammessi solo i cambi di stato dell'interfaccia: hover, focus, pulsante attivo, cambio del post o del profilo nel telefono. Brevi (250-500ms), solo colore, opacità e transform; mai il layout.
-- Rispetta sempre prefers-reduced-motion: se attivo, nessuna transizione.
-- Con JavaScript disattivato il sito resta leggibile e completo.
+## Sistema di movimento
+Il sito si muove, ma con poche regole uguali per tutto. Ogni nuovo effetto deve rispettarle; se non ci sta, non si fa.
+
+### Regole di ogni animazione
+- Un solo easing: cubic-bezier(0.22, 1, 0.36, 1), definito una sola volta come variabile CSS (--ease) e riusato anche dal JavaScript.
+- Una sola luce: il beige (--accent). Nessun altro colore che si accende o si muove.
+- Si animano solo transform e opacity. Unica eccezione: stroke-dashoffset, per le linee disegnate a mano (frecce, cerchio, anello dell'avatar). Mai blur, backdrop-filter, filtri animati, né dimensioni (width, height, margin, top, left...) o colori di sfondo/testo in transizione.
+- Budget: al massimo due animazioni continue visibili insieme (in pratica una sola: la luce ambiente della hero, che si ferma fuori schermo e a scheda nascosta). Il carosello nel telefono parte una volta e non va in loop. Tutto il resto parte da scroll, puntatore o tocco, e si ferma da solo.
+- Nessuno scroll-jacking: lo scroll resta quello del browser. Il telefono del caso studio è "sticky", non intercetta la rotella.
+- Ogni effetto da puntatore ha un equivalente al tocco (le righe di "Per chi lavoro" si attivano al centro dello schermo; cursore ad anello e luce che segue il mouse esistono solo con mouse).
+- prefers-reduced-motion: ogni cosa è già nello stato finale, nessuna animazione continua, le linee a mano sono già disegnate, il telefono mostra lo stato del passo che si sta leggendo senza transizioni.
+- Senza JavaScript il sito resta leggibile e completo: gli stati iniziali nascosti (opacità 0, parole sotto la maschera, ecc.) esistono solo sotto la classe .js sull'elemento radice. Il paracadute nell'<head> toglie .js se main.js non parte.
+
+### Elementi del sistema
+- Hero: titolo parola per parola con maschera, barra in alto che scende, etichetta mono che si scrive con cursore lampeggiante (lampeggio finito, non infinito), evidenziatore beige sotto "non risultati inventati" che inverte il colore del testo.
+- Luce unica dietro il titolo: respira da sola (26 s); con il mouse segue il puntatore con interpolazione, un solo aggiornamento per frame.
+- Striscia 2 / 4 / 15: i numeri salgono da 0 con easing esponenziale, una sola volta. "Cosa risolvo" e le quattro colonne dei passi entrano a scalare (opacità + traslazione, 80 ms tra una colonna e l'altra).
+- "Per chi lavoro": con il mouse la linea beige si disegna e il titolo scorre di 10px; al tocco la riga si attiva quando è al centro dello schermo.
+- Barra "stories" fissa in alto: un segmento per sezione principale, si riempie con lo scroll (scaleX). Sostituisce ogni altra barra di avanzamento.
+- Annotazioni a gesso (Rock Salt, minimo 20px, beige pieno): scritte lettera per lettera senza spezzare le parole, con frecce e cerchio disegnati via stroke-dashoffset. Solo dove previste: hero ("ciao, sono Matteo"), metodo ("metodo, non risultati"), contatti ("scrivimi qui", con cerchio attorno all'email) e sotto il telefono del caso studio. Ogni annotazione ha il testo completo in un elemento visivamente nascosto; le lettere animate sono aria-hidden.
+- Caso studio con telefono sticky: un solo telefono che cambia stato mentre si legge (bio prima, bio dopo, i quattro post, calendario: massimo sette passi). Gli elementi di ogni stato entrano a scalare; l'anello dell'avatar si disegna nel "dopo"; le celle del calendario si accendono in sequenza; la luce dietro il telefono pulsa una volta a ogni cambio; la nota a gesso sotto il telefono cambia a ogni passo. Su schermi stretti il telefono resta fisso in alto, tagliato in basso con una sfumatura, e i passi scorrono sotto. I passi non attivi stanno al 70% di opacità, non meno. Scheda, strategia e approfondimenti restano sotto, nello stile attuale, con solo la comparsa allo scroll.
+- Cursore ad anello (solo mouse): l'anello segue con ritardo e si allarga su link, pulsanti e righe; dietro c'è una luce beige (gradiente radiale accento 24% → trasparente 66%, circa 420px) che segue con ancora più ritardo, sotto il testo (z-index -1), più grande e intensa sugli elementi interattivi. Solo transform e opacità, un aggiornamento per frame. Il cursore di sistema non si nasconde.
+- Ritratto "Chi sono": leggero parallasse (solo transform), per ora applicato al segnaposto.
+
+### Accessibilità e prestazioni del movimento
+- Le lettere animate sono aria-hidden e il testo intero sta in una copia visivamente nascosta; niente aria-live sulle note che cambiano.
+- Nessun testo sotto 14px (le annotazioni a gesso partono da 20px); contrasto misurato sul rendering reale, con le opacità, anche per i passi non attivi (70%).
+- Aree toccabili di almeno 44px; nessun overflow orizzontale a 390px.
+- Lighthouse mobile con prestazioni almeno 90. A ogni passo di movimento si misura: Lighthouse, registrazione dello scroll in Chromium con CPU rallentata 4x (frame persi) e, se installabile, anche WebKit. Il filtro SVG "gesso" va misurato; se fa perdere frame su telefoni vecchi si toglie dai testi animati.
 
 ## Qualità richiesta
 - Accessibilità: HTML semantico, contrasto sufficiente, focus visibile, testo alternativo alle immagini, navigabile da tastiera.
