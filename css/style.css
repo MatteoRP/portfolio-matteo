@@ -6,7 +6,7 @@
    3. Componenti comuni (contenitore, pulsanti, link, etichette)
    4. Sezioni, nell'ordine in cui compaiono nella pagina
    5. Caso studio (mockup del telefono)
-   5b. Vetro e forme di luce (estetica "liquid glass")
+   5b. Superfici piatte, vetro, reticolo e luci
    6. Tablet e desktop
    7. Animazioni (tutte in un solo posto, e spente se l'utente lo chiede)
    ========================================================================== */
@@ -51,28 +51,32 @@
 }
 
 :root {
-  /* Palette: tutta su navy, con un solo accento (champagne spento) */
-  --sfondo: #050A18;      /* navy molto scuro e profondo */
-  --superficie: #0A1430;  /* navy delle superfici */
-  --testo: #F2EEE6;       /* bianco sporco */
-  --accento: #C9B27C;     /* champagne spento: dettagli e bagliori */
+  /* Palette: nero e cobalto. Un solo accento, nessun altro colore. */
+  --sfondo: #06070B;      /* nero */
+  --testo: #F3F1EC;
+  --accento: #5C8DFF;     /* cobalto: contrasto 6,4:1 sullo sfondo */
 
   /* Gli stessi colori in forma "r, g, b", per poterli usare con una trasparenza (rgba) */
-  --testo-rgb: 242, 238, 230;
-  --accento-rgb: 201, 178, 124;
-  /* Tinta blu dei bagliori sullo sfondo: si usa solo con trasparenze, mai per testo o bordi */
-  --blu-luce-rgb: 44, 78, 184;
+  --testo-rgb: 243, 241, 236;
+  --accento-rgb: 92, 141, 255;
 
   --testo-tenue: rgba(var(--testo-rgb), 0.74);  /* testo secondario: stesso colore, opacità ridotta */
-  --linea: rgba(var(--testo-rgb), 0.16);        /* bordi e filetti sottili */
+  --superficie: rgba(255, 255, 255, 0.03);      /* superfici piatte (schede) */
+  --bordo: rgba(255, 255, 255, 0.09);           /* bordo sottile delle superfici */
+  --linea: var(--bordo);                        /* filetti */
   --filo: var(--accento);
 
-  /* Vetro ("liquid glass"): superficie navy semitrasparente, bordo sottile, riflesso in alto */
-  --vetro-fondo: rgba(10, 20, 48, 0.58);
-  --vetro-fallback: rgba(10, 20, 48, 0.94);     /* dove backdrop-filter non è supportato */
-  --vetro-bordo: rgba(var(--testo-rgb), 0.18);
-  --vetro-riflesso: rgba(var(--testo-rgb), 0.1);
+  /* Vetro ("liquid glass"): SOLO su telefono-mockup e navigazione a pillola */
+  --vetro-fondo: rgba(6, 7, 11, 0.62);
+  --vetro-fallback: rgba(6, 7, 11, 0.94);       /* dove backdrop-filter non è supportato */
+  --vetro-bordo: rgba(255, 255, 255, 0.16);
+  --vetro-riflesso: rgba(255, 255, 255, 0.08);
   --vetro-sfocatura: 14px;
+
+  /* Posizione della "lente" cobalto sul reticolo. Per ora è ferma (in alto a destra);
+     in futuro queste due variabili seguiranno il puntatore. */
+  --mx: 78%;
+  --my: 20%;
 
   --font-titoli: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
   --font-testo: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -88,10 +92,6 @@
   --testo-base: clamp(1.0625rem, 1.02rem + 0.2vw, 1.125rem); /* da 17px a 18px */
 }
 
-/* Le sezioni alternano due navy pieni (nessuna trasparenza: il vetro è solo dove serve) */
-.fondo-profondo { background: var(--sfondo); }
-.fondo-superficie { background: var(--superficie); }
-
 
 /* ==========================================================================
    2. BASE
@@ -102,7 +102,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  background: var(--sfondo);
+  background: var(--sfondo);   /* il nero sta qui: dietro c'è solo il reticolo (body::before) */
 }
 
 body {
@@ -112,7 +112,6 @@ body {
   line-height: 1.7;
   font-weight: 400;
   color: var(--testo);
-  background: var(--sfondo);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -203,13 +202,14 @@ a { color: inherit; }
 
 .sezione {
   position: relative;
-  isolation: isolate;   /* i bagliori stanno dietro ai contenuti ma dentro la sezione */
-  overflow: clip;       /* i bagliori non possono mai allargare la pagina */
-  padding-block: var(--spazio-sezione);
+  isolation: isolate;   /* luci e lente stanno dietro ai contenuti ma dentro la sezione */
+  overflow: clip;       /* le luci non possono mai allargare la pagina */
   scroll-margin-top: 4rem;
 }
+/* Lo spazio sopra e sotto è del contenitore (non della sezione): così lo strato "lente" parte esattamente dal bordo della sezione */
+.sezione > .contenitore { padding-block: var(--spazio-sezione); }
 
-/* Piccola etichetta sopra i titoli, con un filo oro a sinistra */
+/* Piccola etichetta sopra i titoli, in cobalto, con un quadratino davanti */
 .eyebrow {
   display: flex;
   align-items: center;
@@ -224,9 +224,9 @@ a { color: inherit; }
 .eyebrow::before {
   content: "";
   flex: none;
-  width: 2rem;
-  height: 1px;
-  background: var(--filo);
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--accento);   /* quadratino davanti all'etichetta */
 }
 
 /* Sotto un titolo grande serve più aria */
@@ -241,22 +241,36 @@ h2 + p { margin-top: 2rem; }
   justify-content: center;
   min-height: 3.25rem;
   padding: 0.75rem 1.75rem;
-  background: var(--accento);
-  color: var(--sfondo);
+  border: 1px solid var(--accento);
+  background: transparent;
+  color: var(--testo);
   font-weight: 500;
   font-size: 1rem;
   letter-spacing: 0.01em;
   text-decoration: none;
   overflow-wrap: anywhere;
 }
+/* Fondo cobalto al 16%: compare in hover e in focus */
 .pulsante::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--testo);
+  background: rgba(var(--accento-rgb), 0.16);
   opacity: 0;
 }
+/* Alone cobalto (box-shadow fermo, si fa comparire con l'opacità) */
+.pulsante::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  box-shadow: 0 0 26px rgba(var(--accento-rgb), 0.55);
+  opacity: 0;
+  pointer-events: none;
+}
+.pulsante:focus-visible::before,
+.pulsante:focus-visible::after { opacity: 1; }
 
 /* Link di testo con sottolineatura sottile, che si "disegna" con transform */
 .link-testo {
@@ -280,7 +294,8 @@ h2 + p { margin-top: 2rem; }
 }
 
 @media (hover: hover) {
-  .pulsante:hover::before { opacity: 0.22; }
+  .pulsante:hover::before,
+  .pulsante:hover::after { opacity: 1; }
   .link-testo:hover::after { transform: scaleX(0.35); }
 }
 
@@ -348,18 +363,34 @@ h2 + p { margin-top: 2rem; }
 .hero {
   min-height: 100vh;
   min-height: 100svh;
-  display: flex;
-  padding-block: 7rem 3rem;
 }
-.hero-interno {
+.hero > .hero-interno {
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-block: 7rem 3rem;   /* la hero ha il suo spazio (e batte .sezione > .contenitore, più sopra) */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 }
+/* Parola chiave: colore pieno cobalto (fallback) */
 .hero h1 em {
   font-style: italic;
   color: var(--accento);
+}
+/* Dove il browser lo supporta: sfumatura dal bianco al cobalto dentro le lettere.
+   box-decoration-break: clone ripete la sfumatura su ogni riga se la frase va a capo. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero h1 em {
+    padding-inline-end: 0.08em;   /* il corsivo sporge: senza questo l'ultima lettera verrebbe tagliata */
+    background-image: linear-gradient(100deg, var(--testo) 0%, var(--accento) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
 }
 .azioni-hero {
   display: flex;
@@ -525,7 +556,7 @@ h2 + p { margin-top: 2rem; }
   display: grid;
   margin-top: clamp(2.5rem, 6vw, 4rem);
   padding-inline: clamp(1.25rem, 3vw, 2rem);
-  border-radius: 1.25rem;
+  border-radius: 0.875rem;
 }
 .scheda > div {
   padding-block: 1.5rem;
@@ -638,7 +669,7 @@ h2 + p { margin-top: 2rem; }
   padding: 2.9rem 0 0;
   border: 1px solid var(--linea);
   border-radius: 2.15rem;
-  background: rgba(5, 10, 24, 0.4);   /* schermo: navy un po' più scuro del vetro */
+  background: rgba(6, 7, 11, 0.4);   /* schermo: nero un po' più scuro del vetro */
   color: var(--testo);
 }
 .schermo p, .schermo li { max-width: none; color: inherit; }
@@ -1044,7 +1075,7 @@ h2 + p { margin-top: 2rem; }
 .strategia .righe {
   margin-top: 2rem;
   padding-inline: clamp(1.25rem, 3vw, 2rem);
-  border-radius: 1.25rem;
+  border-radius: 0.875rem;
 }
 .strategia .righe > div:last-child { border-bottom: 0; }
 .strategia .righe > div {
@@ -1092,7 +1123,7 @@ h2 + p { margin-top: 2rem; }
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
   scrollbar-color: var(--accento) transparent;
-  border-radius: 1.25rem;
+  border-radius: 0.875rem;
 }
 .striscia { display: flex; }
 .cella {
@@ -1148,108 +1179,146 @@ h2 + p { margin-top: 2rem; }
 
 
 /* ==========================================================================
-   Vetro ("liquid glass"). Usato SOLO su: navigazione, schede del caso studio,
-   telefoni-mockup. Tutto il resto resta navy pieno.
+   Superfici piatte: scheda del caso studio, strategia, strisce del calendario.
+   Niente vetro: un velo bianco al 3% e un bordo sottile.
+   ========================================================================== */
+
+.scheda,
+.strategia .righe,
+.striscia-scorri {
+  background: var(--superficie);
+  border: 1px solid var(--bordo);
+}
+
+
+/* ==========================================================================
+   Vetro ("liquid glass"). Usato SOLO sul telefono-mockup e sulla navigazione a pillola.
    Regole: mai animare blur o backdrop-filter; senza supporto si usa un fondo
-   semi-opaco; con "riduci trasparenza" si usa un navy pieno.
+   semi-opaco; con "riduci trasparenza" si usa il nero pieno.
    ========================================================================== */
 
 .testata-interno,
-.scheda,
-.strategia .righe,
-.striscia-scorri,
 .telefono {
   /* Fallback: dove backdrop-filter non esiste il fondo è quasi opaco, quindi il testo resta leggibile */
   background-color: var(--vetro-fallback);
   border: 1px solid var(--vetro-bordo);
-  box-shadow: inset 0 1px 0 rgba(var(--testo-rgb), 0.22);   /* riflesso sottile sul bordo alto */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);   /* riflesso sottile sul bordo alto */
 }
 
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .testata-interno,
-  .scheda,
-  .strategia .righe,
-  .striscia-scorri,
   .telefono {
     background-color: var(--vetro-fondo);
     /* Leggero riflesso in alto: una luce che svanisce in fretta */
-    background-image: linear-gradient(to bottom, var(--vetro-riflesso), rgba(var(--testo-rgb), 0) 38%);
+    background-image: linear-gradient(to bottom, var(--vetro-riflesso), rgba(255, 255, 255, 0) 38%);
     -webkit-backdrop-filter: blur(var(--vetro-sfocatura)) saturate(130%);
     backdrop-filter: blur(var(--vetro-sfocatura)) saturate(130%);
   }
 }
 
-/* Chi ha attivato "riduci trasparenza" (dove il browser lo supporta) vede superfici piene */
+/* Chi ha attivato "riduci trasparenza" (dove il browser lo supporta) vede nero pieno */
 @media (prefers-reduced-transparency: reduce) {
   .testata-interno,
-  .scheda,
-  .strategia .righe,
-  .striscia-scorri,
   .telefono {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     background-image: none;
-    background-color: var(--superficie);
+    background-color: var(--sfondo);
   }
 }
 
 
 /* ==========================================================================
-   Forme di luce sullo sfondo: gradienti radiali morbidi (già "sfocati" nella
-   sfumatura, nessun filter: blur) in un solo layer per sezione. Non si animano.
-   Servono a dare al vetro qualcosa da sfocare.
+   Reticolo di sfondo, lente cobalto e luci. Solo CSS, nessuna immagine.
+   Nessuno di questi strati si anima (per ora): sono tutti fermi.
    ========================================================================== */
 
-.sezione::before {
+/* --- Strato base: un solo strato fisso, grande quanto lo schermo, dietro a tutto ---
+   Celle da 28px. Punti agli incroci, linee quasi invisibili, un punto più grande ogni 112px.
+   (I punti sono al centro della cella e il reticolo è spostato di mezza cella,
+   così i cerchi sono interi e cadono sugli incroci delle linee.)
+   La maschera lo dissolve verso i bordi dello schermo. */
+body::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-repeat: no-repeat;
-}
-
-/* Ogni bagliore è un cerchio sfumato: si indicano il raggio e il centro (in % della sezione).
-   Due tipi: blu (tinta del navy) e champagne. */
-:root {
-  --blu-sfumatura: rgba(var(--blu-luce-rgb), 0.5), rgba(var(--blu-luce-rgb), 0.28) 36%, rgba(var(--blu-luce-rgb), 0.1) 68%, rgba(var(--blu-luce-rgb), 0);
-  --champagne-sfumatura: rgba(var(--accento-rgb), 0.2), rgba(var(--accento-rgb), 0.09) 38%, rgba(var(--accento-rgb), 0.03) 70%, rgba(var(--accento-rgb), 0);
-  --raggio-grande: min(42rem, 105vw);
-  --raggio-medio: min(30rem, 80vw);
-}
-
-#inizio::before {
   background-image:
-    radial-gradient(circle var(--raggio-grande) at 92% 8%, var(--blu-sfumatura)),
-    radial-gradient(circle var(--raggio-medio) at 4% 96%, var(--champagne-sfumatura));
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.95) 2px, rgba(255, 255, 255, 0) 3px),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.55) 1.2px, rgba(255, 255, 255, 0) 1.9px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0) calc(50% - 0.5px), rgba(255, 255, 255, 0.045) calc(50% - 0.5px), rgba(255, 255, 255, 0.045) calc(50% + 0.5px), rgba(255, 255, 255, 0) calc(50% + 0.5px)),
+    linear-gradient(to right, rgba(255, 255, 255, 0) calc(50% - 0.5px), rgba(255, 255, 255, 0.045) calc(50% - 0.5px), rgba(255, 255, 255, 0.045) calc(50% + 0.5px), rgba(255, 255, 255, 0) calc(50% + 0.5px));
+  background-size: 112px 112px, 28px 28px, 28px 28px, 28px 28px;
+  background-position: -56px -56px, -14px -14px, -14px -14px, -14px -14px;
+  -webkit-mask-image: radial-gradient(ellipse 94% 76% at 50% 34%, #000 22%, transparent 84%);
+  mask-image: radial-gradient(ellipse 94% 76% at 50% 34%, #000 22%, transparent 84%);
 }
-#problemi::before {
-  background-image: radial-gradient(circle var(--raggio-medio) at 4% 62%, var(--blu-sfumatura));
-}
-#clienti::before {
-  background-image: radial-gradient(circle var(--raggio-medio) at 96% 30%, var(--champagne-sfumatura));
-}
-#metodo::before {
-  background-image: radial-gradient(circle var(--raggio-medio) at 96% 55%, var(--blu-sfumatura));
-}
-/* Il caso studio è lunghissimo e contiene quasi tutto il vetro: ha più bagliori, distribuiti lungo la sezione */
+
+/* --- Strato "lente": solo in hero e nel caso studio ---
+   Lo stesso reticolo con punti e linee cobalto, visibile solo in un cerchio di 170px
+   (maschera con le variabili --mx e --my). È un livello grande quanto lo schermo che
+   resta agganciato in alto mentre si scorre la sezione (position: sticky): così
+   coincide sempre con il reticolo di base. Non occupa spazio (margine negativo).
+   Le linee cobalto sono al 26% (non al 40%): con il 40% il testo cobalto (etichette, numeri)
+   che passa sotto la lente scendeva sotto 4,5:1 di contrasto contro le linee. */
+#inizio::before,
 #caso-studio::before {
+  content: "";
+  position: sticky;
+  top: 0;
+  display: block;
+  height: 100vh;
+  height: 100svh;
+  margin-bottom: -100vh;
+  margin-bottom: -100svh;
+  z-index: -1;
+  pointer-events: none;
   background-image:
-    radial-gradient(circle var(--raggio-grande) at 95% 3%, var(--blu-sfumatura)),
-    radial-gradient(circle var(--raggio-medio) at 3% 13%, var(--champagne-sfumatura)),
-    radial-gradient(circle var(--raggio-grande) at 97% 27%, var(--blu-sfumatura)),
-    radial-gradient(circle var(--raggio-medio) at 3% 41%, var(--champagne-sfumatura)),
-    radial-gradient(circle var(--raggio-grande) at 5% 56%, var(--blu-sfumatura)),
-    radial-gradient(circle var(--raggio-grande) at 97% 72%, var(--blu-sfumatura)),
-    radial-gradient(circle var(--raggio-medio) at 4% 88%, var(--champagne-sfumatura));
+    radial-gradient(circle at 50% 50%, rgba(var(--accento-rgb), 1) 2.3px, rgba(var(--accento-rgb), 0) 3.6px),
+    linear-gradient(to bottom, rgba(var(--accento-rgb), 0) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.26) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.26) calc(50% + 0.5px), rgba(var(--accento-rgb), 0) calc(50% + 0.5px)),
+    linear-gradient(to right, rgba(var(--accento-rgb), 0) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.26) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.26) calc(50% + 0.5px), rgba(var(--accento-rgb), 0) calc(50% + 0.5px));
+  background-size: 28px 28px;
+  background-position: -14px -14px;
+  -webkit-mask-image: radial-gradient(circle 170px at var(--mx) var(--my), #000 0%, #000 45%, transparent 100%);
+  mask-image: radial-gradient(circle 170px at var(--mx) var(--my), #000 0%, #000 45%, transparent 100%);
 }
-#chi-sono::before {
-  background-image: radial-gradient(circle var(--raggio-medio) at 6% 45%, var(--champagne-sfumatura));
+
+/* --- Luce ambiente: una macchia radiale cobalto (34% al centro, trasparente al 68%), 300px, dietro al contenuto --- */
+#inizio::after,
+#caso-studio::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 300px;
+  height: 300px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.34), rgba(var(--accento-rgb), 0) 68%);
 }
-#contatti::before {
-  background-image:
-    radial-gradient(circle var(--raggio-grande) at 5% 100%, var(--blu-sfumatura)),
-    radial-gradient(circle var(--raggio-medio) at 96% 5%, var(--champagne-sfumatura));
+/* Sui dispositivi senza puntatore (telefoni) la lente nel caso studio resterebbe ferma sopra al testo
+   mentre si scorre: lì la nascondiamo. Nella hero resta come decorazione. */
+@media (hover: none) {
+  #caso-studio::before { display: none; }
+}
+#inizio::after { left: -60px; top: 34%; }
+#caso-studio::after { right: -80px; top: 2%; }
+
+/* --- Luce fissa dietro a ciascun telefono: dà al vetro qualcosa da sfocare --- */
+.telefono-area {
+  position: relative;
+  isolation: isolate;
+}
+.telefono-area::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 46%;
+  left: 50%;
+  width: 460px;
+  height: 560px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.34), rgba(var(--accento-rgb), 0) 68%);
 }
 
 
@@ -1359,7 +1428,8 @@ h2 + p { margin-top: 2rem; }
   .ritardo-3 { --ritardo: 360ms; }
 
   /* Hover: veli e sottolineature */
-  .pulsante::before { transition: opacity var(--durata) var(--ease); }
+  .pulsante::before,
+  .pulsante::after { transition: opacity var(--durata) var(--ease); }
   .link-testo::after,
   .link-testata::after { transition: transform var(--durata) var(--ease); }
   .scelta::before { transition: opacity var(--durata) var(--ease); }

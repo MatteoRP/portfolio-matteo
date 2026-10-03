@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Favicon: monogramma "M" in champagne su navy profondo -->
-  <rect width="64" height="64" rx="12" fill="#050A18"/>
-  <text x="32" y="44" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-style="italic" fill="#C9B27C">M</text>
+  <!-- Favicon: monogramma "M" in cobalto su nero -->
+  <rect width="64" height="64" rx="12" fill="#06070B"/>
+  <text x="32" y="44" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-style="italic" fill="#5C8DFF">M</text>
 </svg>
