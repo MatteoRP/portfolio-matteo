@@ -1,0 +1,7 @@
+Immagini del sito
+=================
+
+ritratto.webp  -> la foto di "Chi sono". Salvala qui con questo nome esatto.
+                  Formato verticale 4:5 (ad esempio 800 x 1000 px), meglio sotto i 150 KB.
+                  Il sito la mostra in bianco e nero e la sfuma verso il basso da solo.
+                  Finché il file non c'è, nella pagina compare un segnaposto grigio.
