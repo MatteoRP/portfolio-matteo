@@ -76,7 +76,7 @@ Il sito si muove, ma con poche regole uguali per tutto. Ogni nuovo effetto deve 
 - Senza JavaScript il sito resta leggibile e completo: gli stati iniziali nascosti (opacità 0, parole sotto la maschera, ecc.) esistono solo sotto la classe .js sull'elemento radice. Il paracadute nell'<head> toglie .js se main.js non parte.
 
 ### Elementi del sistema
-- Hero: titolo parola per parola con maschera, barra in alto che scende, etichetta mono che si scrive con cursore lampeggiante (lampeggio finito, non infinito), evidenziatore beige sotto "non risultati inventati" che inverte il colore del testo.
+- Hero: titolo parola per parola con maschera, barra in alto che scende, etichetta mono che si scrive con cursore lampeggiante (lampeggio finito, non infinito; è l'unica etichetta che si scrive: quelle delle altre sezioni compaiono subito con il normale reveal), evidenziatore beige sotto "non risultati inventati" che inverte il colore del testo.
 - Luce unica dietro il titolo: respira da sola (26 s); con il mouse segue il puntatore con interpolazione, un solo aggiornamento per frame.
 - Striscia 2 / 4 / 15: i numeri salgono da 0 con easing esponenziale, una sola volta. "Cosa risolvo" e le quattro colonne dei passi entrano a scalare (opacità + traslazione, 80 ms tra una colonna e l'altra).
 - "Per chi lavoro": con il mouse la linea beige si disegna e il titolo scorre di 10px; al tocco la riga si attiva quando è al centro dello schermo.

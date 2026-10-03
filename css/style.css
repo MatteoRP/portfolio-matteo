@@ -284,6 +284,9 @@ a { color: inherit; }
 
 /* "Vai al contenuto": compare solo quando riceve il focus da tastiera */
 .salta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;             /* area toccabile di almeno 44px anche per il link "Vai al contenuto" */
   position: absolute;
   left: var(--gutter);
   top: 0.75rem;
