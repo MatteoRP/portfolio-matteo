@@ -524,7 +524,7 @@ section {
 .passo h3 { margin-top: 14px; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.1; }
 .passo p:last-child { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--muted); }
 
-/* La striscia 4 / 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
+/* La striscia 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
 .stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1135,7 +1135,7 @@ footer p + p { margin-top: 6px; }
   .sec-problemi { grid-template-areas: "label frase" ". testo"; row-gap: 48px; }
   .problemi-testo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; max-width: 46rem; }
   .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
-  .stats { grid-template-columns: repeat(4, auto); justify-content: start; column-gap: 56px; }
+  .stats { grid-template-columns: repeat(3, auto); justify-content: start; column-gap: 56px; }
   .row-c { grid-template-columns: 5fr 6fr; align-items: start; }
   .who { grid-template-columns: 6fr 5fr; gap: 56px; }
   .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
