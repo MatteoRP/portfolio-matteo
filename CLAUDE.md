@@ -29,52 +29,44 @@ Tutto il testo del sito è in italiano, tono sobrio, elegante, diretto. Niente e
 
 ## Stack
 - Solo HTML, CSS e JavaScript vanilla. Nessun framework, nessun build step.
-- File: index.html, css/style.css, js/main.js, cartella assets/ per font e immagini.
+- File: index.html, css/style.css, js/main.js, cartella assets/ per font (assets/fonts) e immagini (assets/img). riferimento-design.html è l'anteprima di design approvata: non fa parte del sito.
 - Il sito deve funzionare aprendo la cartella su qualsiasi hosting statico gratuito (Cloudflare Pages, Netlify, GitHub Pages).
 - Il sito deve restare leggibile anche senza JavaScript (JS solo come miglioramento).
 
 ## Design
-Questa sezione sostituisce le estetiche precedenti (nero caldo/avorio/oro e navy/champagne): non vanno più usate.
+Questa sezione sostituisce tutte le estetiche precedenti (nero caldo/avorio/oro, navy/champagne, nero e cobalto con reticolo a punti, Newsreader): non vanno più usate. L'anteprima approvata è riferimento-design.html: in caso di dubbio su colori, tipografia e impaginazione vale quella.
 - Mobile-first: quasi tutto il traffico arriverà da Instagram su telefono. Progetta prima per 390px di larghezza, poi adatta a tablet e desktop. Nessun overflow orizzontale a 390px.
-- Stile: sistema "nero e cobalto con reticolo a punti". Elegante, tipografia protagonista, molto spazio vuoto, una idea per schermata, bordi sottili, nessuna ombra pesante.
-- Palette (variabili CSS): sfondo #06070B (nero); testo corrente #F3F1EC pieno; testo secondario = lo stesso colore a opacità 0.88 (--testo-tenue: note, didascalie, voci non attive); un solo accento cobalto in due tinte. #5C8DFF (--accento, contrasto 6,4:1 sullo sfondo) solo per linee, bordi, punti, luce e testo grande (24px o più). #9DBBFF (--accento-testo, contrasto 10,5:1) per ogni testo piccolo in cobalto: etichette, cifre, giorni del calendario, avvisi, link. Nessun altro colore e nessuna luce di altro colore.
-- Superfici piatte: rgba(255,255,255,0.03) con bordo 1px rgba(255,255,255,0.09). Valgono per scheda del caso studio, strategia, strisce del calendario e simili.
-- Vetro ("liquid glass"): backdrop-filter con il prefisso -webkit-backdrop-filter, SOLO sul telefono-mockup e sulla navigazione a pillola. Fallback con sfondo semi-opaco dove backdrop-filter non è supportato; con prefers-reduced-transparency il vetro diventa nero pieno. Non animare mai blur o backdrop-filter.
-- Reticolo di sfondo, solo CSS, nessuna immagine. Strato base (fisso, grande quanto lo schermo): celle da 28px, punti bianchi agli incroci (1,2px, bianco al 55%), linee quasi invisibili (4,5%), un punto più grande ogni 112px (2px, bianco al 95%), dissolto verso i bordi con una maschera radiale ellittica (anche con -webkit-mask-image). Il reticolo è forte solo nella hero e negli spazi tra le sezioni. Dietro a ogni blocco di testo (paragrafi, schede, calendario, caso studio, contatti, piè di pagina) c'è una fascia #06070B all'88% (variabile --velo) che copre la colonna del contenuto e sfuma in alto e in basso: dietro alle lettere restano punti al 6-11% e nessuna linea o luce. La fascia sta sopra al reticolo, alla lente e alle luci (che stanno a z-index -3) e sotto al testo.
-- Lente cobalto, solo in hero e nel caso studio: lo stesso reticolo con punti cobalto (2,3px) e linee cobalto al 40%, visibile solo in un cerchio di 170px. Nella hero è ferma in alto a destra (variabili --mx e --my). Nel caso studio c'è solo con il mouse (la crea e la muove JavaScript), ma sta sotto la fascia dei contenuti: si vede solo ai lati della colonna e negli spazi tra i blocchi, mai dietro alle lettere. Sul touch esiste solo nella hero. Il testo piccolo in cobalto (etichette, cifre, giorni del calendario) ha sempre un fondo piatto pieno dietro (variabile --fondo-piatto), così né i punti né la lente gli passano sotto.
-- Luce ambiente: una macchia radiale cobalto (300px) dietro al contenuto, più una luce fissa dietro a ciascun telefono, perché il vetro abbia qualcosa da sfocare.
-- Hero: la parola chiave in corsivo ha una sfumatura da #FFFFFF a #9DBBFF (con fallback a colore pieno #9DBBFF); si torna al colore pieno se la sfumatura riduce la leggibilità. Etichette in cobalto con un quadratino davanti. Pulsante principale con bordo cobalto; hover e focus: fondo cobalto al 16% e alone.
-- Contrasto: il testo deve avere almeno 4.5:1 (3:1 se grande) su ogni sfondo, misurato sul rendering reale (testo nascosto, pagina scorsa a tratti, pixel dietro a ogni elemento). Il criterio di verifica è il pixel più chiaro dello sfondo dopo aver escluso il 3% di pixel più luminosi (i singoli punti del reticolo, 1-4px); il caso peggiore assoluto (un punto dietro una lettera) si riporta a parte. Si tiene conto dell'opacità degli elementi (passi e pannelli "spenti" si riportano a parte) e il testo che passa sotto la navigazione a pillola si misura con la pagina visibile. Obiettivo: nessun testo piccolo sotto 4.5:1 con questo criterio.
-- Tipografia: due famiglie, con ruoli separati.
-  - Newsreader (serif) per i titoli e per il testo corrente da 17px in su. Titoli molto grandi (clamp()) con peso 400-500; testo corrente con peso 400, 18px con interlinea 1.6 già a 390px, larghezza riga massima 62ch, spazio tra paragrafi 1em. Asse optical size (opsz) attivo con font-optical-sizing: auto.
-  - Inter solo per testo piccolo e di servizio: etichette, navigazione, pulsanti, cifre e giorni del calendario, didascalie, avvisi, note, testo dentro i telefoni-mockup. Mai sotto 14px. Unica eccezione: le etichette in maiuscolo (eyebrow, giorni, formati, voci di elenco in maiuscolo) a 13px, letter-spacing 0.12em, peso 500 (variabili --etichetta, --etichetta-spazio, --etichetta-peso).
-  - Nessun testo sotto 14px, salvo le etichette in maiuscolo a 13px. Le iniziali decorative nei cerchi degli avatar (una lettera) possono stare in Newsreader a meno di 17px.
-- Font: Newsreader e Inter, entrambi con licenza OFL, self-hosted in assets/fonts (file woff2 variabili presi da npm: @fontsource-variable/newsreader, versione opsz, e @fontsource-variable/inter), con il testo della licenza accanto (LICENSE-newsreader.txt, LICENSE-inter.txt). Sottoinsiemi latin e latin-ext (unicode-range), font-display: swap, preload dei file latin di Newsreader (tondo e corsivo) e di Inter. Nessun collegamento a Google Fonts e nessun font proprietario o senza licenza pubblica.
+- Stile: editoriale, scuro e caldo. Tipografia protagonista, molto spazio verticale, linee sottili al posto di riquadri e ombre, un solo accento. Mai tutto centrato; gerarchia diversa in ogni sezione.
+- Palette (variabili CSS, definite una sola volta in :root): --bg #0B0B0A, --surface #131311, --fg #F2EEE6, --muted #BEBAB2, --line rgba(242,238,230,.16), --accent #E3D6BF (beige), --accent-ink #0B0B0A (testo sopra l'accento). Un solo accento: il beige. Niente blu, niente arancio, niente gradienti colorati, niente reticolo, niente vetro né backdrop-filter. color-scheme: dark; theme-color #0B0B0A.
+- Font: self-hosted in assets/fonts, solo sottoinsieme latin, un file .woff2 per ogni peso (nessun font variabile con asse optical size), font-display: swap. I testi delle licenze sono in assets/fonts/licenses. Nessun collegamento a servizi esterni, nessun font proprietario o senza licenza pubblica.
+  - Inter Tight 600/700/800: titoli.
+  - Inter 400/500: testo.
+  - Instrument Serif 400 e 400 corsivo: parole chiave.
+  - Geist Mono 400/500: etichette.
+  - Rock Salt 400 (Apache 2.0): annotazioni a gesso, previste nel passo del movimento. Dichiarato nel CSS ma ancora non usato.
+  - Si precaricano solo tre file: Inter Tight 800, Inter 400, Instrument Serif corsivo. Ogni famiglia ha un fallback con size-adjust (Arial, Times New Roman, Courier New) per evitare salti di layout.
+- Titoli: Inter Tight, 800 per h1 e 700 per h2, letter-spacing -0.035em, line-height circa 0.96, text-wrap: balance. Le parole chiave in Instrument Serif corsivo, colore accento, 1.08em: una o due parole per titolo, mai mezza frase. Nella hero e in "Scrivimi." il corsivo resta com'è.
+- Etichette: Geist Mono maiuscolo, letter-spacing .12em, con una linea sottile davanti.
+- Impaginazione: griglia asimmetrica. L'etichetta mono sta nella colonna stretta a sinistra, il contenuto è spostato a destra. Ogni sezione ha uno schema diverso dalle vicine:
+  - "Cosa risolvo": un blocco unico senza filetti, con una frase grande in Inter Tight 700 e, di lato, il testo breve in colonna stretta.
+  - "Il metodo, in numeri": i quattro passi in colonne affiancate (due per due su telefono), numeri 01-04 in Geist Mono, senza filetti a righe; la striscia 2 / 4 / 15 (settimane di calendario, pilastri, minuti della prima call), più piccola, subito sotto i passi, così le due cose si leggono come una sola sezione.
+  - "Per chi lavoro": l'unica sezione costruita a righe con filetti.
+- Navigazione: barra semplice e non fissa, nome a sinistra e "Scrivimi ↗" a destra (porta a #contatti).
+- Hero: nessun pulsante. L'azione è la riga "Primo passo: call conoscitiva gratuita di 15 minuti", un link a #contatti con freccia SVG.
+- Testo: corpo 18px con interlinea 1.6. Il testo di apertura di una sezione (lead) 19-24px, massimo 34em di larghezza.
+- Leggibilità: nessun testo da leggere sotto 14px, etichette comprese. Eccezione: il testo dentro il telefono-mockup, che è interfaccia disegnata. Contrasto almeno 4.5:1 (3:1 se grande), misurato sul rendering reale e comprese le opacità degli elementi.
+- Ritratto: contenitore 4:5 in bianco e nero (grayscale), sfumato verso il fondo con una mask, con assets/img/ritratto.webp. Finché il file non esiste si vede un segnaposto neutro (nessuna immagine rotta). width/height, loading lazy e alt descrittivo ("Matteo Rapeso, ritratto in bianco e nero").
+- Telefono-mockup del caso studio: oggetto piatto con bordo beige sottile, senza vetro. Verrà rifatto nel passo del movimento.
 - Niente emoji, niente stock photo generiche. Non copiare grafica, icone o marchi di nessuna azienda reale.
 - Le immagini mancanti si sostituiscono con segnaposto neutri e puliti, chiaramente sostituibili.
 - Aree toccabili di almeno 44px.
-- Prestazioni: pochi layer, mai animati; Lighthouse mobile con prestazioni almeno 90.
+- Prestazioni: Lighthouse mobile con prestazioni almeno 90 (obiettivo 95) e accessibilità almeno 95.
 
-## Animazioni
-- Poche, lente, sobrie. Le regole di dettaglio (luce, durate, gesti, budget) sono nella sezione "Sistema di movimento" qui sotto.
-- Nulla che sposti il layout.
-- Rispetta sempre prefers-reduced-motion (se attivo, nessuna animazione: vedi sotto).
-- Animare solo transform e opacity, per non rallentare i telefoni.
-- Vietata la sola dissolvenza come effetto di ingresso: ogni elemento entra con un gesto fisico (scorre, sale, si scala, si accende).
-
-## Sistema di movimento
-Regole di coerenza: ogni nuova animazione le rispetta, altrimenti il sito torna a sembrare un insieme di effetti scollegati.
-- **Una sola luce.** Cobalto #5C8DFF e bianco, sempre con lo stesso profilo radiale che sfuma a trasparente al 66-68%. Intensità: ambiente 8-22% (macchie dietro al contenuto), interazione 40-55% (hover, focus, lente), enfasi 100% solo su elementi piccoli (un punto, una cella, una sottolineatura). Nessun'altra luce, nessun altro colore.
-- **Un solo easing**, cubic-bezier(0.22, 1, 0.36, 1), e quattro durate in variabili CSS: --t-fast 250ms (pressione, hover), --t-med 600ms (ingressi, cambi di stato), --t-slow 900ms (titoli, reticolo), --t-ambient 26s (deriva lenta della luce di fondo). Più --t-cella 1300ms per il gesto ricorrente.
-- **Solo transform e opacity.** Mai animati: blur, backdrop-filter, clip-path, larghezza/altezza, top/left. Per rivelare un titolo: contenitore con overflow:hidden e riga interna che passa da translateY(105%) a 0 (non si usa clip-path).
-- **Gesto ricorrente "la cella si accende e svanisce".** Una cella del reticolo (28px) prende bordo e fondo cobalto e svanisce in 1300ms. È il feedback di tutto il sito: titoli di sezione, pressione di pulsanti e link, numero di un passo del metodo. Nel caso studio il cambio di stato del telefono è una pulsazione della luce dietro al telefono (una sola volta), non una cella.
-- **Budget.** Al massimo due animazioni continue visibili insieme: la luce ambiente (deriva lenta) e la lente automatica (solo hero, solo touch). Entrambe si fermano fuori schermo (IntersectionObserver) e a scheda nascosta (visibilitychange). Gli aggiornamenti per frame passano da requestAnimationFrame, con letture del DOM raggruppate prima delle scritture.
-- **Nessuno scroll-jacking.** Lo scroll è sempre quello nativo; nessun scroll-snap sulla pagina (resta solo, con proximity, sulla striscia orizzontale del calendario), nessun evento wheel o touchmove intercettato.
-- **Animazioni guidate dallo scroll** (parallasse della hero, linea e passi di "Come lavoro", luce sul bordo delle schede di "Per chi lavoro"): CSS con animation-timeline (view() / scroll()) dentro @supports. Dove non è supportato, la stessa cosa con IntersectionObserver e requestAnimationFrame, con gli stessi valori.
-- **Ingressi.** Paragrafi e schede: translateY(24px) e scale(0.985) verso la posizione finale, sfalsati di 60ms per posizione. Schede di "Per chi lavoro": entrano da lati alternati (translateX di 20px). Pulsante della hero: scale(0.96) e opacità.
-- **will-change** solo su elementi che stanno per animarsi, e rimosso a fine animazione.
-- **Accessibilità.** Con prefers-reduced-motion: reduce: nessuna animazione continua, nessuna lente automatica, nessuna cella che si accende, nessuna parallasse, ingressi istantanei, lente ferma. Con JavaScript disattivato il sito resta leggibile e completo (le classi di ingresso si applicano solo se JS è attivo, con un controllo di sicurezza che le toglie dopo 3 secondi).
-- **Misure da rifare a ogni modifica del movimento:** Lighthouse mobile (prestazioni almeno 90), registrazione dello scroll in Chromium con CPU rallentata 4x (frame persi), assenza di overflow orizzontale a 390px, aree toccabili di almeno 44px a rivelazione completata.
+## Movimento
+Stato attuale: la pagina è statica. Ogni sezione compare nel suo stato finale: nessun reveal allo scroll, nessuna etichetta che si scrive, nessun numero che sale, nessuna luce o cursore animati. Il movimento è un passo successivo, definito in un prompt a parte; il riferimento-design.html ne mostra l'intenzione (ingresso dei titoli per parole, annotazioni a gesso, evidenziatore, luce beige, barra a segmenti, telefono fisso con passi).
+- Sono ammessi solo i cambi di stato dell'interfaccia: hover, focus, pulsante attivo, cambio del post o del profilo nel telefono. Brevi (250-500ms), solo colore, opacità e transform; mai il layout.
+- Rispetta sempre prefers-reduced-motion: se attivo, nessuna transizione.
+- Con JavaScript disattivato il sito resta leggibile e completo.
 
 ## Qualità richiesta
 - Accessibilità: HTML semantico, contrasto sufficiente, focus visibile, testo alternativo alle immagini, navigabile da tastiera.

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Favicon: monogramma "M" in cobalto su nero -->
-  <rect width="64" height="64" rx="12" fill="#06070B"/>
-  <text x="32" y="44" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-style="italic" fill="#5C8DFF">M</text>
+  <!-- Favicon: monogramma "MR" in beige su nero. Le lettere sono contorni ricavati da Inter Tight 800 (nessun font da caricare). -->
+  <rect width="64" height="64" rx="12" fill="#0B0B0A"/>
+  <path fill="#E3D6BF" d="M13.09 22.3H18.9L23.82 34.3H24.04L28.98 22.3H34.8V41.7H30.2V29.77H30.07L25.38 41.57H22.47L17.82 29.73H17.66V41.7H13.09ZM36.18 41.7V22.3H44.18Q46.36 22.3 47.95 23.09Q49.54 23.88 50.41 25.33Q51.27 26.78 51.27 28.76Q51.27 30.78 50.39 32.18Q49.51 33.59 47.89 34.32Q46.26 35.06 44.05 35.06H38.98V31.36H43.17Q44.23 31.36 44.95 31.09Q45.67 30.82 46.04 30.24Q46.42 29.66 46.42 28.76Q46.42 27.86 46.04 27.27Q45.67 26.68 44.95 26.38Q44.23 26.09 43.16 26.09H40.86V41.7ZM46.81 41.7 42.08 32.83H47.09L51.93 41.7Z"/>
 </svg>
