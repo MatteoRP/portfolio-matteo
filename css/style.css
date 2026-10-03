@@ -66,6 +66,10 @@
   --linea: var(--bordo);                        /* filetti */
   --filo: var(--accento);
 
+  /* Fase leggibilità: velo che attenua il reticolo dietro al testo, e fondo piatto dietro al testo piccolo in cobalto */
+  --velo: 0.74;                 /* 55% -> 14% (punti) e 95% -> 25% (punti grandi) dietro ai contenuti */
+  --fondo-piatto: var(--sfondo);
+
   /* Vetro ("liquid glass"): SOLO su telefono-mockup e navigazione a pillola */
   --vetro-fondo: rgba(6, 7, 11, 0.62);
   --vetro-fallback: rgba(6, 7, 11, 0.94);       /* dove backdrop-filter non è supportato */
@@ -214,7 +218,10 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  margin-bottom: 1.75rem;
+  width: fit-content;
+  padding: 0.25rem 0.6rem;                       /* fondo piatto dietro al testo cobalto: niente punti né lente sotto le lettere */
+  margin: -0.25rem 0 1.5rem -0.6rem;
+  background-color: var(--fondo-piatto);
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -1191,6 +1198,30 @@ h2 + p { margin-top: 2rem; }
 }
 
 
+/* Dentro le superfici piatte il "fondo piatto" è il colore della superficie vista sul nero (bianco al 3% su #06070B) */
+.scheda,
+.strategia .righe,
+.striscia-scorri { --fondo-piatto: #0E0E12; }
+
+/* Testo piccolo in cobalto: ha sempre un fondo pieno dietro (niente punti del reticolo né lente sotto le lettere).
+   Il margine negativo compensa il padding, così l'allineamento del testo non cambia. */
+.settimana h4,
+.corpo h4,
+.riga-cliente dt,
+.scheda dt,
+.logica dt,
+.strategia dt,
+.cella .giorno {
+  width: fit-content;
+  padding: 0.15rem 0.5rem;
+  margin-left: -0.5rem;
+  background-color: var(--fondo-piatto);
+}
+.scheda dt { margin-top: 0; }
+.pilastri li { background-color: var(--fondo-piatto); }
+.etichetta-fittizio span { background-color: var(--sfondo); }
+.scelta { background-color: var(--sfondo); }          /* contiene la cifra cobalto */
+
 /* ==========================================================================
    Vetro ("liquid glass"). Usato SOLO sul telefono-mockup e sulla navigazione a pillola.
    Regole: mai animare blur o backdrop-filter; senza supporto si usa un fondo
@@ -1255,15 +1286,46 @@ body::before {
   mask-image: radial-gradient(ellipse 94% 76% at 50% 34%, #000 22%, transparent 84%);
 }
 
+/* --- Velo: il reticolo resta FORTE solo nella hero e negli spazi tra le sezioni ---
+   Dietro ai contenuti (paragrafi, schede, calendario, caso studio, contatti) un velo nero lo attenua:
+   il reticolo di base è unico e fisso, il velo lo copre solo dove c'è testo, con bordi sfumati di 3rem.
+   Sta sopra al reticolo e sotto alla lente (z-index -2 contro -1). Occupa tutta la larghezza dello schermo. */
+.sezione:not(.hero) > .contenitore { position: relative; }
+.sezione:not(.hero) > .contenitore::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  pointer-events: none;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  top: calc(var(--spazio-sezione) - 3rem);
+  bottom: calc(var(--spazio-sezione) - 3rem);
+  background: linear-gradient(to bottom,
+    rgba(6, 7, 11, 0),
+    rgba(6, 7, 11, var(--velo)) 3rem,
+    rgba(6, 7, 11, var(--velo)) calc(100% - 3rem),
+    rgba(6, 7, 11, 0));
+}
+/* Piè di pagina: stesso velo (serve un contesto proprio perché il velo stia sopra al reticolo) */
+.piede { position: relative; isolation: isolate; }
+.piede::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  pointer-events: none;
+  inset: 0 calc(50% - 50vw);
+  background: rgba(6, 7, 11, var(--velo));
+}
+
 /* --- Strato "lente": solo in hero e nel caso studio ---
    Lo stesso reticolo con punti e linee cobalto, visibile solo in un cerchio di 170px
    (maschera con le variabili --mx e --my). È un livello grande quanto lo schermo che
    resta agganciato in alto mentre si scorre la sezione (position: sticky): così
    coincide sempre con il reticolo di base. Non occupa spazio (margine negativo).
-   Le linee cobalto sono al 26% (non al 40%): con il 40% il testo cobalto (etichette, numeri)
-   che passa sotto la lente scendeva sotto 4,5:1 di contrasto contro le linee. */
-#inizio::before,
-#caso-studio::before {
+   Le linee cobalto sono al 40%. Il testo piccolo in cobalto ha un fondo piatto dietro (vedi sopra),
+   quindi la lente non gli passa mai sotto. Questa è la lente "ferma" della hero; quella del caso studio
+   segue il puntatore e la crea JavaScript. */
+#inizio::before {
   content: "";
   position: sticky;
   top: 0;
@@ -1276,8 +1338,8 @@ body::before {
   pointer-events: none;
   background-image:
     radial-gradient(circle at 50% 50%, rgba(var(--accento-rgb), 1) 2.3px, rgba(var(--accento-rgb), 0) 3.6px),
-    linear-gradient(to bottom, rgba(var(--accento-rgb), 0) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.26) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.26) calc(50% + 0.5px), rgba(var(--accento-rgb), 0) calc(50% + 0.5px)),
-    linear-gradient(to right, rgba(var(--accento-rgb), 0) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.26) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.26) calc(50% + 0.5px), rgba(var(--accento-rgb), 0) calc(50% + 0.5px));
+    linear-gradient(to bottom, rgba(var(--accento-rgb), 0) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.4) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.4) calc(50% + 0.5px), rgba(var(--accento-rgb), 0) calc(50% + 0.5px)),
+    linear-gradient(to right, rgba(var(--accento-rgb), 0) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.4) calc(50% - 0.5px), rgba(var(--accento-rgb), 0.4) calc(50% + 0.5px), rgba(var(--accento-rgb), 0) calc(50% + 0.5px));
   background-size: 28px 28px;
   background-position: -14px -14px;
   -webkit-mask-image: radial-gradient(circle 170px at var(--mx) var(--my), #000 0%, #000 45%, transparent 100%);
@@ -1294,11 +1356,6 @@ body::before {
   height: 300px;
   pointer-events: none;
   background: radial-gradient(closest-side, rgba(var(--accento-rgb), 0.34), rgba(var(--accento-rgb), 0) 68%);
-}
-/* Sui dispositivi senza puntatore (telefoni) la lente nel caso studio resterebbe ferma sopra al testo
-   mentre si scorre: lì la nascondiamo. Nella hero resta come decorazione. */
-@media (hover: none) {
-  #caso-studio::before { display: none; }
 }
 #inizio::after { left: -60px; top: 34%; }
 #caso-studio::after { right: -80px; top: 2%; }
