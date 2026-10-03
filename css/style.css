@@ -1,17 +1,16 @@
 /* ==========================================================================
    Portfolio di Matteo Rapeso: foglio di stile
-   Direzione visiva: riferimento-design.html (nero caldo, un solo accento beige).
-   Questa versione è STATICA: nessun reveal, nessuna animazione di ingresso.
-   Il movimento arriva in un passo successivo.
+   Direzione visiva: nero caldo, un solo accento beige (vedi CLAUDE.md, sezioni Design e Sistema di movimento).
 
    Struttura del file:
    1. Font (self-hosted) e fallback
    2. Variabili e base
    3. Componenti comuni (etichette, barra, pulsanti, titoli)
    4. Sezioni, nell'ordine in cui compaiono nella pagina
-   5. Caso studio (schede, telefono-mockup, calendario)
+   5. Caso studio (scheda, telefono-mockup a sette stati, passi, calendario)
    6. Tablet e desktop
-   7. Preferenze dell'utente (movimento ridotto)
+   7. Movimento (gesso, luce, barra "storie", cursore; gli stati nascosti sono solo qui e solo con .js)
+   8. Preferenze dell'utente (movimento ridotto)
    ========================================================================== */
 
 
@@ -113,7 +112,7 @@
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
-/* Annotazioni a gesso: Rock Salt 400 (si userà nel passo del movimento: finché nessun elemento lo usa il browser non lo scarica) */
+/* Annotazioni a gesso: Rock Salt 400 (il browser lo scarica solo se la pagina contiene un'annotazione) */
 
 @font-face {
   font-family: "Rock Salt";
@@ -239,18 +238,21 @@
   --line: rgba(242, 238, 230, 0.16);
   --accent: #E3D6BF;
   --accent-ink: #0B0B0A;       /* testo sopra l'accento */
+  --accent-rgb: 227, 214, 191; /* lo stesso beige, in numeri: serve per le luci trasparenti */
   --accent-50: rgba(227, 214, 191, 0.5);
+  --fg-22: rgba(242, 238, 230, 0.22);   /* fondo dei segmenti della barra "storie" */
 
   /* Font: prima il font vero, poi il suo fallback regolato, poi i generici */
   --f-display: "Inter Tight", "Inter Tight Fallback", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --f-body: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --f-serif: "Instrument Serif", "Instrument Serif Fallback", Georgia, "Times New Roman", serif;
   --f-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --f-chalk: "Rock Salt", "Comic Sans MS", cursive;   /* annotazioni a gesso: dichiarato ora, usato nel passo del movimento */
+  --f-chalk: "Rock Salt", "Comic Sans MS", cursive;   /* annotazioni a gesso */
 
   --colonna: 1160px;
+  --barra: 78px;                            /* altezza della barra in alto (20 + 44 + 14): la hero ci passa sotto */
   --gutter: clamp(16px, 4vw, 40px);
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* l'unico easing del sito: ogni animazione usa questo */
 
   color-scheme: dark;
 }
@@ -265,8 +267,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
+  color: var(--fg);                  /* lo sfondo sta su html: così la luce del cursore (z-index -1) resta visibile sotto il testo */
   font: 400 18px/1.6 var(--f-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -333,6 +334,9 @@ dt {
 
 /* Barra in alto: nome a sinistra, "Scrivimi ↗" a destra. Non è fissa. */
 .bar {
+  position: relative;
+  z-index: 2;                   /* sopra la luce della hero */
+  min-height: var(--barra);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -360,7 +364,6 @@ dt {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
 .btn-o:hover,
 .btn-o:active { background: var(--fg); color: var(--bg); }
@@ -415,7 +418,6 @@ section {
   text-decoration-color: var(--accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.3em;
-  transition: color 0.3s var(--ease);
 }
 .link-testo:hover { color: var(--accent); }
 
@@ -426,11 +428,34 @@ section {
 
 /* ----- Hero ----- */
 .hero {
+  position: relative;
+  overflow: clip;               /* la luce non esce dalla hero (né fa scorrere la pagina di lato) */
+  margin-top: calc(-1 * var(--barra));   /* la hero parte dall'alto della pagina, sotto la barra: così la luce non ha un bordo netto sopra */
   border-top: 0;
-  padding-top: clamp(24px, 5vw, 64px);
+  padding-top: calc(var(--barra) + clamp(24px, 5vw, 64px));
   padding-bottom: clamp(72px, 12vw, 160px);
 }
-.toprow { margin-top: clamp(40px, 8vw, 104px); }
+.hero .wrap { position: relative; z-index: 1; }
+.toprow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 22px 32px;
+  margin-top: clamp(40px, 8vw, 104px);
+}
+/* Luce beige dietro il titolo. Quella esterna segue il mouse, quella interna respira (sezione 7) */
+.luce { position: absolute; left: 50%; top: 18%; z-index: 0; width: 0; height: 0; pointer-events: none; }
+.luce-in {
+  position: absolute;
+  width: min(80vmax, 1100px);
+  height: min(80vmax, 1100px);
+  left: calc(min(80vmax, 1100px) / -2);
+  top: calc(min(80vmax, 1100px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.2), transparent 66%);
+  opacity: 0.6;
+}
 .hero h1 {
   margin-top: clamp(24px, 3.4vw, 40px);
   max-width: 11.5em;
@@ -475,6 +500,7 @@ section {
 /* ----- Per chi lavoro: l'unica sezione costruita a righe (filetto sopra, titolo a sinistra, testo a destra) ----- */
 .rows { margin-top: clamp(32px, 5vw, 56px); }
 .row-c {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 28px 40px;
@@ -482,6 +508,17 @@ section {
   border-top: 1px solid var(--line);
 }
 .row-c:last-child { border-bottom: 1px solid var(--line); }
+.row-c::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
 .row-c h3 { font-size: clamp(28px, 4vw, 46px); line-height: 1.02; }
 .row-c .tag { display: block; margin-top: 10px; }
 .row-c dd { margin-top: 6px; color: var(--muted); font-size: 17px; max-width: 30em; }
@@ -609,7 +646,6 @@ section {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: color 0.3s var(--ease);
 }
 .links a:hover { color: var(--accent); }
 
@@ -624,7 +660,9 @@ footer p + p { margin-top: 6px; }
 
 /* ==========================================================================
    5. CASO STUDIO
-   Il contenuto è quello di prima: cambia solo lo stile.
+   I contenuti sono quelli di prima. Il telefono è uno solo e cambia stato
+   in base al passo che si sta leggendo (la logica è in js/main.js).
+   Senza JavaScript i sette stati del telefono stanno uno sotto l'altro.
    ========================================================================== */
 
 .case-head { display: grid; gap: 22px; max-width: 54rem; }
@@ -651,22 +689,15 @@ footer p + p { margin-top: 6px; }
 .scheda > div { padding: 24px 24px 28px 0; border-top: 1px solid var(--line); }
 .scheda dd { margin-top: 10px; max-width: 30em; }
 
-/* Ogni parte del caso studio ha il suo filetto e il suo spazio */
-.confronto,
+/* Sotto la storia: strategia e approfondimenti, ognuno con il suo filetto e il suo spazio */
 .strategia,
-.calendario-caso,
-.vetrina,
 .blocchi {
   margin-top: clamp(56px, 8vw, 110px);
   padding-top: clamp(28px, 4vw, 48px);
   border-top: 1px solid var(--line);
 }
-.strategia h3,
-.calendario-caso h3,
-.vetrina-titolo,
-.confronto-testo h3 { font-size: clamp(30px, 4.4vw, 52px); line-height: 1; }
+.strategia h3 { font-size: clamp(30px, 4.4vw, 52px); line-height: 1; }
 
-.confronto-testo p { margin-top: 16px; max-width: 30em; color: var(--muted); }
 .elenco-semplice { margin-top: 24px; max-width: 32em; }
 .elenco-semplice li {
   position: relative;
@@ -684,294 +715,347 @@ footer p + p { margin-top: 6px; }
   background: var(--accent);
 }
 
-/* Pulsanti di scelta: servono solo con JavaScript */
-.interruttore,
-.controlli { display: none; }
-.js .interruttore,
-.js .controlli {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 28px;
-}
-.scelta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 8px 14px;
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--fg);
-  font: 500 14px/1.3 var(--f-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
-}
-.scelta:hover { border-color: var(--fg); }
-.scelta[aria-pressed="true"] {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-.scelta-n { font-size: 22px; line-height: 1; color: var(--accent); }
-.scelta[aria-pressed="true"] .scelta-n { color: var(--accent-ink); }
+/* ----- La storia: stage (telefono) + passi ----- */
+.story { margin-top: clamp(40px, 6vw, 72px); }
 
-/* ----- Telefono-mockup: oggetto piatto con bordo beige sottile (nessun vetro) ----- */
+/* Lo stage tiene il telefono. Con JavaScript resta fisso mentre i passi scorrono */
+.stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.js .stage {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 18px 0 10px;
+  background: var(--bg);          /* i passi che salgono scorrono "sotto" lo stage */
+  overflow: clip;
+}
 .telefono-area {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 .telefono-area figcaption {
   max-width: 24rem;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4;
   text-align: center;
   color: var(--muted);
 }
-.telefono {
+
+/* Luce beige dietro il telefono: pulsa una volta a ogni cambio di stato (vedi sezione 8) */
+.halo { display: none; }
+.js .halo {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  z-index: -1;
+  width: 120%;
+  aspect-ratio: 1;
+  margin: -60% 0 0 -60%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.2), transparent 66%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ----- Telefono-mockup: oggetto piatto con bordo beige sottile (nessun vetro) ----- */
+.phone {
   position: relative;
-  width: min(100%, 20.5rem);
+  width: min(270px, 74vw);
   padding: 7px;
   border: 1px solid var(--accent-50);
   border-radius: 38px;
   background: #050505;
 }
-/* Tacca in alto */
-.telefono::before {
-  content: "";
-  position: absolute;
-  top: 1.1rem;
-  left: 50%;
-  z-index: 2;
-  width: 4.5rem;
-  height: 1.2rem;
-  margin-left: -2.25rem;
-  border-radius: 99px;
-  background: #000;
+/* Con JavaScript: su telefono è basso e sfuma in fondo, tagliato; i passi scorrono sotto */
+.js .phone {
+  height: 38vh;
+  height: 38svh;
+  min-height: 270px;
+  max-height: 360px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
 }
-.schermo {
+
+/* Lo schermo misura i testi in "cqw" (1% della sua larghezza) tramite --u, con un minimo in pixel per le scritte piccole.
+   Dove le container query non esistono, --u resta un valore fisso. È interfaccia disegnata: l'eccezione ai 14px vale qui. */
+.screen {
+  --u: 2.5px;
   position: relative;
+  width: 100%;
   overflow: hidden;
-  padding-top: 2.9rem;
   border-radius: 32px;
   background: var(--bg);
   color: var(--fg);
 }
-.schermo p,
-.schermo li { max-width: none; color: inherit; }
-
-.barra-profilo,
-.profilo-testa {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 4px 16px 14px;
+@supports (width: 1cqw) {
+  .screen { container-type: inline-size; --u: 1cqw; }
 }
-.profilo-testa .esempio-chip { margin-left: auto; }
+.js .screen { height: 100%; }
+.notch {
+  position: absolute;
+  z-index: 3;
+  top: calc(3.4 * var(--u));
+  left: 50%;
+  width: calc(26 * var(--u));
+  height: calc(7 * var(--u));
+  margin-left: calc(-13 * var(--u));
+  border-radius: 99px;
+  background: #000;
+}
+
+/* Uno stato del telefono. Senza JS: uno sotto l'altro. Con JS: sovrapposti, se ne vede uno */
+.scr { padding: calc(13 * var(--u)) calc(6 * var(--u)) calc(6 * var(--u)); }
+.scr + .scr { border-top: 1px solid var(--line); }
+.js .scr {
+  position: absolute;
+  inset: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.js .scr + .scr { border-top: 0; }
+.js .scr.on { opacity: 1; }
+
+/* Profilo */
+.profilo-testa { display: flex; align-items: center; gap: calc(3.4 * var(--u)); }
 .avatar {
+  position: relative;
   flex: none;
   display: grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: calc(17 * var(--u));
+  height: calc(17 * var(--u));
   border: 1px solid var(--line);
   border-radius: 50%;
   background: var(--surface);
-  font: 800 22px/1 var(--f-display);
+  font: 800 calc(7 * var(--u))/1 var(--f-display);
   color: var(--accent);
 }
-.avatar-piccolo { width: 1.75rem; height: 1.75rem; font-size: 14px; }
-.avatar-grande { width: 3.25rem; height: 3.25rem; font-size: 26px; }
-.nome { font: 700 15px/1.3 var(--f-display); letter-spacing: -0.01em; }
-.stato { font-size: 14px; line-height: 1.3; color: var(--muted); }
-
-.storie {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 16px 16px;
-  border-bottom: 1px solid var(--line);
+.avatar-piccolo { width: calc(8.4 * var(--u)); height: calc(8.4 * var(--u)); font-size: max(10px, calc(3.6 * var(--u))); }
+/* Anello beige attorno all'avatar del "dopo": si disegna nella sezione 8 */
+.avatar svg {
+  position: absolute;
+  inset: -5px;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  overflow: visible;
 }
+.avatar circle { fill: none; stroke: var(--accent); stroke-width: 2; }
+.nome { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-display); letter-spacing: -0.01em; }
+.stato {
+  margin-top: calc(1.2 * var(--u));
+  font: 500 max(10px, calc(3.2 * var(--u)))/1.3 var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.esempio-chip {
+  margin-left: auto;
+  padding: calc(1 * var(--u)) calc(2.4 * var(--u));
+  border: 1px solid var(--accent);
+  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.bio { margin-top: calc(4.5 * var(--u)); font-size: max(11px, calc(4.4 * var(--u))); line-height: 1.38; }
+.bio-fioca { color: var(--muted); }
+.bio-link { margin-top: calc(2.4 * var(--u)); font-size: max(11px, calc(4.4 * var(--u))); font-weight: 500; color: var(--accent); }
+
+/* Evidenze: i quattro pilastri */
+.storie { display: flex; justify-content: space-between; margin-top: calc(4 * var(--u)); }
 .storia {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
+  gap: calc(1.4 * var(--u));
+  font-size: max(10px, calc(3.2 * var(--u)));
   line-height: 1.2;
   color: var(--muted);
 }
 .storia i {
   display: grid;
   place-items: center;
-  width: 3rem;
-  height: 3rem;
+  width: calc(11 * var(--u));
+  height: calc(11 * var(--u));
   border: 1px solid var(--accent-50);
   border-radius: 50%;
-  font: italic 400 22px/1 var(--f-serif);
+  font: italic 400 max(14px, calc(5.4 * var(--u)))/1 var(--f-serif);
   color: var(--accent);
 }
-/* Schermi molto stretti (320px): le quattro storie con le etichette a 14px non stanno nel telefono, quindi riduco il margine */
-@media (max-width: 359px) {
-  .storie { padding-inline: 10px; }
-}
-
-.esempio-chip {
-  padding: 2px 8px;
-  border: 1px solid var(--accent);
-  font: 500 13px/1.4 var(--f-mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-/* Profilo prima / dopo */
-.stati { display: block; }
-.profilo { padding-bottom: 20px; }
-.stati > .profilo + .profilo { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
-.bio { padding: 0 16px; font-size: 14px; line-height: 1.55; }
-.schermo .bio-link {
-  padding: 8px 16px 0;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--accent);
-}
-.profilo .storie { margin-top: 16px; border-bottom: 0; padding-bottom: 4px; }
 
 /* Piccola griglia di post: prima disordinata (testo fitto), dopo ordinata (una serie) */
 .mini-griglia {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2px;
-  margin-top: 20px;
-  padding: 0 1px;
+  gap: calc(1 * var(--u));
+  margin-top: calc(4.5 * var(--u));
 }
 .tessera {
   aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 3px;
-  padding: 8px;
+  gap: calc(1 * var(--u));
+  padding: calc(2.4 * var(--u));
   border: 1px solid var(--line);
   overflow: hidden;
 }
-.tessera i { display: block; height: 4px; background: rgba(242, 238, 230, 0.3); }
+.tessera i { display: block; height: max(3px, calc(1.2 * var(--u))); background: rgba(242, 238, 230, 0.3); }
 .tessera-densa i:nth-child(odd) { width: 100%; }
 .tessera-densa i:nth-child(even) { width: 78%; }
 .tessera-densa i:nth-child(3n) { width: 90%; }
 .tessera-densa:nth-child(2) { justify-content: flex-start; }
 .tessera-densa:nth-child(3) { justify-content: flex-end; }
 .tessera-serie { justify-content: flex-end; background: var(--surface); }
-.tessera-serie b { font: 800 16px/1.05 var(--f-display); letter-spacing: -0.02em; }
+.tessera-serie b { font: 800 max(11px, calc(4.4 * var(--u)))/1.05 var(--f-display); letter-spacing: -0.02em; }
 .tessera-superficie { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 
-/* Pila dei post: senza JS i quattro post sono uno sotto l'altro;
-   con JS sono sovrapposti nella stessa cella e se ne vede uno solo, così l'altezza non cambia mai */
-.js .pila,
-.js .logica-pila,
-.js .stati,
-.js .confronto-note { display: grid; }
-.js .pila > [data-post],
-.js .logica-pila > [data-post],
-.js .stati > [data-stato],
-.js .confronto-note > [data-stato] {
-  grid-area: 1 / 1;
-  align-self: start;
-  opacity: 0;
-  visibility: hidden;
-}
-.js .vetrina[data-attivo="1"] [data-post="1"],
-.js .vetrina[data-attivo="2"] [data-post="2"],
-.js .vetrina[data-attivo="3"] [data-post="3"],
-.js .vetrina[data-attivo="4"] [data-post="4"],
-.js .confronto[data-attivo="prima"] [data-stato="prima"],
-.js .confronto[data-attivo="dopo"] [data-stato="dopo"] {
-  opacity: 1;
-  visibility: visible;
-}
-.js .stati > .profilo + .profilo { margin-top: 0; padding-top: 0; border-top: 0; }
-
-.post { padding-bottom: 8px; }
-.post + .post { margin-top: 24px; }
-.js .post + .post { margin-top: 0; }
-.post-testa { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; }
-.post-testa p { display: flex; align-items: center; gap: 10px; font-size: 14px; }
-.post-testa strong { font: 700 14px/1 var(--f-display); }
-
-/* Copertine dei post: solo CSS, nessuna immagine */
+/* Post */
+.post-testa { display: flex; align-items: center; gap: calc(2.6 * var(--u)); margin-bottom: calc(3 * var(--u)); }
+.post-testa p { font: 700 max(12px, calc(4 * var(--u)))/1 var(--f-display); }
 .copertina {
-  aspect-ratio: 6 / 5;
+  aspect-ratio: 2 / 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 22px 18px 18px;
-  border-block: 1px solid var(--line);
+  padding: calc(4.4 * var(--u)) calc(5 * var(--u));
+  border: 1px solid var(--line);
 }
 .copertina-scura { background: var(--bg); }
 .copertina-superficie { background: var(--surface); }
 .copertina-formato,
 .copertina-piede {
-  font: 500 13px/1.3 var(--f-mono);
+  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .copertina-formato { display: flex; justify-content: space-between; color: var(--muted); }
 .copertina-piede { color: var(--accent); }
-.copertina-titolo {
-  font: 800 34px/1 var(--f-display);
-  letter-spacing: -0.035em;
-}
+.copertina-titolo { font: 800 max(18px, calc(8.2 * var(--u)))/1 var(--f-display); letter-spacing: -0.035em; }
 .copertina-titolo span {
   display: block;
-  margin-top: 8px;
-  font: 400 14px/1.4 var(--f-body);
+  margin-top: calc(1.4 * var(--u));
+  font: 400 max(11px, calc(4 * var(--u)))/1.3 var(--f-body);
   letter-spacing: 0;
   color: var(--muted);
 }
-
-.azioni-post { display: flex; gap: 14px; padding: 12px 16px 4px; }
-.azioni-post svg { width: 1.5rem; height: 1.5rem; color: var(--fg); }
-.azioni-post .salva { margin-left: auto; }
-.didascalia { padding: 4px 16px 12px; font-size: 14px; line-height: 1.55; }
-.didascalia strong { font-weight: 600; }
+/* L'avviso sta subito sotto la copertina, così si legge anche nel telefono tagliato */
 .avviso {
-  display: block;
-  margin-top: 10px;
-  font: 500 14px/1.4 var(--f-mono);
+  margin-top: calc(2.6 * var(--u));
+  font: 500 max(10.5px, calc(3.6 * var(--u)))/1.35 var(--f-mono);
   letter-spacing: 0.02em;
-  font-style: normal;
   color: var(--accent);
 }
+.azioni-post { display: flex; gap: calc(3.4 * var(--u)); margin-top: calc(3 * var(--u)); }
+.azioni-post svg { width: max(16px, calc(6 * var(--u))); height: max(16px, calc(6 * var(--u))); color: var(--fg); }
+.azioni-post .salva { margin-left: auto; }
+.didascalia { margin-top: calc(2.4 * var(--u)); font-size: max(11px, calc(4 * var(--u))); line-height: 1.4; }
+.didascalia strong { font-weight: 600; }
 
-/* Senza JS l'anteprima non serve: i post sono già tutti visibili uno sotto l'altro */
-.anteprima {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  height: 52px;
-  padding: 14px 16px 0;
-  border-top: 1px solid var(--line);
-}
-.js .anteprima { display: flex; }
-.riga-finta { flex: 0 0 5.5rem; height: 8px; background: rgba(242, 238, 230, 0.2); }
-
-/* ----- Audit: testo, pulsanti, telefono, note ----- */
-.confronto {
+/* Calendario: 14 celle, i numeri 1-4 sono i quattro pilastri */
+.cal-titolo { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-display); letter-spacing: -0.01em; }
+.giorni-sett {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "testo" "interruttore" "telefono" "note";
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: calc(1.4 * var(--u));
+  margin-top: calc(4 * var(--u));
+  font: 500 max(10px, calc(3.2 * var(--u)))/1 var(--f-mono);
+  color: var(--muted);
+  text-align: center;
 }
-.confronto-testo { grid-area: testo; }
-.interruttore { grid-area: interruttore; }
-.confronto .telefono-area { grid-area: telefono; margin-top: 40px; }
-.confronto-note { grid-area: note; margin-top: 32px; }
-.confronto-note p { font-size: 17px; max-width: 30em; color: var(--muted); }
-.confronto-note strong { color: var(--fg); font-weight: 600; }
+.cg {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: calc(1.4 * var(--u));
+  margin-top: calc(1.6 * var(--u));
+}
+.cell {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  font: 700 max(11px, calc(4.4 * var(--u)))/1 var(--f-display);
+}
+.cell.p1 { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.cell.p2 { background: rgba(var(--accent-rgb), 0.6); color: var(--accent-ink); border-color: transparent; }
+.cell.p3 { background: rgba(var(--accent-rgb), 0.3); color: var(--fg); border-color: transparent; }
+.cell.p4 { background: transparent; color: var(--fg); border-color: var(--accent); }
+.cell.sp { border: 1px dashed var(--accent-50); }
+.legenda {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(2.4 * var(--u)) calc(3 * var(--u));
+  margin-top: calc(4.5 * var(--u));
+  font-size: max(10.5px, calc(3.7 * var(--u)));
+  line-height: 1.2;
+}
+.legenda li { display: flex; align-items: center; gap: calc(2 * var(--u)); }
+.legenda b {
+  flex: none;
+  width: max(14px, calc(5.6 * var(--u)));
+  height: max(14px, calc(5.6 * var(--u)));
+  font-size: max(9.5px, calc(3.2 * var(--u)));
+}
+
+/* Annotazione a gesso sotto il telefono (cambia a ogni passo) */
+.cnote { min-height: 1.3em; text-align: center; }
+.cnote:empty { display: none; }
+.js .cnote:empty { display: block; }
+@media (max-width: 359px) {
+  .js .cnote { min-height: 2.4em; }   /* schermi molto stretti: l'annotazione può andare su due righe, lo spazio è già riservato */
+}
+
+/* ----- I passi: i testi accanto (o sotto) al telefono ----- */
+.steps { margin-top: 48px; }   /* senza JS: sotto il telefono con un po' d'aria */
+.js .steps { margin-top: 0; }
+.step + .step { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }   /* senza JS: separati da un filetto */
+.step > * + * { margin-top: 16px; }
+.step p { color: var(--muted); max-width: 30em; }
+.step strong { color: var(--fg); font-weight: 600; }
+.step .k,
+.logica .k {
+  margin-top: 0;
+  font: 500 14px/1.4 var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.step h3 { max-width: 14em; font-size: clamp(30px, 4.4vw, 52px); line-height: 1; }
+.step .k + h3,
+.step .k + h4,
+.step .k + .step-nota { margin-top: 12px; }
+.step .elenco-semplice { margin-top: 20px; }
+.step .step-nota { font-size: 17px; }
+.vetrina-guida + .k { margin-top: 44px; }
+.logica h4 {
+  font: 700 clamp(26px, 3.4vw, 38px)/1.04 var(--f-display);
+  letter-spacing: -0.03em;
+  text-transform: none;
+  color: var(--fg);
+  text-wrap: balance;
+}
+.logica dl { margin-top: 24px; }
+.logica dt { margin-top: 20px; }
+.logica dt:first-child { margin-top: 0; }
+.logica dd { margin-top: 6px; max-width: 30em; color: var(--muted); font-size: 17px; }
+
+/* Con JavaScript i passi sono alti e scorrono accanto al telefono; quello in lettura è al 100%, gli altri al 70% */
+.js .step {
+  min-height: 46vh;
+  min-height: 46svh;
+  padding-block: 28px 12px;
+  opacity: 0.7;
+}
+.js .step + .step { margin-top: 0; border-top: 0; padding-top: 28px; }
+.js .step.on { opacity: 1; }
 
 /* ----- Strategia ----- */
 .righe { margin-top: 32px; }
@@ -996,9 +1080,9 @@ footer p + p { margin-top: 6px; }
 }
 .pilastri li span { font-size: 22px; line-height: 1; }
 
-/* ----- Calendario: una striscia per settimana ----- */
-.calendario-caso > p { margin-top: 16px; max-width: 34em; color: var(--muted); }
-.settimana { margin-top: 44px; }
+/* ----- Calendario: una striscia per settimana (continua il settimo passo della storia) ----- */
+.calendario-caso { margin-top: clamp(40px, 6vw, 72px); }
+.settimana + .settimana { margin-top: 44px; }
 .settimana h4 { color: var(--accent); }
 .suggerimento { margin-top: 4px; font-size: 14px; color: var(--muted); }
 .striscia-scorri {
@@ -1037,38 +1121,6 @@ footer p + p { margin-top: 6px; }
 .cella-vuota { width: 6.5rem; border-top-color: var(--line); }
 .cella-vuota .riposo { font-size: 14px; line-height: 1.35; color: var(--muted); }
 
-/* ----- Vetrina: pulsanti, telefono, logica di ogni post ----- */
-.vetrina {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "titolo" "guida" "controlli" "telefono" "logica";
-}
-.vetrina-titolo { grid-area: titolo; }
-.vetrina-guida { grid-area: guida; margin-top: 16px; max-width: 30em; color: var(--muted); }
-.controlli { grid-area: controlli; }
-.vetrina .telefono-area { grid-area: telefono; margin-top: 40px; }
-.logica-pila { grid-area: logica; margin-top: 48px; }
-.logica + .logica { margin-top: 48px; }
-.js .logica + .logica { margin-top: 0; }
-.logica .k {
-  font: 500 14px/1.4 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.logica h4 {
-  margin-top: 12px;
-  font: 700 clamp(26px, 3.4vw, 38px)/1.04 var(--f-display);
-  letter-spacing: -0.03em;
-  text-transform: none;
-  color: var(--fg);
-  text-wrap: balance;
-}
-.logica dl { margin-top: 24px; }
-.logica dt { margin-top: 20px; }
-.logica dt:first-child { margin-top: 0; }
-.logica dd { margin-top: 6px; max-width: 30em; color: var(--muted); font-size: 17px; }
-
 /* ----- Blocchi di approfondimento (<details>) ----- */
 .blocco { border-top: 1px solid var(--line); }
 .blocco:first-child { border-top: 0; }
@@ -1096,7 +1148,6 @@ footer p + p { margin-top: 6px; }
   height: 44px;
   border: 1px solid var(--line);
   border-radius: 50%;
-  transition: transform 0.3s var(--ease);
 }
 .indicatore::before,
 .indicatore::after {
@@ -1125,10 +1176,6 @@ footer p + p { margin-top: 6px; }
    6. TABLET E DESKTOP (si parte dal telefono, poi si allarga)
    ========================================================================== */
 
-@media (min-width: 600px) {
-  .js .controlli { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
-
 @media (min-width: 860px) {
   .sec { grid-template-columns: minmax(170px, 3fr) 9fr; }
   .hero-grid { grid-template-columns: 7fr 4fr; gap: 80px; }
@@ -1140,38 +1187,31 @@ footer p + p { margin-top: 6px; }
   .who { grid-template-columns: 6fr 5fr; gap: 56px; }
   .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
   .righe > div { grid-template-columns: 12rem minmax(0, 1fr); }
-}
 
-@media (min-width: 960px) {
-  /* Audit: testo e pulsanti a sinistra, telefono a destra */
-  .confronto {
+  /* Storia: passi a sinistra, telefono fisso a destra (alto quanto serve, mai oltre lo schermo) */
+  .story {
+    display: grid;
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    grid-template-areas:
-      "testo        telefono"
-      "interruttore telefono"
-      "note         telefono";
-    grid-template-rows: auto auto 1fr;
     column-gap: 56px;
     align-items: start;
   }
-  .confronto .telefono-area { margin-top: 0; }
-  .js .interruttore { max-width: 28rem; }
-
-  /* Feed: telefono a sinistra; scelta e logica a destra */
-  .vetrina {
-    grid-template-columns: 21rem minmax(0, 1fr);
-    grid-template-areas:
-      "titolo    titolo"
-      "guida     guida"
-      "telefono  controlli"
-      "telefono  logica";
-    grid-template-rows: auto auto auto 1fr;
-    column-gap: 56px;
-    align-items: start;
+  .stage { order: 2; }
+  .js .stage { top: 64px; padding: 0; background: transparent; overflow: visible; align-self: start; }
+  .js .halo { width: 100%; margin: -50% 0 0 -50%; }   /* non deve uscire dalla colonna: la pagina non scorre di lato */
+  .js .phone {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 9 / 19;
+    width: min(300px, calc((100svh - 240px) * 9 / 19));
+    -webkit-mask-image: none;
+    mask-image: none;
   }
-  .js .controlli { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 40px; }
-  .vetrina .telefono-area { margin-top: 40px; }
-  .logica-pila { margin-top: 40px; }
+  .copertina { aspect-ratio: 6 / 5; }
+  .js .cnote { min-height: 2.5em; }
+  .js .step { min-height: 64vh; padding-block: 14vh 0; }
+  .js .step + .step { padding-top: 14vh; }
+  .js .step:last-child { min-height: 50vh; }
 }
 
 @media (min-width: 1100px) {
@@ -1194,8 +1234,232 @@ footer p + p { margin-top: 6px; }
 
 
 /* ==========================================================================
-   7. PREFERENZE DELL'UTENTE
-   Con "riduci movimento" non c'è nessuna transizione.
+   7. MOVIMENTO
+   Regole (le stesse di CLAUDE.md, "Sistema di movimento"):
+   - un solo easing, var(--ease), e una sola luce, il beige;
+   - si animano solo transform e opacity (eccezione: stroke-dashoffset per le linee a mano);
+   - gli stati iniziali nascosti esistono solo sotto ".js" e solo se l'utente non ha chiesto
+     di ridurre il movimento: senza JavaScript o con "riduci movimento" è tutto già al suo posto.
+   ========================================================================== */
+
+/* ----- Elementi sempre uguali (anche senza movimento) ----- */
+
+/* Testo solo per screen reader: nascosto alla vista, ma letto */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Numeri della striscia: la copia che sale esiste solo con JavaScript */
+.num { position: relative; }
+.num-an { display: none; }
+.js .num-an { display: block; position: absolute; left: 0; top: 0; }
+
+/* Annotazioni a gesso */
+.chalk {
+  margin: 0;
+  font-family: var(--f-chalk);
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.15;
+  color: var(--accent);
+}
+.chalk .cwd { display: inline-block; white-space: nowrap; }   /* una parola non si spezza mai */
+.chalk .ch { display: inline-block; white-space: pre; }
+.note-c {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  rotate: -2deg;
+  transform-origin: left bottom;
+}
+.note-c .draw { width: 56px; height: 44px; flex: none; }
+.noterow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px 40px;
+  margin-top: 28px;
+}
+.noterow .note { margin-top: 0; }
+.note-contatti { margin-top: 28px; }
+
+/* Linee disegnate a mano (frecce, cerchio attorno all'email) */
+.draw { display: block; overflow: visible; }
+.draw path { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.mailwrap { position: relative; display: inline-block; margin-top: 22px; padding: 12px 22px; }
+.mailwrap .draw { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.mailwrap .mail { margin: 0; }
+
+/* Barra "storie" fissa in alto (la crea JavaScript): un segmento per sezione, si riempie con lo scroll */
+.story-bar {
+  position: fixed;
+  top: calc(8px + env(safe-area-inset-top, 0px));
+  left: var(--gutter);
+  right: var(--gutter);
+  z-index: 20;
+  display: flex;
+  gap: 4px;
+  pointer-events: none;
+}
+.seg { flex: 1; height: 3px; overflow: hidden; border-radius: 2px; background: var(--fg-22); }
+.seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
+
+/* Cursore ad anello con bagliore (lo crea JavaScript, solo con il mouse). Il cursore di sistema resta visibile */
+.cur,
+.cur-glow { position: fixed; left: 0; top: 0; opacity: 0; pointer-events: none; }
+.cur { z-index: 40; width: 34px; height: 34px; margin: -17px 0 0 -17px; }
+.cur i { position: relative; display: block; width: 100%; height: 100%; border: 1px solid var(--accent); border-radius: 50%; }
+.cur i::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: rgba(var(--accent-rgb), 0.14); opacity: 0; }
+.cur.vis { opacity: 0.85; }
+.cur.big i { transform: scale(1.9); }
+.cur.big i::before { opacity: 1; }
+/* Il bagliore sta sotto il testo (z-index -1) */
+.cur-glow { z-index: -1; width: 420px; height: 420px; margin: -210px 0 0 -210px; }
+.cur-glow i { display: block; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(var(--accent-rgb), 0.24), transparent 66%); }
+.cur-glow.vis { opacity: 0.9; }
+.cur-glow.big { opacity: 1; }
+.cur-glow.big i { transform: scale(1.25); }
+.cur-glow.fuori { opacity: 0; }   /* nella hero c'è già la sua luce: una sola luce alla volta */
+
+/* "Per chi lavoro": con il mouse al passaggio; al tocco quando la riga è al centro dello schermo */
+@media (hover: hover) {
+  .row-c:hover::after { transform: scaleX(1); }
+  .row-c:hover h3 { transform: translateX(10px); }
+}
+.row-c.on::after { transform: scaleX(1); }
+.row-c.on h3 { transform: translateX(10px); }
+
+/* Ritratto: leggero parallasse (JavaScript scrive --py) */
+.js .photo-in,
+.js .photo img { transform: translate3d(0, var(--py, 0px), 0) scale(1.06); will-change: transform; }
+
+
+/* ----- Solo se l'utente non ha chiesto di ridurre il movimento ----- */
+@media (prefers-reduced-motion: no-preference) {
+
+  html { scroll-behavior: smooth; }
+
+  /* Comparsa allo scroll: sale di 28px e appare. Il ritardo arriva da --d */
+  .js .rv { opacity: 0; transform: translateY(28px) scale(0.985); }
+  .js .rv.in {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.8s var(--ease) var(--d, 0ms), transform 1s var(--ease) var(--d, 0ms);
+  }
+
+  /* Hero: barra che scende, titolo parola per parola */
+  .js .bar { opacity: 0; transform: translateY(-12px); }
+  .js.go .bar { opacity: 1; transform: none; transition: opacity 0.8s var(--ease), transform 0.9s var(--ease); }
+  .js .hero h1:not(.diviso) { visibility: hidden; }   /* finché le parole non sono divise, per non farle lampeggiare */
+  .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.04em 0.14em; margin: 0 -0.04em -0.14em; }
+  .wi { display: inline-block; }
+  .js .wi { transform: translateY(112%); }
+  .js.go .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 55ms + 180ms); }
+
+  /* Etichette che si scrivono, con cursore che lampeggia poche volte */
+  .label .pw { display: inline-block; white-space: nowrap; }
+  .js .label .c { opacity: 0; }
+  .js .label .c.v { opacity: 1; }
+  .caret { position: relative; display: inline-block; width: 0; height: 1em; vertical-align: -0.12em; }
+  .caret::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 0;
+    width: 0.55em;
+    height: 1em;
+    background: var(--accent);
+    animation: lampeggia 0.9s var(--ease) 3;
+  }
+  @keyframes lampeggia { 50% { opacity: 0; } }
+
+  /* Evidenziatore: ogni parola ha il suo tratto beige che si stende; il testo si inverte con un cambio di opacità */
+  .js .hl { padding: 0; margin: 0; background: none; color: inherit; }
+  .js .hl .hw { position: relative; display: inline-block; isolation: isolate; padding: 0 0.14em; margin: 0 -0.14em; }
+  .js .hl .hw:last-child { margin-right: 0; }      /* il punto dopo l'ultima parola non deve finire sopra il beige */
+  .js .hl .hw::before {
+    content: "";
+    position: absolute;
+    inset: 0.04em 0 0.02em;
+    z-index: -1;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .js .hl .hw .t1 { position: absolute; left: 0.14em; top: 0; color: var(--accent-ink); opacity: 0; white-space: nowrap; }
+  .js .hl.in .hw::before { transform: scaleX(1); transition: transform 0.6s var(--ease) calc(0.35s + var(--w) * 0.2s); }
+  .js .hl.in .hw .t0 { opacity: 0; transition: opacity 0.4s var(--ease) calc(0.5s + var(--w) * 0.2s); }
+  .js .hl.in .hw .t1 { opacity: 1; transition: opacity 0.4s var(--ease) calc(0.5s + var(--w) * 0.2s); }
+
+  /* Numeri: il numero vero resta nel testo ma invisibile (tiene il posto), quello che sale è una copia sovrapposta */
+  .js .num .num-fin { opacity: 0; }
+
+  /* Filetto verticale della scheda della hero */
+  .js .meta::before { transform: scaleY(0); transform-origin: top; }
+  .js .meta.in::before { transform: scaleY(1); transition: transform 1s var(--ease); }
+
+  /* Luce unica dietro il titolo: respira da sola (26 s). Con il mouse la sposta JavaScript */
+  .luce-in { animation: respira 26s var(--ease) infinite alternate; will-change: transform, opacity; }
+  .luce-in.pausa { animation-play-state: paused; }   /* ferma fuori schermo e a scheda nascosta */
+  @keyframes respira {
+    from { transform: translate3d(-8%, -4%, 0) scale(1); opacity: 0.5; }
+    to { transform: translate3d(8%, 6%, 0) scale(1.08); opacity: 0.68; }
+  }
+
+  /* Annotazioni a gesso: lettere che compaiono una per una, linee che si disegnano */
+  .js .chalk .ch { opacity: 0; transform: translateY(7px) rotate(-4deg); }
+  .js .chalk.in .ch {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.3s var(--ease), transform 0.5s var(--ease);
+    transition-delay: calc(var(--d, 0ms) + var(--k) * 34ms);
+  }
+  .js .draw path { stroke-dasharray: 1.03; stroke-dashoffset: 1.03; }
+  .js .draw.in path { stroke-dashoffset: 0; transition: stroke-dashoffset 1.1s var(--ease) var(--d, 0ms); }
+
+  /* Per chi lavoro */
+  .row-c::after { transition: transform 0.9s var(--ease); }
+  .row-c h3 { transition: transform 0.7s var(--ease); }
+
+  /* Cursore e bagliore */
+  .cur { transition: opacity 0.3s var(--ease); }
+  .cur i { transition: transform 0.45s var(--ease); }
+  .cur i::before { transition: opacity 0.3s var(--ease); }
+  .cur-glow { transition: opacity 0.5s var(--ease); }
+  .cur-glow i { transition: transform 0.6s var(--ease); }
+
+  /* Telefono: lo stato entra con i suoi elementi a scalare */
+  .js .scr { transform: translateY(14px); transition: opacity 0.5s var(--ease), transform 0.7s var(--ease); }
+  .js .scr.on { transform: none; }
+  .js .scr .a { opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ease), transform 0.6s var(--ease); }
+  .js .scr.on .a { opacity: 1; transform: none; transition-delay: calc(var(--j, 0) * 80ms + 160ms); }
+  .js .scr .cg .cell { opacity: 0; transform: scale(0.6); transition: opacity 0.4s var(--ease), transform 0.6s var(--ease); }
+  .js .scr.on .cg .cell { opacity: 1; transform: none; transition-delay: calc(var(--j, 0) * 38ms + 260ms); }
+  .js .avatar circle { stroke-dasharray: 1.03; stroke-dashoffset: 1.03; transition: stroke-dashoffset 0.6s var(--ease); }
+  .js .scr.on .avatar circle { stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s var(--ease) 0.5s; }
+  .halo.pulse { animation: pulsa 1.4s var(--ease) 1; }
+  @keyframes pulsa {
+    0% { transform: scale(0.9); opacity: 0.2; }
+    40% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 0.5; }
+  }
+  .js .step { transition: opacity 0.6s var(--ease); }
+
+  .indicatore { transition: transform 0.3s var(--ease); }
+}
+
+
+/* ==========================================================================
+   8. PREFERENZE DELL'UTENTE
+   Con "riduci movimento" ogni cosa sta già nel suo stato finale: le regole
+   di movimento sono tutte nel blocco "no-preference" qui sopra. Questo è
+   solo un'ulteriore rete di sicurezza.
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
