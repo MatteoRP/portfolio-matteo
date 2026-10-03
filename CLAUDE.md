@@ -45,10 +45,14 @@ Questa sezione sostituisce tutte le estetiche precedenti (nero caldo/avorio/oro,
   - Geist Mono 400/500: etichette.
   - Rock Salt 400 (Apache 2.0): annotazioni a gesso, previste nel passo del movimento. Dichiarato nel CSS ma ancora non usato.
   - Si precaricano solo tre file: Inter Tight 800, Inter 400, Instrument Serif corsivo. Ogni famiglia ha un fallback con size-adjust (Arial, Times New Roman, Courier New) per evitare salti di layout.
-- Titoli: Inter Tight, 800 per h1 e 700 per h2, letter-spacing -0.035em, line-height circa 0.96, text-wrap: balance. Le parole chiave in Instrument Serif corsivo, colore accento, 1.08em.
+- Titoli: Inter Tight, 800 per h1 e 700 per h2, letter-spacing -0.035em, line-height circa 0.96, text-wrap: balance. Le parole chiave in Instrument Serif corsivo, colore accento, 1.08em: una o due parole per titolo, mai mezza frase. Nella hero e in "Scrivimi." il corsivo resta com'è.
 - Etichette: Geist Mono maiuscolo, letter-spacing .12em, con una linea sottile davanti.
-- Impaginazione: griglia asimmetrica. L'etichetta mono sta nella colonna stretta a sinistra, il contenuto è spostato a destra.
+- Impaginazione: griglia asimmetrica. L'etichetta mono sta nella colonna stretta a sinistra, il contenuto è spostato a destra. Ogni sezione ha uno schema diverso dalle vicine:
+  - "Cosa risolvo": un blocco unico senza filetti, con una frase grande in Inter Tight 700 e, di lato, il testo breve in colonna stretta.
+  - "Il metodo, in numeri": i quattro passi in colonne affiancate (due per due su telefono), numeri 01-04 in Geist Mono, senza filetti a righe; la striscia 4 / 2 / 4 / 15, più piccola, subito sotto i passi, così le due cose si leggono come una sola sezione.
+  - "Per chi lavoro": l'unica sezione costruita a righe con filetti.
 - Navigazione: barra semplice e non fissa, nome a sinistra e "Scrivimi ↗" a destra (porta a #contatti).
+- Hero: nessun pulsante. L'azione è la riga "Primo passo: call conoscitiva gratuita di 15 minuti", un link a #contatti con freccia SVG.
 - Testo: corpo 18px con interlinea 1.6. Il testo di apertura di una sezione (lead) 19-24px, massimo 34em di larghezza.
 - Leggibilità: nessun testo da leggere sotto 14px, etichette comprese. Eccezione: il testo dentro il telefono-mockup, che è interfaccia disegnata. Contrasto almeno 4.5:1 (3:1 se grande), misurato sul rendering reale e comprese le opacità degli elementi.
 - Ritratto: contenitore 4:5 in bianco e nero (grayscale), sfumato verso il fondo con una mask, con assets/img/ritratto.webp. Finché il file non esiste si vede un segnaposto neutro (nessuna immagine rotta). width/height, loading lazy e alt descrittivo ("Matteo Rapeso, ritratto in bianco e nero").

@@ -366,7 +366,7 @@ dt {
 .btn-o:active { background: var(--fg); color: var(--bg); }
 
 /* Freccia ↗ disegnata con SVG (il font latin non contiene la freccia) */
-.fr { width: 0.9em; height: 0.9em; margin-left: 0.55em; flex: none; }
+.fr { width: 0.9em; height: 0.9em; margin-left: 0.55em; flex: none; vertical-align: -0.05em; }
 
 /* Titoli: Inter Tight. Le parole chiave in Instrument Serif corsivo, colore accento. */
 h1, h2 {
@@ -469,8 +469,10 @@ section {
 }
 .meta dt { margin-bottom: 4px; }
 .meta dd { font-size: 17px; line-height: 1.45; }
+/* "Primo passo": link a #contatti con freccia, l'unica azione della hero (il link-testo ha già la sottolineatura beige) */
+.azione .fr { color: var(--accent); }
 
-/* ----- Righe (Cosa risolvo, Per chi lavoro): filetto sopra, titolo a sinistra, testo a destra ----- */
+/* ----- Per chi lavoro: l'unica sezione costruita a righe (filetto sopra, titolo a sinistra, testo a destra) ----- */
 .rows { margin-top: clamp(32px, 5vw, 56px); }
 .row-c {
   display: grid;
@@ -482,56 +484,69 @@ section {
 .row-c:last-child { border-bottom: 1px solid var(--line); }
 .row-c h3 { font-size: clamp(28px, 4vw, 46px); line-height: 1.02; }
 .row-c .tag { display: block; margin-top: 10px; }
-.row-c p,
-.row-c dd { color: var(--muted); font-size: 17px; max-width: 30em; }
-.row-c dd { margin-top: 6px; }
+.row-c dd { margin-top: 6px; color: var(--muted); font-size: 17px; max-width: 30em; }
 .row-c dt { margin-top: 22px; color: var(--accent); }
 .row-c dt:first-child { margin-top: 0; }
-/* Numero romano in Instrument Serif corsivo */
-.numero { margin-bottom: 14px; font-size: clamp(40px, 5vw, 64px); line-height: 1; }
 .introduzione { margin-top: 28px; }
 
-/* ----- Il metodo, in numeri ----- */
+/* Numeri 01-04 in Geist Mono (Cosa risolvo e i quattro passi) */
+.n { font: 500 14px/1 var(--f-mono); letter-spacing: 0.12em; color: var(--accent); }
+
+/* ----- Cosa risolvo: un blocco unico, senza filetti.
+   Frase grande in Inter Tight 700 e, di lato, il testo breve in colonna stretta. ----- */
+.sec-problemi {
+  grid-template-areas: "label" "frase" "testo";
+  row-gap: 32px;
+}
+.sec-problemi > .label { grid-area: label; }
+.frase {
+  grid-area: frase;
+  max-width: 12em;
+  font-size: clamp(40px, 9vw, 76px);
+}
+.problemi-testo {
+  grid-area: testo;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  max-width: 26rem;
+}
+.problema h3 { margin-top: 14px; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.1; }
+.problema p:last-child { margin-top: 10px; font-size: 17px; color: var(--muted); }
+
+/* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono), senza filetti ----- */
+.passi {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 24px;
+  margin-top: clamp(40px, 6vw, 72px);
+}
+.passo h3 { margin-top: 14px; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.1; }
+.passo p:last-child { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--muted); }
+
+/* La striscia 4 / 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
 .stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: clamp(32px, 5vw, 56px);
-}
-.stat {
-  padding: 22px 16px 6px 0;
-  border-top: 1px solid var(--line);
+  gap: 28px 24px;
+  margin-top: clamp(48px, 7vw, 80px);
 }
 .num {
   display: block;
-  font: 700 clamp(48px, 8vw, 92px)/1 var(--f-display);
+  font: 700 clamp(34px, 5vw, 46px)/1 var(--f-display);
   letter-spacing: -0.04em;
   color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
 .stat p {
-  margin-top: 10px;
+  margin-top: 8px;
   font: 500 14px/1.4 var(--f-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
 }
-.noterow { margin-top: 28px; }
-.note { max-width: 32em; font-size: 15px; color: var(--muted); }
-
-/* I quattro passi (testi esistenti), sotto i numeri */
-.passi { margin-top: clamp(48px, 7vw, 88px); }
-.passo {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  gap: 0 20px;
-  padding-block: 26px 30px;
-  border-top: 1px solid var(--line);
-}
-.passo:last-child { border-bottom: 1px solid var(--line); }
-.passo-numero { font-size: 44px; line-height: 1; }
-.passo h3 { margin-bottom: 12px; }
-.passo p { max-width: 30em; font-size: 17px; color: var(--muted); }
-.rimando { margin-top: 28px; }
+.note { margin-top: 28px; max-width: 32em; font-size: 15px; color: var(--muted); }
+.rimando { margin-top: 20px; }
 
 /* ----- Chi sono ----- */
 .who {
@@ -1117,9 +1132,11 @@ footer p + p { margin-top: 6px; }
 @media (min-width: 860px) {
   .sec { grid-template-columns: minmax(170px, 3fr) 9fr; }
   .hero-grid { grid-template-columns: 7fr 4fr; gap: 80px; }
-  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .sec-problemi { grid-template-areas: "label frase" ". testo"; row-gap: 48px; }
+  .problemi-testo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; max-width: 46rem; }
+  .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
+  .stats { grid-template-columns: repeat(4, auto); justify-content: start; column-gap: 56px; }
   .row-c { grid-template-columns: 5fr 6fr; align-items: start; }
-  .passo { grid-template-columns: 72px minmax(0, 1fr); }
   .who { grid-template-columns: 6fr 5fr; gap: 56px; }
   .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
   .righe > div { grid-template-columns: 12rem minmax(0, 1fr); }
@@ -1158,6 +1175,15 @@ footer p + p { margin-top: 6px; }
 }
 
 @media (min-width: 1100px) {
+  /* Cosa risolvo: etichetta, frase grande e colonna stretta affiancate */
+  .sec-problemi {
+    grid-template-columns: minmax(170px, 3fr) 6fr 3fr;
+    grid-template-areas: "label frase testo";
+    column-gap: 48px;
+  }
+  .frase { font-size: clamp(56px, 5.4vw, 80px); }
+  .problemi-testo { grid-template-columns: minmax(0, 1fr); max-width: none; padding-top: 0.6rem; }
+
   /* Sette giorni affiancati, senza scorrimento */
   .striscia-scorri { overflow-x: visible; }
   .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
