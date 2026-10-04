@@ -554,7 +554,17 @@ h3 {
   color: var(--key);
 }
 
-.lead { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.5; max-width: 34em; }
+/* Testi di apertura: Instrument Serif (tondo), più elegante e meno "da modulo" dell'Inter. Il testo corto resta in Inter. */
+.lead,
+.who .muted {
+  font-family: var(--f-serif);
+  font-weight: 400;
+  font-size: clamp(25px, 3.1vw, 34px);
+  line-height: 1.32;
+  letter-spacing: -0.005em;
+  max-width: 28em;
+}
+.who .muted { font-size: clamp(22px, 2.4vw, 27px); }
 .muted { color: var(--muted); }
 
 /* Sezioni: filetto sopra, molto spazio verticale */
@@ -834,7 +844,7 @@ footer p + p { margin-top: 6px; }
    ========================================================================== */
 
 .case-head { display: grid; gap: 22px; max-width: 54rem; }
-.case-head .lead { font-size: clamp(18px, 2vw, 21px); max-width: 40em; }
+.case-head .lead { font-size: clamp(23px, 2.6vw, 29px); max-width: 38em; }
 .case-head h2 { max-width: 12em; }
 
 /* Etichetta ben visibile: il progetto è dimostrativo */
@@ -937,17 +947,17 @@ footer p + p { margin-top: 6px; }
 
 /* ----- Telefono-mockup: oggetto piatto con bordo beige sottile (nessun vetro) ----- */
 .phone {
-  /* L'oggetto resta scuro su qualsiasi tema: è uno schermo, non una sezione */
-  --bg: #0F1838; --surface: #19245A; --fg: #F6F1E6; --muted: #C3C9E0;
-  --line: rgba(246, 241, 230, 0.18); --accent: #EADFC8; --accent-ink: #0F1838;
-  --accent-rgb: 234, 223, 200; --accent-50: rgba(234, 223, 200, 0.5);
-  color: #F6F1E6;
+  /* Schermo chiaro (crema con testo navy) dentro una cornice blu: resta uguale in ogni sezione */
+  --bg: #FBF8F0; --surface: #EEE6D5; --fg: #1B2A5E; --muted: #46527F;
+  --line: rgba(27, 42, 94, 0.16); --accent: #1A2A63; --accent-ink: #F7F2E8;
+  --accent-rgb: 26, 42, 99; --fg-rgb: 27, 42, 94; --accent-50: rgba(26, 42, 99, 0.5);
+  color: #1B2A5E;
   position: relative;
   width: min(270px, 74vw);
   padding: 7px;
-  border: 1px solid var(--accent-50);
+  border: 1px solid #1A2A63;
   border-radius: 38px;
-  background: #0A1030;
+  background: #1A2A63;
 }
 /* Con JavaScript: su telefono è basso e sfuma in fondo, tagliato; i passi scorrono sotto */
 .js .phone {
@@ -983,7 +993,7 @@ footer p + p { margin-top: 6px; }
   height: calc(7 * var(--u));
   margin-left: calc(-13 * var(--u));
   border-radius: 99px;
-  background: #000;
+  background: #1A2A63;
 }
 
 /* Uno stato del telefono. Senza JS: uno sotto l'altro. Con JS: sovrapposti, se ne vede uno */
@@ -1084,7 +1094,7 @@ footer p + p { margin-top: 6px; }
   border: 1px solid var(--line);
   overflow: hidden;
 }
-.tessera i { display: block; height: max(3px, calc(1.2 * var(--u))); background: rgba(242, 238, 230, 0.3); }
+.tessera i { display: block; height: max(3px, calc(1.2 * var(--u))); background: rgba(var(--fg-rgb), 0.3); }
 .tessera-densa i:nth-child(odd) { width: 100%; }
 .tessera-densa i:nth-child(even) { width: 78%; }
 .tessera-densa i:nth-child(3n) { width: 90%; }
