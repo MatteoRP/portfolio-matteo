@@ -63,44 +63,72 @@
 
   <a class="salta" href="#contenuto">Vai al contenuto</a>
 
-  <header class="wrap bar">
-    <a class="brand" href="#top">Matteo Rapeso</a>
-    <a class="btn-o" href="#contatti">Scrivimi <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+  <!-- Menu in alto, fisso. La barra "storie" (un segmento per sezione) la crea JavaScript dentro questo elemento.
+       Senza JavaScript il menu resta visibile sotto la barra e non è fisso. -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top">Matteo Rapeso</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Apri il menu"><span></span><span></span></button>
+      <nav class="nav-menu" id="menu" aria-label="Principale">
+        <ul>
+          <li><a href="#metodo">Metodo</a></li>
+          <li><a href="#clienti">Per chi lavoro</a></li>
+          <li><a href="#caso-studio">Caso studio</a></li>
+          <li><a href="#chi-sono">Chi sono</a></li>
+        </ul>
+      </nav>
+      <a class="btn-o nav-cta" href="#contatti">Scrivimi <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+    </div>
   </header>
 
   <main id="contenuto">
 
-    <!-- ============ 1. HERO (testo del riferimento) ============ -->
-    <section class="hero" id="top" aria-labelledby="titolo-hero">
-      <!-- Luce beige dietro il titolo: respira da sola e, con il mouse, segue il puntatore -->
+    <!-- ============ 1. HERO: presentazione personale ============ -->
+    <section class="hero sez-scura" id="top" aria-labelledby="titolo-hero">
+      <!-- Luce dietro il titolo: respira da sola e, con il mouse, segue il puntatore -->
       <div class="luce" aria-hidden="true"><div class="luce-in"></div></div>
-      <div class="wrap">
-        <div class="toprow">
-          <p class="label">Strategia e contenuti per profili social</p>
-          <!-- Annotazione a gesso: il testo è scritto qui, JavaScript lo anima lettera per lettera -->
-          <div class="note-c">
-            <span class="chalk" style="--d:1100ms">ciao, sono Matteo</span>
-            <svg class="draw" viewBox="0 0 56 44" aria-hidden="true" focusable="false" style="--d:1500ms"><path pathLength="1" d="M4 8 C 22 2, 46 14, 50 36"/><path pathLength="1" d="M40 30 L50 38 L53 24"/></svg>
+      <div class="wrap hero-in">
+        <div class="hero-testo">
+          <div class="toprow">
+            <p class="label">Strategia e contenuti per profili social</p>
+            <!-- Annotazione a gesso: il testo è scritto qui, JavaScript lo anima lettera per lettera -->
+            <div class="note-c">
+              <span class="chalk" style="--d:1100ms">piacere di conoscerti</span>
+              <svg class="draw" viewBox="0 0 56 44" aria-hidden="true" focusable="false" style="--d:1500ms"><path pathLength="1" d="M4 8 C 22 2, 46 14, 50 36"/><path pathLength="1" d="M40 30 L50 38 L53 24"/></svg>
+            </div>
+          </div>
+
+          <h1 id="titolo-hero">Sono Matteo. Costruisco strategia e contenuti perché l’attenzione su un profilo possa diventare <em class="it">contatti, prenotazioni o iscrizioni.</em></h1>
+
+          <p class="lead hero-lead rv" style="--d:500ms">Ti mostro il metodo, <span class="hl">non risultati inventati</span>. Il sito racconta come lavoro con un caso dimostrativo: audit, strategia, calendario e post di esempio.</p>
+
+          <div class="cta rv" style="--d:600ms">
+            <a class="btn-p" href="#contatti">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+            <a class="link-testo" href="#caso-studio">Guarda il caso studio</a>
+          </div>
+
+          <div class="hero-per rv" style="--d:750ms">
+            <p class="piccolo">Lavoro con</p>
+            <ul class="chips" role="list">
+              <li>Creator</li>
+              <li>Attività locali</li>
+              <li>Startup e brand digitali</li>
+            </ul>
           </div>
         </div>
 
-        <h1 id="titolo-hero">L’attenzione sul tuo profilo può diventare <em class="it">contatti, prenotazioni o iscrizioni.</em></h1>
-
-        <div class="hero-grid">
-          <div class="rv" style="--d:500ms">
-            <p class="lead">Ti mostro il metodo, <span class="hl">non risultati inventati</span>. Il sito racconta come lavoro con un caso dimostrativo: audit, strategia, calendario e post di esempio.</p>
+        <!-- RITRATTO: per inserire la foto basta salvare il file in assets/img/ritratto.webp (formato verticale 4:5, ad esempio 800×1000 px, sotto i 150 KB).
+             Finché il file non c'è, tutto il riquadro sparisce e la hero resta solo testo. Sulla foto vera niente parallasse. -->
+        <figure class="ritratto rv" style="--d:300ms">
+          <div class="photo">
+            <img src="assets/img/ritratto.webp" alt="Matteo Rapeso, ritratto in bianco e nero" width="800" height="1000" decoding="async" fetchpriority="high" onerror="this.closest('figure').remove()">
           </div>
-          <dl class="meta">
-            <div><dt>Ruolo</dt><dd>Strategia e contenuti per profili social</dd></div>
-            <div><dt>Per chi</dt><dd>Creator, attività locali, startup e brand digitali</dd></div>
-            <div><dt>Primo passo</dt><dd><a class="link-testo azione" href="#contatti">Call conoscitiva gratuita di 15 minuti <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a></dd></div>
-          </dl>
-        </div>
+        </figure>
       </div>
     </section>
 
     <!-- ============ 2. COSA RISOLVO ============ -->
-    <section id="problemi" aria-labelledby="titolo-problemi">
+    <section class="sez-chiara" id="problemi" aria-labelledby="titolo-problemi">
       <div class="wrap">
         <!-- Un blocco unico, senza filetti: etichetta, frase grande e, di lato, il testo breve in colonna stretta -->
         <div class="sec sec-problemi">
@@ -126,7 +154,7 @@
          Quattro passi in colonne affiancate (testi esistenti), poi la striscia dei numeri del riferimento, più piccola:
          le due cose si leggono come una sola sezione. La striscia ha tre numeri (2, 4, 15): il "4 passi di lavoro" è stato tolto
          perché ripeteva le quattro colonne qui sopra. -->
-    <section id="metodo" aria-labelledby="titolo-metodo">
+    <section class="sez-scura" id="metodo" aria-labelledby="titolo-metodo">
       <div class="wrap">
         <div class="sec">
           <p class="label rv">Il metodo, in numeri</p>
@@ -174,7 +202,7 @@
     </section>
 
     <!-- ============ 4. PER CHI LAVORO ============ -->
-    <section id="clienti" aria-labelledby="titolo-clienti">
+    <section class="sez-chiara" id="clienti" aria-labelledby="titolo-clienti">
       <div class="wrap">
         <div class="sec">
           <p class="label rv">Per chi lavoro</p>
@@ -228,7 +256,7 @@
     </section>
 
     <!-- ============ 5. CASO STUDIO DIMOSTRATIVO (contenuti invariati: cambia solo come si muovono) ============ -->
-    <section id="caso-studio" aria-labelledby="titolo-caso">
+    <section class="sez-scura" id="caso-studio" aria-labelledby="titolo-caso">
       <div class="wrap">
 
         <div class="case-head">
@@ -657,34 +685,23 @@
       </div>
     </section>
 
-    <!-- ============ 6. CHI SONO ============ -->
-    <section id="chi-sono" aria-labelledby="titolo-chi">
+    <!-- ============ 6. CHI SONO (il ritratto sta nella hero) ============ -->
+    <section class="sez-chiara" id="chi-sono" aria-labelledby="titolo-chi">
       <div class="wrap">
         <div class="sec">
           <p class="label rv">Chi sono</p>
           <div class="who">
-            <div>
-              <h2 class="rv" id="titolo-chi">Matteo <span class="it">Rapeso.</span></h2>
-              <p class="lead rv" style="--d:100ms">Mi occupo di strategia e contenuti per profili social. Analizzo come un profilo si presenta, definisco una linea editoriale, pianifico i contenuti e rivedo il lavoro sui dati disponibili.</p>
-              <p class="muted rv" style="--d:160ms">Mi rivolgo a creator, attività locali e startup e brand digitali.</p>
-              <p class="muted rv" style="--d:220ms">Questo sito è il mio primo progetto: non mostra clienti né risultati reali, ma il metodo con cui lavoro, applicato a un caso dimostrativo.</p>
-            </div>
-
-            <!-- RITRATTO: per inserire la foto basta salvare il file in assets/img/ritratto.webp (formato verticale 4:5, ad esempio 800×1000 px, sotto i 150 KB).
-                 Finché il file non c'è, resta visibile il segnaposto grigio qui sotto. -->
-            <figure class="ritratto rv" style="--d:120ms">
-              <div class="photo">
-                <div class="photo-in" aria-hidden="true"></div>
-                <img src="assets/img/ritratto.webp" alt="Matteo Rapeso, ritratto in bianco e nero" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()">
-              </div>
-            </figure>
+            <h2 class="rv" id="titolo-chi">Matteo <span class="it">Rapeso.</span></h2>
+            <p class="lead rv" style="--d:100ms">Mi occupo di strategia e contenuti per profili social. Analizzo come un profilo si presenta, definisco una linea editoriale, pianifico i contenuti e rivedo il lavoro sui dati disponibili.</p>
+            <p class="muted rv" style="--d:160ms">Mi rivolgo a creator, attività locali e startup e brand digitali.</p>
+            <p class="muted rv" style="--d:220ms">Questo sito è il mio primo progetto: non mostra clienti né risultati reali, ma il metodo con cui lavoro, applicato a un caso dimostrativo.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============ 7. CONTATTI ============ -->
-    <section id="contatti" aria-labelledby="titolo-contatti">
+    <section class="sez-scura" id="contatti" aria-labelledby="titolo-contatti">
       <div class="wrap">
         <div class="sec">
           <p class="label rv">Contatti</p>
@@ -711,7 +728,7 @@
 
   </main>
 
-  <footer>
+  <footer class="sez-scura">
     <div class="wrap">
       <p>© 2026 Matteo Rapeso. Nessun cookie, nessun tracker.</p>
       <p>Numerella è un progetto dimostrativo: attività e dati fittizi.</p>

@@ -12,7 +12,7 @@
    3. Righe di "Per chi lavoro" al tocco
    4. Luce della hero e cursore ad anello (solo mouse)
    5. Storia del caso studio (telefono)
-   6. Scroll: barra "storie", parallasse della foto, stato del telefono
+   6. Menu in alto, scroll: barra "storie", voce attiva, stato del telefono
    ========================================================================== */
 
 (function () {
@@ -218,7 +218,7 @@
       tutti('.hero .label').forEach(preparaEtichetta);
       tutti('.num').forEach(preparaNumero);
 
-      var bersagli = tutti('.rv, .label, .num, .hl, .meta, .chalk:not(.cnote), .draw');
+      var bersagli = tutti('.rv, .label, .num, .hl, .chalk:not(.cnote), .draw');
       var comparsa = function (elemento) {
         elemento.classList.add('in');
         if (elemento.classList.contains('label')) scrivi(elemento);
@@ -324,9 +324,11 @@
         var sopra = e.target && e.target.closest ? e.target : null;
         var grande = !!(sopra && sopra.closest('a, button, summary, .row-c'));
         var nellaHero = !!(sopra && sopra.closest('.hero'));
+        var suChiaro = !!(sopra && sopra.closest('.sez-chiara'));
         anello.classList.add('vis');
         bagliore.classList.add('vis');
         anello.classList.toggle('big', grande);
+        anello.classList.toggle('su-chiaro', suChiaro);
         bagliore.classList.toggle('big', grande);
         bagliore.classList.toggle('fuori', nellaHero);   // nella hero c'è già la sua luce
         if (!cursoreInCorsa) { cursoreInCorsa = true; requestAnimationFrame(giraCursore); }
@@ -392,6 +394,7 @@
        ====================================================================== */
 
     var sezioni = tutti('main > section');
+    var menu = document.getElementById('nav');
     var riempimenti = [];
     var barra = crea('div', 'story-bar');
     barra.setAttribute('aria-hidden', 'true');
@@ -402,13 +405,32 @@
       barra.appendChild(segmento);
       riempimenti.push(riempimento);
     });
-    document.body.appendChild(barra);
+    (menu || document.body).appendChild(barra);
 
-    var foto = document.querySelector('.photo');
+    // Voce del menu della sezione in lettura (una per id di sezione)
+    var vociMenu = {};
+    tutti('.nav-menu a').forEach(function (a) { vociMenu[a.getAttribute('href').slice(1)] = a; });
+    var voceCorrente = null;
+
+    // Pulsante "menu" sul telefono: apre e chiude l'elenco. Si chiude con Esc, con un tocco su una voce o sul resto della pagina
+    var pulsante = document.querySelector('.menu-btn');
+    function apriMenu(si) {
+      if (!menu || !pulsante) return;
+      menu.classList.toggle('aperto', si);
+      pulsante.setAttribute('aria-expanded', si ? 'true' : 'false');
+      pulsante.setAttribute('aria-label', si ? 'Chiudi il menu' : 'Apri il menu');
+    }
+    if (pulsante && menu) {
+      pulsante.addEventListener('click', function () { apriMenu(!menu.classList.contains('aperto')); });
+      menu.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.nav-menu a')) apriMenu(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') apriMenu(false); });
+      document.addEventListener('click', function (e) { if (!menu.contains(e.target)) apriMenu(false); });
+    }
 
     function misura() {
       var y = window.scrollY;
       misure.vh = window.innerHeight;
+      misure.barra = menu ? menu.offsetHeight : 0;
       misure.larga = window.innerWidth >= 860;
       misure.massimo = Math.max(0, document.documentElement.scrollHeight - misure.vh);
       misure.sezioni = sezioni.map(function (s) {
@@ -426,10 +448,6 @@
         misure.storiaH = rs.height;
         misure.stageH = stage.offsetHeight;
         misure.passi = passi.map(function (p) { return p.getBoundingClientRect().top + y; });
-      }
-      if (foto) {
-        var rf = foto.getBoundingClientRect();
-        misure.foto = { top: rf.top + y, h: rf.height };
       }
     }
 
@@ -450,10 +468,14 @@
         if (valore !== ultimaBarra[i]) { riempimenti[i].style.transform = valore; ultimaBarra[i] = valore; }
       });
 
-      // Ritratto: leggero parallasse, solo transform (con "riduci movimento" non si muove)
-      if (foto && !RIDOTTO && misure.foto) {
-        var q = (misure.foto.top + misure.foto.h / 2 - y - vh / 2) / vh;
-        if (Math.abs(q) < 1.3) foto.style.setProperty('--py', Math.max(-15, Math.min(15, q * -30)).toFixed(1) + 'px');
+      // Voce del menu: l'ultima sezione la cui cima ha superato il 40% dello schermo
+      var attiva = 0;
+      misure.sezioni.forEach(function (s, i) { if (s.top <= y + vh * 0.4) attiva = i; });
+      var voce = vociMenu[sezioni[attiva].id] || null;
+      if (voce !== voceCorrente) {
+        if (voceCorrente) voceCorrente.removeAttribute('aria-current');
+        if (voce) voce.setAttribute('aria-current', 'location');
+        voceCorrente = voce;
       }
 
       // Telefono: quale passo si sta leggendo?
@@ -465,9 +487,9 @@
           if (misure.larga) {
             soglia = y + vh * 0.55;
           } else {
-            // Su telefono lo stage è fisso in alto: sotto il suo bordo inferiore (+ 40px) c'è il testo del passo
-            var bordoStage = Math.max(misure.stageH, misure.storiaTop + misure.stageH - y);
-            soglia = y + bordoStage + 40;
+            // Su telefono lo stage è fisso sotto il menu: sotto il suo bordo inferiore (+ 40px) c'è il testo del passo
+            var cimaStage = Math.max(misure.barra, misure.storiaTop - y);
+            soglia = y + cimaStage + misure.stageH + 40;
           }
           var attivo = 0;
           misure.passi.forEach(function (cima, i) { if (cima <= soglia) attivo = i; });
