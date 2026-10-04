@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Matteo Rapeso | Strategia e contenuti per profili social</title>
   <meta name="description" content="Strategia e contenuti per profili social: creator, attività locali, startup. Il metodo è mostrato in un caso studio dimostrativo con dati fittizi.">
-  <meta name="theme-color" content="#0C1536">
+  <meta name="theme-color" content="#1A2A63">
   <meta name="color-scheme" content="dark">
 
   <!-- Condivisione (Open Graph). Per og:image e og:url servono indirizzi assoluti:
@@ -71,10 +71,10 @@
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Apri il menu"><span></span><span></span></button>
       <nav class="nav-menu" id="menu" aria-label="Principale">
         <ul>
+          <li><a href="#chi-sono">Chi sono</a></li>
           <li><a href="#metodo">Metodo</a></li>
           <li><a href="#clienti">Per chi lavoro</a></li>
           <li><a href="#caso-studio">Caso studio</a></li>
-          <li><a href="#chi-sono">Chi sono</a></li>
         </ul>
       </nav>
       <a class="btn-o nav-cta" href="#contatti">Scrivimi <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
@@ -113,12 +113,30 @@
           <div class="photo">
             <img src="assets/img/ritratto.webp" alt="Matteo Rapeso, ritratto in bianco e nero" width="800" height="1000" decoding="async" fetchpriority="high" onerror="this.closest('figure').remove()">
           </div>
+          <!-- Schede che compaiono attorno alla foto: illustrano i passi del metodo, non sono risultati. Sono decorative. -->
+          <p class="pop pop-1" aria-hidden="true"><b>01</b> Audit</p>
+          <p class="pop pop-2" aria-hidden="true"><b>02</b> Strategia</p>
+          <p class="pop pop-3" aria-hidden="true"><b>03</b> Calendario</p>
         </figure>
       </div>
     </section>
 
+    <!-- ============ 2. CHI SONO (il ritratto sta nella hero) ============ -->
+    <section class="sez-chiara" id="chi-sono" aria-labelledby="titolo-chi">
+      <div class="wrap">
+        <div class="sec">
+          <p class="label rv">Chi sono</p>
+          <div class="who">
+            <h2 class="rv" id="titolo-chi">Matteo <span class="it">Rapeso.</span></h2>
+            <p class="lead rv" style="--d:100ms">Mi occupo di strategia e contenuti per profili social. Analizzo come un profilo si presenta, definisco una linea editoriale, pianifico i contenuti e rivedo il lavoro sui dati disponibili.</p>
+            <p class="muted rv" style="--d:160ms">Questo sito è il mio primo progetto: non mostra clienti né risultati reali, ma il metodo con cui lavoro, applicato a un caso dimostrativo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ 2. COSA RISOLVO ============ -->
-    <section class="sez-chiara" id="problemi" aria-labelledby="titolo-problemi">
+    <section class="sez-scura" id="problemi" aria-labelledby="titolo-problemi">
       <div class="wrap">
         <!-- Un blocco unico, senza filetti: etichetta, frase grande e, di lato, il testo breve in colonna stretta -->
         <div class="sec sec-problemi">
@@ -144,7 +162,7 @@
          Quattro passi in colonne affiancate (testi esistenti), poi la striscia dei numeri del riferimento, più piccola:
          le due cose si leggono come una sola sezione. La striscia ha tre numeri (2, 4, 15): il "4 passi di lavoro" è stato tolto
          perché ripeteva le quattro colonne qui sopra. -->
-    <section class="sez-scura" id="metodo" aria-labelledby="titolo-metodo">
+    <section class="sez-chiara" id="metodo" aria-labelledby="titolo-metodo">
       <div class="wrap">
         <div class="sec">
           <p class="label rv">Il metodo, in numeri</p>
@@ -184,7 +202,7 @@
     </section>
 
     <!-- ============ 4. PER CHI LAVORO ============ -->
-    <section class="sez-chiara" id="clienti" aria-labelledby="titolo-clienti">
+    <section class="sez-scura" id="clienti" aria-labelledby="titolo-clienti">
       <div class="wrap">
         <div class="sec">
           <p class="label rv">Per chi lavoro</p>
@@ -273,7 +291,7 @@
     </section>
 
     <!-- ============ 5. CASO STUDIO DIMOSTRATIVO (contenuti invariati: cambia solo come si muovono) ============ -->
-    <section class="sez-scura" id="caso-studio" aria-labelledby="titolo-caso">
+    <section class="sez-chiara" id="caso-studio" aria-labelledby="titolo-caso">
       <div class="wrap">
 
         <div class="case-head">
@@ -544,6 +562,12 @@
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Piano di lavoro</p>
             <h3 id="t-p-calendario">Calendario di due settimane</h3>
+            <ul class="legenda-cal" role="list" aria-label="Pilastri">
+              <li><span class="pil p1" aria-hidden="true">1</span>Le parole dei soldi</li>
+              <li><span class="pil p2" aria-hidden="true">2</span>Leggere un documento</li>
+              <li><span class="pil p3" aria-hidden="true">3</span>Errori di ragionamento</li>
+              <li><span class="pil p4" aria-hidden="true">4</span>Domande vere</li>
+            </ul>
             <div class="calendario-caso">
             <div class="settimana">
             <h4>Settimana 1</h4>
@@ -555,21 +579,21 @@
             <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
             <span class="formato">Carosello</span>
             <span class="tema">Cos’è l’inflazione, in 6 slide</span>
-            <span class="pilastro-nome">Le parole dei soldi</span>
+            <span class="pil p1" aria-hidden="true">1</span><span class="sr">Pilastro: Le parole dei soldi</span>
             </li>
             <li class="cella">
             <span class="giorno">Mar</span>
             <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
             <span class="formato">Storia</span>
             <span class="tema">Sondaggio: quale parola dei soldi ti suona più oscura?</span>
-            <span class="pilastro-nome">Raccolta di temi</span>
+            <span class="sr">Raccolta di temi</span>
             </li>
             <li class="cella">
             <span class="giorno">Mer</span>
             <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
             <span class="formato">Reel di 30"</span>
             <span class="tema">Interesse semplice e composto, con un esempio numerico dichiarato come tale</span>
-            <span class="pilastro-nome">Le parole dei soldi</span>
+            <span class="pil p1" aria-hidden="true">1</span><span class="sr">Pilastro: Le parole dei soldi</span>
             </li>
             <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
             <li class="cella">
@@ -577,7 +601,7 @@
             <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
             <span class="formato">Carosello</span>
             <span class="tema">Le voci principali di una busta paga</span>
-            <span class="pilastro-nome">Leggere un documento</span>
+            <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
             </li>
             <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
             <li class="cella">
@@ -585,7 +609,7 @@
             <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
             <span class="formato">Newsletter</span>
             <span class="tema">Il glossario della settimana e le risposte al sondaggio</span>
-            <span class="pilastro-nome">Tutti i pilastri</span>
+            <span class="sr">Tutti i pilastri</span>
             </li>
             </ol>
             </div>
@@ -600,21 +624,21 @@
             <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
             <span class="formato">Carosello</span>
             <span class="tema">TAN e TAEG: due sigle, due cose diverse</span>
-            <span class="pilastro-nome">Leggere un documento</span>
+            <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
             </li>
             <li class="cella">
             <span class="giorno">Mar</span>
             <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
             <span class="formato">Storia</span>
             <span class="tema">Domanda aperta: cosa vorresti capire di un preventivo?</span>
-            <span class="pilastro-nome">Domande vere</span>
+            <span class="pil p4" aria-hidden="true">4</span><span class="sr">Pilastro: Domande vere</span>
             </li>
             <li class="cella">
             <span class="giorno">Mer</span>
             <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
             <span class="formato">Reel di 30"</span>
             <span class="tema">L’effetto gregge: perché ci muoviamo come gli altri</span>
-            <span class="pilastro-nome">Errori di ragionamento</span>
+            <span class="pil p3" aria-hidden="true">3</span><span class="sr">Pilastro: Errori di ragionamento</span>
             </li>
             <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
             <li class="cella">
@@ -622,7 +646,7 @@
             <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
             <span class="formato">Carosello</span>
             <span class="tema">Perché non rispondiamo a «cosa dovrei fare?»</span>
-            <span class="pilastro-nome">Domande vere</span>
+            <span class="pil p4" aria-hidden="true">4</span><span class="sr">Pilastro: Domande vere</span>
             </li>
             <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
             <li class="cella">
@@ -630,7 +654,7 @@
             <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
             <span class="formato">Newsletter</span>
             <span class="tema">Come si legge un preventivo</span>
-            <span class="pilastro-nome">Leggere un documento</span>
+            <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
             </li>
             </ol>
             </div>
@@ -733,20 +757,6 @@
         </dialog>
 
         <p class="nota-fittizio rv">Numerella è un progetto dimostrativo: attività e dati fittizi. Non descrive un cliente e non presenta risultati.</p>
-      </div>
-    </section>
-
-    <!-- ============ 6. CHI SONO (il ritratto sta nella hero) ============ -->
-    <section class="sez-chiara" id="chi-sono" aria-labelledby="titolo-chi">
-      <div class="wrap">
-        <div class="sec">
-          <p class="label rv">Chi sono</p>
-          <div class="who">
-            <h2 class="rv" id="titolo-chi">Matteo <span class="it">Rapeso.</span></h2>
-            <p class="lead rv" style="--d:100ms">Mi occupo di strategia e contenuti per profili social. Analizzo come un profilo si presenta, definisco una linea editoriale, pianifico i contenuti e rivedo il lavoro sui dati disponibili.</p>
-            <p class="muted rv" style="--d:160ms">Questo sito è il mio primo progetto: non mostra clienti né risultati reali, ma il metodo con cui lavoro, applicato a un caso dimostrativo.</p>
-          </div>
-        </div>
       </div>
     </section>
 
