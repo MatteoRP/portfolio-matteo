@@ -9,7 +9,7 @@
    Indice:
    1. Preparazione
    2. Hero e comparse allo scroll
-   3. Righe di "Per chi lavoro" al tocco
+   3. Righe di "Per chi lavoro" al tocco, e popup dei dettagli
    4. Luce della hero e cursore ad anello (solo mouse)
    5. Storia del caso studio (telefono)
    6. Menu in alto, scroll: barra "storie", voce attiva, stato del telefono
@@ -255,6 +255,32 @@
         voci.forEach(function (voce) { voce.target.classList.toggle('on', voce.isIntersecting); });
       }, { rootMargin: '-42% 0px -42% 0px' });
       tutti('.row-c').forEach(function (r) { righe.observe(r); });
+    }
+
+    /* ======================================================================
+       3b. POPUP
+       I dettagli si aprono in un <dialog>. Senza JavaScript (o dove <dialog> non esiste) restano contenuti normali nella pagina.
+       ====================================================================== */
+
+    if (typeof HTMLDialogElement === 'undefined' || !document.createElement('dialog').showModal) {
+      radice.classList.add('no-popup');
+    } else {
+      tutti('[data-apri]').forEach(function (bottone) {
+        bottone.addEventListener('click', function () {
+          var finestra = document.getElementById(bottone.getAttribute('data-apri'));
+          if (!finestra) return;
+          finestra.showModal();
+          finestra.scrollTop = 0;
+          radice.classList.add('blocca');     // la pagina sotto non scorre
+        });
+      });
+      tutti('dialog').forEach(function (finestra) {
+        // Si chiude con la X, con Esc (lo fa il browser) o con un tocco fuori dalla carta
+        finestra.addEventListener('click', function (e) {
+          if (e.target === finestra || (e.target.closest && e.target.closest('[data-chiudi]'))) finestra.close();
+        });
+        finestra.addEventListener('close', function () { radice.classList.remove('blocca'); });
+      });
     }
 
     /* ======================================================================

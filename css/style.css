@@ -233,26 +233,32 @@
    ========================================================================== */
 
 :root {
-  /* Tema "nero": nero caldo e beige */
-  --d-bg: #0B0B0A;
-  --d-surface: #131311;
+  /* Tema di base: blu navy e beige. Sfondi con una sfumatura delicata (colori --*-g1/g2 e alone --*-hi) */
+  --d-bg: #0C1536;
+  --d-surface: #131D45;
   --d-fg: #F2EEE6;
-  --d-muted: #BEBAB2;
-  --d-line: rgba(242, 238, 230, 0.16);
+  --d-muted: #C3C8DA;
+  --d-line: rgba(242, 238, 230, 0.2);
   --d-accent: #E3D6BF;
-  --d-accent-ink: #0B0B0A;
+  --d-accent-ink: #0C1536;
   --d-rgb: 227, 214, 191;       /* l'accento in numeri: serve per le luci trasparenti */
   --d-fg-rgb: 242, 238, 230;
+  --d-hi: rgba(58, 86, 180, 0.22);
+  --d-g1: #101C4B;
+  --d-g2: #0C1536;
 
   --l-bg: #E3D6BF;
   --l-surface: #D8CAAE;
-  --l-fg: #0B0B0A;
-  --l-muted: #3A372F;
-  --l-line: rgba(11, 11, 10, 0.22);
-  --l-accent: #0B0B0A;
+  --l-fg: #0C1536;
+  --l-muted: #2E3859;
+  --l-line: rgba(12, 21, 54, 0.24);
+  --l-accent: #0C1536;
   --l-accent-ink: #E3D6BF;
-  --l-rgb: 11, 11, 10;
-  --l-fg-rgb: 11, 11, 10;
+  --l-rgb: 12, 21, 54;
+  --l-fg-rgb: 12, 21, 54;
+  --l-hi: rgba(255, 250, 236, 0.55);
+  --l-g1: #E7DBC6;
+  --l-g2: #DCCEB2;
 
   --glow-rgb: 227, 214, 191;    /* colore delle luci (hero, cursore, telefono) */
 
@@ -282,12 +288,13 @@
   color-scheme: dark;
 }
 
-/* Tema "navy": blu notte e beige */
-:root[data-tema="navy"] {
-  --d-bg: #0C1536; --d-surface: #131D45; --d-fg: #F2EEE6; --d-muted: #C3C8DA;
-  --d-line: rgba(242, 238, 230, 0.2); --d-accent: #E3D6BF; --d-accent-ink: #0C1536;
-  --l-fg: #0C1536; --l-muted: #2E3859; --l-line: rgba(12, 21, 54, 0.24);
-  --l-accent: #0C1536; --l-accent-ink: #E3D6BF; --l-rgb: 12, 21, 54; --l-fg-rgb: 12, 21, 54;
+/* Tema "nero": nero caldo e beige, sfondi piatti */
+:root[data-tema="nero"] {
+  --d-bg: #0B0B0A; --d-surface: #131311; --d-fg: #F2EEE6; --d-muted: #BEBAB2;
+  --d-line: rgba(242, 238, 230, 0.16); --d-accent: #E3D6BF; --d-accent-ink: #0B0B0A; --d-rgb: 227, 214, 191; --d-fg-rgb: 242, 238, 230;
+  --l-bg: #E3D6BF; --l-surface: #D8CAAE; --l-fg: #0B0B0A; --l-muted: #3A372F; --l-line: rgba(11, 11, 10, 0.22);
+  --l-accent: #0B0B0A; --l-accent-ink: #E3D6BF; --l-rgb: 11, 11, 10; --l-fg-rgb: 11, 11, 10;
+  --d-hi: transparent; --d-g1: var(--d-bg); --d-g2: var(--d-bg); --l-hi: transparent; --l-g1: var(--l-bg); --l-g2: var(--l-bg);
 }
 /* Tema "royal": blu royal e beige */
 :root[data-tema="royal"] {
@@ -295,6 +302,7 @@
   --d-line: rgba(242, 238, 230, 0.26); --d-accent: #E3D6BF; --d-accent-ink: #101C5C; --passo-op: 0.84;
   --l-fg: #101C5C; --l-muted: #2B3772; --l-line: rgba(16, 28, 92, 0.26);
   --l-accent: #101C5C; --l-accent-ink: #E3D6BF; --l-rgb: 16, 28, 92; --l-fg-rgb: 16, 28, 92;
+  --d-hi: transparent; --d-g1: var(--d-bg); --d-g2: var(--d-bg); --l-hi: transparent; --l-g1: var(--l-bg); --l-g2: var(--l-bg);
 }
 /* Tema "chiaro": carta e beige, testo scuro (non è un clone di nessun sito: stessi font e dettagli del resto) */
 :root[data-tema="chiaro"] {
@@ -304,12 +312,14 @@
   --l-bg: #F6F2E9; --l-surface: #ECE5D4; --l-fg: #14130F; --l-muted: #4A463C;
   --l-line: rgba(20, 19, 15, 0.2); --l-accent: #14130F; --l-accent-ink: #F6F2E9;
   --l-rgb: 20, 19, 15; --l-fg-rgb: 20, 19, 15;
+  --d-hi: transparent; --d-g1: var(--d-bg); --d-g2: var(--d-bg); --l-hi: transparent; --l-g1: var(--l-bg); --l-g2: var(--l-bg);
   --glow-rgb: 255, 253, 247; --passo-op: 0.86;
   color-scheme: light;
 }
 
 /* Sezione chiara: stessi nomi, valori del ruolo chiaro. Nel tema "chiaro" anche il menu usa il ruolo chiaro. */
 .sez-chiara,
+dialog,
 :root[data-tema="chiaro"] .nav {
   --bg: var(--l-bg);
   --surface: var(--l-surface);
@@ -322,7 +332,31 @@
   --fg-rgb: var(--l-fg-rgb);
   color-scheme: light;
 }
-.sez-chiara { background: var(--bg); color: var(--fg); }   /* le sezioni scure restano trasparenti: sotto c'è lo sfondo della pagina (e la luce del cursore) */
+/* Sfumature di sfondo, molto delicate. Le sezioni scure restano trasparenti e dipingono la sfumatura su ::before (z-index -1):
+   così sotto c'è sempre lo sfondo della pagina e la luce del cursore resta visibile. Quelle chiare hanno la sfumatura sul proprio sfondo. */
+section, footer { position: relative; }
+.sez-chiara {
+  color: var(--fg);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
+    linear-gradient(180deg, var(--l-g1), var(--l-g2));
+}
+section.sez-scura::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 70% at var(--gx, 85%) var(--gy, 0%), var(--d-hi), transparent 70%),
+    linear-gradient(180deg, var(--d-g1), var(--d-g2));
+}
+#caso-studio::before { background: none; }   /* qui c'è il telefono fisso: sfondo piatto, così non si vedono bande */
+#metodo { --gx: 10%; --gy: 100%; }
+#contatti { --gx: 70%; --gy: 100%; }
+#clienti { --gx: 85%; --gy: 0%; }
+#chi-sono { --gx: 20%; --gy: 100%; }
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -619,19 +653,6 @@ section { padding-block: clamp(72px, 11vw, 144px); }
   line-height: 1;
 }
 .hero-lead { margin-top: clamp(24px, 3.4vw, 36px); }
-.hero-per { margin-top: 28px; }
-.piccolo { font: 500 14px/1.4 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.chips li {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 0 16px;
-  border: 1px solid var(--line);
-  border-radius: 99px;
-  font-size: 15px;
-  line-height: 1.2;
-}
 .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 32px; }
 /* Evidenziatore: la frase onesta della hero, già nel suo stato finale */
 .hl {
@@ -667,9 +688,6 @@ section { padding-block: clamp(72px, 11vw, 144px); }
 }
 .row-c h3 { font-size: clamp(28px, 4vw, 46px); line-height: 1.02; }
 .row-c .tag { display: block; margin-top: 10px; }
-.row-c dd { margin-top: 6px; color: var(--muted); font-size: 17px; max-width: 30em; }
-.row-c dt { margin-top: 22px; color: var(--accent); }
-.row-c dt:first-child { margin-top: 0; }
 .introduzione { margin-top: 28px; }
 
 /* Numeri 01-04 in Geist Mono (Cosa risolvo e i quattro passi) */
@@ -832,8 +850,7 @@ footer p + p { margin-top: 6px; }
 .scheda dd { margin-top: 10px; max-width: 30em; }
 
 /* Sotto la storia: strategia e approfondimenti, ognuno con il suo filetto e il suo spazio */
-.strategia,
-.blocchi {
+.strategia {
   margin-top: clamp(56px, 8vw, 110px);
   padding-top: clamp(28px, 4vw, 48px);
   border-top: 1px solid var(--line);
@@ -1271,55 +1288,131 @@ footer p + p { margin-top: 6px; }
 .cella-vuota { width: 6.5rem; border-top-color: var(--line); }
 .cella-vuota .riposo { font-size: 14px; line-height: 1.35; color: var(--muted); }
 
-/* ----- Blocchi di approfondimento (<details>) ----- */
-.blocco { border-top: 1px solid var(--line); }
-.blocco:first-child { border-top: 0; }
-.blocchi { padding-top: 0; }
-.blocco:last-child { border-bottom: 1px solid var(--line); }
-.blocco > summary {
+/* ----- Approfondimenti: righe che aprono un popup ----- */
+.approfondimenti { margin-top: clamp(56px, 8vw, 110px); }
+.righeb { margin-top: 20px; border-bottom: 1px solid var(--line); }
+.righeb li { border-top: 1px solid var(--line); }
+.riga-h { margin: 0; }
+.riga-b {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas: "titolo indicatore" "sintesi indicatore";
   align-items: center;
   gap: 6px 16px;
+  width: 100%;
   min-height: 44px;
-  padding-block: 28px;
+  padding: 26px 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
   cursor: pointer;
-  list-style: none;
 }
-.blocco > summary::-webkit-details-marker { display: none; }
-.blocco > summary h3 { grid-area: titolo; font-size: clamp(24px, 3vw, 34px); }
-.blocco-sintesi { grid-area: sintesi; font-size: 15px; line-height: 1.5; color: var(--muted); }
-/* Segno "+" disegnato con due linee; quando il blocco è aperto diventa "×" */
-.indicatore {
-  grid-area: indicatore;
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-}
-.indicatore::before,
-.indicatore::after {
+.riga-t { grid-area: titolo; font: 700 clamp(22px, 2.8vw, 32px)/1.1 var(--f-display); letter-spacing: -0.03em; }
+.riga-b:hover .riga-t { color: var(--accent); }
+.blocco-sintesi { grid-area: sintesi; font: 400 15px/1.5 var(--f-body); letter-spacing: 0; text-transform: none; color: var(--muted); }
+/* Segno "+" disegnato con due linee */
+.indicatore, .piu { position: relative; flex: none; }
+.indicatore { grid-area: indicatore; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; }
+.indicatore::before, .indicatore::after, .piu::before, .piu::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 14px;
-  height: 1px;
+  top: 50%; left: 50%;
+  width: 14px; height: 1px;
   margin: -0.5px 0 0 -7px;
   background: var(--accent);
 }
-.indicatore::after { transform: rotate(90deg); }
-.blocco[open] .indicatore { transform: rotate(45deg); }
-.corpo { padding-bottom: 40px; max-width: 40em; }
-.corpo > * + * { margin-top: 16px; }
-.corpo h4 { margin-top: 32px; color: var(--accent); }
-.corpo h4 + * { margin-top: 8px; }
-.corpo p { color: var(--muted); }
-.corpo strong { color: var(--fg); font-weight: 600; }
+.indicatore::after, .piu::after { transform: rotate(90deg); }
 
 .nota-fittizio { margin-top: 48px; max-width: 34em; font-size: 15px; color: var(--muted); }
+
+/* ----- Popup (<dialog>): carta chiara sopra lo sfondo oscurato. Senza JavaScript i popup sono contenuti normali, uno sotto l'altro ----- */
+.popup {
+  width: min(680px, calc(100vw - 24px));
+  max-height: calc(100vh - 32px);
+  max-height: calc(100svh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--line);
+  background-color: var(--bg);
+  background-image: radial-gradient(90% 60% at 10% 0%, var(--l-hi), transparent 70%), linear-gradient(180deg, var(--l-g1), var(--l-g2));
+  color: var(--fg);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.popup.larga { width: min(1120px, calc(100vw - 24px)); }
+.popup::backdrop { background: rgba(5, 8, 22, 0.78); }
+.popup-in { padding: 0 clamp(22px, 5vw, 52px) clamp(28px, 5vw, 52px); }
+.popup-in > h3 { margin-top: 10px; max-width: 14em; }
+.popup-in > * + * { margin-top: 20px; }
+.popup-in > .k { margin-top: 0; font: 500 14px/1.4 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.popup-in > .chiudi + .k { margin-top: 0; }
+.popup-in dl { margin-top: 24px; }
+.popup-in dt { margin-top: 20px; color: var(--accent); }
+.popup-in dt:first-child { margin-top: 0; }
+.popup-in dd { margin-top: 6px; max-width: 34em; color: var(--muted); font-size: 17px; }
+.popup-in .scheda { margin-top: 24px; }
+.popup-in .strategia { margin: 0; padding: 0; border: 0; }
+.popup-in .corpo { padding-bottom: 0; }
+.popup-in .calendario-caso { margin-top: 28px; }
+.popup-in .righe { margin-top: 0; }
+.chiudi {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 -14px 0 auto;
+  padding: 0;
+  border: 0;
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+}
+.chiudi svg { width: 22px; height: 22px; }
+.chiudi { border-radius: 50%; margin-top: 10px; }
+html.blocca, html.blocca body { overflow: hidden; }
+
+/* Senza JavaScript (o dove <dialog> non esiste) i popup sono sezioni normali dentro la pagina */
+html:not(.js) .popup, html.no-popup .popup {
+  display: block;
+  position: static;
+  width: auto;
+  max-height: none;
+  margin: 40px 0 0;
+  border-width: 1px 0 0;
+  background: none;
+  color: inherit;
+}
+html:not(.js) .popup .chiudi, html.no-popup .popup .chiudi,
+html:not(.js) .apri-btn, html.no-popup .apri-btn,
+html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; }
+
+/* "Come lavoro": link che apre il popup di una riga di "Per chi lavoro" */
+.row-sintesi { max-width: 30em; color: var(--muted); font-size: 17px; }
+.apri-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--accent);
+  background: transparent;
+  color: var(--fg);
+  font: 500 14px/1 var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.apri-btn .piu { width: 14px; height: 14px; }
+.apri-btn .piu::before, .apri-btn .piu::after { background: var(--accent); }
+.apri-btn:hover { color: var(--accent); }
+
 
 
 /* ==========================================================================
@@ -1437,15 +1530,6 @@ footer p + p { margin-top: 6px; }
   transform-origin: left bottom;
 }
 .note-c .draw { width: 56px; height: 44px; flex: none; }
-.noterow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 18px 40px;
-  margin-top: 28px;
-}
-.noterow .note { margin-top: 0; }
 .note-contatti { margin-top: 28px; }
 
 /* Linee disegnate a mano (frecce, cerchio attorno all'email) */
