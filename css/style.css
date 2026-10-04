@@ -750,6 +750,9 @@ footer p + p { margin-top: 6px; }
   color: var(--muted);
 }
 
+/* Didascalia alternativa dentro il primo passo: compare solo sugli schermi bassi (vedi più sotto) */
+.didascalia-passo { display: none; max-width: 24rem; font-size: 14px; line-height: 1.4; color: var(--muted); }
+
 /* Luce beige dietro il telefono: pulsa una volta a ogni cambio di stato (vedi sezione 8) */
 .halo { display: none; }
 .js .halo {
@@ -1215,6 +1218,14 @@ footer p + p { margin-top: 6px; }
   .js .step { min-height: 64vh; padding-block: 14vh 0; }
   .js .step + .step { padding-top: 14vh; }
   .js .step:last-child { min-height: 50vh; }
+}
+
+/* Schermi bassi (meno di 700px di altezza): la didascalia esce dallo stage, che così occupa meno schermo,
+   e scorre con il testo del primo passo. Dentro il telefono restano l'etichetta "Esempio" e l'avviso di ogni post. */
+@media (max-height: 699px) {
+  .telefono-area figcaption { display: none; }
+  .didascalia-passo { display: block; }
+  .didascalia-passo + .k { margin-top: 20px; }
 }
 
 @media (min-width: 1100px) {
