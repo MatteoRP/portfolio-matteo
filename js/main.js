@@ -248,7 +248,7 @@
       var righe = new IntersectionObserver(function (voci) {
         voci.forEach(function (voce) { voce.target.classList.toggle('on', voce.isIntersecting); });
       }, { rootMargin: '-42% 0px -42% 0px' });
-      tutti('.row-c').forEach(function (r) { righe.observe(r); });
+      tutti('.cliente').forEach(function (r) { righe.observe(r); });
     }
 
     /* ======================================================================
@@ -260,11 +260,16 @@
       radice.classList.add('no-popup');
     } else {
       tutti('[data-apri]').forEach(function (bottone) {
-        bottone.addEventListener('click', function () {
+        bottone.addEventListener('click', function (e) {
           var finestra = document.getElementById(bottone.getAttribute('data-apri'));
           if (!finestra) return;
+          e.preventDefault();                                   // il link a #contatti serve solo senza JavaScript
+          var aperta = bottone.closest('dialog');
+          if (aperta && aperta !== finestra) aperta.close();    // da un popup a un altro
           finestra.showModal();
           finestra.scrollTop = 0;
+          var dentro = finestra.querySelector('.popup-in');
+          if (dentro) dentro.scrollTop = 0;
           radice.classList.add('blocca');     // la pagina sotto non scorre
         });
       });
@@ -273,9 +278,46 @@
         finestra.addEventListener('click', function (e) {
           if (e.target === finestra || (e.target.closest && e.target.closest('[data-chiudi]'))) finestra.close();
         });
-        finestra.addEventListener('close', function () { radice.classList.remove('blocca'); });
+        finestra.addEventListener('close', function () {
+          finestra.classList.remove('luce-on');
+          if (!document.querySelector('dialog[open]')) radice.classList.remove('blocca');
+        });
+        // Con il mouse, una luce beige segue il puntatore dentro il popup
+        var luceDentro = finestra.querySelector('.pop-luce');
+        if (luceDentro && MOUSE && !RIDOTTO) {
+          finestra.addEventListener('pointermove', function (e) {
+            var r = finestra.getBoundingClientRect();
+            luceDentro.style.transform = 'translate3d(' + (e.clientX - r.left).toFixed(0) + 'px,' + (e.clientY - r.top).toFixed(0) + 'px,0)';
+            finestra.classList.add('luce-on');
+          }, { passive: true });
+          finestra.addEventListener('pointerleave', function () { finestra.classList.remove('luce-on'); });
+        }
       });
     }
+
+    // --- Copia l'email: se il computer non ha un programma di posta, il link mailto non fa nulla ---
+    tutti('[data-copia]').forEach(function (bottone) {
+      var testoOriginale = bottone.textContent;
+      bottone.addEventListener('click', function () {
+        var testo = bottone.getAttribute('data-copia');
+        var fatto = function () {
+          bottone.textContent = 'Copiata ✓';
+          setTimeout(function () { bottone.textContent = testoOriginale; }, 2200);
+        };
+        var alternativa = function () {
+          var campo = document.createElement('textarea');
+          campo.value = testo;
+          campo.setAttribute('readonly', '');
+          campo.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+          (bottone.closest('dialog') || document.body).appendChild(campo);
+          campo.select();
+          try { document.execCommand('copy'); fatto(); } catch (err) { /* resta il testo selezionabile */ }
+          campo.remove();
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(testo).then(fatto, alternativa);
+        else alternativa();
+      });
+    });
 
     /* ======================================================================
        4. LUCE DELLA HERO E CURSORE AD ANELLO (SOLO MOUSE)
@@ -343,7 +385,7 @@
       // Le sfumature stanno su ::before e sulle classi blu: per quelle si guarda la classe.
       function fondoScuro(el) {
         for (var e = el; e && e.nodeType === 1; e = e.parentElement) {
-          if (e.matches('dialog, .pannello, .banner, .sez-scura')) return true;
+          if (e.matches('dialog, .pannello, .banner, .card-blu, .scheda-b, .cliente, .sez-scura')) return true;
           if (e.matches('.sez-chiara, .nav')) return false;
           var m = /rgba?\(([^)]+)\)/.exec(getComputedStyle(e).backgroundColor);
           if (m) {
@@ -356,12 +398,13 @@
       }
       function aggiornaCursore(sopra) {
         if (!sopra || !sopra.closest) return;
-        var grande = !!sopra.closest('a, button, summary, .row-c');
+        var grande = !!sopra.closest('a, button, summary, .cliente');
         var nellaHero = !!sopra.closest('.hero');
         // Anello: segue l'elemento sotto il puntatore (anche un riquadro blu dentro una sezione crema)
         var anelloChiaro = !fondoScuro(sopra);
-        // Bagliore: sta sotto tutto, quindi segue lo sfondo della sezione (crema = luce blu, blu = luce beige)
-        var bagliChiaro = !!sopra.closest('.sez-chiara, .nav') && !sopra.closest('dialog');
+        // Bagliore: sta sopra gli sfondi (anche quelli dei riquadri blu) e sotto il testo; stesso criterio dell'anello
+        // (sfondo chiaro = luce blu, sfondo scuro = luce beige)
+        var bagliChiaro = anelloChiaro;
         anello.classList.add('vis');
         bagliore.classList.add('vis');
         anello.classList.toggle('big', grande);
@@ -405,6 +448,9 @@
     var stati = tutti('.scr');
     var alone = document.getElementById('halo');
     var nota = document.getElementById('cnote');
+    var telefono = document.querySelector('.phone');
+    var serieEtichette = tutti('.cset');          // etichette che escono dal telefono (solo schermi larghi)
+    var tacche = tutti('.avanzamento i');         // sette tacche: a che punto della storia siamo
 
     // Un'annotazione a gesso per ogni passo, sotto il telefono
     var NOTE = [
@@ -424,6 +470,9 @@
       statoCorrente = n;
       stati.forEach(function (s, i) { s.classList.toggle('on', i === n); });
       passi.forEach(function (p, i) { p.classList.toggle('on', i === n); });
+      serieEtichette.forEach(function (c, i) { c.classList.toggle('on', i === n); });
+      tacche.forEach(function (t, i) { t.classList.toggle('on', i <= n); });
+      if (telefono) telefono.setAttribute('data-tilt', String(Math.max(0, n)));   // il telefono si inclina in modo diverso a ogni stato
       if (!nota) return;
       var questa = ++numeroNota;
       nota.classList.remove('in');

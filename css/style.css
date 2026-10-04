@@ -272,7 +272,8 @@
 .sez-scura,
 dialog,
 .pannello,
-.banner {
+.banner,
+.card-blu {
   --bg: var(--d-bg);
   --surface: var(--d-surface);
   --fg: var(--d-fg);
@@ -554,7 +555,21 @@ h3 {
   color: var(--key);
 }
 
-.lead { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.5; max-width: 34em; }
+/* Testi di apertura: Instrument Serif corsivo con un filetto sottile a sinistra, come le note discorsive di un articolo.
+   Il resto del testo resta in Inter. */
+.lead {
+  max-width: 28em;
+  padding-left: clamp(16px, 2vw, 24px);
+  border-left: 1px solid rgba(var(--accent-rgb), 0.55);
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 2.7vw, 29px);
+  line-height: 1.38;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.hero-lead { color: var(--fg); }
 .muted { color: var(--muted); }
 
 /* Sezioni: filetto sopra, molto spazio verticale */
@@ -649,34 +664,11 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   box-decoration-break: clone;
 }
 
-/* ----- Per chi lavoro: l'unica sezione costruita a righe (filetto sopra, titolo a sinistra, testo a destra) ----- */
-.rows { margin-top: clamp(32px, 5vw, 56px); }
-.row-c {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 28px 40px;
-  padding-block: 28px 32px;
-  border-top: 1px solid var(--line);
-}
-.row-c:last-child { border-bottom: 1px solid var(--line); }
-.row-c::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -1px;
-  width: 100%;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-.row-c h3 { font-size: clamp(28px, 4vw, 46px); line-height: 1.02; }
-.row-c .tag { display: block; margin-top: 10px; }
+/* ----- Per chi lavoro: tre schede blu con un percorso che si accende, e il filo del metodo (vedi più sotto) ----- */
 .introduzione { margin-top: 28px; }
 
 /* Numeri 01-04 (Cosa risolvo e i quattro passi) */
-.n { font: 500 14px/1 var(--f-mono); letter-spacing: 0.12em; color: var(--accent); }
+.n { font: italic 400 clamp(48px, 6vw, 72px)/1 var(--f-serif); letter-spacing: -0.01em; color: var(--key); }   /* numeri grandi in serif corsivo */
 
 /* ----- Cosa risolvo: due schede blu sopra lo sfondo ----- */
 .schede { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(32px, 5vw, 56px); }
@@ -684,7 +676,6 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   padding: clamp(24px, 3.4vw, 36px);
   border: 1px solid var(--line);
   border-radius: 26px;
-  background: radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%), var(--d-surface);
 }
 .scheda-b h3 { margin-top: clamp(32px, 5vw, 56px); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.08; }
 .scheda-b p:last-child { margin-top: 12px; color: var(--muted); }
@@ -712,9 +703,9 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 }
 .num {
   display: block;
-  font: 700 clamp(34px, 5vw, 46px)/1 var(--f-display);
-  letter-spacing: -0.04em;
-  color: var(--accent);
+  font: italic 400 clamp(52px, 7vw, 76px)/1 var(--f-serif);
+  letter-spacing: -0.01em;
+  color: var(--key);
   font-variant-numeric: tabular-nums;
 }
 .stat p {
@@ -729,7 +720,6 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   margin-top: 16px;
   padding: clamp(26px, 5vw, 48px);
   border-radius: 28px;
-  background: radial-gradient(90% 130% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 62%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
   color: var(--d-fg);
 }
 .banner .btn-p { justify-self: start; }
@@ -834,7 +824,6 @@ footer p + p { margin-top: 6px; }
    ========================================================================== */
 
 .case-head { display: grid; gap: 22px; max-width: 54rem; }
-.case-head .lead { font-size: clamp(18px, 2vw, 21px); max-width: 40em; }
 .case-head h2 { max-width: 12em; }
 
 /* Etichetta ben visibile: il progetto è dimostrativo */
@@ -1316,8 +1305,34 @@ footer p + p { margin-top: 6px; }
   padding: clamp(24px, 4vw, 48px);
   border: 1px solid rgba(246, 241, 230, 0.2);
   border-radius: 28px;
-  background: radial-gradient(90% 70% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
   color: var(--fg);
+}
+/* Riquadri blu: lo sfondo sta su ::before (z-index -1), così la luce del cursore, che sta sopra gli sfondi ma sotto il testo, si vede anche qui */
+.scheda-b,
+.banner,
+.pannello,
+.card-blu,
+.cliente { position: relative; }
+.scheda-b::before,
+.cliente::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%), var(--d-surface);
+}
+.banner::before,
+.pannello::before,
+.card-blu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(90% 120% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 62%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
 }
 .righeb { margin-top: 20px; border-bottom: 1px solid var(--line); }
 .righeb li { border-top: 1px solid var(--line); }
@@ -1421,26 +1436,9 @@ html:not(.js) .apri-btn, html.no-popup .apri-btn,
 html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; }
 
 /* "Come lavoro": link che apre il popup di una riga di "Per chi lavoro" */
-.row-sintesi { max-width: 30em; color: var(--muted); font-size: 17px; }
-.apri-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 44px;
-  margin-top: 14px;
-  padding: 0;
-  border: 0;
-  border-bottom: 1px solid var(--accent);
-  background: transparent;
-  color: var(--fg);
-  font: 500 14px/1 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
+.apri-btn { gap: 12px; }
 .apri-btn .piu { width: 14px; height: 14px; }
-.apri-btn .piu::before, .apri-btn .piu::after { background: var(--accent); }
-.apri-btn:hover { color: var(--accent); }
+.apri-btn .piu::before, .apri-btn .piu::after { background: currentColor; }
 
 
 
@@ -1459,7 +1457,6 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   .schede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .banner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
   .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
-  .row-c { grid-template-columns: 5fr 6fr; align-items: start; }
   .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
   .righe > div { grid-template-columns: 12rem minmax(0, 1fr); }
 
@@ -1617,11 +1614,7 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
 
 /* "Per chi lavoro": con il mouse al passaggio; al tocco quando la riga è al centro dello schermo */
 @media (hover: hover) {
-  .row-c:hover::after { transform: scaleX(1); }
-  .row-c:hover h3 { transform: translateX(10px); }
 }
-.row-c.on::after { transform: scaleX(1); }
-.row-c.on h3 { transform: translateX(10px); }
 
 
 /* ----- Solo se l'utente non ha chiesto di ridurre il movimento ----- */
@@ -1708,8 +1701,6 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   .js .draw.in path { stroke-dashoffset: 0; transition: stroke-dashoffset 1.1s var(--ease) var(--d, 0ms); }
 
   /* Per chi lavoro */
-  .row-c::after { transition: transform 0.9s var(--ease); }
-  .row-c h3 { transition: transform 0.7s var(--ease); }
 
   /* Cursore e bagliore */
   .cur { transition: opacity 0.3s var(--ease); }
@@ -1753,3 +1744,274 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ==========================================================================
+   9. SCHEDE "PER CHI LAVORO", FILO DEL METODO, POPUP, TESTATA DEL CASO STUDIO, ETICHETTE DEL TELEFONO
+   ========================================================================== */
+
+/* ----- Per chi lavoro: tre schede blu ----- */
+.clienti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 72px); }
+.cliente {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(24px, 3vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+}
+.cliente::after {            /* filetto beige che si disegna al passaggio del mouse (o quando la scheda è al centro, al tocco) */
+  content: "";
+  position: absolute;
+  left: 28px; right: 28px; top: -1px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.cliente .n { display: block; }
+.cliente .tag { display: block; margin-top: 14px; }
+.cliente h3 { margin-top: 8px; font-size: clamp(28px, 3vw, 36px); line-height: 1.04; }
+.percorso { margin-bottom: 30px; }
+.cliente .apri-btn { margin-top: auto; }
+
+/* Il percorso: problema, cosa faccio, obiettivo. Una linea con tre punti */
+.percorso { position: relative; display: grid; gap: 22px; width: 100%; margin-top: 26px; padding-left: 34px; }
+.percorso::before,
+.percorso::after { content: ""; position: absolute; left: 5px; top: 10px; bottom: 12px; width: 1px; transform-origin: top; }
+.percorso::before { background: var(--line); }
+.percorso::after { background: var(--accent); }
+.percorso li { position: relative; }
+.percorso li::before {
+  content: "";
+  position: absolute;
+  left: -34px; top: 5px;
+  width: 11px; height: 11px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  background: var(--d-bg);
+}
+.percorso li::after {
+  content: "";
+  position: absolute;
+  left: -31px; top: 8px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.pt { display: block; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.percorso p { margin-top: 4px; font-size: 17px; line-height: 1.5; color: var(--fg); }
+
+/* Il filo: lo stesso metodo in quattro passi */
+.filo { display: grid; gap: 18px; margin-top: clamp(32px, 4vw, 52px); }
+.filo-passi { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.filo-passi::before,
+.filo-passi::after { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1px; transform-origin: left; }
+.filo-passi::before { background: var(--line); }
+.filo-passi::after { background: var(--accent); }
+.filo-passi li { position: relative; padding-top: 26px; font: 500 15px/1.3 var(--f-body); color: var(--fg); }
+.filo-passi li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.filo-passi i { display: block; margin-bottom: 2px; font: italic 400 24px/1 var(--f-serif); color: var(--key); }
+.filo-pop { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+
+/* ----- Popup: struttura come il resto del sito ----- */
+.popup { overflow: hidden; }
+html.js:not(.no-popup) .popup-in {
+  max-height: calc(100vh - 32px);
+  max-height: calc(100svh - 32px);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.popup-in { position: relative; z-index: 1; }
+/* Luce che segue il mouse dentro il popup (beige su blu) */
+.pop-luce {
+  position: absolute;
+  left: 0; top: 0;
+  z-index: 0;
+  width: 480px; height: 480px;
+  margin: -240px 0 0 -240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--glow-d), 0.2), transparent 66%);
+  opacity: 0;
+  pointer-events: none;
+}
+.popup.luce-on .pop-luce { opacity: 1; }
+html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
+.popup-in > .titolo-pop { max-width: none; margin-top: 8px; font-size: clamp(34px, 5vw, 56px); line-height: 1.02; }
+.titolo-pop .n { display: inline-block; margin-right: 0.3em; font-size: 1.25em; line-height: 0.9; }
+.popup-in > .lead { max-width: 30em; }
+.duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.blocco {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(var(--fg-rgb), 0.05);
+}
+.blocco h4 { margin: 0; }
+.blocco p { margin-top: 10px; font-size: 17px; line-height: 1.55; color: var(--fg); }
+.popup-in > .filo-pop + .btn-p { margin-top: 28px; }
+.passi-mini { display: grid; gap: 16px; }
+.passi-mini li { display: flex; align-items: baseline; gap: 18px; }
+.passi-mini i { flex: none; width: 1.5em; font: italic 400 34px/1 var(--f-serif); color: var(--key); }
+.passi-mini p { font-size: 17px; line-height: 1.5; color: var(--fg); }
+.passi-mini strong { font-weight: 500; color: var(--accent); }
+.indirizzo { font: 500 clamp(20px, 3vw, 28px)/1.3 var(--f-display); letter-spacing: -0.01em; word-break: break-word; }
+.azioni { display: flex; flex-wrap: wrap; gap: 12px; }
+.azioni .btn-o, .azioni .btn-p { cursor: pointer; }
+button.btn-o, button.btn-p { font-family: var(--f-body); cursor: pointer; }
+html:not(.js) #p-call, html.no-popup #p-call { display: none; }
+
+/* ----- Contatti: l'email è un link ----- */
+a.mail { display: inline-block; color: var(--fg); text-decoration: none; -webkit-user-select: text; user-select: text; }
+a.mail:hover { color: var(--accent); }
+.links .copia {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid var(--accent);
+  background: transparent;
+  color: inherit;
+  font: 500 14px/1 var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.links .copia:hover { color: var(--accent); }
+html:not(.js) .copia { display: none; }
+
+/* ----- Testata del caso studio: scheda blu ----- */
+.case-head.card-blu {
+  display: grid;
+  gap: 22px;
+  max-width: none;
+  padding: clamp(26px, 5vw, 56px);
+  border: 1px solid rgba(246, 241, 230, 0.2);
+  border-radius: 30px;
+  color: var(--fg);
+}
+.case-head h2 { max-width: 14em; }
+.fatti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 28px; margin-top: 8px; }
+.fatti li { padding: 18px 0 6px; border-top: 1px solid var(--line); font-size: 17px; line-height: 1.4; color: var(--fg); }
+.fatti i { display: block; margin-bottom: 6px; font: italic 400 30px/1 var(--f-serif); color: var(--key); }
+
+/* ----- Telefono: inclinazione, etichette che escono dallo schermo, avanzamento ----- */
+.stage { perspective: 1300px; }
+.js .phone {
+  --ry: 0; --rx: 0; --k: 0.55;     /* --k riduce l'inclinazione su telefono */
+  transform: rotateY(calc(var(--ry) * var(--k) * 1deg)) rotateX(calc(var(--rx) * var(--k) * 1deg));
+  will-change: transform;      /* livello proprio: niente cuciture sul bordo quando il telefono è inclinato */
+  backface-visibility: hidden;
+}
+.phone[data-tilt="0"] { --ry: -9; --rx: 3; }
+.phone[data-tilt="1"] { --ry: 7; --rx: -2; }
+.phone[data-tilt="2"] { --ry: -6; --rx: 2; }
+.phone[data-tilt="3"] { --ry: 6; --rx: -2; }
+.phone[data-tilt="4"] { --ry: -6; --rx: 2; }
+.phone[data-tilt="5"] { --ry: 6; --rx: -2; }
+.phone[data-tilt="6"] { --ry: 0; --rx: 0; }
+
+.avanzamento { display: none; }
+.js .avanzamento { display: flex; position: absolute; left: 50%; top: -14px; z-index: 2; gap: 5px; transform: translateX(-50%); }
+.avanzamento i { position: relative; display: block; width: 24px; height: 3px; overflow: hidden; border-radius: 2px; background: var(--line); }
+.avanzamento i::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+.avanzamento i.on::after { transform: scaleX(1); }
+
+.callouts { display: none; }
+.cset li { display: none; }
+@media (min-width: 1100px) {
+  .story { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+  .js .callouts { display: block; position: absolute; inset: 0; pointer-events: none; }
+  .cset { position: absolute; inset: 0; }
+  .cset li {
+    position: absolute;
+    top: var(--y);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid rgba(246, 241, 230, 0.24);
+    border-radius: 99px;
+    background: #1A2A63;
+    color: #F6F1E6;
+    font: 500 14px/1 var(--f-body);
+    white-space: nowrap;
+    opacity: 0;
+  }
+  .cset li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #EADFC8; }
+  .cset li.r { left: calc(100% - 16px); }
+  .cset li.l { right: calc(100% - 16px); }
+  .cset.on li { opacity: 1; }
+}
+
+/* ----- Tablet e desktop ----- */
+@media (min-width: 700px) {
+  .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fatti { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1000px) {
+  .clienti { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .cliente .tag { min-height: 2.8em; }
+  .cliente h3 { min-height: 2.08em; }
+  .js .phone { --k: 1; }
+}
+@media (hover: hover) {
+  .cliente:hover::after { transform: scaleX(1); }
+}
+.cliente.on::after { transform: scaleX(1); }
+
+/* ----- Movimento ----- */
+@media (prefers-reduced-motion: no-preference) {
+  .cliente::after { transition: transform 0.9s var(--ease); }
+  .cliente .n { transition: transform 0.6s var(--ease); }
+  .cliente:hover .n, .cliente.on .n { transform: translateX(10px); }
+
+  /* Il percorso si accende da solo: linea che scende, punti e testi uno dopo l'altro */
+  .js .cliente .percorso::after { transform: scaleY(0); }
+  .js .cliente.in .percorso::after { transform: scaleY(1); transition: transform 1.6s var(--ease) calc(var(--d, 0ms) + 0.5s); }
+  .js .cliente .percorso li { opacity: 0; transform: translateY(10px); }
+  .js .cliente .percorso li::after { transform: scale(0); }
+  .js .cliente.in .percorso li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(var(--d, 0ms) + 0.5s + var(--k) * 0.5s), transform 0.8s var(--ease) calc(var(--d, 0ms) + 0.5s + var(--k) * 0.5s); }
+  .js .cliente.in .percorso li::after { transform: scale(1); transition: transform 0.5s var(--ease) calc(var(--d, 0ms) + 0.6s + var(--k) * 0.5s); }
+  .percorso li:nth-child(1) { --k: 0; }
+  .percorso li:nth-child(2) { --k: 1; }
+  .percorso li:nth-child(3) { --k: 2; }
+
+  /* Il filo del metodo si disegna una volta */
+  .js .filo.rv .filo-passi::after { transform: scaleX(0); }
+  .js .filo.rv.in .filo-passi::after { transform: scaleX(1); transition: transform 1.8s var(--ease) 0.4s; }
+  .js .filo.rv .filo-passi li { opacity: 0.0; transform: translateY(8px); }
+  .js .filo.rv.in .filo-passi li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(0.4s + var(--k) * 0.4s), transform 0.8s var(--ease) calc(0.4s + var(--k) * 0.4s); }
+  .filo-passi li:nth-child(1) { --k: 0; }
+  .filo-passi li:nth-child(2) { --k: 1; }
+  .filo-passi li:nth-child(3) { --k: 2; }
+  .filo-passi li:nth-child(4) { --k: 3; }
+
+  /* Popup: entra dal basso, il fondo si schiarisce */
+  .popup[open] { animation: apri 0.55s var(--ease) 1; }
+  .popup[open]::backdrop { animation: sfondo 0.4s var(--ease) 1; }
+  @keyframes apri { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
+  @keyframes sfondo { from { opacity: 0; } to { opacity: 1; } }
+  .pop-luce { transition: transform 0.45s var(--ease), opacity 0.4s var(--ease); }
+
+  /* Telefono: inclinazione dolce a ogni cambio, etichette che escono dal bordo, cuoricino che batte una volta */
+  .js .phone { transition: transform 1.4s var(--ease); }
+  .avanzamento i::after { transition: transform 0.6s var(--ease); }
+  @media (min-width: 1100px) {
+    .cset li { transition: opacity 0.4s var(--ease), transform 0.8s var(--ease); }
+    .cset li.r { transform: translateX(-28px); }
+    .cset li.l { transform: translateX(28px); }
+    .cset.on li { transform: none; transition-delay: calc(0.5s + var(--n, 0) * 0.14s); }
+  }
+  .js .scr.on .azioni-post svg:first-child { animation: batti 0.9s var(--ease) 1.4s 1; }
+  @keyframes batti { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
+}
+html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] { display: none; }   /* senza JavaScript i popup sono in pagina: il pulsante della call non serve */

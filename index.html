@@ -97,7 +97,7 @@
           <p class="lead hero-lead rv" style="--d:500ms">Ti mostro il metodo, <span class="hl">non risultati inventati</span>, con un caso dimostrativo.</p>
 
           <div class="cta rv" style="--d:600ms">
-            <a class="btn-p" href="#contatti">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+            <a class="btn-p" href="#contatti" data-apri="p-call" aria-haspopup="dialog">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
             <a class="link-testo" href="#caso-studio">Guarda il caso studio</a>
           </div>
         </div>
@@ -211,83 +211,145 @@
           <p class="label rv">Per chi lavoro</p>
           <div>
             <h2 class="rv" id="titolo-clienti">Tre tipi di cliente, un solo <span class="it">metodo</span>.</h2>
-            <p class="lead muted introduzione rv" style="--d:100ms">Cambiano i canali e l’obiettivo, non il modo di ragionare. Sono problemi tipici, non clienti già seguiti.</p>
-
-            <div class="rows">
-              <article class="row-c rv">
-                <div>
-                  <h3>Creator</h3>
-                  <span class="tag">Ad esempio YouTuber</span>
-                </div>
-                <div class="row-testo">
-                  <p class="row-sintesi">Gli altri profili sono gestiti a intermittenza e non riportano l’attenzione sul canale principale.</p>
-                  <button class="apri-btn" type="button" data-apri="p-creator" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
-                </div>
-              </article>
-
-              <article class="row-c rv" style="--d:80ms">
-                <div>
-                  <h3>Attività locali</h3>
-                  <span class="tag">Ad esempio barbieri, ristoranti, hotel</span>
-                </div>
-                <div class="row-testo">
-                  <p class="row-sintesi">Belle foto, ma non è chiaro cosa distingue il posto né come prenotare.</p>
-                  <button class="apri-btn" type="button" data-apri="p-locali" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
-                </div>
-              </article>
-
-              <article class="row-c rv" style="--d:160ms">
-                <div>
-                  <h3>Startup e brand digitali</h3>
-                  <span class="tag">Prodotti e servizi nuovi, online</span>
-                </div>
-                <div class="row-testo">
-                  <p class="row-sintesi">Il team parla nel proprio linguaggio: chi arriva non capisce cosa offre né perché iscriversi.</p>
-                  <button class="apri-btn" type="button" data-apri="p-startup" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
-                </div>
-              </article>
-            </div>
+            <p class="lead introduzione rv" style="--d:100ms">Cambiano i canali e l’obiettivo, non il modo di ragionare. Sono problemi tipici, non clienti già seguiti.</p>
           </div>
         </div>
+
+        <!-- Tre schede: ognuna ha un piccolo percorso (problema, cosa faccio, obiettivo) che si accende da solo quando la scheda entra nello schermo -->
+        <div class="clienti">
+          <article class="cliente rv" style="--d:0ms">
+            <p class="n" aria-hidden="true">01</p>
+            <span class="tag">Ad esempio YouTuber</span>
+            <h3>Creator</h3>
+            <ol class="percorso">
+              <li><span class="pt">Il problema tipico</span><p>Gli altri profili sono gestiti a intermittenza e non riportano l’attenzione sul canale principale.</p></li>
+              <li><span class="pt">Cosa faccio</span><p>Un ruolo per ogni canale e un calendario che una persona sola riesca a mantenere.</p></li>
+              <li><span class="pt">Obiettivo, come ipotesi</span><p>Portare più attenzione dai profili secondari al canale principale.</p></li>
+            </ol>
+            <button class="btn-o apri-btn" type="button" data-apri="p-creator" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
+          </article>
+          <article class="cliente rv" style="--d:90ms">
+            <p class="n" aria-hidden="true">02</p>
+            <span class="tag">Ad esempio barbieri, ristoranti, hotel</span>
+            <h3>Attività locali</h3>
+            <ol class="percorso">
+              <li><span class="pt">Il problema tipico</span><p>Belle foto, ma non è chiaro cosa distingue il posto né come prenotare.</p></li>
+              <li><span class="pt">Cosa faccio</span><p>Un’identità chiara per il profilo e un percorso che porta alla prenotazione.</p></li>
+              <li><span class="pt">Obiettivo, come ipotesi</span><p>Rendere evidente cosa offre il posto e come prenotare.</p></li>
+            </ol>
+            <button class="btn-o apri-btn" type="button" data-apri="p-locali" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
+          </article>
+          <article class="cliente rv" style="--d:180ms">
+            <p class="n" aria-hidden="true">03</p>
+            <span class="tag">Prodotti e servizi nuovi, online</span>
+            <h3>Startup e brand digitali</h3>
+            <ol class="percorso">
+              <li><span class="pt">Il problema tipico</span><p>Il team parla nel proprio linguaggio: chi arriva non capisce cosa offre né perché iscriversi.</p></li>
+              <li><span class="pt">Cosa faccio</span><p>Pochi messaggi chiari e un percorso dal contenuto all’iscrizione o alla richiesta di demo.</p></li>
+              <li><span class="pt">Obiettivo, come ipotesi</span><p>Far capire l’offerta e rendere semplice il passo successivo.</p></li>
+            </ol>
+            <button class="btn-o apri-btn" type="button" data-apri="p-startup" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
+          </article>
+        </div>
+
+        <!-- Il filo: lo stesso metodo attraversa le tre schede -->
+        <div class="filo rv">
+          <p class="piccolo">Lo stesso metodo per tutti e tre</p>
+          <ol class="filo-passi">
+              <li><i>01</i>Audit</li>
+              <li><i>02</i>Strategia</li>
+              <li><i>03</i>Calendario</li>
+              <li><i>04</i>Revisione</li>
+            </ol>
+        </div>
+
         <dialog class="popup" id="p-creator" aria-labelledby="t-p-creator">
+          <span class="pop-luce" aria-hidden="true"></span>
           <div class="popup-in">
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Per chi lavoro</p>
-            <h3 id="t-p-creator">Creator</h3>
-            <dl>
-            <dt>Il problema tipico</dt>
-            <dd>Il pubblico guarda i video, ma gli altri profili sono gestiti a intermittenza: non hanno una linea riconoscibile e non riportano l’attenzione sul canale principale.</dd>
-            <dt>Cosa faccio</dt>
-            <dd>Definisco il ruolo di ogni canale rispetto a quello principale, una linea editoriale con formati ricorrenti, il riuso dei contenuti lunghi in contenuti brevi e un calendario che una persona sola riesca a mantenere.</dd>
-                </dl>
+            <h3 class="titolo-pop" id="t-p-creator"><span class="n" aria-hidden="true">01</span><span class="it">Creator</span></h3>
+            <p class="lead">Ad esempio YouTuber.</p>
+            <div class="duo">
+              <section class="blocco">
+                <h4>Il problema tipico</h4>
+                <p>Il pubblico guarda i video, ma gli altri profili sono gestiti a intermittenza: non hanno una linea riconoscibile e non riportano l’attenzione sul canale principale.</p>
+              </section>
+              <section class="blocco">
+                <h4>Cosa faccio</h4>
+                <p>Definisco il ruolo di ogni canale rispetto a quello principale, una linea editoriale con formati ricorrenti, il riuso dei contenuti lunghi in contenuti brevi e un calendario che una persona sola riesca a mantenere.</p>
+              </section>
+            </div>
+            <div class="filo filo-pop">
+              <p class="piccolo">Lo stesso metodo, in quattro passi</p>
+              <ol class="filo-passi">
+              <li><i>01</i>Audit</li>
+              <li><i>02</i>Strategia</li>
+              <li><i>03</i>Calendario</li>
+              <li><i>04</i>Revisione</li>
+            </ol>
+            </div>
+            <button class="btn-p" type="button" data-apri="p-call" aria-haspopup="dialog">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></button>
           </div>
         </dialog>
 
         <dialog class="popup" id="p-locali" aria-labelledby="t-p-locali">
+          <span class="pop-luce" aria-hidden="true"></span>
           <div class="popup-in">
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Per chi lavoro</p>
-            <h3 id="t-p-locali">Attività locali</h3>
-            <dl>
-            <dt>Il problema tipico</dt>
-            <dd>Il profilo è una galleria di foto curate ma simili a quelle delle altre attività della zona, e non è chiaro né cosa distingue il posto né come prenotare.</dd>
-            <dt>Cosa faccio</dt>
-            <dd>Definisco l’identità del profilo (cosa mostrare e cosa no), organizzo bio, in evidenza e link attorno alla prenotazione, e imposto contenuti ricorrenti basati sul lavoro quotidiano.</dd>
-                </dl>
+            <h3 class="titolo-pop" id="t-p-locali"><span class="n" aria-hidden="true">02</span>Attività <span class="it">locali</span></h3>
+            <p class="lead">Ad esempio barbieri, ristoranti, hotel.</p>
+            <div class="duo">
+              <section class="blocco">
+                <h4>Il problema tipico</h4>
+                <p>Il profilo è una galleria di foto curate ma simili a quelle delle altre attività della zona, e non è chiaro né cosa distingue il posto né come prenotare.</p>
+              </section>
+              <section class="blocco">
+                <h4>Cosa faccio</h4>
+                <p>Definisco l’identità del profilo (cosa mostrare e cosa no), organizzo bio, in evidenza e link attorno alla prenotazione, e imposto contenuti ricorrenti basati sul lavoro quotidiano.</p>
+              </section>
+            </div>
+            <div class="filo filo-pop">
+              <p class="piccolo">Lo stesso metodo, in quattro passi</p>
+              <ol class="filo-passi">
+              <li><i>01</i>Audit</li>
+              <li><i>02</i>Strategia</li>
+              <li><i>03</i>Calendario</li>
+              <li><i>04</i>Revisione</li>
+            </ol>
+            </div>
+            <button class="btn-p" type="button" data-apri="p-call" aria-haspopup="dialog">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></button>
           </div>
         </dialog>
 
         <dialog class="popup" id="p-startup" aria-labelledby="t-p-startup">
+          <span class="pop-luce" aria-hidden="true"></span>
           <div class="popup-in">
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Per chi lavoro</p>
-            <h3 id="t-p-startup">Startup e brand digitali</h3>
-            <dl>
-            <dt>Il problema tipico</dt>
-            <dd>Il team conosce il prodotto a fondo e comunica nel proprio linguaggio, mentre chi arriva dai social non capisce cosa offre né perché iscriversi.</dd>
-            <dt>Cosa faccio</dt>
-            <dd>Traduco l’offerta in pochi messaggi chiari, definisco pilastri di contenuto e tono, costruisco il percorso dal contenuto all’iscrizione o alla richiesta di demo, e rivedo i formati sui dati dopo le prime settimane.</dd>
-                </dl>
+            <h3 class="titolo-pop" id="t-p-startup"><span class="n" aria-hidden="true">03</span>Startup e brand <span class="it">digitali</span></h3>
+            <p class="lead">Prodotti e servizi nuovi, online.</p>
+            <div class="duo">
+              <section class="blocco">
+                <h4>Il problema tipico</h4>
+                <p>Il team conosce il prodotto a fondo e comunica nel proprio linguaggio, mentre chi arriva dai social non capisce cosa offre né perché iscriversi.</p>
+              </section>
+              <section class="blocco">
+                <h4>Cosa faccio</h4>
+                <p>Traduco l’offerta in pochi messaggi chiari, definisco pilastri di contenuto e tono, costruisco il percorso dal contenuto all’iscrizione o alla richiesta di demo, e rivedo i formati sui dati dopo le prime settimane.</p>
+              </section>
+            </div>
+            <div class="filo filo-pop">
+              <p class="piccolo">Lo stesso metodo, in quattro passi</p>
+              <ol class="filo-passi">
+              <li><i>01</i>Audit</li>
+              <li><i>02</i>Strategia</li>
+              <li><i>03</i>Calendario</li>
+              <li><i>04</i>Revisione</li>
+            </ol>
+            </div>
+            <button class="btn-p" type="button" data-apri="p-call" aria-haspopup="dialog">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></button>
           </div>
         </dialog>
       </div>
@@ -297,11 +359,17 @@
     <section class="sez-chiara" id="caso-studio" aria-labelledby="titolo-caso">
       <div class="wrap">
 
-        <div class="case-head">
-          <p class="etichetta-fittizio rv"><span>Progetto dimostrativo: attività e dati fittizi</span></p>
-          <p class="label rv">Caso studio</p>
-          <h2 class="rv" id="titolo-caso">Una startup che <span class="it">non esiste</span>, per mostrare come lavoro.</h2>
-          <p class="lead muted rv" style="--d:100ms">Numerella è un’attività inventata: una startup di educazione finanziaria. Nome, offerta, fondatori e numeri sono di fantasia e nessun profilo reale esiste. Fa solo divulgazione educativa: nessun consiglio, nessuna promessa di rendimento.</p>
+        <!-- Testata in scheda blu, come gli altri riquadri importanti -->
+        <div class="case-head card-blu rv">
+          <p class="etichetta-fittizio"><span>Progetto dimostrativo: attività e dati fittizi</span></p>
+          <p class="label">Caso studio</p>
+          <h2 id="titolo-caso">Una startup che <span class="it">non esiste</span>, per mostrare come lavoro.</h2>
+          <p class="lead">Numerella è un’attività inventata: una startup di educazione finanziaria. Nome, offerta, fondatori e numeri sono di fantasia e nessun profilo reale esiste. Fa solo divulgazione educativa: nessun consiglio, nessuna promessa di rendimento.</p>
+          <ul class="fatti" role="list">
+            <li><i aria-hidden="true">01</i>Audit di un profilo ipotetico</li>
+            <li><i aria-hidden="true">02</i>Strategia e calendario di due settimane</li>
+            <li><i aria-hidden="true">03</i>Quattro esempi di post</li>
+          </ul>
         </div>
 
         <!-- ===== Storia: un telefono fisso che cambia stato mentre si legge (sette passi).
@@ -312,7 +380,18 @@
           <div class="stage" id="stage">
             <div class="halo" id="halo" aria-hidden="true"></div>
             <figure class="telefono-area">
-              <div class="phone">
+              <div class="avanzamento" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="phone" data-tilt="0">
+                <!-- Etichette che escono dal telefono, una serie per stato. Sono decorative: il testo vero sta nei passi accanto. -->
+                <div class="callouts" aria-hidden="true">
+                  <ul class="cset" data-s="0"><li class="l" style="--y:14%;--n:0">Bio generica</li><li class="r" style="--y:30%;--n:1">Nessun link</li><li class="l" style="--y:46%;--n:2">Post senza serie</li></ul>
+                  <ul class="cset" data-s="1"><li class="l" style="--y:15%;--n:0">Tema e limite</li><li class="r" style="--y:28%;--n:1">Link utile</li><li class="l" style="--y:42%;--n:2">4 evidenze</li><li class="r" style="--y:58%;--n:3">Post in serie</li></ul>
+                  <ul class="cset" data-s="2"><li class="r" style="--y:30%;--n:0">Carosello</li><li class="l" style="--y:44%;--n:1">Pilastro 1</li><li class="r" style="--y:53%;--n:2">Avviso visibile</li></ul>
+                  <ul class="cset" data-s="3"><li class="r" style="--y:30%;--n:0">Carosello</li><li class="l" style="--y:44%;--n:1">Pilastro 2</li><li class="r" style="--y:53%;--n:2">Avviso visibile</li></ul>
+                  <ul class="cset" data-s="4"><li class="r" style="--y:30%;--n:0">Reel di 30"</li><li class="l" style="--y:44%;--n:1">Pilastro 3</li><li class="r" style="--y:53%;--n:2">Avviso visibile</li></ul>
+                  <ul class="cset" data-s="5"><li class="r" style="--y:30%;--n:0">Carosello</li><li class="l" style="--y:44%;--n:1">Pilastro 4</li><li class="r" style="--y:53%;--n:2">Limite dichiarato</li></ul>
+                  <ul class="cset" data-s="6"><li class="l" style="--y:18%;--n:0">4 pilastri</li><li class="r" style="--y:30%;--n:1">2 settimane</li><li class="l" style="--y:42%;--n:2">Giorni di riposo</li></ul>
+                </div>
                 <div class="screen">
                   <div class="notch" aria-hidden="true"></div>
 
@@ -561,6 +640,7 @@
         </div>
 
         <dialog class="popup larga" id="p-calendario" aria-labelledby="t-p-calendario">
+          <span class="pop-luce" aria-hidden="true"></span>
           <div class="popup-in">
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Piano di lavoro</p>
@@ -667,6 +747,7 @@
         </dialog>
 
         <dialog class="popup" id="p-scheda" aria-labelledby="t-p-scheda">
+          <span class="pop-luce" aria-hidden="true"></span>
           <div class="popup-in">
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Attività fittizia</p>
@@ -693,6 +774,7 @@
         </dialog>
 
         <dialog class="popup" id="p-strategia" aria-labelledby="t-p-strategia">
+          <span class="pop-luce" aria-hidden="true"></span>
           <div class="popup-in">
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Metodo</p>
@@ -728,6 +810,7 @@
         </dialog>
 
         <dialog class="popup" id="p-obiettivi" aria-labelledby="t-p-obiettivi">
+          <span class="pop-luce" aria-hidden="true"></span>
           <div class="popup-in">
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Ipotesi di lavoro</p>
@@ -746,6 +829,7 @@
         </dialog>
 
         <dialog class="popup" id="p-altri" aria-labelledby="t-p-altri">
+          <span class="pop-luce" aria-hidden="true"></span>
           <div class="popup-in">
             <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
             <p class="k">Altri clienti</p>
@@ -778,16 +862,40 @@
             <!-- Cerchio a mano attorno all'email: si disegna da solo -->
             <div class="mailwrap">
               <svg class="draw" viewBox="0 0 400 80" preserveAspectRatio="none" aria-hidden="true" focusable="false" style="--d:700ms"><path pathLength="1" d="M26 42 C 20 14, 130 8, 214 10 C 318 12, 392 20, 388 44 C 384 68, 280 74, 190 72 C 100 70, 12 66, 22 38 C 28 24, 64 16, 104 15"/></svg>
-              <p class="mail">rapeso.matteo@gmail.com</p>
+              <a class="mail" href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti">rapeso.matteo@gmail.com</a>
             </div>
             <div class="links rv" style="--d:200ms">
               <a href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti">Scrivi un’email <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+              <button class="copia" type="button" data-copia="rapeso.matteo@gmail.com">Copia l’email</button>
               <a href="https://www.instagram.com/matteorapeso/">@matteorapeso su Instagram <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+
+    <!-- Popup della call gratuita: si apre dai pulsanti "Scrivimi per la call gratuita". Senza JavaScript i pulsanti portano a #contatti. -->
+        <dialog class="popup" id="p-call" aria-labelledby="t-p-call">
+          <span class="pop-luce" aria-hidden="true"></span>
+          <div class="popup-in">
+            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <p class="k">Primo passo</p>
+            <h3 class="titolo-pop" id="t-p-call">Scrivimi per la <span class="it">call</span> gratuita</h3>
+            <p class="lead">Quindici minuti per capire se ha senso lavorare insieme. Nessun calendario di prenotazione: basta un messaggio.</p>
+            <ol class="passi-mini">
+              <li><i>01</i><p><strong>Mi scrivi</strong> il link al profilo e l’obiettivo che hai in mente.</p></li>
+              <li><i>02</i><p><strong>Ci sentiamo</strong> per 15 minuti, senza costi.</p></li>
+              <li><i>03</i><p><strong>Se ha senso</strong>, ti propongo il metodo: audit, strategia, calendario.</p></li>
+            </ol>
+            <p class="indirizzo">rapeso.matteo@gmail.com</p>
+            <div class="azioni">
+              <a class="btn-p" href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti">Scrivi un’email <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+              <button class="btn-o" type="button" data-copia="rapeso.matteo@gmail.com">Copia l’email</button>
+              <a class="btn-o" href="https://www.instagram.com/matteorapeso/">Instagram <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+            </div>
+          </div>
+        </dialog>
 
   </main>
 
