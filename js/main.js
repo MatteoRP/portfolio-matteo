@@ -107,27 +107,6 @@
       });
     }
 
-    // --- Gesso: testo scritto lettera per lettera. Le parole intere non si spezzano mai ---
-    function gesso(elemento, testo) {
-      elemento.textContent = '';
-      elemento.appendChild(testoNascosto(testo));
-      var animato = crea('span', 'cw');
-      animato.setAttribute('aria-hidden', 'true');
-      var k = 0;
-      testo.split(' ').forEach(function (parola, i) {
-        if (i) animato.appendChild(document.createTextNode(' '));
-        var gruppo = crea('span', 'cwd');
-        parola.split('').forEach(function (lettera) {
-          var l = crea('span', 'ch');
-          l.style.setProperty('--k', k++);
-          l.textContent = lettera;
-          gruppo.appendChild(l);
-        });
-        animato.appendChild(gruppo);
-      });
-      elemento.appendChild(animato);
-    }
-
     // --- Etichette mono: si scrivono con un cursore che lampeggia poche volte ---
     function preparaEtichetta(etichetta) {
       var testo = etichetta.textContent.replace(/\s+/g, ' ').trim();
@@ -216,22 +195,33 @@
       // Scalino: gli elementi fratelli che compaiono insieme entrano uno dopo l'altro (max 4 passi)
       var gruppi = new Map();
       tutti('.rv').forEach(function (el) {
-        if (el.style.getPropertyValue('--d')) return;
         var lista = gruppi.get(el.parentNode) || [];
         lista.push(el);
         gruppi.set(el.parentNode, lista);
       });
       gruppi.forEach(function (lista) {
-        if (lista.length < 2) return;
-        lista.forEach(function (el, i) { el.style.setProperty('--d', Math.min(i, 3) * 110 + 'ms'); });
+        var n = lista.length;
+        lista.forEach(function (el, i) {
+          if (n > 1 && !el.style.getPropertyValue('--d')) el.style.setProperty('--d', Math.min(i, 3) * 110 + 'ms');   // chi ha già un ritardo suo lo tiene
+          if (/\ba-/.test(el.className)) return;
+          var v = '';
+          if (el.classList.contains('lead')) v = 'a-dolce';
+          else if (el.classList.contains('card-blu') || el.classList.contains('banner') || el.classList.contains('pannello')) v = 'a-zoom';
+          else if (/\b(scheda-b|cliente|passo)\b/.test(el.className)) {
+            // schede in fila: la prima arriva da sinistra, l'ultima da destra, quelle in mezzo salgono ingrandendosi
+            if (n === 2) v = i ? 'a-dx' : 'a-sx';
+            else if (n === 3) v = ['a-sx', 'a-zoom', 'a-dx'][i];
+            else if (n > 3) v = i % 2 ? 'a-zoom' : '';
+          } else if (el.classList.contains('label')) v = 'a-alto';
+          if (v) el.classList.add(v);
+        });
       });
       tutti('.hl').forEach(dividiEvidenziatore);
-      tutti('.chalk:not(.cnote)').forEach(function (g) { gesso(g, g.textContent.replace(/\s+/g, ' ').trim()); });
       // Solo l'etichetta della hero si scrive lettera per lettera; le altre compaiono con il normale reveal (classe "rv")
       tutti('.hero .label').forEach(preparaEtichetta);
       tutti('.num').forEach(preparaNumero);
 
-      var bersagli = tutti('.rv, .tit, .label, .num, .hl, .chalk:not(.cnote), .draw');
+      var bersagli = tutti('.rv, .tit, .label, .num, .hl');
       var comparsa = function (elemento) {
         elemento.classList.add('in');
         if (elemento.classList.contains('label')) scrivi(elemento);
@@ -312,6 +302,60 @@
           finestra.addEventListener('pointerleave', function () { finestra.classList.remove('luce-on'); });
         }
       });
+    }
+
+    /* ======================================================================
+       3c. BAGLIORI SUI TASTI
+       Luce che segue il mouse dentro il tasto e lampo dal punto premuto (anche tocco e tastiera).
+       ====================================================================== */
+
+    if (!RIDOTTO) {
+      var TASTI = '.btn-p, .btn-o, .links a, .apri-btn, .nav-cta, .menu-btn, .chiudi';
+      // Sui riquadri scuri la luce è beige, sul crema è blu (stessa regola del cursore)
+      var coloreLuce = function (tasto) {
+        return tasto.closest('.sez-scura, dialog, .pannello, .banner, .card-blu, .scheda-b, .cliente') ? '234, 223, 200' : '70, 100, 215';
+      };
+      var lampo = function (tasto, x, y) {
+        var r = tasto.getBoundingClientRect();
+        var l = crea('span', 'lampo');
+        l.setAttribute('aria-hidden', 'true');
+        l.style.setProperty('--lc', coloreLuce(tasto));
+        l.style.setProperty('--lx', (x - r.left) + 'px');
+        l.style.setProperty('--ly', (y - r.top) + 'px');
+        // Ogni lampo è un po' diverso: durata e grandezza variano a caso
+        l.style.setProperty('--ld', (0.65 + Math.random() * 0.45).toFixed(2) + 's');
+        l.style.setProperty('--le', (2 + Math.random() * 1.2).toFixed(2));
+        tasto.appendChild(l);
+        l.addEventListener('animationend', function () { l.remove(); });
+      };
+      document.addEventListener('pointerdown', function (e) {
+        var t = e.target.closest && e.target.closest(TASTI);
+        if (t) lampo(t, e.clientX, e.clientY);
+      }, { passive: true });
+      // Tastiera (Invio o Spazio): il lampo parte dal centro del tasto
+      document.addEventListener('click', function (e) {
+        if (e.detail !== 0) return;
+        var t = e.target.closest && e.target.closest(TASTI);
+        if (!t) return;
+        var r = t.getBoundingClientRect();
+        lampo(t, r.left + r.width / 2, r.top + r.height / 2);
+      });
+      if (MOUSE) {
+        document.addEventListener('pointermove', function (e) {
+          var t = e.target.closest && e.target.closest(TASTI);
+          if (!t) return;
+          var luce = t.querySelector(':scope > .luce-b');
+          if (!luce) {
+            luce = crea('span', 'luce-b');
+            luce.setAttribute('aria-hidden', 'true');
+            luce.style.setProperty('--lc', coloreLuce(t));
+            t.appendChild(luce);
+          }
+          var r = t.getBoundingClientRect();
+          luce.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          luce.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        }, { passive: true });
+      }
     }
 
     /* ======================================================================
@@ -442,24 +486,11 @@
     var passi = tutti('.step');
     var stati = tutti('.scr');
     var alone = document.getElementById('halo');
-    var nota = document.getElementById('cnote');
     var telefono = document.querySelector('.phone');
     var serieEtichette = tutti('.cset');          // etichette che escono dal telefono (solo schermi larghi)
     var tacche = tutti('.avanzamento i');         // sette tacche: a che punto della storia siamo
 
-    // Un'annotazione a gesso per ogni passo, sotto il telefono
-    var NOTE = [
-      'nessun passo da fare',
-      'una promessa e un passo',
-      'definizione, non consigli',
-      'due sigle, una differenza',
-      'un meccanismo, non paura',
-      'il limite, detto chiaro',
-      '2 settimane, 4 pilastri'
-    ];
-
     var statoCorrente = -2;
-    var numeroNota = 0;
     function impostaStato(n) {
       if (n === statoCorrente) return;
       statoCorrente = n;
@@ -468,16 +499,6 @@
       serieEtichette.forEach(function (c, i) { c.classList.toggle('on', i === n); });
       tacche.forEach(function (t, i) { t.classList.toggle('on', i <= n); });
       if (telefono) telefono.setAttribute('data-tilt', String(Math.max(0, n)));   // il telefono si inclina in modo diverso a ogni stato
-      if (!nota) return;
-      var questa = ++numeroNota;
-      nota.classList.remove('in');
-      if (n < 0) { nota.textContent = ''; return; }
-      if (RIDOTTO) { nota.textContent = NOTE[n]; return; }
-      gesso(nota, NOTE[n]);
-      // Aspetto due frame così le lettere nascoste sono già disegnate, poi parte la scrittura
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { if (questa === numeroNota) nota.classList.add('in'); });
-      });
       // La luce dietro il telefono pulsa una volta a ogni cambio
       if (alone) {
         alone.classList.remove('pulse');

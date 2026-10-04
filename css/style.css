@@ -9,7 +9,7 @@
    4. Sezioni, nell'ordine in cui compaiono nella pagina
    5. Caso studio (scheda, telefono-mockup a sette stati, passi, calendario)
    6. Tablet e desktop
-   7. Movimento (gesso, luce, barra "storie", cursore; gli stati nascosti sono solo qui e solo con .js)
+   7. Movimento (luce, barra "storie", cursore; gli stati nascosti sono solo qui e solo con .js)
    8. Preferenze dell'utente (movimento ridotto)
    ========================================================================== */
 
@@ -74,17 +74,6 @@
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
-
-/* Annotazioni a gesso: Rock Salt 400 (il browser lo scarica solo se la pagina contiene un'annotazione) */
-
-@font-face {
-  font-family: "Rock Salt";
-  src: url("../assets/fonts/rock-salt-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
 
 /* Font di riserva con size-adjust e metriche regolate (valori calcolati con il testo reale della pagina) */
 
@@ -217,7 +206,6 @@
   --h-xl: clamp(34px, 6vw, 60px);
   --h-l: clamp(28px, 4vw, 44px);
   --h-m: clamp(22px, 2.6vw, 30px);
-  --f-chalk: "Rock Salt", "Comic Sans MS", cursive;   /* annotazioni a gesso */
 
   --colonna: 1160px;
   --barra: 76px;                            /* spazio occupato dal menu fisso in alto (barra + distanza dal bordo) */
@@ -1156,13 +1144,6 @@ footer p + p { margin-top: 6px; }
   font-size: max(9.5px, calc(3.2 * var(--u)));
 }
 
-/* Annotazione a gesso sotto il telefono (cambia a ogni passo) */
-.cnote { min-height: 1.3em; text-align: center; }
-.cnote:empty { display: none; }
-.js .cnote:empty { display: block; }
-@media (max-width: 359px) {
-  .js .cnote { min-height: 2.4em; }   /* schermi molto stretti: l'annotazione può andare su due righe, lo spazio è già riservato */
-}
 
 /* ----- I passi: i testi accanto (o sotto) al telefono ----- */
 .steps { margin-top: 48px; }   /* senza JS: sotto il telefono con un po' d'aria */
@@ -1468,10 +1449,7 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
     overflow: visible;
     align-self: start;
   }
-  .js .telefono-area figcaption,
-  .js .telefono-area .cnote { position: absolute; left: 50%; width: 24rem; max-width: 90vw; margin: 0; transform: translateX(-50%); }
-  .js .telefono-area .cnote { top: calc(100% + 14px); min-height: 0; height: 56px; }
-  .js .telefono-area figcaption { top: calc(100% + 14px + 56px + 6px); }
+  .js .telefono-area figcaption { position: absolute; left: 50%; width: 24rem; max-width: 90vw; margin: 0; transform: translateX(-50%); top: calc(100% + 14px); }
   .js .halo { width: 100%; margin: -50% 0 0 -50%; }   /* non deve uscire dalla colonna: la pagina non scorre di lato */
   .js .phone {
     height: auto;
@@ -1537,31 +1515,8 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
 .num-an { display: none; }
 .js .num-an { display: block; position: absolute; left: 0; top: 0; }
 
-/* Annotazioni a gesso */
-.chalk {
-  margin: 0;
-  font-family: var(--f-chalk);
-  font-size: clamp(20px, 2.4vw, 26px);
-  line-height: 1.15;
-  color: var(--accent);
-}
-.chalk .cwd { display: inline-block; white-space: nowrap; }   /* una parola non si spezza mai */
-.chalk .ch { display: inline-block; white-space: pre; }
-.note-c {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  rotate: -2deg;
-  transform-origin: left bottom;
-}
-.note-c .draw { width: 56px; height: 44px; flex: none; }
-.note-contatti { margin-top: 28px; }
-
-/* Linee disegnate a mano (frecce, cerchio attorno all'email) */
-.draw { display: block; overflow: visible; }
-.draw path { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.mailwrap { position: relative; display: inline-block; margin-top: 22px; padding: 12px 22px; }
-.mailwrap .draw { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* Email nei contatti: una pillola con il bordo sottile, come i pulsanti */
+.mailwrap { display: inline-block; margin-top: 28px; padding: 12px 26px; border: 1px solid var(--accent); border-radius: 999px; }
 .mailwrap .mail { margin: 0; }
 
 /* Barra "storie" dentro il menu fisso (la crea JavaScript): un segmento per sezione, si riempie con lo scroll */
@@ -1612,11 +1567,11 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   html { scroll-behavior: smooth; }
 
   /* Comparsa allo scroll: sale di 28px e appare. Il ritardo arriva da --d */
-  .js .rv { opacity: 0; transform: translateY(28px) scale(0.985); }
+  .js .rv { opacity: 0; transform: translate(var(--ax, 0px), var(--ay, 28px)) scale(var(--as, 0.985)); }
   .js .rv.in {
     opacity: 1;
     transform: none;
-    transition: opacity 0.8s var(--ease) var(--d, 0ms), transform 1s var(--ease) var(--d, 0ms);
+    transition: opacity calc(var(--dur, 1s) * 0.8) var(--ease) var(--d, 0ms), transform var(--dur, 1s) var(--ease) var(--d, 0ms);
   }
 
   /* Hero: barra che scende, titolo parola per parola */
@@ -1686,17 +1641,6 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
     from { transform: translate3d(-8%, -4%, 0) scale(1); opacity: 0.5; }
     to { transform: translate3d(8%, 6%, 0) scale(1.08); opacity: 0.68; }
   }
-
-  /* Annotazioni a gesso: lettere che compaiono una per una, linee che si disegnano */
-  .js .chalk .ch { opacity: 0; transform: translateY(7px) rotate(-4deg); }
-  .js .chalk.in .ch {
-    opacity: 1;
-    transform: none;
-    transition: opacity 0.3s var(--ease), transform 0.5s var(--ease);
-    transition-delay: calc(var(--d, 0ms) + var(--k) * 34ms);
-  }
-  .js .draw path { stroke-dasharray: 1.03; stroke-dashoffset: 1.03; }
-  .js .draw.in path { stroke-dashoffset: 0; transition: stroke-dashoffset 1.1s var(--ease) var(--d, 0ms); }
 
   /* Per chi lavoro */
 
@@ -1999,3 +1943,45 @@ a.mail:hover { color: var(--accent); }
   @keyframes batti { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
 }
 html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] { display: none; }   /* senza JavaScript i popup sono in pagina: il pulsante della call non serve */
+
+
+/* ==========================================================================
+   10. BAGLIORI SUI TASTI
+   Ogni tasto ha una luce morbida che segue il mouse (solo mouse) e un lampo che parte dal punto premuto (mouse, tocco e tastiera).
+   Le luci sono due cerchi sfumati che cambiano solo transform e opacity; stanno dietro il testo.
+   ========================================================================== */
+.btn-p, .btn-o, .links a, .apri-btn, .nav-cta, .menu-btn, .chiudi { overflow: hidden; isolation: isolate; }
+.btn-p, .btn-o, .links a, .apri-btn, .nav-cta, .menu-btn { position: relative; }
+.lampo, .luce-b {
+  position: absolute;
+  left: 0; top: 0;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(var(--lc, 70, 100, 215), var(--la, 0.5)), rgba(var(--lc, 70, 100, 215), 0) 68%);
+}
+.luce-b { --la: 0.24; width: 130px; height: 130px; margin: -65px 0 0 -65px; opacity: 0; transform: translate(var(--mx, 50%), var(--my, 50%)); }
+.lampo { width: 150px; height: 150px; margin: -75px 0 0 -75px; opacity: 0; transform: translate(var(--lx, 50%), var(--ly, 50%)) scale(0.2); }
+@media (prefers-reduced-motion: no-preference) {
+  .luce-b { transition: opacity 0.45s var(--ease), transform 0.35s var(--ease); }
+  :hover > .luce-b { opacity: 1; }
+  .lampo { animation: lampo var(--ld, 0.8s) var(--ease) 1 forwards; }
+  @keyframes lampo {
+    0% { opacity: 0.95; transform: translate(var(--lx), var(--ly)) scale(0.2); }
+    100% { opacity: 0; transform: translate(var(--lx), var(--ly)) scale(var(--le, 2.4)); }
+  }
+}
+@media (prefers-reduced-motion: reduce) { .lampo, .luce-b { display: none; } }
+
+/* ==========================================================================
+   11. COMPARSE VARIATE
+   Stessa curva per tutto (--ease), ma direzione, distanza e durata cambiano secondo il ruolo dell'elemento.
+   ========================================================================== */
+.a-sx { --ax: -44px; --ay: 0px; --as: 0.99; }
+.a-dx { --ax: 44px; --ay: 0px; --as: 0.99; }
+.a-zoom { --ay: 14px; --as: 0.93; --dur: 1.25s; }
+.a-dolce { --ay: 14px; --as: 1; --dur: 1.5s; }
+.a-alto { --ay: -18px; --as: 1; --dur: 1.1s; }
+@media (max-width: 760px) {
+  .a-sx, .a-dx { --ax: 0px; --ay: 26px; }   /* in colonna le schede non arrivano di lato */
+}
