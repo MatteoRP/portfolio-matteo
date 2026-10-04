@@ -295,30 +295,6 @@
       });
     }
 
-    // --- Copia l'email: se il computer non ha un programma di posta, il link mailto non fa nulla ---
-    tutti('[data-copia]').forEach(function (bottone) {
-      var testoOriginale = bottone.textContent;
-      bottone.addEventListener('click', function () {
-        var testo = bottone.getAttribute('data-copia');
-        var fatto = function () {
-          bottone.textContent = 'Copiata ✓';
-          setTimeout(function () { bottone.textContent = testoOriginale; }, 2200);
-        };
-        var alternativa = function () {
-          var campo = document.createElement('textarea');
-          campo.value = testo;
-          campo.setAttribute('readonly', '');
-          campo.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-          (bottone.closest('dialog') || document.body).appendChild(campo);
-          campo.select();
-          try { document.execCommand('copy'); fatto(); } catch (err) { /* resta il testo selezionabile */ }
-          campo.remove();
-        };
-        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(testo).then(fatto, alternativa);
-        else alternativa();
-      });
-    });
-
     /* ======================================================================
        4. LUCE DELLA HERO E CURSORE AD ANELLO (SOLO MOUSE)
        Tutto si muove con un'interpolazione: un solo aggiornamento per frame.

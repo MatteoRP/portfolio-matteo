@@ -245,7 +245,8 @@
   --f-chalk: "Rock Salt", "Comic Sans MS", cursive;   /* annotazioni a gesso */
 
   --colonna: 1160px;
-  --barra: 64px;                            /* altezza del menu fisso in alto */
+  --barra: 76px;                            /* spazio occupato dal menu fisso in alto (barra + distanza dal bordo) */
+  --barra-h: 64px;                          /* altezza della barra vera e propria */
   --gutter: clamp(16px, 4vw, 40px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* l'unico easing del sito: ogni animazione usa questo */
 
@@ -359,6 +360,7 @@ a { color: inherit; }
   top: 0.75rem;
   z-index: 100;
   padding: 0.75rem 1rem;
+  border-radius: 999px;
   background: var(--accent);
   color: var(--accent-ink);
   font: 500 14px/1.4 var(--f-mono);
@@ -408,16 +410,18 @@ dt {
   z-index: 30;
   background: var(--bg);
   color: var(--fg);
-  border-bottom: 1px solid var(--line);
 }
-.js .nav { position: fixed; top: 0; left: 0; right: 0; }
+/* Barra flottante con angoli arrotondati, come una "pillola" staccata dal bordo */
+html:not(.js) .nav { margin: 10px 10px 0; }
+.nav { border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 8px 28px rgba(27, 42, 94, 0.1); }
+.js .nav { position: fixed; top: 10px; left: max(10px, calc((100vw - 1240px) / 2)); right: max(10px, calc((100vw - 1240px) / 2)); }
 .nav-in {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 4px 16px;
-  min-height: var(--barra);
+  min-height: var(--barra-h);
 }
 .brand {
   display: inline-flex;
@@ -473,10 +477,12 @@ dt {
   .menu-btn span { display: block; width: 22px; height: 2px; background: currentColor; }
   .js .nav-menu {
     position: absolute;
-    left: 0; right: 0; top: 100%;
+    left: 0; right: 0; top: calc(100% + 8px);
     padding: 8px var(--gutter) 24px;
     background: var(--bg);
-    border-bottom: 1px solid var(--line);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: 0 12px 32px rgba(27, 42, 94, 0.12);
     visibility: hidden;
     opacity: 0;
     transform: translateY(-8px);
@@ -659,7 +665,8 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 .hero h1 .it {
   padding: 0 0.1em;
   margin-left: -0.1em;
-  background: linear-gradient(transparent 52%, rgba(var(--glow-l), 0.16) 52%, rgba(var(--glow-l), 0.16) 94%, transparent 94%);
+  border-radius: 0.24em;          /* angoli morbidi: il tratto è una pillola, non un rettangolo */
+  background: rgba(var(--glow-l), 0.13);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
@@ -1023,6 +1030,7 @@ footer p + p { margin-top: 6px; }
   margin-left: auto;
   padding: calc(1 * var(--u)) calc(2.4 * var(--u));
   border: 1px solid var(--accent);
+  border-radius: 999px;
   font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1069,6 +1077,7 @@ footer p + p { margin-top: 6px; }
   gap: calc(1 * var(--u));
   padding: calc(2.4 * var(--u));
   border: 1px solid var(--line);
+  border-radius: calc(3.2 * var(--u));
   overflow: hidden;
 }
 .tessera i { display: block; height: max(3px, calc(1.2 * var(--u))); background: rgba(var(--fg-rgb), 0.3); }
@@ -1091,6 +1100,7 @@ footer p + p { margin-top: 6px; }
   justify-content: space-between;
   padding: calc(4.4 * var(--u)) calc(5 * var(--u));
   border: 1px solid var(--line);
+  border-radius: calc(4 * var(--u));
 }
 .copertina-scura { background: var(--bg); }
 .copertina-superficie { background: var(--surface); }
@@ -1145,6 +1155,7 @@ footer p + p { margin-top: 6px; }
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
+  border-radius: calc(2.6 * var(--u));
   font: 700 max(11px, calc(4.4 * var(--u)))/1 var(--f-display);
 }
 .cell.p1 { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
@@ -1238,6 +1249,7 @@ footer p + p { margin-top: 6px; }
   gap: 10px;
   padding: 8px 16px;
   border: 1px solid var(--line);
+  border-radius: 999px;
   font-size: 16px;
   line-height: 1.4;
 }
@@ -1578,14 +1590,14 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
 /* Barra "storie" dentro il menu fisso (la crea JavaScript): un segmento per sezione, si riempie con lo scroll */
 .story-bar {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 22px;
+  right: 22px;
+  bottom: 5px;
   display: flex;
   gap: 3px;
   pointer-events: none;
 }
-.seg { flex: 1; height: 3px; overflow: hidden; border-radius: 2px; background: rgba(var(--fg-rgb), 0.22); }
+.seg { flex: 1; height: 3px; overflow: hidden; border-radius: 999px; background: rgba(var(--fg-rgb), 0.22); }
 .seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
 
 /* Cursore ad anello con bagliore (lo crea JavaScript, solo con il mouse). Il cursore di sistema resta visibile */
@@ -1672,7 +1684,8 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
     left: 0; right: 0;
     top: 42%; bottom: 6%;
     z-index: -1;
-    background: rgba(var(--glow-l), 0.2);
+    border-radius: 0.3em;
+    background: #D4D6E5;            /* tinta piena (non trasparente): le parole vicine si fondono in un solo tratto */
     transform: scaleX(0);
     transform-origin: left;
   }
@@ -1871,23 +1884,6 @@ html:not(.js) #p-call, html.no-popup #p-call { display: none; }
 /* ----- Contatti: l'email è un link ----- */
 a.mail { display: inline-block; color: var(--fg); text-decoration: none; -webkit-user-select: text; user-select: text; }
 a.mail:hover { color: var(--accent); }
-.links .copia {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 10px 0;
-  border: 0;
-  border-bottom: 1px solid var(--accent);
-  background: transparent;
-  color: inherit;
-  font: 500 14px/1 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.links .copia:hover { color: var(--accent); }
-html:not(.js) .copia { display: none; }
-
 /* ----- Testata del caso studio: scheda blu ----- */
 .case-head.card-blu {
   display: grid;
@@ -1904,12 +1900,10 @@ html:not(.js) .copia { display: none; }
 .fatti i { display: block; margin-bottom: 6px; font: italic 400 30px/1 var(--f-serif); color: var(--key); }
 
 /* ----- Telefono: inclinazione, etichette che escono dallo schermo, avanzamento ----- */
-.stage { perspective: 1300px; }
 .js .phone {
   --ry: 0; --rx: 0; --k: 0.55;     /* --k riduce l'inclinazione su telefono */
-  transform: rotateY(calc(var(--ry) * var(--k) * 1deg)) rotateX(calc(var(--rx) * var(--k) * 1deg));
-  will-change: transform;      /* livello proprio: niente cuciture sul bordo quando il telefono è inclinato */
-  backface-visibility: hidden;
+  /* Dondolio piatto (rotazione 2D): nessuna prospettiva, quindi nessuna cucitura sul bordo arrotondato */
+  transform: rotate(calc(var(--ry) * var(--k) * 0.3deg));
 }
 .phone[data-tilt="0"] { --ry: -9; --rx: 3; }
 .phone[data-tilt="1"] { --ry: 7; --rx: -2; }
@@ -1921,7 +1915,7 @@ html:not(.js) .copia { display: none; }
 
 .avanzamento { display: none; }
 .js .avanzamento { display: flex; position: absolute; left: 50%; top: -14px; z-index: 2; gap: 5px; transform: translateX(-50%); }
-.avanzamento i { position: relative; display: block; width: 24px; height: 3px; overflow: hidden; border-radius: 2px; background: var(--line); }
+.avanzamento i { position: relative; display: block; width: 24px; height: 3px; overflow: hidden; border-radius: 999px; background: var(--line); }
 .avanzamento i::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; }
 .avanzamento i.on::after { transform: scaleX(1); }
 
