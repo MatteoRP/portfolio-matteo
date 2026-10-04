@@ -23,16 +23,7 @@
    metriche, così il testo non salta quando arriva il font vero.
    ========================================================================== */
 
-/* Titoli: Inter Tight 600, 700, 800 */
-
-@font-face {
-  font-family: "Inter Tight";
-  src: url("../assets/fonts/inter-tight-latin-600-normal.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
+/* Titoli: Inter Tight 700, 800 */
 
 @font-face {
   font-family: "Inter Tight";
@@ -76,15 +67,6 @@
 
 @font-face {
   font-family: "Instrument Serif";
-  src: url("../assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-@font-face {
-  font-family: "Instrument Serif";
   src: url("../assets/fonts/instrument-serif-latin-400-italic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
@@ -105,17 +87,6 @@
 }
 
 /* Font di riserva con size-adjust e metriche regolate (valori calcolati con il testo reale della pagina) */
-
-@font-face {
-  font-family: "Inter Tight Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica-Bold"), local("Liberation Sans Bold"), local("Arimo Bold");
-  font-weight: 600;
-  font-style: normal;
-  size-adjust: 93.98%;
-  ascent-override: 103.08%;
-  descent-override: 25.67%;
-  line-gap-override: 0.00%;
-}
 
 @font-face {
   font-family: "Inter Tight Fallback";
@@ -242,6 +213,10 @@
   --f-body: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --f-serif: "Instrument Serif", "Instrument Serif Fallback", Georgia, "Times New Roman", serif;
   --f-mono: var(--f-body);          /* niente font a spaziatura fissa: le etichette sono in Inter maiuscolo */
+  /* Scala dei titoli: solo tre misure (grande, media, piccola) */
+  --h-xl: clamp(34px, 6vw, 60px);
+  --h-l: clamp(28px, 4vw, 44px);
+  --h-m: clamp(22px, 2.6vw, 30px);
   --f-chalk: "Rock Salt", "Comic Sans MS", cursive;   /* annotazioni a gesso */
 
   --colonna: 1160px;
@@ -438,7 +413,7 @@ html:not(.js) .nav { margin: 10px 10px 0; }
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font: 500 15px/1 var(--f-body);
+  font: 500 16px/1 var(--f-body);
   text-decoration: none;
 }
 .nav-menu a::after {            /* filetto sotto la voce della sezione in lettura */
@@ -511,7 +486,7 @@ html:not(.js) .nav { margin: 10px 10px 0; }
   border: 1px solid var(--fg);
   background: transparent;
   color: var(--fg);
-  font: 500 15px/1 var(--f-body);
+  font: 500 16px/1 var(--f-body);
   text-decoration: none;
 }
 .nav-cta { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
@@ -544,10 +519,12 @@ h1, h2 {
   line-height: 0.96;
   text-wrap: balance;
 }
+b, strong { font-weight: 500; }   /* Inter ha solo 400 e 500: niente grassetto sintetizzato */
+.phone strong { font-weight: inherit; }
 h1 { font-size: clamp(38px, 10.4vw, 112px); }
-h2 { font-size: clamp(32px, 6vw, 68px); font-weight: 700; }
+h2 { font-size: var(--h-xl); font-weight: 700; }
 h3 {
-  font: 700 clamp(26px, 3.6vw, 42px)/1.04 var(--f-display);
+  font: 700 var(--h-l)/1.04 var(--f-display);
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
@@ -641,7 +618,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   border: 1px solid var(--line);
   border-radius: 99px;
   background: rgba(255, 255, 255, 0.7);
-  font: 500 15px/1 var(--f-body);
+  font: 500 16px/1 var(--f-body);
   color: var(--fg);
 }
 .punto { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
@@ -684,7 +661,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   border: 1px solid var(--line);
   border-radius: 26px;
 }
-.scheda-b h3 { margin-top: clamp(32px, 5vw, 56px); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.08; }
+.scheda-b h3 { margin-top: clamp(32px, 5vw, 56px); font-size: var(--h-m); line-height: 1.08; }
 .scheda-b p:last-child { margin-top: 12px; color: var(--muted); }
 
 /* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono), senza filetti ----- */
@@ -694,7 +671,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   gap: 40px 24px;
   margin-top: clamp(40px, 6vw, 72px);
 }
-.passo h3 { margin-top: 14px; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.1; }
+.passo h3 { margin-top: 14px; font-size: var(--h-m); line-height: 1.1; }
 .passo p:last-child { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--muted); }
 
 /* La striscia 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
@@ -710,7 +687,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 }
 .num {
   display: block;
-  font: italic 400 clamp(52px, 7vw, 76px)/1 var(--f-serif);
+  font: italic 400 clamp(48px, 6vw, 72px)/1 var(--f-serif);
   letter-spacing: -0.01em;
   color: var(--key);
   font-variant-numeric: tabular-nums;
@@ -731,7 +708,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 }
 .banner .btn-p { justify-self: start; }
 .piccolo { font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-.banner-testo { margin-top: 12px; max-width: 14em; font: 700 clamp(28px, 5vw, 46px)/1.02 var(--f-display); letter-spacing: -0.035em; text-wrap: balance; }
+.banner-testo { margin-top: 12px; max-width: 14em; font: 700 var(--h-l)/1.02 var(--f-display); letter-spacing: -0.035em; text-wrap: balance; }
 
 /* ----- Chi sono: solo testo (il ritratto sta nella hero) ----- */
 .who { display: grid; gap: 22px; max-width: 40rem; }
@@ -769,10 +746,10 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   border-radius: 99px;
   background: var(--d-bg);
   color: var(--d-fg);
-  font: 500 15px/1 var(--f-body);
+  font: 500 16px/1 var(--f-body);
   white-space: nowrap;
 }
-.pop b { font-weight: 700; color: var(--d-accent); }
+.pop b { font-weight: 500; color: var(--d-accent); }
 .pop-1 { top: 10%; left: -2%; }
 .pop-2 { top: 42%; right: -2%; --n: 1; }
 .pop-3 { bottom: 14%; left: -2%; --n: 2; }
@@ -794,7 +771,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 /* L'email è testo: un clic la seleziona tutta, pronta da copiare */
 .mail {
   margin-top: 28px;
-  font: 500 clamp(18px, 3vw, 28px)/1.3 var(--f-display);
+  font: 700 var(--h-m)/1.3 var(--f-display);
   letter-spacing: -0.01em;
   word-break: break-word;
   -webkit-user-select: all;
@@ -860,7 +837,7 @@ footer p + p { margin-top: 6px; }
   padding-top: clamp(28px, 4vw, 48px);
   border-top: 1px solid var(--line);
 }
-.strategia h3 { font-size: clamp(30px, 4.4vw, 52px); line-height: 1; }
+.strategia h3 { font-size: var(--h-l); line-height: 1; }
 
 .elenco-semplice { margin-top: 24px; max-width: 32em; }
 .elenco-semplice li {
@@ -1202,15 +1179,15 @@ footer p + p { margin-top: 6px; }
   text-transform: uppercase;
   color: var(--accent);
 }
-.step h3 { max-width: 14em; font-size: clamp(30px, 4.4vw, 52px); line-height: 1; }
+.step h3 { max-width: 14em; font-size: var(--h-l); line-height: 1; }
 .step .k + h3,
 .step .k + h4,
 .step .k + .step-nota { margin-top: 12px; }
 .step .elenco-semplice { margin-top: 20px; }
-.step .step-nota { font-size: 17px; }
+.step .step-nota { font-size: 16px; }
 .vetrina-guida + .k { margin-top: 44px; }
 .logica h4 {
-  font: 700 clamp(26px, 3.4vw, 38px)/1.04 var(--f-display);
+  font: 700 var(--h-l)/1.04 var(--f-display);
   letter-spacing: -0.03em;
   text-transform: none;
   color: var(--fg);
@@ -1219,7 +1196,7 @@ footer p + p { margin-top: 6px; }
 .logica dl { margin-top: 24px; }
 .logica dt { margin-top: 20px; }
 .logica dt:first-child { margin-top: 0; }
-.logica dd { margin-top: 6px; max-width: 30em; color: var(--muted); font-size: 17px; }
+.logica dd { margin-top: 6px; max-width: 30em; color: var(--muted); font-size: 16px; }
 
 /* Con JavaScript i passi sono alti e scorrono accanto al telefono; quello in lettura è al 100%, gli altri al 70% */
 .js .step {
@@ -1260,7 +1237,7 @@ footer p + p { margin-top: 6px; }
 .settimana + .settimana { margin-top: 40px; }
 .settimana h4 { color: var(--fg); }
 .suggerimento { margin-top: 4px; font-size: 14px; color: var(--muted); }
-.legenda-cal { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 4px; font-size: 15px; line-height: 1.3; }
+.legenda-cal { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 4px; font-size: 16px; line-height: 1.3; }
 .legenda-cal li { display: flex; align-items: center; gap: 10px; }
 .pil {
   flex: none;
@@ -1364,9 +1341,9 @@ footer p + p { margin-top: 6px; }
   text-align: left;
   cursor: pointer;
 }
-.riga-t { grid-area: titolo; font: 700 clamp(22px, 2.8vw, 32px)/1.1 var(--f-display); letter-spacing: -0.03em; }
+.riga-t { grid-area: titolo; font: 700 var(--h-m)/1.1 var(--f-display); letter-spacing: -0.03em; }
 .riga-b:hover .riga-t { color: var(--accent); }
-.blocco-sintesi { grid-area: sintesi; font: 400 15px/1.5 var(--f-body); letter-spacing: 0; text-transform: none; color: var(--muted); }
+.blocco-sintesi { grid-area: sintesi; font: 400 16px/1.5 var(--f-body); letter-spacing: 0; text-transform: none; color: var(--muted); }
 /* Segno "+" disegnato con due linee */
 .indicatore, .piu { position: relative; flex: none; }
 .indicatore { grid-area: indicatore; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; }
@@ -1380,7 +1357,7 @@ footer p + p { margin-top: 6px; }
 }
 .indicatore::after, .piu::after { transform: rotate(90deg); }
 
-.nota-fittizio { margin-top: 48px; max-width: 34em; font-size: 15px; color: var(--muted); }
+.nota-fittizio { margin-top: 48px; max-width: 34em; font-size: 16px; color: var(--muted); }
 
 /* ----- Popup (<dialog>): carta chiara sopra lo sfondo oscurato. Senza JavaScript i popup sono contenuti normali, uno sotto l'altro ----- */
 .popup {
@@ -1408,7 +1385,7 @@ footer p + p { margin-top: 6px; }
 .popup-in dl { margin-top: 24px; }
 .popup-in dt { margin-top: 20px; color: var(--accent); }
 .popup-in dt:first-child { margin-top: 0; }
-.popup-in dd { margin-top: 6px; max-width: 34em; color: var(--muted); font-size: 17px; }
+.popup-in dd { margin-top: 6px; max-width: 34em; color: var(--muted); font-size: 16px; }
 .popup-in .scheda { margin-top: 24px; }
 .popup-in .strategia { margin: 0; padding: 0; border: 0; }
 .popup-in .corpo { padding-bottom: 0; }
@@ -1651,7 +1628,15 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.04em 0.14em; margin: 0 -0.04em -0.14em; }
   .wi { display: inline-block; }
   .js .wi { transform: translateY(112%); }
-  .js.go .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 55ms + 180ms); }
+  .js.go .hero .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 55ms + 180ms); }
+  /* Titoli di sezione: le parole salgono dalla maschera quando il titolo entra nello schermo */
+  .js .tit.in .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 50ms); }
+
+  /* Pulsanti: la freccia scatta in avanti, la pressione schiaccia un poco (solo transform) */
+  .btn-p, .btn-o { transition: transform 0.5s var(--ease); }
+  .btn-p:active, .btn-o:active { transform: scale(0.96); }
+  .btn-p .fr, .btn-o .fr, .links a .fr { transition: transform 0.5s var(--ease); }
+  .btn-p:hover .fr, .btn-o:hover .fr, .links a:hover .fr { transform: translate(3px, -3px); }
 
   /* Schede attorno alla foto: compaiono una volta dopo il titolo (opacità + traslazione) */
   .js .pop { opacity: 0; transform: translateY(14px) scale(0.92); }
@@ -1784,7 +1769,7 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
 }
 .cliente .n { display: block; }
 .cliente .tag { display: block; margin-top: 14px; }
-.cliente h3 { margin-top: 8px; font-size: clamp(28px, 3vw, 36px); line-height: 1.04; }
+.cliente h3 { margin-top: 8px; font-size: var(--h-m); line-height: 1.04; }
 .percorso { margin-bottom: 30px; }
 .cliente .apri-btn { margin-top: auto; }
 
@@ -1813,7 +1798,7 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   background: var(--accent);
 }
 .pt { display: block; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-.percorso p { margin-top: 4px; font-size: 17px; line-height: 1.5; color: var(--fg); }
+.percorso p { margin-top: 4px; font-size: 16px; line-height: 1.5; color: var(--fg); }
 
 /* Il filo: lo stesso metodo in quattro passi */
 .filo { display: grid; gap: 18px; margin-top: clamp(32px, 4vw, 52px); }
@@ -1822,7 +1807,7 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
 .filo-passi::after { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1px; transform-origin: left; }
 .filo-passi::before { background: var(--line); }
 .filo-passi::after { background: var(--accent); }
-.filo-passi li { position: relative; padding-top: 26px; font: 500 15px/1.3 var(--f-body); color: var(--fg); }
+.filo-passi li { position: relative; padding-top: 26px; font: 500 16px/1.3 var(--f-body); color: var(--fg); }
 .filo-passi li::before {
   content: "";
   position: absolute;
@@ -1831,7 +1816,7 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   border-radius: 50%;
   background: var(--accent);
 }
-.filo-passi i { display: block; margin-bottom: 2px; font: italic 400 24px/1 var(--f-serif); color: var(--key); }
+.filo-passi i { display: block; margin-bottom: 2px; font: italic 400 30px/1 var(--f-serif); color: var(--key); }
 .filo-pop { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
 
 /* ----- Popup: struttura come il resto del sito ----- */
@@ -1857,7 +1842,7 @@ html.js:not(.no-popup) .popup-in {
 }
 .popup.luce-on .pop-luce { opacity: 1; }
 html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
-.popup-in > .titolo-pop { max-width: none; margin-top: 8px; font-size: clamp(34px, 5vw, 56px); line-height: 1.02; }
+.popup-in > .titolo-pop { max-width: none; margin-top: 8px; font-size: var(--h-xl); line-height: 1.02; }
 .titolo-pop .n { display: inline-block; margin-right: 0.3em; font-size: 1.25em; line-height: 0.9; }
 .popup-in > .lead { max-width: 30em; }
 .duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
@@ -1868,14 +1853,14 @@ html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
   background: rgba(var(--fg-rgb), 0.05);
 }
 .blocco h4 { margin: 0; }
-.blocco p { margin-top: 10px; font-size: 17px; line-height: 1.55; color: var(--fg); }
+.blocco p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--fg); }
 .popup-in > .filo-pop + .btn-p { margin-top: 28px; }
 .passi-mini { display: grid; gap: 16px; }
 .passi-mini li { display: flex; align-items: baseline; gap: 18px; }
-.passi-mini i { flex: none; width: 1.5em; font: italic 400 34px/1 var(--f-serif); color: var(--key); }
-.passi-mini p { font-size: 17px; line-height: 1.5; color: var(--fg); }
+.passi-mini i { flex: none; width: 1.5em; font: italic 400 30px/1 var(--f-serif); color: var(--key); }
+.passi-mini p { font-size: 16px; line-height: 1.5; color: var(--fg); }
 .passi-mini strong { font-weight: 500; color: var(--accent); }
-.indirizzo { font: 500 clamp(20px, 3vw, 28px)/1.3 var(--f-display); letter-spacing: -0.01em; word-break: break-word; }
+.indirizzo { font: 700 var(--h-m)/1.3 var(--f-display); letter-spacing: -0.01em; word-break: break-word; }
 .azioni { display: flex; flex-wrap: wrap; gap: 12px; }
 .azioni .btn-o, .azioni .btn-p { cursor: pointer; }
 button.btn-o, button.btn-p { font-family: var(--f-body); cursor: pointer; }
@@ -1896,7 +1881,7 @@ a.mail:hover { color: var(--accent); }
 }
 .case-head h2 { max-width: 14em; }
 .fatti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 28px; margin-top: 8px; }
-.fatti li { padding: 18px 0 6px; border-top: 1px solid var(--line); font-size: 17px; line-height: 1.4; color: var(--fg); }
+.fatti li { padding: 18px 0 6px; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.4; color: var(--fg); }
 .fatti i { display: block; margin-bottom: 6px; font: italic 400 30px/1 var(--f-serif); color: var(--key); }
 
 /* ----- Telefono: inclinazione, etichette che escono dallo schermo, avanzamento ----- */
@@ -1992,6 +1977,11 @@ a.mail:hover { color: var(--accent); }
   /* Popup: entra dal basso, il fondo si schiarisce */
   .popup[open] { animation: apri 0.55s var(--ease) 1; }
   .popup[open]::backdrop { animation: sfondo 0.4s var(--ease) 1; }
+  /* Dentro il popup il contenuto entra a scalini, dopo che la finestra è comparsa */
+  .popup[open] .popup-in > * { animation: entra 0.7s var(--ease) both; animation-delay: calc(0.12s + var(--s, 0) * 0.07s); }
+  .popup-in > :nth-child(2) { --s: 1; } .popup-in > :nth-child(3) { --s: 2; } .popup-in > :nth-child(4) { --s: 3; }
+  .popup-in > :nth-child(5) { --s: 4; } .popup-in > :nth-child(6) { --s: 5; } .popup-in > :nth-child(n+7) { --s: 6; }
+  @keyframes entra { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @keyframes apri { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
   @keyframes sfondo { from { opacity: 0; } to { opacity: 1; } }
   .pop-luce { transition: transform 0.45s var(--ease), opacity 0.4s var(--ease); }

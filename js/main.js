@@ -206,13 +206,32 @@
     if (!RIDOTTO) {
       var titolo = document.querySelector('.hero h1');
       if (titolo) dividiTitolo(titolo);
+      // Anche i titoli di sezione salgono parola per parola quando entrano nello schermo
+      tutti('main h2').forEach(function (t) {
+        if (t.closest('dialog')) return;
+        t.classList.remove('rv');
+        t.classList.add('tit');
+        dividiTitolo(t);
+      });
+      // Scalino: gli elementi fratelli che compaiono insieme entrano uno dopo l'altro (max 4 passi)
+      var gruppi = new Map();
+      tutti('.rv').forEach(function (el) {
+        if (el.style.getPropertyValue('--d')) return;
+        var lista = gruppi.get(el.parentNode) || [];
+        lista.push(el);
+        gruppi.set(el.parentNode, lista);
+      });
+      gruppi.forEach(function (lista) {
+        if (lista.length < 2) return;
+        lista.forEach(function (el, i) { el.style.setProperty('--d', Math.min(i, 3) * 110 + 'ms'); });
+      });
       tutti('.hl').forEach(dividiEvidenziatore);
       tutti('.chalk:not(.cnote)').forEach(function (g) { gesso(g, g.textContent.replace(/\s+/g, ' ').trim()); });
       // Solo l'etichetta della hero si scrive lettera per lettera; le altre compaiono con il normale reveal (classe "rv")
       tutti('.hero .label').forEach(preparaEtichetta);
       tutti('.num').forEach(preparaNumero);
 
-      var bersagli = tutti('.rv, .label, .num, .hl, .chalk:not(.cnote), .draw');
+      var bersagli = tutti('.rv, .tit, .label, .num, .hl, .chalk:not(.cnote), .draw');
       var comparsa = function (elemento) {
         elemento.classList.add('in');
         if (elemento.classList.contains('label')) scrivi(elemento);
