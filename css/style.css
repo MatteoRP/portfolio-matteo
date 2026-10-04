@@ -1,18 +1,19 @@
 /* ==========================================================================
    Portfolio di Matteo Rapeso: foglio di stile
-   Direzione visiva: nero caldo, un solo accento beige (vedi CLAUDE.md, sezioni Design e Sistema di movimento).
+   Direzione visiva: crema chiaro e blu navy, sezioni che si alternano, angoli arrotondati
+   (vedi CLAUDE.md, sezioni Design e Sistema di movimento).
 
    Struttura del file:
    1. Font (self-hosted) e fallback
    2. Variabili e base
-   3. Componenti comuni (etichette, barra, pulsanti, titoli)
+   3. Componenti comuni (etichette, menu, pulsanti e bagliori, titoli)
    4. Sezioni, nell'ordine in cui compaiono nella pagina
-   5. Caso studio (scheda, telefono-mockup a sette stati, passi, calendario)
-   6. Tablet e desktop
-   7. Movimento (luce, barra "storie", cursore; gli stati nascosti sono solo qui e solo con .js)
-   8. Preferenze dell'utente (movimento ridotto)
+   5. Caso studio (testata, telefono-mockup a sette stati, passi, strategia, calendario)
+   6. Popup
+   7. Tablet e desktop (si parte dal telefono, poi si allarga)
+   8. Movimento (gli stati nascosti esistono solo con .js e solo se l'utente non ha chiesto di ridurre il movimento)
+   9. Preferenze dell'utente (movimento ridotto)
    ========================================================================== */
-
 
 /* ==========================================================================
    1. FONT
@@ -23,27 +24,7 @@
    metriche, così il testo non salta quando arriva il font vero.
    ========================================================================== */
 
-/* Titoli: Inter Tight 700, 800 */
-
-@font-face {
-  font-family: "Inter Tight";
-  src: url("../assets/fonts/inter-tight-latin-700-normal.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-@font-face {
-  font-family: "Inter Tight";
-  src: url("../assets/fonts/inter-tight-latin-800-normal.woff2") format("woff2");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-/* Testo: Inter 400 e 500 */
+/* Testo e titoli: una sola famiglia, Inter 400, 500 e 700 */
 
 @font-face {
   font-family: "Inter";
@@ -63,7 +44,16 @@
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
-/* Parole chiave: Instrument Serif 400 e 400 corsivo */
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/inter-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* Corsivo d'accento: Instrument Serif 400 corsivo */
 
 @font-face {
   font-family: "Instrument Serif";
@@ -76,28 +66,6 @@
 
 
 /* Font di riserva con size-adjust e metriche regolate (valori calcolati con il testo reale della pagina) */
-
-@font-face {
-  font-family: "Inter Tight Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica-Bold"), local("Liberation Sans Bold"), local("Arimo Bold");
-  font-weight: 700;
-  font-style: normal;
-  size-adjust: 96.27%;
-  ascent-override: 100.63%;
-  descent-override: 25.05%;
-  line-gap-override: 0.00%;
-}
-
-@font-face {
-  font-family: "Inter Tight Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica-Bold"), local("Liberation Sans Bold"), local("Arimo Bold");
-  font-weight: 800;
-  font-style: normal;
-  size-adjust: 98.57%;
-  ascent-override: 98.28%;
-  descent-override: 24.47%;
-  line-gap-override: 0.00%;
-}
 
 @font-face {
   font-family: "Inter Fallback";
@@ -114,6 +82,17 @@
   font-family: "Inter Fallback";
   src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Arimo");
   font-weight: 500;
+  font-style: normal;
+  size-adjust: 107.93%;
+  ascent-override: 89.76%;
+  descent-override: 22.35%;
+  line-gap-override: 0.00%;
+}
+
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica-Bold"), local("Liberation Sans Bold"), local("Arimo Bold");
+  font-weight: 700;
   font-style: normal;
   size-adjust: 107.93%;
   ascent-override: 89.76%;
@@ -143,7 +122,6 @@
   line-gap-override: 0.00%;
 }
 
-
 /* ==========================================================================
    2. VARIABILI E BASE
    Due "ruoli" di sfondo che si alternano: scuro (--d-*) e chiaro (--l-*).
@@ -152,8 +130,8 @@
    ========================================================================== */
 
 :root {
-  /* Palette: blu navy chiaro e crema. Due "ruoli" di sfondo che si alternano: scuro (--d-*) e chiaro (--l-*).
-     Sfondi con una sfumatura delicata (--*-g1/g2) e un alone (--*-hi). --key è il colore delle parole chiave nei titoli. */
+  /* Palette: blu navy e crema. Sfondi con una sfumatura delicata (--*-g1/g2) e un alone (--*-hi).
+     --key è il colore delle parole chiave nei titoli. */
   --d-bg: #1A2A63;
   --d-surface: #223378;
   --d-fg: #F6F1E6;
@@ -198,10 +176,8 @@
   --key: var(--d-key);
 
   /* Font: prima il font vero, poi il suo fallback regolato, poi i generici */
-  --f-display: "Inter Tight", "Inter Tight Fallback", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --f-body: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --f-serif: "Instrument Serif", "Instrument Serif Fallback", Georgia, "Times New Roman", serif;
-  --f-mono: var(--f-body);          /* niente font a spaziatura fissa: le etichette sono in Inter maiuscolo */
   /* Scala dei titoli: solo tre misure (grande, media, piccola) */
   --h-xl: clamp(34px, 6vw, 60px);
   --h-l: clamp(28px, 4vw, 44px);
@@ -253,7 +229,7 @@ dialog,
 }
 /* Sfumature di sfondo, molto delicate, dipinte su ::before (z-index -1) in ogni sezione:
    così sotto il testo c'è sempre la luce del cursore (anch'essa a z-index -1, creata dopo), beige sullo scuro e blu sul chiaro. */
-section, footer { position: relative; }
+section, footer { position: relative; overflow-x: clip; }   /* le luci e le schede che arrivano di lato non allargano mai la pagina (clip, non hidden: lo sticky del telefono resta vivo) */
 .sez-chiara { color: var(--fg); }
 section.sez-chiara::before,
 section.sez-scura::before,
@@ -326,7 +302,7 @@ a { color: inherit; }
   border-radius: 999px;
   background: var(--accent);
   color: var(--accent-ink);
-  font: 500 14px/1.4 var(--f-mono);
+  font: 500 14px/1.4 var(--f-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
@@ -341,7 +317,6 @@ a { color: inherit; }
   padding-inline: var(--gutter);
 }
 
-
 /* ==========================================================================
    3. COMPONENTI COMUNI
    ========================================================================== */
@@ -351,7 +326,7 @@ a { color: inherit; }
 .tag,
 h4,
 dt {
-  font: 500 14px/1.4 var(--f-mono);
+  font: 500 14px/1.4 var(--f-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
@@ -367,16 +342,18 @@ dt {
   background: var(--muted);
 }
 
-/* Menu in alto. Con JavaScript è fisso; senza, resta in cima alla pagina con i link sotto il nome. */
+/* Menu in alto: barra flottante con angoli arrotondati, staccata dal bordo.
+   Con JavaScript è fissa; senza, resta in cima alla pagina con i link sotto il nome. */
 .nav {
   position: relative;
   z-index: 30;
   background: var(--bg);
   color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 8px 28px rgba(27, 42, 94, 0.1);
 }
-/* Barra flottante con angoli arrotondati, come una "pillola" staccata dal bordo */
 html:not(.js) .nav { margin: 10px 10px 0; }
-.nav { border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 8px 28px rgba(27, 42, 94, 0.1); }
 .js .nav { position: fixed; top: 10px; left: max(10px, calc((100vw - 1240px) / 2)); right: max(10px, calc((100vw - 1240px) / 2)); }
 .nav-in {
   display: flex;
@@ -390,8 +367,9 @@ html:not(.js) .nav { margin: 10px 10px 0; }
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font: 500 14px/1 var(--f-mono);
-  letter-spacing: 0.14em;
+  white-space: nowrap;
+  font: 500 14px/1 var(--f-body);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
 }
@@ -433,6 +411,7 @@ html:not(.js) .nav { margin: 10px 10px 0; }
     margin-right: -10px;
     padding: 0;
     border: 0;
+    border-radius: 50%;           /* tondo come la X dei popup: anche il lampo resta dentro un tondo */
     background: transparent;
     color: var(--fg);
     cursor: pointer;
@@ -453,7 +432,7 @@ html:not(.js) .nav { margin: 10px 10px 0; }
   }
   .js .nav.aperto .nav-menu { visibility: visible; opacity: 1; transform: none; pointer-events: auto; }
   .js .nav-menu ul { display: grid; gap: 0; }
-  .js .nav-menu a { width: 100%; min-height: 56px; font: 700 28px/1 var(--f-display); letter-spacing: -0.03em; border-top: 1px solid var(--line); }
+  .js .nav-menu a { width: 100%; min-height: 56px; font: 700 28px/1 var(--f-body); letter-spacing: -0.03em; border-top: 1px solid var(--line); }
   .js .nav-menu li:first-child a { border-top: 0; }
   .js .nav-menu a::after { display: none; }
   .nav-menu ul { width: 100%; }
@@ -464,6 +443,19 @@ html:not(.js) .nav { margin: 10px 10px 0; }
   .nav-in { flex-wrap: nowrap; }
   .nav-menu { margin-left: auto; margin-right: 8px; }
 }
+
+/* Barra "storie" dentro il menu fisso (la crea JavaScript): un segmento per sezione, si riempie con lo scroll */
+.story-bar {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 5px;
+  display: flex;
+  gap: 3px;
+  pointer-events: none;
+}
+.seg { flex: 1; height: 3px; overflow: hidden; border-radius: 999px; background: rgba(var(--fg-rgb), 0.22); }
+.seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
 
 .btn-o {
   display: inline-flex;
@@ -499,20 +491,35 @@ html:not(.js) .nav { margin: 10px 10px 0; }
 /* Freccia ↗ disegnata con SVG (il font latin non contiene la freccia) */
 .fr { width: 0.9em; height: 0.9em; margin-left: 0.55em; flex: none; vertical-align: -0.05em; }
 
-/* Titoli: Inter Tight. Le parole chiave in Instrument Serif corsivo, colore accento. */
+/* ----- Bagliori sui tasti -----
+   Ogni tasto ha una luce morbida che segue il mouse (solo mouse) e un lampo che parte dal punto premuto (mouse, tocco e tastiera).
+   Le luci sono due cerchi sfumati che cambiano solo transform e opacità; stanno dietro il testo. Le crea js/main.js. */
+.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap { overflow: hidden; isolation: isolate; }
+.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .mailwrap { position: relative; }
+.lampo, .luce-b {
+  position: absolute;
+  left: 0; top: 0;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(var(--lc, 70, 100, 215), var(--la, 0.5)), rgba(var(--lc, 70, 100, 215), 0) 70%);
+}
+.luce-b { width: 240px; height: 240px; margin: -120px 0 0 -120px; opacity: 0; transform: translate(var(--mx, 50%), var(--my, 50%)); }
+.lampo { width: 260px; height: 260px; margin: -130px 0 0 -130px; opacity: 0; transform: translate(var(--lx, 50%), var(--ly, 50%)) scale(0.2); }
+
+/* Titoli: Inter 700. Le parole chiave in Instrument Serif corsivo, colore accento. */
 h1, h2 {
-  font-family: var(--f-display);
-  font-weight: 800;
+  font-family: var(--f-body);
+  font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 0.96;
   text-wrap: balance;
 }
-b, strong { font-weight: 500; }   /* Inter ha solo 400 e 500: niente grassetto sintetizzato */
+b, strong { font-weight: 500; }   /* i grassetti nel testo sono 500; il 700 è solo dei titoli (così il browser non inventa pesi) */
 .phone strong { font-weight: inherit; }
-h1 { font-size: clamp(38px, 10.4vw, 112px); }
-h2 { font-size: var(--h-xl); font-weight: 700; }
+h2 { font-size: var(--h-xl); }
 h3 {
-  font: 700 var(--h-l)/1.04 var(--f-display);
+  font: 700 var(--h-l)/1.04 var(--f-body);
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
@@ -540,10 +547,9 @@ h3 {
   letter-spacing: 0;
   color: var(--muted);
 }
-.hero-lead { color: var(--fg); }
 .muted { color: var(--muted); }
 
-/* Sezioni: filetto sopra, molto spazio verticale */
+/* Sezioni: molto spazio verticale */
 section { padding-block: clamp(80px, 12vw, 160px); }
 /* Griglia asimmetrica: etichetta nella colonna stretta a sinistra, contenuto a destra */
 .sec {
@@ -563,6 +569,16 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 }
 .link-testo:hover { color: var(--accent); }
 
+/* Testo solo per screen reader: nascosto alla vista, ma letto */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 /* ==========================================================================
    4. SEZIONI
@@ -578,14 +594,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 .hero .wrap { position: relative; z-index: 1; }
 .hero-in { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; align-items: end; }
 .hero-testo { padding-bottom: clamp(24px, 4vw, 56px); }
-.toprow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 22px 32px;
-}
-/* Luce dietro il titolo. Quella esterna segue il mouse, quella interna respira (sezione 7) */
+/* Luce dietro il titolo. Quella esterna segue il mouse, quella interna respira (vedi Movimento) */
 .luce { position: absolute; left: 50%; top: 22%; z-index: 0; width: 0; height: 0; pointer-events: none; }
 .luce-in {
   position: absolute;
@@ -616,7 +625,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   line-height: 1;
   max-width: 15em;
 }
-.hero-lead { margin-top: clamp(20px, 3vw, 28px); }
+.hero-lead { margin-top: clamp(20px, 3vw, 28px); color: var(--fg); }
 .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 28px; }
 /* Evidenziatore, come un pennarello: un tratto tenue sotto la parte bassa del testo. Il colore del testo non cambia. */
 .hl {
@@ -626,84 +635,16 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
-/* Anche la frase in corsivo del titolo ha il suo tratto */
-.hero h1 .it {
+/* Anche la frase in corsivo del titolo ha il suo tratto. Senza JavaScript: una banda sotto il testo; con JavaScript: un tratto arrotondato per parola (vedi sezione movimento) */
+html:not(.js) .hero h1 .it {
   padding: 0 0.1em;
   margin-left: -0.1em;
-  border-radius: 0.24em;          /* angoli morbidi: il tratto è una pillola, non un rettangolo */
-  background: rgba(var(--glow-l), 0.13);
+  background: linear-gradient(transparent 52%, rgba(var(--glow-l), 0.16) 52%, rgba(var(--glow-l), 0.16) 94%, transparent 94%);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 
-/* ----- Per chi lavoro: tre schede blu con un percorso che si accende, e il filo del metodo (vedi più sotto) ----- */
-.introduzione { margin-top: 28px; }
-
-/* Numeri 01-04 (Cosa risolvo e i quattro passi) */
-.n { font: italic 400 clamp(48px, 6vw, 72px)/1 var(--f-serif); letter-spacing: -0.01em; color: var(--key); }   /* numeri grandi in serif corsivo */
-
-/* ----- Cosa risolvo: due schede blu sopra lo sfondo ----- */
-.schede { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(32px, 5vw, 56px); }
-.scheda-b {
-  padding: clamp(24px, 3.4vw, 36px);
-  border: 1px solid var(--line);
-  border-radius: 26px;
-}
-.scheda-b h3 { margin-top: clamp(32px, 5vw, 56px); font-size: var(--h-m); line-height: 1.08; }
-.scheda-b p:last-child { margin-top: 12px; color: var(--muted); }
-
-/* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono), senza filetti ----- */
-.passi {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px 24px;
-  margin-top: clamp(40px, 6vw, 72px);
-}
-.passo h3 { margin-top: 14px; font-size: var(--h-m); line-height: 1.1; }
-.passo p:last-child { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--muted); }
-
-/* La striscia 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: clamp(48px, 7vw, 80px);
-  padding: clamp(20px, 3vw, 32px);
-  border: 1px solid var(--line);
-  border-radius: 26px;
-  background: rgba(255, 255, 255, 0.55);
-}
-.num {
-  display: block;
-  font: italic 400 clamp(48px, 6vw, 72px)/1 var(--f-serif);
-  letter-spacing: -0.01em;
-  color: var(--key);
-  font-variant-numeric: tabular-nums;
-}
-.stat p {
-  margin-top: 8px;
-  font: 500 14px/1.35 var(--f-body);
-  color: var(--muted);
-}
-/* Banner blu: la nota di onestà, con più peso */
-.banner {
-  display: grid;
-  gap: 24px;
-  margin-top: 16px;
-  padding: clamp(26px, 5vw, 48px);
-  border-radius: 28px;
-  color: var(--d-fg);
-}
-.banner .btn-p { justify-self: start; }
-.piccolo { font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-.banner-testo { margin-top: 12px; max-width: 14em; font: 700 var(--h-l)/1.02 var(--f-display); letter-spacing: -0.035em; text-wrap: balance; }
-
-/* ----- Chi sono: solo testo (il ritratto sta nella hero) ----- */
-.who { display: grid; gap: 22px; max-width: 40rem; }
-.who .muted { max-width: 34em; }
-
-/* Ritratto nella hero: 4:5, in bianco e nero, appoggiato al bordo inferiore della hero e sfumato verso l'alto-basso.
-   Niente parallasse sulla foto vera. */
+/* Ritratto nella hero: 4:5, in bianco e nero, appoggiato al bordo inferiore della hero. Niente parallasse. */
 .ritratto { position: relative; width: 100%; max-width: 380px; margin-inline: auto; }
 .photo {
   position: relative;
@@ -742,61 +683,215 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 .pop-2 { top: 42%; right: -2%; --n: 1; }
 .pop-3 { bottom: 14%; left: -2%; --n: 2; }
 
-/* Solo anteprima: segnaposto finché la foto non c'è (tre aloni grigi) */
-.photo-in {
+/* ----- Chi sono: solo testo (il ritratto sta nella hero) ----- */
+.who { display: grid; gap: 22px; max-width: 40rem; }
+.who .muted { max-width: 34em; }
+
+/* ----- Riquadri blu (schede, banner, pannelli, testata del caso studio) ----- */
+/* Riquadri blu: lo sfondo sta su ::before (z-index -1), così la luce del cursore, che sta sopra gli sfondi ma sotto il testo, si vede anche qui */
+.scheda-b,
+.banner,
+.pannello,
+.card-blu,
+.cliente { position: relative; }
+.scheda-b::before,
+.cliente::before {
+  content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(34% 26% at 50% 31%, #9a9892 0%, #5b5a56 62%, transparent 66%),
-    radial-gradient(70% 38% at 50% 78%, #4a4945 0%, #2b2a28 62%, transparent 66%),
-    radial-gradient(120% 80% at 50% 25%, #34332f 0%, #1a1a18 55%, transparent 100%);
-  filter: grayscale(1) contrast(1.05);
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%), var(--d-surface);
+}
+.banner::before,
+.pannello::before,
+.card-blu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(90% 120% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 62%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
+}
+
+/* ----- Cosa risolvo: due schede blu sopra lo sfondo ----- */
+.schede { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(32px, 5vw, 56px); }
+.scheda-b {
+  padding: clamp(24px, 3.4vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+}
+.scheda-b h3 { font-size: var(--h-m); line-height: 1.08; }
+.scheda-b p { margin-top: 12px; color: var(--muted); }
+
+/* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono), ognuno sotto un filetto ----- */
+.passi {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 24px;
+  margin-top: clamp(40px, 6vw, 72px);
+}
+.passo { padding-top: 22px; border-top: 1px solid var(--line); }
+.passo h3 { font-size: var(--h-m); line-height: 1.1; }
+.passo p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--muted); }
+
+/* La striscia 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: clamp(48px, 7vw, 80px);
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.55);
+}
+.num {
+  position: relative;
+  display: block;
+  font: italic 400 clamp(48px, 6vw, 72px)/1 var(--f-serif);
+  letter-spacing: -0.01em;
+  color: var(--key);
+  font-variant-numeric: tabular-nums;
+}
+.stat p {
+  margin-top: 8px;
+  font: 500 14px/1.35 var(--f-body);
+  color: var(--muted);
+}
+/* Banner blu: la nota di onestà, con più peso */
+.banner {
+  display: grid;
+  gap: 24px;
+  margin-top: 16px;
+  padding: clamp(26px, 5vw, 48px);
+  border-radius: 28px;
+  color: var(--d-fg);
+}
+.banner .btn-p { justify-self: start; }
+.piccolo { font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.banner-testo { margin-top: 12px; max-width: 14em; font: 700 var(--h-l)/1.02 var(--f-body); letter-spacing: -0.035em; text-wrap: balance; }
+/* Numeri della striscia: la copia che sale esiste solo con JavaScript */
+.num-an { display: none; }
+.js .num-an { display: block; position: absolute; left: 0; top: 0; }
+
+/* ----- Per chi lavoro: tre schede blu con un percorso che si accende, e il filo del metodo ----- */
+.introduzione { margin-top: 28px; }
+.clienti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 72px); }
+.cliente {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(24px, 3vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+}
+.cliente::after {            /* filetto beige che si disegna al passaggio del mouse (o quando la scheda è al centro, al tocco) */
+  content: "";
+  position: absolute;
+  left: 28px; right: 28px; top: -1px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.cliente.on::after { transform: scaleX(1); }
+@media (hover: hover) {
+  .cliente:hover::after { transform: scaleX(1); }
+}
+.cliente .tag { display: block; }
+.cliente h3 { margin-top: 8px; font-size: var(--h-m); line-height: 1.04; }
+.cliente .apri-btn { margin-top: auto; }
+
+/* Il percorso: problema, cosa faccio, obiettivo. Una linea con tre punti */
+.percorso { position: relative; display: grid; gap: 22px; width: 100%; margin: 26px 0 30px; padding-left: 34px; }
+.percorso::before,
+.percorso::after { content: ""; position: absolute; left: 5px; top: 10px; bottom: 12px; width: 1px; transform-origin: top; }
+.percorso::before { background: var(--line); }
+.percorso::after { background: var(--accent); }
+.percorso li { position: relative; }
+.percorso li::before {
+  content: "";
+  position: absolute;
+  left: -34px; top: 5px;
+  width: 11px; height: 11px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  background: var(--d-bg);
+}
+.percorso li::after {
+  content: "";
+  position: absolute;
+  left: -31px; top: 8px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.pt { display: block; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.percorso p { margin-top: 4px; font-size: 16px; line-height: 1.5; color: var(--fg); }
+
+/* Il filo: lo stesso metodo in quattro passi */
+.filo { display: grid; gap: 18px; margin-top: clamp(32px, 4vw, 52px); }
+.filo-passi { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.filo-passi::before,
+.filo-passi::after { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1px; transform-origin: left; }
+.filo-passi::before { background: var(--line); }
+.filo-passi::after { background: var(--accent); }
+.filo-passi li { position: relative; padding-top: 26px; font: 500 16px/1.3 var(--f-body); color: var(--fg); }
+.filo-passi li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 /* ----- Contatti ----- */
 .big { font-size: clamp(56px, 15vw, 200px); line-height: 0.92; }
 #contatti .lead { margin-top: 28px; }
-/* L'email è testo: un clic la seleziona tutta, pronta da copiare */
-.mail {
-  margin-top: 28px;
-  font: 700 var(--h-m)/1.3 var(--f-display);
+/* L'email è un link: apre direttamente il programma di posta, con oggetto e testo già pronti.
+   Sta dentro una pillola con il bordo sottile, come i pulsanti. */
+.mail,
+.indirizzo {
+  font: 700 var(--h-m)/1.3 var(--f-body);
   letter-spacing: -0.01em;
   word-break: break-word;
-  -webkit-user-select: all;
-  user-select: all;
 }
-.links { display: flex; flex-wrap: wrap; gap: 4px 28px; margin-top: 18px; }
-.links a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding-block: 10px;
-  border-bottom: 1px solid var(--accent);
-  font: 500 14px/1 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-.links a:hover { color: var(--accent); }
+.mail { display: inline-block; margin-top: 28px; color: var(--fg); text-decoration: none; }
+.mail:hover { color: var(--accent); }
+.mailwrap { display: inline-block; margin-top: 28px; padding: 12px 26px; border: 1px solid var(--accent); border-radius: 999px; }
+.mailwrap .mail { margin: 0; }
+.links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
 
 /* ----- Piè di pagina ----- */
 footer {
   padding-block: 28px 56px;
   border-top: 1px solid var(--d-line);
 }
-footer p { font: 400 14px/1.5 var(--f-mono); color: var(--muted); }
+footer p { font: 400 14px/1.5 var(--f-body); color: var(--muted); }
 footer p + p { margin-top: 6px; }
 
 
 /* ==========================================================================
    5. CASO STUDIO
-   I contenuti sono quelli di prima. Il telefono è uno solo e cambia stato
-   in base al passo che si sta leggendo (la logica è in js/main.js).
+   Il telefono è uno solo e cambia stato in base al passo che si sta leggendo (la logica è in js/main.js).
    Senza JavaScript i sette stati del telefono stanno uno sotto l'altro.
    ========================================================================== */
 
-.case-head { display: grid; gap: 22px; max-width: 54rem; }
-.case-head h2 { max-width: 12em; }
+/* ----- Testata: scheda blu con l'etichetta "Progetto dimostrativo", il titolo e tre fatti ----- */
+.case-head { display: grid; gap: 22px; }
+.case-head.card-blu {
+  padding: clamp(26px, 5vw, 56px);
+  border: 1px solid rgba(246, 241, 230, 0.2);
+  border-radius: 30px;
+  color: var(--fg);
+}
+.case-head h2 { max-width: 14em; }
+.fatti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 28px; margin-top: 8px; }
+.fatti li { padding: 18px 0 6px; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.4; color: var(--fg); }
 
 /* Etichetta ben visibile: il progetto è dimostrativo */
 .etichetta-fittizio span {
@@ -804,7 +899,7 @@ footer p + p { margin-top: 6px; }
   padding: 10px 16px;
   border-radius: 99px;
   border: 1px solid var(--accent);
-  font: 500 14px/1.4 var(--f-mono);
+  font: 500 14px/1.4 var(--f-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
@@ -879,7 +974,7 @@ footer p + p { margin-top: 6px; }
 /* Didascalia alternativa dentro il primo passo: compare solo sugli schermi bassi (vedi più sotto) */
 .didascalia-passo { display: none; max-width: 24rem; font-size: 14px; line-height: 1.4; color: var(--muted); }
 
-/* Luce beige dietro il telefono: pulsa una volta a ogni cambio di stato (vedi sezione 8) */
+/* Luce blu dietro il telefono: pulsa una volta a ogni cambio di stato (vedi Movimento) */
 .halo { display: none; }
 .js .halo {
   display: block;
@@ -896,7 +991,7 @@ footer p + p { margin-top: 6px; }
   pointer-events: none;
 }
 
-/* ----- Telefono-mockup: oggetto piatto con bordo beige sottile (nessun vetro) ----- */
+/* ----- Telefono-mockup: oggetto piatto, schermo crema dentro una cornice blu navy ----- */
 .phone {
   /* Schermo chiaro (crema con testo navy) dentro una cornice blu: resta uguale in ogni sezione */
   --bg: #FBF8F0; --surface: #EEE6D5; --fg: #1B2A5E; --muted: #46527F;
@@ -910,13 +1005,24 @@ footer p + p { margin-top: 6px; }
   border-radius: 38px;
   background: #1A2A63;
 }
-/* Con JavaScript: su telefono è basso e sfuma in fondo, tagliato; i passi scorrono sotto */
+/* Con JavaScript: su telefono è basso e tagliato in fondo; i passi scorrono sotto */
 .js .phone {
   height: 38vh;
   height: 38svh;
   min-height: 270px;
   max-height: 360px;   /* cornice chiusa anche in basso: il contenuto lungo viene tagliato dentro lo schermo */
+  --incl: 0deg;        /* inclinazione dello stato corrente (la imposta data-tilt) */
+  --ampiezza: 0.55;    /* su telefono il dondolio è più piccolo */
+  /* Dondolio piatto (rotazione 2D): nessuna prospettiva, quindi nessuna cucitura sul bordo arrotondato */
+  transform: rotate(calc(var(--incl) * var(--ampiezza)));
 }
+.phone[data-tilt="0"] { --incl: -2.7deg; }
+.phone[data-tilt="1"] { --incl: 2.1deg; }
+.phone[data-tilt="2"] { --incl: -1.8deg; }
+.phone[data-tilt="3"] { --incl: 1.8deg; }
+.phone[data-tilt="4"] { --incl: -1.8deg; }
+.phone[data-tilt="5"] { --incl: 1.8deg; }
+.phone[data-tilt="6"] { --incl: 0deg; }
 
 /* Lo schermo misura i testi in "cqw" (1% della sua larghezza) tramite --u, con un minimo in pixel per le scritte piccole.
    Dove le container query non esistono, --u resta un valore fisso. È interfaccia disegnata: l'eccezione ai 14px vale qui. */
@@ -970,11 +1076,11 @@ footer p + p { margin-top: 6px; }
   border: 1px solid var(--line);
   border-radius: 50%;
   background: var(--surface);
-  font: 800 calc(7 * var(--u))/1 var(--f-display);
+  font: 700 calc(7 * var(--u))/1 var(--f-body);
   color: var(--accent);
 }
 .avatar-piccolo { width: calc(8.4 * var(--u)); height: calc(8.4 * var(--u)); font-size: max(10px, calc(3.6 * var(--u))); }
-/* Anello beige attorno all'avatar del "dopo": si disegna nella sezione 8 */
+/* Anello attorno all'avatar del "dopo": si disegna con il movimento (vedi Movimento) */
 .avatar svg {
   position: absolute;
   inset: -5px;
@@ -983,10 +1089,10 @@ footer p + p { margin-top: 6px; }
   overflow: visible;
 }
 .avatar circle { fill: none; stroke: var(--accent); stroke-width: 2; }
-.nome { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-display); letter-spacing: -0.01em; }
+.nome { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-body); letter-spacing: -0.01em; }
 .stato {
   margin-top: calc(1.2 * var(--u));
-  font: 500 max(10px, calc(3.2 * var(--u)))/1.3 var(--f-mono);
+  font: 500 max(10px, calc(3.2 * var(--u)))/1.3 var(--f-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
@@ -996,7 +1102,7 @@ footer p + p { margin-top: 6px; }
   padding: calc(1 * var(--u)) calc(2.4 * var(--u));
   border: 1px solid var(--accent);
   border-radius: 999px;
-  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-mono);
+  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1023,7 +1129,7 @@ footer p + p { margin-top: 6px; }
   height: calc(11 * var(--u));
   border: 1px solid var(--accent-50);
   border-radius: 50%;
-  font: 700 max(14px, calc(5.4 * var(--u)))/1 var(--f-display);
+  font: 700 max(14px, calc(5.4 * var(--u)))/1 var(--f-body);
   color: var(--accent);
 }
 
@@ -1052,12 +1158,12 @@ footer p + p { margin-top: 6px; }
 .tessera-densa:nth-child(2) { justify-content: flex-start; }
 .tessera-densa:nth-child(3) { justify-content: flex-end; }
 .tessera-serie { justify-content: flex-end; background: var(--surface); }
-.tessera-serie b { font: 800 max(11px, calc(4.4 * var(--u)))/1.05 var(--f-display); letter-spacing: -0.02em; }
+.tessera-serie b { font: 700 max(11px, calc(4.4 * var(--u)))/1.05 var(--f-body); letter-spacing: -0.02em; }
 .tessera-superficie { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 
 /* Post */
 .post-testa { display: flex; align-items: center; gap: calc(2.6 * var(--u)); margin-bottom: calc(3 * var(--u)); }
-.post-testa p { font: 700 max(12px, calc(4 * var(--u)))/1 var(--f-display); }
+.post-testa p { font: 700 max(12px, calc(4 * var(--u)))/1 var(--f-body); }
 .copertina {
   aspect-ratio: 2 / 1;
   display: flex;
@@ -1071,13 +1177,13 @@ footer p + p { margin-top: 6px; }
 .copertina-superficie { background: var(--surface); }
 .copertina-formato,
 .copertina-piede {
-  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-mono);
+  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-body);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .copertina-formato { display: flex; justify-content: space-between; color: var(--muted); }
 .copertina-piede { color: var(--accent); }
-.copertina-titolo { font: 800 max(18px, calc(8.2 * var(--u)))/1 var(--f-display); letter-spacing: -0.035em; }
+.copertina-titolo { font: 700 max(18px, calc(8.2 * var(--u)))/1 var(--f-body); letter-spacing: -0.035em; }
 .copertina-titolo span {
   display: block;
   margin-top: calc(1.4 * var(--u));
@@ -1088,7 +1194,7 @@ footer p + p { margin-top: 6px; }
 /* L'avviso sta subito sotto la copertina, così si legge anche nel telefono tagliato */
 .avviso {
   margin-top: calc(2.6 * var(--u));
-  font: 500 max(10.5px, calc(3.6 * var(--u)))/1.35 var(--f-mono);
+  font: 500 max(10.5px, calc(3.6 * var(--u)))/1.35 var(--f-body);
   letter-spacing: 0.02em;
   color: var(--accent);
 }
@@ -1099,13 +1205,13 @@ footer p + p { margin-top: 6px; }
 .didascalia strong { font-weight: 500; }
 
 /* Calendario: 14 celle, i numeri 1-4 sono i quattro pilastri */
-.cal-titolo { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-display); letter-spacing: -0.01em; }
+.cal-titolo { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-body); letter-spacing: -0.01em; }
 .giorni-sett {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: calc(1.4 * var(--u));
   margin-top: calc(4 * var(--u));
-  font: 500 max(10px, calc(3.2 * var(--u)))/1 var(--f-mono);
+  font: 500 max(10px, calc(3.2 * var(--u)))/1 var(--f-body);
   color: var(--muted);
   text-align: center;
 }
@@ -1121,7 +1227,7 @@ footer p + p { margin-top: 6px; }
   place-items: center;
   border: 1px solid var(--line);
   border-radius: calc(2.6 * var(--u));
-  font: 700 max(11px, calc(4.4 * var(--u)))/1 var(--f-display);
+  font: 700 max(11px, calc(4.4 * var(--u)))/1 var(--f-body);
 }
 .cell.p1 { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .cell.p2 { background: rgba(var(--accent-rgb), 0.6); color: var(--accent-ink); border-color: transparent; }
@@ -1144,6 +1250,15 @@ footer p + p { margin-top: 6px; }
   font-size: max(9.5px, calc(3.2 * var(--u)));
 }
 
+/* Sette tacche di avanzamento sopra il telefono e chip di annotazione ai lati (questi solo da 1100px) */
+.avanzamento { display: none; }
+.js .avanzamento { display: flex; position: absolute; left: 50%; top: -14px; z-index: 2; gap: 5px; transform: translateX(-50%); }
+.avanzamento i { position: relative; display: block; width: 24px; height: 3px; overflow: hidden; border-radius: 999px; background: var(--line); }
+.avanzamento i::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+.avanzamento i.on::after { transform: scaleX(1); }
+
+.callouts { display: none; }
+.cset li { display: none; }
 
 /* ----- I passi: i testi accanto (o sotto) al telefono ----- */
 .steps { margin-top: 48px; }   /* senza JS: sotto il telefono con un po' d'aria */
@@ -1155,7 +1270,7 @@ footer p + p { margin-top: 6px; }
 .step .k,
 .logica .k {
   margin-top: 0;
-  font: 500 14px/1.4 var(--f-mono);
+  font: 500 14px/1.4 var(--f-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1168,7 +1283,7 @@ footer p + p { margin-top: 6px; }
 .step .step-nota { font-size: 16px; }
 .vetrina-guida + .k { margin-top: 44px; }
 .logica h4 {
-  font: 700 var(--h-l)/1.04 var(--f-display);
+  font: 700 var(--h-l)/1.04 var(--f-body);
   letter-spacing: -0.03em;
   text-transform: none;
   color: var(--fg);
@@ -1227,7 +1342,7 @@ footer p + p { margin-top: 6px; }
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  font: 700 14px/1 var(--f-display);
+  font: 700 14px/1 var(--f-body);
 }
 .pil.p1 { background: var(--accent); color: var(--accent-ink); }
 .pil.p2 { background: rgba(var(--accent-rgb), 0.34); color: var(--fg); }
@@ -1277,33 +1392,6 @@ footer p + p { margin-top: 6px; }
   border-radius: 28px;
   color: var(--fg);
 }
-/* Riquadri blu: lo sfondo sta su ::before (z-index -1), così la luce del cursore, che sta sopra gli sfondi ma sotto il testo, si vede anche qui */
-.scheda-b,
-.banner,
-.pannello,
-.card-blu,
-.cliente { position: relative; }
-.scheda-b::before,
-.cliente::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%), var(--d-surface);
-}
-.banner::before,
-.pannello::before,
-.card-blu::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(90% 120% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 62%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
-}
 .righeb { margin-top: 20px; border-bottom: 1px solid var(--line); }
 .righeb li { border-top: 1px solid var(--line); }
 .riga-h { margin: 0; }
@@ -1322,7 +1410,7 @@ footer p + p { margin-top: 6px; }
   text-align: left;
   cursor: pointer;
 }
-.riga-t { grid-area: titolo; font: 700 var(--h-m)/1.1 var(--f-display); letter-spacing: -0.03em; }
+.riga-t { grid-area: titolo; font: 700 var(--h-m)/1.1 var(--f-body); letter-spacing: -0.03em; }
 .riga-b:hover .riga-t { color: var(--accent); }
 .blocco-sintesi { grid-area: sintesi; font: 400 16px/1.5 var(--f-body); letter-spacing: 0; text-transform: none; color: var(--muted); }
 /* Segno "+" disegnato con due linee */
@@ -1340,7 +1428,12 @@ footer p + p { margin-top: 6px; }
 
 .nota-fittizio { margin-top: 48px; max-width: 34em; font-size: 16px; color: var(--muted); }
 
-/* ----- Popup (<dialog>): carta chiara sopra lo sfondo oscurato. Senza JavaScript i popup sono contenuti normali, uno sotto l'altro ----- */
+
+/* ==========================================================================
+   6. POPUP
+   Finestre <dialog> blu aperte dai pulsanti [data-apri]. Senza JavaScript sono contenuti normali, uno sotto l'altro.
+   ========================================================================== */
+
 .popup {
   width: min(680px, calc(100vw - 24px));
   max-height: calc(100vh - 32px);
@@ -1353,15 +1446,15 @@ footer p + p { margin-top: 6px; }
   background-image: radial-gradient(90% 60% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
   box-shadow: 0 0 90px rgba(var(--glow-l), 0.35);
   color: var(--fg);
-  overflow: auto;
+  overflow: hidden;           /* lo scorrimento sta in .popup-in */
   overscroll-behavior: contain;
 }
 .popup.larga { width: min(1120px, calc(100vw - 24px)); }
 .popup::backdrop { background: rgba(8, 12, 32, 0.6); }
-.popup-in { padding: 0 clamp(22px, 5vw, 52px) clamp(28px, 5vw, 52px); }
+.popup-in { position: relative; z-index: 1; padding: 0 clamp(22px, 5vw, 52px) clamp(28px, 5vw, 52px); }
 .popup-in > h3 { margin-top: 10px; max-width: 14em; }
 .popup-in > * + * { margin-top: 20px; }
-.popup-in > .k { margin-top: 0; font: 500 14px/1.4 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.popup-in > .k { margin-top: 0; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
 .popup-in > .chiudi + .k { margin-top: 0; }
 .popup-in dl { margin-top: 24px; }
 .popup-in dt { margin-top: 20px; color: var(--accent); }
@@ -1381,15 +1474,15 @@ footer p + p { margin-top: 6px; }
   justify-content: center;
   width: 44px;
   height: 44px;
-  margin: 0 -14px 0 auto;
+  margin: 10px -14px 0 auto;
   padding: 0;
   border: 0;
+  border-radius: 50%;
   background: var(--bg);
   color: var(--fg);
   cursor: pointer;
 }
 .chiudi svg { width: 22px; height: 22px; }
-.chiudi { border-radius: 50%; margin-top: 10px; }
 html.blocca, html.blocca body { overflow: hidden; }
 
 /* Senza JavaScript (o dove <dialog> non esiste) i popup sono sezioni normali dentro la pagina */
@@ -1404,17 +1497,64 @@ html:not(.js) .popup, html.no-popup .popup {
 html:not(.js) .popup .chiudi, html.no-popup .popup .chiudi,
 html:not(.js) .apri-btn, html.no-popup .apri-btn,
 html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; }
-
 /* "Come lavoro": link che apre il popup di una riga di "Per chi lavoro" */
 .apri-btn { gap: 12px; }
 .apri-btn .piu { width: 14px; height: 14px; }
 .apri-btn .piu::before, .apri-btn .piu::after { background: currentColor; }
 
+html.js:not(.no-popup) .popup-in {
+  max-height: calc(100vh - 32px);
+  max-height: calc(100svh - 32px);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+/* Luce che segue il mouse dentro il popup (beige su blu) */
+.pop-luce {
+  position: absolute;
+  left: 0; top: 0;
+  z-index: 0;
+  width: 480px; height: 480px;
+  margin: -240px 0 0 -240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--glow-d), 0.2), transparent 66%);
+  opacity: 0;
+  pointer-events: none;
+}
+.popup.luce-on .pop-luce { opacity: 1; }
+html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
+.popup-in > .titolo-pop { max-width: none; margin-top: 8px; font-size: var(--h-xl); line-height: 1.02; }
+.popup-in > .lead { max-width: 30em; }
+.duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.blocco {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(var(--fg-rgb), 0.05);
+}
+.blocco h4 { margin: 0; }
+.blocco p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--fg); }
+.filo-pop { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.popup-in > .filo-pop + .btn-p { margin-top: 28px; }
+.passi-mini { display: grid; gap: 14px; }
+.passi-mini li { position: relative; padding-left: 26px; }
+.passi-mini li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+.passi-mini p { font-size: 16px; line-height: 1.5; color: var(--fg); }
+.passi-mini strong { font-weight: 500; color: var(--accent); }
+.azioni { display: flex; flex-wrap: wrap; gap: 12px; }
+.azioni .btn-o, .azioni .btn-p { cursor: pointer; }
+button.btn-o, button.btn-p { font-family: var(--f-body); cursor: pointer; }
+html:not(.js) #p-call, html.no-popup #p-call { display: none; }
+html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] { display: none; }   /* senza JavaScript i popup sono in pagina: il pulsante della call non serve */
 
 
 /* ==========================================================================
-   6. TABLET E DESKTOP (si parte dal telefono, poi si allarga)
+   7. TABLET E DESKTOP (si parte dal telefono, poi si allarga)
    ========================================================================== */
+
+@media (min-width: 700px) {
+  .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fatti { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 
 @media (min-width: 860px) {
   .sec { grid-template-columns: minmax(170px, 3fr) 9fr; }
@@ -1458,8 +1598,6 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
     aspect-ratio: 9 / 19;
     /* Il telefono sta al centro dello stage: sotto ci stanno la nota (56px) e la didascalia, e devono restare dentro lo schermo. */
     width: min(300px, calc((100svh - var(--barra) - 262px) * 9 / 19));
-    -webkit-mask-image: none;
-    mask-image: none;
   }
   .copertina { aspect-ratio: 6 / 5; }
   .js .step { min-height: 64vh; padding-block: 14vh 0; }
@@ -1478,61 +1616,56 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   .didascalia-passo + .k { margin-top: 20px; }
 }
 
+@media (min-width: 1000px) {
+  .clienti { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .cliente .tag { min-height: 2.8em; }
+  .cliente h3 { min-height: 2.08em; }
+  .js .phone { --ampiezza: 1; }
+}
+
 @media (min-width: 1100px) {
+  .story { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
   /* Sette giorni affiancati, senza scorrimento */
   .striscia-scorri { overflow-x: visible; }
   .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
   .cella,
   .cella-vuota { width: auto; }
   .suggerimento { display: none; }
+  /* Chip di annotazione ai lati del telefono */
+  .js .callouts { display: block; position: absolute; inset: 0; pointer-events: none; }
+  .cset { position: absolute; inset: 0; }
+  .cset li {
+    position: absolute;
+    top: var(--y);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid rgba(246, 241, 230, 0.24);
+    border-radius: 99px;
+    background: #1A2A63;
+    color: #F6F1E6;
+    font: 500 14px/1 var(--f-body);
+    white-space: nowrap;
+    opacity: 0;
+  }
+  .cset li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #EADFC8; }
+  .cset li.r { left: calc(100% - 16px); }
+  .cset li.l { right: calc(100% - 16px); }
+  .cset.on li { opacity: 1; }
 }
 
 
 /* ==========================================================================
-   7. MOVIMENTO
+   8. MOVIMENTO
    Regole (le stesse di CLAUDE.md, "Sistema di movimento"):
-   - un solo easing, var(--ease), e una sola luce, il beige;
+   - un solo easing, var(--ease);
    - si animano solo transform e opacity (eccezione: stroke-dashoffset per le linee a mano);
    - gli stati iniziali nascosti esistono solo sotto ".js" e solo se l'utente non ha chiesto
      di ridurre il movimento: senza JavaScript o con "riduci movimento" è tutto già al suo posto.
    ========================================================================== */
 
-/* ----- Elementi sempre uguali (anche senza movimento) ----- */
-
-/* Testo solo per screen reader: nascosto alla vista, ma letto */
-.sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-/* Numeri della striscia: la copia che sale esiste solo con JavaScript */
-.num { position: relative; }
-.num-an { display: none; }
-.js .num-an { display: block; position: absolute; left: 0; top: 0; }
-
-/* Email nei contatti: una pillola con il bordo sottile, come i pulsanti */
-.mailwrap { display: inline-block; margin-top: 28px; padding: 12px 26px; border: 1px solid var(--accent); border-radius: 999px; }
-.mailwrap .mail { margin: 0; }
-
-/* Barra "storie" dentro il menu fisso (la crea JavaScript): un segmento per sezione, si riempie con lo scroll */
-.story-bar {
-  position: absolute;
-  left: 22px;
-  right: 22px;
-  bottom: 5px;
-  display: flex;
-  gap: 3px;
-  pointer-events: none;
-}
-.seg { flex: 1; height: 3px; overflow: hidden; border-radius: 999px; background: rgba(var(--fg-rgb), 0.22); }
-.seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
-
-/* Cursore ad anello con bagliore (lo crea JavaScript, solo con il mouse). Il cursore di sistema resta visibile */
+/* ----- Cursore ad anello con bagliore (sempre uguale, anche senza movimento) ----- */
 .cur,
 .cur-glow { position: fixed; left: 0; top: 0; opacity: 0; pointer-events: none; }
 .cur { z-index: 40; width: 34px; height: 34px; margin: -17px 0 0 -17px; }
@@ -1556,11 +1689,6 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
 .cur-glow.big i { transform: scale(1.25); }
 .cur-glow.fuori { opacity: 0; }   /* nella hero c'è già la sua luce: una sola luce alla volta */
 
-/* "Per chi lavoro": con il mouse al passaggio; al tocco quando la riga è al centro dello schermo */
-@media (hover: hover) {
-}
-
-
 /* ----- Solo se l'utente non ha chiesto di ridurre il movimento ----- */
 @media (prefers-reduced-motion: no-preference) {
 
@@ -1581,6 +1709,19 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   .nav-menu a::after { transition: transform 0.5s var(--ease); }
   .js .hero h1:not(.diviso) { visibility: hidden; }   /* finché le parole non sono divise, per non farle lampeggiare */
   .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.04em 0.14em; margin: 0 -0.04em -0.14em; }
+  /* Frase in corsivo del titolo: un tratto morbido per parola, tinta piena così le parole vicine si fondono */
+  .hero h1 .it .w { position: relative; isolation: isolate; padding-inline: 0.15em; margin-inline: -0.15em; }
+  .hero h1 .it .w::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 46%; bottom: 8%;
+    z-index: -1;
+    border-radius: 0.3em;
+    background: #D4D6E5;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .js.go .hero h1 .it .w::before { transform: scaleX(1); transition: transform 0.7s var(--ease) calc(var(--i, 0) * 55ms + 700ms); }
   .wi { display: inline-block; }
   .js .wi { transform: translateY(112%); }
   .js.go .hero .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 55ms + 180ms); }
@@ -1590,12 +1731,12 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   /* Pulsanti: la freccia scatta in avanti, la pressione schiaccia un poco (solo transform) */
   .btn-p, .btn-o { transition: transform 0.5s var(--ease); }
   .btn-p:active, .btn-o:active { transform: scale(0.96); }
-  .btn-p .fr, .btn-o .fr, .links a .fr { transition: transform 0.5s var(--ease); }
-  .btn-p:hover .fr, .btn-o:hover .fr, .links a:hover .fr { transform: translate(3px, -3px); }
+  .btn-p .fr, .btn-o .fr { transition: transform 0.5s var(--ease); }
+  .btn-p:hover .fr, .btn-o:hover .fr { transform: translate(3px, -3px); }
 
   /* Schede attorno alla foto: compaiono una volta dopo il titolo (opacità + traslazione) */
   .js .pop { opacity: 0; transform: translateY(14px) scale(0.92); }
-  .js.go .pop { opacity: 1; transform: none; transition: opacity 0.5s var(--ease), transform 0.8s var(--ease); transition-delay: calc(1.3s + var(--n, 0) * 0.28s); }
+  .js.go .pop { opacity: 1; transform: none; transition: opacity 0.5s var(--ease), transform 0.8s var(--ease); transition-delay: calc(0.95s + var(--n, 0) * 0.22s); }
 
   /* Etichette che si scrivono, con cursore che lampeggia poche volte */
   .label .pw { display: inline-block; white-space: nowrap; }
@@ -1642,8 +1783,6 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
     to { transform: translate3d(8%, 6%, 0) scale(1.08); opacity: 0.68; }
   }
 
-  /* Per chi lavoro */
-
   /* Cursore e bagliore */
   .cur { transition: opacity 0.3s var(--ease); }
   .cur i { transition: transform 0.45s var(--ease); }
@@ -1669,233 +1808,11 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   .js .step { transition: opacity 0.6s var(--ease); }
 
   .indicatore { transition: transform 0.3s var(--ease); }
-}
 
-
-/* ==========================================================================
-   8. PREFERENZE DELL'UTENTE
-   Con "riduci movimento" ogni cosa sta già nel suo stato finale: le regole
-   di movimento sono tutte nel blocco "no-preference" qui sopra. Questo è
-   solo un'ulteriore rete di sicurezza.
-   ========================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    transition: none !important;
-    animation: none !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-
-/* ==========================================================================
-   9. SCHEDE "PER CHI LAVORO", FILO DEL METODO, POPUP, TESTATA DEL CASO STUDIO, ETICHETTE DEL TELEFONO
-   ========================================================================== */
-
-/* ----- Per chi lavoro: tre schede blu ----- */
-.clienti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 72px); }
-.cliente {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: clamp(24px, 3vw, 34px);
-  border: 1px solid var(--line);
-  border-radius: 28px;
-}
-.cliente::after {            /* filetto beige che si disegna al passaggio del mouse (o quando la scheda è al centro, al tocco) */
-  content: "";
-  position: absolute;
-  left: 28px; right: 28px; top: -1px;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-.cliente .n { display: block; }
-.cliente .tag { display: block; margin-top: 14px; }
-.cliente h3 { margin-top: 8px; font-size: var(--h-m); line-height: 1.04; }
-.percorso { margin-bottom: 30px; }
-.cliente .apri-btn { margin-top: auto; }
-
-/* Il percorso: problema, cosa faccio, obiettivo. Una linea con tre punti */
-.percorso { position: relative; display: grid; gap: 22px; width: 100%; margin-top: 26px; padding-left: 34px; }
-.percorso::before,
-.percorso::after { content: ""; position: absolute; left: 5px; top: 10px; bottom: 12px; width: 1px; transform-origin: top; }
-.percorso::before { background: var(--line); }
-.percorso::after { background: var(--accent); }
-.percorso li { position: relative; }
-.percorso li::before {
-  content: "";
-  position: absolute;
-  left: -34px; top: 5px;
-  width: 11px; height: 11px;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  background: var(--d-bg);
-}
-.percorso li::after {
-  content: "";
-  position: absolute;
-  left: -31px; top: 8px;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-.pt { display: block; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-.percorso p { margin-top: 4px; font-size: 16px; line-height: 1.5; color: var(--fg); }
-
-/* Il filo: lo stesso metodo in quattro passi */
-.filo { display: grid; gap: 18px; margin-top: clamp(32px, 4vw, 52px); }
-.filo-passi { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.filo-passi::before,
-.filo-passi::after { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1px; transform-origin: left; }
-.filo-passi::before { background: var(--line); }
-.filo-passi::after { background: var(--accent); }
-.filo-passi li { position: relative; padding-top: 26px; font: 500 16px/1.3 var(--f-body); color: var(--fg); }
-.filo-passi li::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0;
-  width: 11px; height: 11px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-.filo-passi i { display: block; margin-bottom: 2px; font: italic 400 30px/1 var(--f-serif); color: var(--key); }
-.filo-pop { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
-
-/* ----- Popup: struttura come il resto del sito ----- */
-.popup { overflow: hidden; }
-html.js:not(.no-popup) .popup-in {
-  max-height: calc(100vh - 32px);
-  max-height: calc(100svh - 32px);
-  overflow: auto;
-  overscroll-behavior: contain;
-}
-.popup-in { position: relative; z-index: 1; }
-/* Luce che segue il mouse dentro il popup (beige su blu) */
-.pop-luce {
-  position: absolute;
-  left: 0; top: 0;
-  z-index: 0;
-  width: 480px; height: 480px;
-  margin: -240px 0 0 -240px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--glow-d), 0.2), transparent 66%);
-  opacity: 0;
-  pointer-events: none;
-}
-.popup.luce-on .pop-luce { opacity: 1; }
-html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
-.popup-in > .titolo-pop { max-width: none; margin-top: 8px; font-size: var(--h-xl); line-height: 1.02; }
-.titolo-pop .n { display: inline-block; margin-right: 0.3em; font-size: 1.25em; line-height: 0.9; }
-.popup-in > .lead { max-width: 30em; }
-.duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
-.blocco {
-  padding: 22px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: rgba(var(--fg-rgb), 0.05);
-}
-.blocco h4 { margin: 0; }
-.blocco p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--fg); }
-.popup-in > .filo-pop + .btn-p { margin-top: 28px; }
-.passi-mini { display: grid; gap: 16px; }
-.passi-mini li { display: flex; align-items: baseline; gap: 18px; }
-.passi-mini i { flex: none; width: 1.5em; font: italic 400 30px/1 var(--f-serif); color: var(--key); }
-.passi-mini p { font-size: 16px; line-height: 1.5; color: var(--fg); }
-.passi-mini strong { font-weight: 500; color: var(--accent); }
-.indirizzo { font: 700 var(--h-m)/1.3 var(--f-display); letter-spacing: -0.01em; word-break: break-word; }
-.azioni { display: flex; flex-wrap: wrap; gap: 12px; }
-.azioni .btn-o, .azioni .btn-p { cursor: pointer; }
-button.btn-o, button.btn-p { font-family: var(--f-body); cursor: pointer; }
-html:not(.js) #p-call, html.no-popup #p-call { display: none; }
-
-/* ----- Contatti: l'email è un link ----- */
-a.mail { display: inline-block; color: var(--fg); text-decoration: none; -webkit-user-select: text; user-select: text; }
-a.mail:hover { color: var(--accent); }
-/* ----- Testata del caso studio: scheda blu ----- */
-.case-head.card-blu {
-  display: grid;
-  gap: 22px;
-  max-width: none;
-  padding: clamp(26px, 5vw, 56px);
-  border: 1px solid rgba(246, 241, 230, 0.2);
-  border-radius: 30px;
-  color: var(--fg);
-}
-.case-head h2 { max-width: 14em; }
-.fatti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 28px; margin-top: 8px; }
-.fatti li { padding: 18px 0 6px; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.4; color: var(--fg); }
-.fatti i { display: block; margin-bottom: 6px; font: italic 400 30px/1 var(--f-serif); color: var(--key); }
-
-/* ----- Telefono: inclinazione, etichette che escono dallo schermo, avanzamento ----- */
-.js .phone {
-  --ry: 0; --rx: 0; --k: 0.55;     /* --k riduce l'inclinazione su telefono */
-  /* Dondolio piatto (rotazione 2D): nessuna prospettiva, quindi nessuna cucitura sul bordo arrotondato */
-  transform: rotate(calc(var(--ry) * var(--k) * 0.3deg));
-}
-.phone[data-tilt="0"] { --ry: -9; --rx: 3; }
-.phone[data-tilt="1"] { --ry: 7; --rx: -2; }
-.phone[data-tilt="2"] { --ry: -6; --rx: 2; }
-.phone[data-tilt="3"] { --ry: 6; --rx: -2; }
-.phone[data-tilt="4"] { --ry: -6; --rx: 2; }
-.phone[data-tilt="5"] { --ry: 6; --rx: -2; }
-.phone[data-tilt="6"] { --ry: 0; --rx: 0; }
-
-.avanzamento { display: none; }
-.js .avanzamento { display: flex; position: absolute; left: 50%; top: -14px; z-index: 2; gap: 5px; transform: translateX(-50%); }
-.avanzamento i { position: relative; display: block; width: 24px; height: 3px; overflow: hidden; border-radius: 999px; background: var(--line); }
-.avanzamento i::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; }
-.avanzamento i.on::after { transform: scaleX(1); }
-
-.callouts { display: none; }
-.cset li { display: none; }
-@media (min-width: 1100px) {
-  .story { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
-  .js .callouts { display: block; position: absolute; inset: 0; pointer-events: none; }
-  .cset { position: absolute; inset: 0; }
-  .cset li {
-    position: absolute;
-    top: var(--y);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 14px;
-    border: 1px solid rgba(246, 241, 230, 0.24);
-    border-radius: 99px;
-    background: #1A2A63;
-    color: #F6F1E6;
-    font: 500 14px/1 var(--f-body);
-    white-space: nowrap;
-    opacity: 0;
-  }
-  .cset li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #EADFC8; }
-  .cset li.r { left: calc(100% - 16px); }
-  .cset li.l { right: calc(100% - 16px); }
-  .cset.on li { opacity: 1; }
-}
-
-/* ----- Tablet e desktop ----- */
-@media (min-width: 700px) {
-  .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .fatti { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (min-width: 1000px) {
-  .clienti { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-  .cliente .tag { min-height: 2.8em; }
-  .cliente h3 { min-height: 2.08em; }
-  .js .phone { --k: 1; }
-}
-@media (hover: hover) {
-  .cliente:hover::after { transform: scaleX(1); }
-}
-.cliente.on::after { transform: scaleX(1); }
-
-/* ----- Movimento ----- */
-@media (prefers-reduced-motion: no-preference) {
+  /* ----- Per chi lavoro, popup, telefono ----- */
   .cliente::after { transition: transform 0.9s var(--ease); }
-  .cliente .n { transition: transform 0.6s var(--ease); }
-  .cliente:hover .n, .cliente.on .n { transform: translateX(10px); }
+  .cliente .tag, .cliente h3 { transition: transform 0.6s var(--ease); }
+  .cliente:hover .tag, .cliente.on .tag, .cliente:hover h3, .cliente.on h3 { transform: translateX(8px); }
 
   /* Il percorso si accende da solo: linea che scende, punti e testi uno dopo l'altro */
   .js .cliente .percorso::after { transform: scaleY(0); }
@@ -1911,7 +1828,7 @@ a.mail:hover { color: var(--accent); }
   /* Il filo del metodo si disegna una volta */
   .js .filo.rv .filo-passi::after { transform: scaleX(0); }
   .js .filo.rv.in .filo-passi::after { transform: scaleX(1); transition: transform 1.8s var(--ease) 0.4s; }
-  .js .filo.rv .filo-passi li { opacity: 0.0; transform: translateY(8px); }
+  .js .filo.rv .filo-passi li { opacity: 0; transform: translateY(8px); }
   .js .filo.rv.in .filo-passi li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(0.4s + var(--k) * 0.4s), transform 0.8s var(--ease) calc(0.4s + var(--k) * 0.4s); }
   .filo-passi li:nth-child(1) { --k: 0; }
   .filo-passi li:nth-child(2) { --k: 1; }
@@ -1941,28 +1858,8 @@ a.mail:hover { color: var(--accent); }
   }
   .js .scr.on .azioni-post svg:first-child { animation: batti 0.9s var(--ease) 1.4s 1; }
   @keyframes batti { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
-}
-html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] { display: none; }   /* senza JavaScript i popup sono in pagina: il pulsante della call non serve */
 
-
-/* ==========================================================================
-   10. BAGLIORI SUI TASTI
-   Ogni tasto ha una luce morbida che segue il mouse (solo mouse) e un lampo che parte dal punto premuto (mouse, tocco e tastiera).
-   Le luci sono due cerchi sfumati che cambiano solo transform e opacity; stanno dietro il testo.
-   ========================================================================== */
-.btn-p, .btn-o, .links a, .apri-btn, .nav-cta, .menu-btn, .chiudi { overflow: hidden; isolation: isolate; }
-.btn-p, .btn-o, .links a, .apri-btn, .nav-cta, .menu-btn { position: relative; }
-.lampo, .luce-b {
-  position: absolute;
-  left: 0; top: 0;
-  z-index: -1;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(var(--lc, 70, 100, 215), var(--la, 0.5)), rgba(var(--lc, 70, 100, 215), 0) 68%);
-}
-.luce-b { --la: 0.24; width: 130px; height: 130px; margin: -65px 0 0 -65px; opacity: 0; transform: translate(var(--mx, 50%), var(--my, 50%)); }
-.lampo { width: 150px; height: 150px; margin: -75px 0 0 -75px; opacity: 0; transform: translate(var(--lx, 50%), var(--ly, 50%)) scale(0.2); }
-@media (prefers-reduced-motion: no-preference) {
+  /* ----- Bagliori sui tasti ----- */
   .luce-b { transition: opacity 0.45s var(--ease), transform 0.35s var(--ease); }
   :hover > .luce-b { opacity: 1; }
   .lampo { animation: lampo var(--ld, 0.8s) var(--ease) 1 forwards; }
@@ -1971,12 +1868,9 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
     100% { opacity: 0; transform: translate(var(--lx), var(--ly)) scale(var(--le, 2.4)); }
   }
 }
-@media (prefers-reduced-motion: reduce) { .lampo, .luce-b { display: none; } }
 
-/* ==========================================================================
-   11. COMPARSE VARIATE
-   Stessa curva per tutto (--ease), ma direzione, distanza e durata cambiano secondo il ruolo dell'elemento.
-   ========================================================================== */
+/* ----- Comparse variate -----
+   Stessa curva per tutto (--ease), ma direzione, distanza e durata cambiano secondo il ruolo dell'elemento (le assegna js/main.js). */
 .a-sx { --ax: -44px; --ay: 0px; --as: 0.99; }
 .a-dx { --ax: 44px; --ay: 0px; --as: 0.99; }
 .a-zoom { --ay: 14px; --as: 0.93; --dur: 1.25s; }
@@ -1985,3 +1879,20 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 @media (max-width: 760px) {
   .a-sx, .a-dx { --ax: 0px; --ay: 26px; }   /* in colonna le schede non arrivano di lato */
 }
+
+
+/* ==========================================================================
+   9. PREFERENZE DELL'UTENTE
+   Con "riduci movimento" ogni cosa sta già nel suo stato finale: le regole
+   di movimento sono tutte nel blocco "no-preference" della sezione 8. Questo è
+   solo un'ulteriore rete di sicurezza.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) { .lampo, .luce-b { display: none; } }

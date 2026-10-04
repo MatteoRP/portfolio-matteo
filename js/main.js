@@ -9,10 +9,10 @@
    Indice:
    1. Preparazione
    2. Hero e comparse allo scroll
-   3. Righe di "Per chi lavoro" al tocco, e popup dei dettagli
+   3. Righe di "Per chi lavoro" al tocco, popup dei dettagli, bagliori sui tasti
    4. Luce della hero e cursore ad anello (solo mouse)
    5. Storia del caso studio (telefono)
-   6. Menu in alto, scroll: barra "storie", voce attiva, stato del telefono
+   6. Menu in alto e scroll: barra "storie", voce attiva, stato del telefono
    ========================================================================== */
 
 (function () {
@@ -58,6 +58,9 @@
       return e;
     }
 
+    // Tutti i riquadri e le sezioni con fondo blu: lì luce e cursore sono beige (altrove sono blu)
+    var BLU = '.sez-scura, dialog, .pannello, .banner, .card-blu, .scheda-b, .cliente';
+
     var hero = document.querySelector('.hero');
     var luceInterna = document.querySelector('.luce-in');
 
@@ -73,13 +76,25 @@
       (function visita(nodo) {
         Array.prototype.slice.call(nodo.childNodes).forEach(function (figlio) {
           if (figlio.nodeType === 3) {
+            var testo = figlio.textContent;
+            // La punteggiatura attaccata alla parola precedente (es. "problema" + ", non") resta unita a lei, senza andare a capo da sola
+            var precedente = figlio.previousSibling;
+            var attaccato = /^[^\s]+/.exec(testo);
+            if (attaccato && precedente && precedente.nodeType === 1) {
+              var parole = precedente.querySelectorAll('.wi');
+              if (parole.length) {
+                parole[parole.length - 1].textContent += attaccato[0];
+                testo = testo.slice(attaccato[0].length);
+              }
+            }
             var pezzi = document.createDocumentFragment();
-            figlio.textContent.split(/(\s+)/).forEach(function (parte) {
+            testo.split(/(\s+)/).forEach(function (parte) {
               if (!parte) return;
               if (/^\s+$/.test(parte)) { pezzi.appendChild(document.createTextNode(' ')); return; }
               var maschera = crea('span', 'w');
               maschera.setAttribute('aria-hidden', 'true');
               var parola = crea('span', 'wi');
+              maschera.style.setProperty('--i', numero);
               parola.style.setProperty('--i', numero++);
               parola.textContent = parte;
               maschera.appendChild(parola);
@@ -107,7 +122,7 @@
       });
     }
 
-    // --- Etichette mono: si scrivono con un cursore che lampeggia poche volte ---
+    // --- Etichetta della hero: si scrive lettera per lettera, con un cursore che lampeggia poche volte ---
     function preparaEtichetta(etichetta) {
       var testo = etichetta.textContent.replace(/\s+/g, ' ').trim();
       etichetta.textContent = '';
@@ -310,10 +325,15 @@
        ====================================================================== */
 
     if (!RIDOTTO) {
-      var TASTI = '.btn-p, .btn-o, .links a, .apri-btn, .nav-cta, .menu-btn, .chiudi';
-      // Sui riquadri scuri la luce è beige, sul crema è blu (stessa regola del cursore)
+      var TASTI = '.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap';
+      // La luce deve vedersi sul fondo del tasto: beige su fondo scuro, blu su fondo chiaro.
+      // I tasti vuoti (.btn-o) al passaggio si riempiono del colore opposto a quello che hanno intorno, quindi qui la regola si inverte.
+      var luceBeige = function (tasto) {
+        var scuro = !!tasto.closest(BLU);
+        return tasto.matches('.btn-o') ? !scuro : scuro;
+      };
       var coloreLuce = function (tasto) {
-        return tasto.closest('.sez-scura, dialog, .pannello, .banner, .card-blu, .scheda-b, .cliente') ? '234, 223, 200' : '70, 100, 215';
+        return luceBeige(tasto) ? '234, 223, 200' : '70, 100, 215';
       };
       var lampo = function (tasto, x, y) {
         var r = tasto.getBoundingClientRect();
@@ -349,6 +369,7 @@
             luce = crea('span', 'luce-b');
             luce.setAttribute('aria-hidden', 'true');
             luce.style.setProperty('--lc', coloreLuce(t));
+            luce.style.setProperty('--la', luceBeige(t) ? '0.3' : '0.36');   // un po' meno forte la luce beige, perché il testo sopra è beige
             t.appendChild(luce);
           }
           var r = t.getBoundingClientRect();
@@ -424,7 +445,7 @@
       // Le sfumature stanno su ::before e sulle classi blu: per quelle si guarda la classe.
       function fondoScuro(el) {
         for (var e = el; e && e.nodeType === 1; e = e.parentElement) {
-          if (e.matches('dialog, .pannello, .banner, .card-blu, .scheda-b, .cliente, .sez-scura')) return true;
+          if (e.matches(BLU)) return true;
           if (e.matches('.sez-chiara, .nav')) return false;
           var m = /rgba?\(([^)]+)\)/.exec(getComputedStyle(e).backgroundColor);
           if (m) {
@@ -443,13 +464,12 @@
         var anelloChiaro = !fondoScuro(sopra);
         // Bagliore: sta sopra gli sfondi (anche quelli dei riquadri blu) e sotto il testo; stesso criterio dell'anello
         // (sfondo chiaro = luce blu, sfondo scuro = luce beige)
-        var bagliChiaro = anelloChiaro;
         anello.classList.add('vis');
         bagliore.classList.add('vis');
         anello.classList.toggle('big', grande);
         anello.classList.toggle('su-chiaro', anelloChiaro);
         bagliore.classList.toggle('big', grande);
-        bagliore.classList.toggle('su-chiaro', bagliChiaro);
+        bagliore.classList.toggle('su-chiaro', anelloChiaro);
         bagliore.classList.toggle('fuori', nellaHero);   // nella hero c'è già la sua luce
         if (!cursoreInCorsa) { cursoreInCorsa = true; requestAnimationFrame(giraCursore); }
       }
@@ -508,7 +528,7 @@
     }
 
     /* ======================================================================
-       6. SCROLL: BARRA "STORIE", PARALLASSE DELLA FOTO, STATO DEL TELEFONO
+       6. MENU E SCROLL: BARRA "STORIE", VOCE ATTIVA, STATO DEL TELEFONO
        Un solo gestore, al massimo una volta per frame. Le posizioni sono misurate una volta
        (e rimisurate se la pagina cambia dimensione), così a ogni scroll non si legge il layout.
        ====================================================================== */

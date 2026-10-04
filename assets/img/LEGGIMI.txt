@@ -1,7 +1,8 @@
 Immagini del sito
 =================
 
-ritratto.webp  -> la foto di "Chi sono". Salvala qui con questo nome esatto.
+ritratto.webp  -> il ritratto nella hero (prima schermata). Salvalo qui con questo nome esatto.
                   Formato verticale 4:5 (ad esempio 800 x 1000 px), meglio sotto i 150 KB.
-                  Il sito la mostra in bianco e nero e la sfuma verso il basso da solo.
-                  Finché il file non c'è, nella pagina compare un segnaposto grigio.
+                  Il sito lo mostra in bianco e nero da solo (filtro CSS), quindi va bene anche a colori.
+                  Finché il file non c'è, la figura sparisce e la hero resta solo testo:
+                  pubblica il sito solo con la foto presente, oppure togli il riquadro dalla hero.
