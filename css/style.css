@@ -215,14 +215,15 @@
   --l-line: rgba(27, 42, 94, 0.16);
   --l-accent: #1B2A5E;
   --l-accent-ink: #F7F2E8;
-  --l-key: #3F57C4;
+  --l-key: #1A2A63;      /* parole chiave su fondo chiaro: lo stesso blu navy del sito, la differenza la fa il corsivo serif */
   --l-rgb: 27, 42, 94;
   --l-fg-rgb: 27, 42, 94;
   --l-hi: rgba(255, 255, 255, 0.75);
   --l-g1: #FBF8F0;
   --l-g2: #F1EADA;
 
-  --glow-rgb: 234, 223, 200;    /* colore delle luci (hero, cursore, telefono) */
+  --glow-d: 234, 223, 200;      /* luce su sfondo scuro: beige */
+  --glow-l: 70, 100, 215;       /* luce su sfondo chiaro: blu */
 
   /* Valori correnti (ruolo scuro): le sezioni chiare li ridefiniscono */
   --bg: var(--d-bg);
@@ -251,9 +252,9 @@
   color-scheme: dark;
 }
 
-/* Sezione chiara (e popup): stessi nomi, valori del ruolo chiaro. */
+/* Ruolo chiaro: sezioni crema e menu in alto. Stessi nomi, valori del ruolo chiaro. */
 .sez-chiara,
-dialog {
+.nav {
   --bg: var(--l-bg);
   --surface: var(--l-surface);
   --fg: var(--l-fg);
@@ -267,27 +268,55 @@ dialog {
   --passo-op: 0.85;      /* passi non in lettura: su fondo chiaro serve un'opacità più alta per tenere il contrasto */
   color-scheme: light;
 }
-/* Sfumature di sfondo, molto delicate. Le sezioni scure restano trasparenti e dipingono la sfumatura su ::before (z-index -1):
-   così sotto c'è sempre lo sfondo della pagina e la luce del cursore resta visibile. Quelle chiare hanno la sfumatura sul proprio sfondo. */
-section, footer { position: relative; }
-.sez-chiara {
-  color: var(--fg);
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
-    linear-gradient(180deg, var(--l-g1), var(--l-g2));
+/* Ruolo scuro, scritto per esteso: sezioni blu, popup, pannelli e banner blu anche quando stanno dentro una sezione crema. */
+.sez-scura,
+dialog,
+.pannello,
+.banner {
+  --bg: var(--d-bg);
+  --surface: var(--d-surface);
+  --fg: var(--d-fg);
+  --muted: var(--d-muted);
+  --line: var(--d-line);
+  --accent: var(--d-accent);
+  --accent-ink: var(--d-accent-ink);
+  --accent-rgb: var(--d-rgb);
+  --fg-rgb: var(--d-fg-rgb);
+  --key: var(--d-key);
+  --passo-op: 0.7;
+  color-scheme: dark;
 }
-section.sez-scura::before {
+/* Sfumature di sfondo, molto delicate, dipinte su ::before (z-index -1) in ogni sezione:
+   così sotto il testo c'è sempre la luce del cursore (anch'essa a z-index -1, creata dopo), beige sullo scuro e blu sul chiaro. */
+section, footer { position: relative; }
+.sez-chiara { color: var(--fg); }
+section.sez-chiara::before,
+section.sez-scura::before,
+footer.sez-scura::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
+}
+section.sez-chiara::before {
+  background:
+    radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
+    linear-gradient(180deg, var(--l-g1), var(--l-g2));
+}
+section.sez-scura::before,
+footer.sez-scura::before {
   background:
     radial-gradient(90% 70% at var(--gx, 85%) var(--gy, 0%), var(--d-hi), transparent 70%),
     linear-gradient(180deg, var(--d-g1), var(--d-g2));
 }
-#caso-studio { background-image: none; }   /* qui c'è il telefono fisso: sfondo piatto, così non si vedono bande */
+/* Hero e Chi sono sono vicine e tutte e due chiare: la seconda parte dal colore con cui finisce la prima, senza stacco */
+#chi-sono::before {
+  background:
+    radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
+    linear-gradient(180deg, var(--l-g2), var(--l-g1));
+}
+#caso-studio::before { background: var(--l-bg); }   /* qui c'è il telefono fisso: sfondo piatto, così non si vedono bande */
 #metodo { --gx: 10%; --gy: 100%; }
 #contatti { --gx: 70%; --gy: 100%; }
 #clienti { --gx: 85%; --gy: 0%; }
@@ -475,11 +504,10 @@ dt {
   border: 1px solid var(--fg);
   background: transparent;
   color: var(--fg);
-  font: 500 14px/1 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font: 500 15px/1 var(--f-body);
   text-decoration: none;
 }
+.nav-cta { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .btn-o:hover,
 .btn-o:active { background: var(--fg); color: var(--bg); }
 /* Pulsante principale: pieno, nel colore d'accento */
@@ -492,9 +520,7 @@ dt {
   border: 1px solid var(--accent);
   background: var(--accent);
   color: var(--accent-ink);
-  font: 500 14px/1.3 var(--f-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: 500 16px/1.3 var(--f-body);
   text-decoration: none;
 }
 .btn-p:hover,
@@ -518,15 +544,14 @@ h3 {
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
-/* Parole chiave dei titoli: stesso font, solo il colore cambia. Il corsivo serif esiste in due punti: la hero e "Scrivimi." */
-.it { font-style: normal; color: var(--key); }
-.hero h1 .it,
-.big .it {
+/* Parole chiave dei titoli: Instrument Serif corsivo, una o due parole, colore --key */
+.it {
   font-family: var(--f-serif);
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.01em;
   font-size: 1.08em;
+  color: var(--key);
 }
 
 .lead { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.5; max-width: 34em; }
@@ -583,22 +608,43 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   left: calc(min(80vmax, 1100px) / -2);
   top: calc(min(80vmax, 1100px) / -2);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--glow-rgb), 0.2), transparent 66%);
+  background: radial-gradient(circle, rgba(var(--glow-l), 0.22), transparent 66%);   /* la hero è chiara: luce blu */
   opacity: 0.6;
 }
-.hero h1 {
-  margin-top: clamp(22px, 3vw, 36px);
-  font-size: clamp(34px, 9vw, 58px);
-  line-height: 1;
+/* "Ciao, sono Matteo": una pillola a sé, sopra il titolo */
+.saluto {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.7);
+  font: 500 15px/1 var(--f-body);
+  color: var(--fg);
 }
-.hero-lead { margin-top: clamp(24px, 3.4vw, 36px); }
-.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 32px; }
-/* Evidenziatore: la frase onesta della hero, già nel suo stato finale */
+.punto { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.hero h1 {
+  margin-top: clamp(22px, 3vw, 32px);
+  font-size: clamp(34px, 8.6vw, 54px);
+  line-height: 1;
+  max-width: 15em;
+}
+.hero-lead { margin-top: clamp(20px, 3vw, 28px); }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 28px; }
+/* Evidenziatore, come un pennarello: un tratto tenue sotto la parte bassa del testo. Il colore del testo non cambia. */
 .hl {
-  padding: 0 0.14em;
-  margin: 0 0 0 -0.14em;       /* a destra niente margine negativo: il punto che segue non deve finire sopra il beige */
-  background: var(--accent);
-  color: var(--accent-ink);
+  padding: 0 0.12em;
+  margin: 0 0 0 -0.12em;
+  background: linear-gradient(transparent 42%, rgba(var(--glow-l), 0.2) 42%, rgba(var(--glow-l), 0.2) 94%, transparent 94%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* Anche la frase in corsivo del titolo ha il suo tratto */
+.hero h1 .it {
+  padding: 0 0.1em;
+  margin-left: -0.1em;
+  background: linear-gradient(transparent 52%, rgba(var(--glow-l), 0.16) 52%, rgba(var(--glow-l), 0.16) 94%, transparent 94%);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
@@ -632,27 +678,16 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 /* Numeri 01-04 (Cosa risolvo e i quattro passi) */
 .n { font: 500 14px/1 var(--f-mono); letter-spacing: 0.12em; color: var(--accent); }
 
-/* ----- Cosa risolvo: un blocco unico, senza filetti.
-   Frase grande in Inter Tight 700 e, di lato, il testo breve in colonna stretta. ----- */
-.sec-problemi {
-  grid-template-areas: "label" "frase" "testo";
-  row-gap: 32px;
+/* ----- Cosa risolvo: due schede blu sopra lo sfondo ----- */
+.schede { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(32px, 5vw, 56px); }
+.scheda-b {
+  padding: clamp(24px, 3.4vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%), var(--d-surface);
 }
-.sec-problemi > .label { grid-area: label; }
-.frase {
-  grid-area: frase;
-  max-width: 12em;
-  font-size: clamp(40px, 9vw, 76px);
-}
-.problemi-testo {
-  grid-area: testo;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 40px;
-  max-width: 26rem;
-}
-.problema h3 { margin-top: 14px; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.1; }
-.problema p:last-child { margin-top: 10px; font-size: 17px; color: var(--muted); }
+.scheda-b h3 { margin-top: clamp(32px, 5vw, 56px); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.08; }
+.scheda-b p:last-child { margin-top: 12px; color: var(--muted); }
 
 /* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono), senza filetti ----- */
 .passi {
@@ -667,9 +702,13 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 /* La striscia 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
 .stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
   margin-top: clamp(48px, 7vw, 80px);
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.55);
 }
 .num {
   display: block;
@@ -680,13 +719,22 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 }
 .stat p {
   margin-top: 8px;
-  font: 500 14px/1.4 var(--f-mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font: 500 14px/1.35 var(--f-body);
   color: var(--muted);
 }
-.note { margin-top: 28px; max-width: 32em; font-size: 15px; color: var(--muted); }
-.rimando { margin-top: 20px; }
+/* Banner blu: la nota di onestà, con più peso */
+.banner {
+  display: grid;
+  gap: 24px;
+  margin-top: 16px;
+  padding: clamp(26px, 5vw, 48px);
+  border-radius: 28px;
+  background: radial-gradient(90% 130% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 62%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
+  color: var(--d-fg);
+}
+.banner .btn-p { justify-self: start; }
+.piccolo { font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.banner-testo { margin-top: 12px; max-width: 14em; font: 700 clamp(28px, 5vw, 46px)/1.02 var(--f-display); letter-spacing: -0.035em; text-wrap: balance; }
 
 /* ----- Chi sono: solo testo (il ritratto sta nella hero) ----- */
 .who { display: grid; gap: 22px; max-width: 40rem; }
@@ -700,8 +748,8 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  border-radius: 28px;
+  background: var(--d-bg);
 }
 .photo img {
   position: absolute;
@@ -711,7 +759,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   object-fit: cover;
   filter: grayscale(1) contrast(1.05);
 }
-/* Schede "pop-up" attorno alla foto: pillole piene, compaiono una volta e restano ferme */
+/* Schede "pop-up" attorno alla foto: pillole blu, compaiono una volta e restano ferme */
 .pop {
   position: absolute;
   z-index: 2;
@@ -720,13 +768,14 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   gap: 8px;
   margin: 0;
   padding: 11px 18px;
+  border: 1px solid rgba(246, 241, 230, 0.22);
   border-radius: 99px;
-  background: var(--fg);
-  color: var(--bg);
-  font: 600 15px/1 var(--f-body);
+  background: var(--d-bg);
+  color: var(--d-fg);
+  font: 500 15px/1 var(--f-body);
   white-space: nowrap;
 }
-.pop b { font-weight: 700; opacity: 0.6; }
+.pop b { font-weight: 700; color: var(--d-accent); }
 .pop-1 { top: 10%; left: -2%; }
 .pop-2 { top: 42%; right: -2%; --n: 1; }
 .pop-3 { bottom: 14%; left: -2%; --n: 2; }
@@ -881,7 +930,7 @@ footer p + p { margin-top: 6px; }
   aspect-ratio: 1;
   margin: -60% 0 0 -60%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--glow-rgb), 0.2), transparent 66%);
+  background: radial-gradient(circle, rgba(var(--glow-l), 0.2), transparent 66%);   /* sezione chiara: luce blu */
   opacity: 0.5;
   pointer-events: none;
 }
@@ -1085,7 +1134,7 @@ footer p + p { margin-top: 6px; }
 .azioni-post svg { width: max(16px, calc(6 * var(--u))); height: max(16px, calc(6 * var(--u))); color: var(--fg); }
 .azioni-post .salva { margin-left: auto; }
 .didascalia { margin-top: calc(2.4 * var(--u)); font-size: max(11px, calc(4 * var(--u))); line-height: 1.4; }
-.didascalia strong { font-weight: 600; }
+.didascalia strong { font-weight: 500; }
 
 /* Calendario: 14 celle, i numeri 1-4 sono i quattro pilastri */
 .cal-titolo { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-display); letter-spacing: -0.01em; }
@@ -1146,7 +1195,7 @@ footer p + p { margin-top: 6px; }
 .step + .step { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }   /* senza JS: separati da un filetto */
 .step > * + * { margin-top: 16px; }
 .step p { color: var(--muted); max-width: 30em; }
-.step strong { color: var(--fg); font-weight: 600; }
+.step strong { color: var(--fg); font-weight: 500; }
 .step .k,
 .logica .k {
   margin-top: 0;
@@ -1254,9 +1303,9 @@ footer p + p { margin-top: 6px; }
   font-size: 16px;
   line-height: 1.35;
 }
-.cella .giorno { grid-area: giorno; font: 600 14px/1 var(--f-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.cella .giorno { grid-area: giorno; font: 500 14px/1 var(--f-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .cella .glifo { grid-area: glifo; width: 22px; height: 22px; color: var(--accent); }
-.cella .formato { grid-area: formato; align-self: center; font: 600 14px/1.2 var(--f-body); letter-spacing: 0.04em; color: var(--accent); }
+.cella .formato { grid-area: formato; align-self: center; font: 500 14px/1.2 var(--f-body); letter-spacing: 0.04em; color: var(--accent); }
 .cella .tema { grid-area: tema; font-weight: 500; color: var(--fg); }
 .cella .pil { grid-area: pil; justify-self: start; align-self: end; margin-top: 6px; }
 .cella-vuota { display: flex; flex-direction: column; gap: 8px; width: 6.5rem; background: transparent; border: 1px dashed var(--line); }
@@ -1264,6 +1313,14 @@ footer p + p { margin-top: 6px; }
 
 /* ----- Approfondimenti: righe che aprono un popup ----- */
 .approfondimenti { margin-top: clamp(56px, 8vw, 110px); }
+/* Pannello blu: l'elenco degli approfondimenti, con la stessa luce dei popup */
+.pannello {
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid rgba(246, 241, 230, 0.2);
+  border-radius: 28px;
+  background: radial-gradient(90% 70% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
+  color: var(--fg);
+}
 .righeb { margin-top: 20px; border-bottom: 1px solid var(--line); }
 .righeb li { border-top: 1px solid var(--line); }
 .riga-h { margin: 0; }
@@ -1307,16 +1364,17 @@ footer p + p { margin-top: 6px; }
   max-height: calc(100svh - 32px);
   margin: auto;
   padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  background-color: var(--bg);
-  background-image: radial-gradient(90% 60% at 10% 0%, var(--l-hi), transparent 70%), linear-gradient(180deg, var(--l-g1), var(--l-g2));
+  border: 1px solid rgba(246, 241, 230, 0.24);
+  border-radius: 28px;
+  background-color: var(--d-bg);
+  background-image: radial-gradient(90% 60% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
+  box-shadow: 0 0 90px rgba(var(--glow-l), 0.35);
   color: var(--fg);
   overflow: auto;
   overscroll-behavior: contain;
 }
 .popup.larga { width: min(1120px, calc(100vw - 24px)); }
-.popup::backdrop { background: rgba(5, 8, 22, 0.78); }
+.popup::backdrop { background: rgba(8, 12, 32, 0.6); }
 .popup-in { padding: 0 clamp(22px, 5vw, 52px) clamp(28px, 5vw, 52px); }
 .popup-in > h3 { margin-top: 10px; max-width: 14em; }
 .popup-in > * + * { margin-top: 20px; }
@@ -1357,10 +1415,8 @@ html:not(.js) .popup, html.no-popup .popup {
   position: static;
   width: auto;
   max-height: none;
-  margin: 40px 0 0;
-  border-width: 1px 0 0;
-  background: none;
-  color: inherit;
+  margin: 24px 0 0;
+  box-shadow: none;
 }
 html:not(.js) .popup .chiudi, html.no-popup .popup .chiudi,
 html:not(.js) .apri-btn, html.no-popup .apri-btn,
@@ -1398,14 +1454,13 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   .sec { grid-template-columns: minmax(170px, 3fr) 9fr; }
   .hero-in { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 48px; }
   .ritratto { margin-inline: 0; max-width: 400px; align-self: center; }
-  .pop-1 { left: -14%; }
+  .pop-1 { left: -4%; }
   .pop-2 { right: -10%; }
   .pop-3 { left: -8%; }
   .hero { padding-bottom: clamp(48px, 6vw, 88px); }
-  .sec-problemi { grid-template-areas: "label frase" ". testo"; row-gap: 48px; }
-  .problemi-testo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; max-width: 46rem; }
+  .schede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .banner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
   .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
-  .stats { grid-template-columns: repeat(3, auto); justify-content: start; column-gap: 56px; }
   .row-c { grid-template-columns: 5fr 6fr; align-items: start; }
   .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
   .righe > div { grid-template-columns: 12rem minmax(0, 1fr); }
@@ -1418,42 +1473,50 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
     align-items: start;
   }
   .stage { order: 2; }
-  .js .stage { top: calc(var(--barra) + 16px); padding: 0; background: transparent; overflow: visible; align-self: start; }
+  /* Lo stage è alto quanto lo schermo sotto il menu e il telefono sta al suo centro (didascalia e nota sono fuori dal calcolo, sotto il telefono) */
+  .js .stage {
+    top: var(--barra);
+    height: calc(100vh - var(--barra));
+    height: calc(100svh - var(--barra));
+    align-items: center;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
+    align-self: start;
+  }
+  .js .telefono-area figcaption,
+  .js .telefono-area .cnote { position: absolute; left: 50%; width: 24rem; max-width: 90vw; margin: 0; transform: translateX(-50%); }
+  .js .telefono-area .cnote { top: calc(100% + 14px); min-height: 0; height: 56px; }
+  .js .telefono-area figcaption { top: calc(100% + 14px + 56px + 6px); }
   .js .halo { width: 100%; margin: -50% 0 0 -50%; }   /* non deve uscire dalla colonna: la pagina non scorre di lato */
   .js .phone {
     height: auto;
     min-height: 0;
     max-height: none;
     aspect-ratio: 9 / 19;
-    width: min(300px, calc((100svh - var(--barra) - 200px) * 9 / 19));
+    /* Il telefono sta al centro dello stage: sotto ci stanno la nota (56px) e la didascalia, e devono restare dentro lo schermo. */
+    width: min(300px, calc((100svh - var(--barra) - 262px) * 9 / 19));
     -webkit-mask-image: none;
     mask-image: none;
   }
   .copertina { aspect-ratio: 6 / 5; }
-  .js .cnote { min-height: 2.5em; }
   .js .step { min-height: 64vh; padding-block: 14vh 0; }
   .js .step + .step { padding-top: 14vh; }
   .js .step:last-child { min-height: 50vh; }
 }
 
-/* Schermi bassi (meno di 700px di altezza): la didascalia esce dallo stage, che così occupa meno schermo,
-   e scorre con il testo del primo passo. Dentro il telefono restano l'etichetta "Esempio" e l'avviso di ogni post. */
-@media (max-height: 699px) {
+/* Schermi non molto alti (meno di 900px): la didascalia esce dallo stage e scorre con il testo del primo passo,
+   così il telefono centrato può essere più grande. Dentro il telefono restano l'etichetta "Esempio" e l'avviso di ogni post. */
+@media (min-width: 860px) and (max-height: 899px) {
+  .js .phone { width: min(300px, calc((100svh - var(--barra) - 172px) * 9 / 19)); }
+}
+@media (max-height: 899px) {
   .telefono-area figcaption { display: none; }
   .didascalia-passo { display: block; }
   .didascalia-passo + .k { margin-top: 20px; }
 }
 
 @media (min-width: 1100px) {
-  /* Cosa risolvo: etichetta, frase grande e colonna stretta affiancate */
-  .sec-problemi {
-    grid-template-columns: minmax(170px, 3fr) 6fr 3fr;
-    grid-template-areas: "label frase testo";
-    column-gap: 48px;
-  }
-  .frase { font-size: clamp(56px, 5.4vw, 80px); }
-  .problemi-testo { grid-template-columns: minmax(0, 1fr); max-width: none; padding-top: 0.6rem; }
-
   /* Sette giorni affiancati, senza scorrimento */
   .striscia-scorri { overflow-x: visible; }
   .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
@@ -1543,7 +1606,12 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
 .cur.big i::before { opacity: 1; }
 /* Il bagliore sta sotto il testo (z-index -1) */
 .cur-glow { z-index: -1; width: 420px; height: 420px; margin: -210px 0 0 -210px; }
-.cur-glow i { display: block; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(var(--glow-rgb), 0.24), transparent 66%); }
+ /* Due strati sovrapposti: beige (sfondo scuro) e blu (sfondo chiaro). Cambia solo l'opacità, che si dissolve dolcemente. */
+.cur-glow i { position: absolute; inset: 0; display: block; border-radius: 50%; }
+.cur-glow i.d { background: radial-gradient(circle, rgba(var(--glow-d), 0.24), transparent 66%); }
+.cur-glow i.l { background: radial-gradient(circle, rgba(var(--glow-l), 0.26), transparent 66%); opacity: 0; }
+.cur-glow.su-chiaro i.d { opacity: 0; }
+.cur-glow.su-chiaro i.l { opacity: 1; }
 .cur-glow.vis { opacity: 0.9; }
 .cur-glow.big { opacity: 1; }
 .cur-glow.big i { transform: scale(1.25); }
@@ -1603,23 +1671,21 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   }
   @keyframes lampeggia { 50% { opacity: 0; } }
 
-  /* Evidenziatore: ogni parola ha il suo tratto beige che si stende; il testo si inverte con un cambio di opacità */
-  .js .hl { padding: 0; margin: 0; background: none; color: inherit; }
-  .js .hl .hw { position: relative; display: inline-block; isolation: isolate; padding: 0 0.14em; margin: 0 -0.14em; }
-  .js .hl .hw:last-child { margin-right: 0; }      /* il punto dopo l'ultima parola non deve finire sopra il beige */
+  /* Evidenziatore: con JavaScript ogni parola ha il suo tratto che si stende da sinistra (solo transform). Il testo non cambia colore. */
+  .js .hl { padding: 0; margin: 0; background: none; }
+  .js .hl .hw { position: relative; display: inline-block; isolation: isolate; padding: 0 0.15em; margin: 0 -0.15em; }   /* i tratti si toccano: lo spazio tra le parole è coperto */
+  .js .hl .hw:last-child { margin-right: 0; }      /* il punto dopo l'ultima parola non deve finire sopra il tratto */
   .js .hl .hw::before {
     content: "";
     position: absolute;
-    inset: 0.04em 0 0.02em;
+    left: 0; right: 0;
+    top: 42%; bottom: 6%;
     z-index: -1;
-    background: var(--accent);
+    background: rgba(var(--glow-l), 0.2);
     transform: scaleX(0);
     transform-origin: left;
   }
-  .js .hl .hw .t1 { position: absolute; left: 0.14em; top: 0; color: var(--accent-ink); opacity: 0; white-space: nowrap; }
   .js .hl.in .hw::before { transform: scaleX(1); transition: transform 0.6s var(--ease) calc(0.35s + var(--w) * 0.2s); }
-  .js .hl.in .hw .t0 { opacity: 0; transition: opacity 0.4s var(--ease) calc(0.5s + var(--w) * 0.2s); }
-  .js .hl.in .hw .t1 { opacity: 1; transition: opacity 0.4s var(--ease) calc(0.5s + var(--w) * 0.2s); }
 
   /* Numeri: il numero vero resta nel testo ma invisibile (tiene il posto), quello che sale è una copia sovrapposta */
   .js .num .num-fin { opacity: 0; }
@@ -1652,7 +1718,7 @@ html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; 
   .cur i { transition: transform 0.45s var(--ease); }
   .cur i::before { transition: opacity 0.3s var(--ease); }
   .cur-glow { transition: opacity 0.5s var(--ease); }
-  .cur-glow i { transition: transform 0.6s var(--ease); }
+  .cur-glow i { transition: transform 0.6s var(--ease), opacity 0.5s var(--ease); }
 
   /* Telefono: lo stato entra con i suoi elementi a scalare */
   .js .scr { transform: translateY(14px); transition: opacity 0.5s var(--ease), transform 0.7s var(--ease); }

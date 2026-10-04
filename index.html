@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Matteo Rapeso | Strategia e contenuti per profili social</title>
   <meta name="description" content="Strategia e contenuti per profili social: creator, attività locali, startup. Il metodo è mostrato in un caso studio dimostrativo con dati fittizi.">
-  <meta name="theme-color" content="#1A2A63">
-  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#F7F2E8">
+  <meta name="color-scheme" content="light">
 
   <!-- Condivisione (Open Graph). Per og:image e og:url servono indirizzi assoluti:
        sono l'unica eccezione ai percorsi relativi del resto del sito. -->
@@ -84,20 +84,15 @@
   <main id="contenuto">
 
     <!-- ============ 1. HERO: presentazione personale ============ -->
-    <section class="hero sez-scura" id="top" aria-labelledby="titolo-hero">
+    <section class="hero sez-chiara" id="top" aria-labelledby="titolo-hero">
       <!-- Luce dietro il titolo: respira da sola e, con il mouse, segue il puntatore -->
       <div class="luce" aria-hidden="true"><div class="luce-in"></div></div>
       <div class="wrap hero-in">
         <div class="hero-testo">
-          <div class="toprow">
-            <!-- Annotazione a gesso: il testo è scritto qui, JavaScript lo anima lettera per lettera -->
-            <div class="note-c">
-              <span class="chalk" style="--d:1100ms">piacere di conoscerti</span>
-              <svg class="draw" viewBox="0 0 56 44" aria-hidden="true" focusable="false" style="--d:1500ms"><path pathLength="1" d="M4 8 C 22 2, 46 14, 50 36"/><path pathLength="1" d="M40 30 L50 38 L53 24"/></svg>
-            </div>
-          </div>
+          <!-- "Sono Matteo" ha il suo posto: una pillola sopra il titolo, non dentro la frase -->
+          <p class="saluto"><span class="punto" aria-hidden="true"></span>Ciao, sono Matteo</p>
 
-          <h1 id="titolo-hero">Sono Matteo. Costruisco strategia e contenuti perché l’attenzione su un profilo possa diventare <em class="it">contatti, prenotazioni o iscrizioni.</em></h1>
+          <h1 id="titolo-hero">Strategia e contenuti, perché l’attenzione su un profilo possa diventare <em class="it">contatti, prenotazioni o iscrizioni.</em></h1>
 
           <p class="lead hero-lead rv" style="--d:500ms">Ti mostro il metodo, <span class="hl">non risultati inventati</span>, con un caso dimostrativo.</p>
 
@@ -138,21 +133,22 @@
     <!-- ============ 2. COSA RISOLVO ============ -->
     <section class="sez-scura" id="problemi" aria-labelledby="titolo-problemi">
       <div class="wrap">
-        <!-- Un blocco unico, senza filetti: etichetta, frase grande e, di lato, il testo breve in colonna stretta -->
-        <div class="sec sec-problemi">
+        <div class="sec">
           <p class="label rv">Cosa risolvo</p>
-          <h2 class="frase rv" id="titolo-problemi">Parto da un <span class="it">problema</span>, non da un settore.</h2>
-          <div class="problemi-testo">
-            <article class="problema rv" style="--d:120ms">
-              <p class="n" aria-hidden="true">01</p>
-              <h3>Un profilo poco riconoscibile</h3>
-              <p>Chi arriva non capisce subito di cosa ti occupi né perché dovrebbe seguirti.</p>
-            </article>
-            <article class="problema rv" style="--d:200ms">
-              <p class="n" aria-hidden="true">02</p>
-              <h3>Attenzione che non diventa azione</h3>
-              <p>Il profilo viene guardato, ma non è chiaro cosa fare dopo: scrivere, prenotare, iscriversi.</p>
-            </article>
+          <div>
+            <h2 class="rv" id="titolo-problemi">Parto da un <span class="it">problema</span>, non da un settore.</h2>
+            <div class="schede">
+              <article class="scheda-b rv" style="--d:120ms">
+                <p class="n" aria-hidden="true">01</p>
+                <h3>Un profilo poco riconoscibile</h3>
+                <p>Chi arriva non capisce subito di cosa ti occupi né perché dovrebbe seguirti.</p>
+              </article>
+              <article class="scheda-b rv" style="--d:200ms">
+                <p class="n" aria-hidden="true">02</p>
+                <h3>Attenzione che non diventa azione</h3>
+                <p>Il profilo viene guardato, ma non è chiaro cosa fare dopo: scrivere, prenotare, iscriversi.</p>
+              </article>
+            </div>
           </div>
         </div>
       </div>
@@ -192,12 +188,19 @@
           </li>
         </ol>
 
-        <ul class="stats" role="list">
-          <li class="stat rv" style="--d:0ms"><span class="num">2</span><p>Settimane di calendario</p></li>
-          <li class="stat rv" style="--d:80ms"><span class="num">4</span><p>Pilastri di contenuto</p></li>
-          <li class="stat rv" style="--d:160ms"><span class="num">15</span><p>Minuti, la prima call</p></li>
+        <ul class="stats rv" role="list">
+          <li class="stat"><span class="num">2</span><p>Settimane di calendario</p></li>
+          <li class="stat"><span class="num">4</span><p>Pilastri di contenuto</p></li>
+          <li class="stat"><span class="num">15</span><p>Minuti, la prima call</p></li>
         </ul>
-        <p class="note rv" style="--d:240ms">Sono numeri del metodo, non risultati.</p>
+        <!-- Banner blu: è la nota di onestà, ma con più peso -->
+        <div class="banner rv">
+          <div>
+            <p class="piccolo">Onestà</p>
+            <p class="banner-testo">Sono numeri del metodo, <span class="it">non risultati.</span></p>
+          </div>
+          <a class="btn-p" href="#caso-studio">Guarda il caso studio <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+        </div>
       </div>
     </section>
 
@@ -536,7 +539,7 @@
         </div>
 
         <!-- ===== Approfondimenti: ogni voce si apre in un popup (senza JavaScript i contenuti restano tutti leggibili, uno sotto l’altro) ===== -->
-        <div class="approfondimenti rv">
+        <div class="approfondimenti pannello rv">
           <p class="label">Approfondimenti</p>
           <ul class="righeb" role="list">
             <li>

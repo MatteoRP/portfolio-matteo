@@ -94,7 +94,7 @@
       titolo.classList.add('diviso');
     }
 
-    // --- Evidenziatore: ogni parola ha due copie del testo: una chiara e una scura, che si scambiano con l'opacità ---
+    // --- Evidenziatore: ogni parola ha il suo tratto di colore che si stende da sinistra (il testo non cambia) ---
     function dividiEvidenziatore(evidenziato) {
       var parole = evidenziato.textContent.replace(/\s+/g, ' ').trim().split(' ');
       evidenziato.textContent = '';
@@ -102,13 +102,7 @@
         if (i) evidenziato.appendChild(document.createTextNode(' '));
         var contenitore = crea('span', 'hw');
         contenitore.style.setProperty('--w', i);
-        var chiara = crea('span', 't0');
-        chiara.textContent = parola;
-        var scura = crea('span', 't1');
-        scura.textContent = parola;
-        scura.setAttribute('aria-hidden', 'true');
-        contenitore.appendChild(chiara);
-        contenitore.appendChild(scura);
+        contenitore.textContent = parola;
         evidenziato.appendChild(contenitore);
       });
     }
@@ -329,7 +323,8 @@
       anello.appendChild(crea('i'));
       var bagliore = crea('div', 'cur-glow');
       bagliore.setAttribute('aria-hidden', 'true');
-      bagliore.appendChild(crea('i'));
+      bagliore.appendChild(crea('i', 'd'));   // strato beige (sfondo scuro)
+      bagliore.appendChild(crea('i', 'l'));   // strato blu (sfondo chiaro)
       document.body.appendChild(bagliore);
       document.body.appendChild(anello);
 
@@ -350,12 +345,14 @@
         var sopra = e.target && e.target.closest ? e.target : null;
         var grande = !!(sopra && sopra.closest('a, button, summary, .row-c'));
         var nellaHero = !!(sopra && sopra.closest('.hero'));
-        var suChiaro = !!(sopra && sopra.closest('.sez-chiara'));
+        // Sfondo chiaro o scuro sotto il puntatore: crema (sezioni chiare e menu) o blu (sezioni scure e popup)
+        var suChiaro = !!(sopra && sopra.closest('.sez-chiara, .nav') && !sopra.closest('dialog'));
         anello.classList.add('vis');
         bagliore.classList.add('vis');
         anello.classList.toggle('big', grande);
         anello.classList.toggle('su-chiaro', suChiaro);
         bagliore.classList.toggle('big', grande);
+        bagliore.classList.toggle('su-chiaro', suChiaro);   // bagliore blu su sfondo chiaro, beige su sfondo scuro
         bagliore.classList.toggle('fuori', nellaHero);   // nella hero c'è già la sua luce
         if (!cursoreInCorsa) { cursoreInCorsa = true; requestAnimationFrame(giraCursore); }
       }, { passive: true });
