@@ -554,17 +554,7 @@ h3 {
   color: var(--key);
 }
 
-/* Testi di apertura: Instrument Serif (tondo), più elegante e meno "da modulo" dell'Inter. Il testo corto resta in Inter. */
-.lead,
-.who .muted {
-  font-family: var(--f-serif);
-  font-weight: 400;
-  font-size: clamp(25px, 3.1vw, 34px);
-  line-height: 1.32;
-  letter-spacing: -0.005em;
-  max-width: 28em;
-}
-.who .muted { font-size: clamp(22px, 2.4vw, 27px); }
+.lead { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.5; max-width: 34em; }
 .muted { color: var(--muted); }
 
 /* Sezioni: filetto sopra, molto spazio verticale */
@@ -844,7 +834,7 @@ footer p + p { margin-top: 6px; }
    ========================================================================== */
 
 .case-head { display: grid; gap: 22px; max-width: 54rem; }
-.case-head .lead { font-size: clamp(23px, 2.6vw, 29px); max-width: 38em; }
+.case-head .lead { font-size: clamp(18px, 2vw, 21px); max-width: 40em; }
 .case-head h2 { max-width: 12em; }
 
 /* Etichetta ben visibile: il progetto è dimostrativo */
@@ -964,9 +954,7 @@ footer p + p { margin-top: 6px; }
   height: 38vh;
   height: 38svh;
   min-height: 270px;
-  max-height: 360px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+  max-height: 360px;   /* cornice chiusa anche in basso: il contenuto lungo viene tagliato dentro lo schermo */
 }
 
 /* Lo schermo misura i testi in "cqw" (1% della sua larghezza) tramite --u, con un minimo in pixel per le scritte piccole.

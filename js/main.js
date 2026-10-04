@@ -338,23 +338,55 @@
                       Math.abs(mouse.x - b.x) > 0.4 || Math.abs(mouse.y - b.y) > 0.4;
         if (lontano) requestAnimationFrame(giraCursore); else cursoreInCorsa = false;
       };
+      // Il fondo sotto il puntatore è chiaro o scuro? Si risale dall'elemento: il primo antenato con uno sfondo pieno decide
+      // (un pulsante blu in una sezione crema è scuro; un pulsante beige dentro il banner blu è chiaro).
+      // Le sfumature stanno su ::before e sulle classi blu: per quelle si guarda la classe.
+      function fondoScuro(el) {
+        for (var e = el; e && e.nodeType === 1; e = e.parentElement) {
+          if (e.matches('dialog, .pannello, .banner, .sez-scura')) return true;
+          if (e.matches('.sez-chiara, .nav')) return false;
+          var m = /rgba?\(([^)]+)\)/.exec(getComputedStyle(e).backgroundColor);
+          if (m) {
+            var c = m[1].split(/[ ,\/]+/).map(Number);
+            var alfa = c.length > 3 ? c[3] : 1;
+            if (alfa >= 0.6) return (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) < 120;   // luminosità approssimata
+          }
+        }
+        return false;
+      }
+      function aggiornaCursore(sopra) {
+        if (!sopra || !sopra.closest) return;
+        var grande = !!sopra.closest('a, button, summary, .row-c');
+        var nellaHero = !!sopra.closest('.hero');
+        // Anello: segue l'elemento sotto il puntatore (anche un riquadro blu dentro una sezione crema)
+        var anelloChiaro = !fondoScuro(sopra);
+        // Bagliore: sta sotto tutto, quindi segue lo sfondo della sezione (crema = luce blu, blu = luce beige)
+        var bagliChiaro = !!sopra.closest('.sez-chiara, .nav') && !sopra.closest('dialog');
+        anello.classList.add('vis');
+        bagliore.classList.add('vis');
+        anello.classList.toggle('big', grande);
+        anello.classList.toggle('su-chiaro', anelloChiaro);
+        bagliore.classList.toggle('big', grande);
+        bagliore.classList.toggle('su-chiaro', bagliChiaro);
+        bagliore.classList.toggle('fuori', nellaHero);   // nella hero c'è già la sua luce
+        if (!cursoreInCorsa) { cursoreInCorsa = true; requestAnimationFrame(giraCursore); }
+      }
       window.addEventListener('pointermove', function (e) {
         if (e.pointerType && e.pointerType !== 'mouse') return;
         if (!anello.classList.contains('vis')) { a.x = b.x = e.clientX; a.y = b.y = e.clientY; }
         mouse.x = e.clientX; mouse.y = e.clientY;
-        var sopra = e.target && e.target.closest ? e.target : null;
-        var grande = !!(sopra && sopra.closest('a, button, summary, .row-c'));
-        var nellaHero = !!(sopra && sopra.closest('.hero'));
-        // Sfondo chiaro o scuro sotto il puntatore: crema (sezioni chiare e menu) o blu (sezioni scure e popup)
-        var suChiaro = !!(sopra && sopra.closest('.sez-chiara, .nav') && !sopra.closest('dialog'));
-        anello.classList.add('vis');
-        bagliore.classList.add('vis');
-        anello.classList.toggle('big', grande);
-        anello.classList.toggle('su-chiaro', suChiaro);
-        bagliore.classList.toggle('big', grande);
-        bagliore.classList.toggle('su-chiaro', suChiaro);   // bagliore blu su sfondo chiaro, beige su sfondo scuro
-        bagliore.classList.toggle('fuori', nellaHero);   // nella hero c'è già la sua luce
-        if (!cursoreInCorsa) { cursoreInCorsa = true; requestAnimationFrame(giraCursore); }
+        aggiornaCursore(e.target);
+      }, { passive: true });
+      // Anche quando il mouse sta fermo e scorre la pagina, sotto il puntatore arriva un altro sfondo
+      var scrollInCorsa = false;
+      window.addEventListener('scroll', function () {
+        if (scrollInCorsa || !anello.classList.contains('vis')) return;
+        scrollInCorsa = true;
+        requestAnimationFrame(function () {
+          scrollInCorsa = false;
+          var el = document.elementFromPoint(mouse.x, mouse.y);
+          if (el) aggiornaCursore(el);
+        });
       }, { passive: true });
       radice.addEventListener('mouseleave', function () {
         anello.classList.remove('vis');
