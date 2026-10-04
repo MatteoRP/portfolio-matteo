@@ -214,7 +214,8 @@
       if (titolo) dividiTitolo(titolo);
       tutti('.hl').forEach(dividiEvidenziatore);
       tutti('.chalk:not(.cnote)').forEach(function (g) { gesso(g, g.textContent.replace(/\s+/g, ' ').trim()); });
-      tutti('.label').forEach(preparaEtichetta);
+      // Solo l'etichetta della hero si scrive lettera per lettera; le altre compaiono con il normale reveal (classe "rv")
+      tutti('.hero .label').forEach(preparaEtichetta);
       tutti('.num').forEach(preparaNumero);
 
       var bersagli = tutti('.rv, .label, .num, .hl, .meta, .chalk:not(.cnote), .draw');
