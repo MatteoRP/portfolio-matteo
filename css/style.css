@@ -551,12 +551,20 @@ h3 {
 
 /* Sezioni: molto spazio verticale */
 section { padding-block: clamp(80px, 12vw, 160px); }
-/* Griglia asimmetrica: etichetta nella colonna stretta a sinistra, contenuto a destra */
+/* Testata di sezione: l'etichetta sta sempre sopra il titolo. Due composizioni che si alternano:
+   .sec-centro = tutto centrato; .sec-corpo = titolo a sinistra e nota (lead) a destra con il suo filetto (da 860px). */
 .sec {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 28px 40px;
+  gap: 22px;
 }
+.sec-centro { justify-items: center; text-align: center; }
+.sec-centro > div { width: 100%; }
+.sec-centro h2 { max-width: 16em; margin-inline: auto; }
+.sec-centro .scheda-b { text-align: left; }   /* il titolo è centrato, il testo delle schede si legge da sinistra */
+.sec-corpo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px 64px; align-items: start; }
+.sec-nota { display: grid; gap: 22px; }
+.sec-nota .muted { max-width: 34em; }
 
 /* Link di testo con sottolineatura beige */
 .link-testo {
@@ -682,9 +690,7 @@ html:not(.js) .hero h1 .it {
 .pop-2 { top: 42%; right: -2%; --n: 1; }
 .pop-3 { bottom: 14%; left: -2%; --n: 2; }
 
-/* ----- Chi sono: solo testo (il ritratto sta nella hero) ----- */
-.who { display: grid; gap: 22px; max-width: 40rem; }
-.who .muted { max-width: 34em; }
+/* ----- Chi sono: titolo a sinistra, nota a destra (composizione .sec-corpo; il ritratto sta nella hero) ----- */
 
 /* ----- Riquadri blu (schede, banner, pannelli, testata del caso studio) -----
    Nessun bordo: le schede sulle sezioni blu si staccano con un velo crema trasparente, quelle sul crema con il loro blu.
@@ -775,7 +781,6 @@ html:not(.js) .hero h1 .it {
 .js .num-an { display: block; position: absolute; left: 0; top: 0; }
 
 /* ----- Per chi lavoro: tre schede blu (problema, cosa faccio, obiettivo) e, sotto, il metodo comune ----- */
-.introduzione { margin-top: 28px; }
 .clienti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 72px); }
 .cliente {
   display: flex;
@@ -1506,7 +1511,7 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 }
 
 @media (min-width: 860px) {
-  .sec { grid-template-columns: minmax(170px, 3fr) 9fr; }
+  .sec-corpo { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
   .hero-in { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 48px; }
   .ritratto { margin-inline: 0; max-width: 400px; align-self: center; }
   .pop-1 { left: -4%; }
