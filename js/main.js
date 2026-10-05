@@ -358,6 +358,9 @@
         var cima = (misure.heroTop || 0) - window.scrollY;
         meta.x = (e.clientX - window.innerWidth / 2) * 0.55;
         meta.y = (e.clientY - cima - (misure.heroH || 0) * 0.4) * 0.45;
+        // Verso il basso la luce non va oltre il suo posto di riposo: più giù il bordo della hero la taglierebbe
+        // e tra la hero e "Chi sono" si vedrebbe un gradino di colore (misurato: fino a 16 livelli su 255)
+        if (meta.y > 0) meta.y = 0;
         if (!luceInCorsa) { luceInCorsa = true; requestAnimationFrame(giraLuce); }
       }, { passive: true });
     }

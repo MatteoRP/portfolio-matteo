@@ -163,7 +163,7 @@
 
   /* ----- Vetro (Liquid Glass) -----
      Un materiale traslucido con la luce sul bordo, usato su tutto il sito. Quattro regole:
-     1. lo sfocato vero (backdrop-filter) solo dove dietro c'è qualcosa di nitido: barra in alto, tendina del menu, popup, pillole sulla foto;
+     1. lo sfocato vero (backdrop-filter) solo dove dietro c'è qualcosa di nitido: barra in alto, tendina del menu, popup e tasto di chiusura;
      2. altrove il vetro è "dipinto": tinta trasparente + luce sul bordo + ombra morbida, senza sfocato (costa molto meno e dietro non c'è nulla da sfocare);
      3. lo sfocato non si anima mai: si animano solo transform e opacità, come tutto il resto;
      4. il testo sul vetro ha sempre il contrasto misurato sul rendering, anche dietro il punto più chiaro. */
@@ -180,8 +180,6 @@
   --v-tendina-b: rgba(251, 248, 240, 0.82);
   --v-popup-a: rgba(28, 44, 116, 0.82);
   --v-popup-b: rgba(20, 33, 92, 0.88);
-  --v-pillola-a: rgba(40, 58, 130, 0.8);
-  --v-pillola-b: rgba(22, 35, 92, 0.84);
   --v-tessera: rgba(255, 255, 255, 0.04);
   /* Macchie di colore dietro le sezioni (blu e beige, molto morbide): senza colore dietro un vetro non si vede.
      Ogni macchia sta dentro una mattonella alta 1300px che si ripete in verticale, così non ci sono giunture. */
@@ -189,6 +187,10 @@
     radial-gradient(320px 320px at 10% 20%, rgba(110, 130, 255, 0.2), transparent 70%),
     radial-gradient(400px 400px at 90% 56%, rgba(232, 200, 140, 0.3), transparent 70%),
     radial-gradient(300px 300px at 26% 82%, rgba(110, 130, 255, 0.12), transparent 70%);
+  /* Le stesse macchie per la hero, ma in due e misurate sull'altezza della sezione (non si ripetono): vedi "Hero" nella sezione 4 */
+  --macchie-hero:
+    radial-gradient(320px 320px at 10% 24%, rgba(110, 130, 255, 0.2), transparent 70%),
+    radial-gradient(400px 400px at 90% 50%, rgba(232, 200, 140, 0.3), transparent 70%);
   --macchie-d:
     radial-gradient(420px 420px at 86% 24%, rgba(var(--glow-l), 0.3), transparent 70%),
     radial-gradient(340px 340px at 8% 50%, rgba(var(--glow-d), 0.07), transparent 70%),
@@ -268,7 +270,8 @@ dialog,
 }
 /* Sfumature di sfondo, molto delicate, dipinte su ::before (z-index -1) in ogni sezione:
    così sotto il testo c'è sempre la luce del cursore (anch'essa a z-index -1, creata dopo), beige sullo scuro e blu sul chiaro.
-   Ogni sfondo ha cinque strati: tre macchie di colore (per il vetro), un alone d'angolo e la sfumatura verticale. */
+   Ogni sfondo ha cinque strati: tre macchie di colore (per il vetro), un alone d'angolo e la sfumatura verticale.
+   (La hero ne ha quattro, con due sole macchie: vedi "Hero" nella sezione 4.) */
 section, footer { position: relative; overflow-x: clip; }   /* le luci e le schede che arrivano di lato non allargano mai la pagina (clip: non crea un contenitore di scorrimento) */
 .sez-chiara { color: var(--fg); }
 section.sez-chiara::before,
@@ -653,18 +656,32 @@ section { padding-block: clamp(80px, 12vw, 160px); }
    4. SEZIONI
    ========================================================================== */
 
-/* ----- Hero: presentazione personale (testo a sinistra, ritratto a destra) ----- */
+/* ----- Hero: presentazione personale, solo testo e centrata (una foto è stata provata e tolta) ----- */
 .hero {
   position: relative;
   overflow: clip;               /* la luce non esce dalla hero (né fa scorrere la pagina di lato) */
   padding-top: calc(var(--barra) + clamp(32px, 6vw, 72px));
-  padding-bottom: 0;   /* su telefono il ritratto poggia sul bordo inferiore della hero */
+  padding-bottom: clamp(48px, 6vw, 88px);
 }
 .hero .wrap { position: relative; z-index: 1; }
-.hero-in { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; align-items: end; }
-.hero-testo { padding-bottom: clamp(24px, 4vw, 56px); }
-/* Luce dietro il titolo. Quella esterna segue il mouse, quella interna respira (vedi Movimento) */
-.luce { position: absolute; left: 50%; top: 22%; z-index: 0; width: 0; height: 0; pointer-events: none; }
+/* Tutto in una colonna centrata: pillola, titolo, nota e pulsanti */
+.hero-testo { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.hero-testo .cta { align-self: stretch; justify-content: center; }
+/* Sfondo della hero: le macchie stanno tutte dentro la sezione. Quelle degli altri sfondi si ripetono ogni 1300px e il bordo inferiore
+   ne taglia una a metà; qui sotto comincia "Chi sono", anch'essa chiara, e il taglio si vedrebbe come un gradino. */
+section.hero::before {
+  background-image:
+    var(--macchie-hero),
+    radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
+    linear-gradient(180deg, var(--l-g1), var(--l-g2));
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+/* Luce dietro il titolo. Quella esterna segue il mouse, quella interna respira (vedi Movimento).
+   Il bordo inferiore della hero taglia tutto ciò che sta fuori: se la luce lo raggiungesse, tra la hero e "Chi sono" (che non la continua)
+   si vedrebbe un gradino. Per questo il gradiente finisce al 52% e il centro sta al 26% dell'altezza (e in JavaScript la luce non scende sotto
+   il suo posto di riposo). Misurato nel caso peggiore del respiro, da 390 a 1920px: gradino 0 livelli su 255 (con 66% e 34% erano fino a 10). */
+.luce { position: absolute; left: 50%; top: 26%; z-index: 0; width: 0; height: 0; pointer-events: none; }
 .luce-in {
   position: absolute;
   width: min(80vmax, 1100px);
@@ -672,7 +689,7 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   left: calc(min(80vmax, 1100px) / -2);
   top: calc(min(80vmax, 1100px) / -2);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--glow-l), 0.22), transparent 66%);   /* la hero è chiara: luce blu */
+  background: radial-gradient(circle, rgba(var(--glow-l), 0.22), transparent 52%);   /* la hero è chiara: luce blu */
   opacity: 0.6;
 }
 /* "Ciao, sono Matteo": una pillola a sé, sopra il titolo */
@@ -694,7 +711,8 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   line-height: 1;
   max-width: 15em;
 }
-.hero-lead { margin-top: clamp(20px, 3vw, 28px); color: var(--fg); }
+/* La nota sotto il titolo è centrata, quindi qui il filetto verticale a sinistra non c'è: resta il corsivo serif */
+.hero-lead { margin-top: clamp(20px, 3vw, 28px); padding-left: 0; border-left: 0; color: var(--fg); }
 .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
 /* Su telefono i due pulsanti della hero (principale e "caso studio") occupano tutta la larghezza, uno sotto l'altro, alti uguali:
    affiancati non ci starebbero (le due scritte servono circa 520px, il telefono ne dà 358). Da 700px stanno in riga. */
@@ -717,47 +735,7 @@ html:not(.js) .hero h1 .it {
   box-decoration-break: clone;
 }
 
-/* Ritratto nella hero: 4:5, in bianco e nero, appoggiato al bordo inferiore della hero. Niente parallasse. */
-.ritratto { position: relative; width: 100%; max-width: 380px; margin-inline: auto; }
-.photo {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border-radius: 28px;
-  background: var(--d-bg);
-}
-.photo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
-}
-/* Pillole di vetro scuro attorno alla foto: sfocano la foto che hanno dietro (è il posto dove lo sfocato si vede di più). Compaiono una volta e restano ferme. */
-.pillola {
-  position: absolute;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  padding: 11px 18px;
-  border-radius: 99px;
-  background: linear-gradient(180deg, var(--v-pillola-a), var(--v-pillola-b));
-  -webkit-backdrop-filter: var(--sfoca);
-  backdrop-filter: var(--sfoca);
-  box-shadow: var(--bordo-d), 0 12px 24px -10px rgba(3, 7, 34, 0.55);
-  color: var(--d-fg);
-  font: 500 16px/1 var(--f-body);
-  white-space: nowrap;
-}
-.pillola-1 { top: 10%; left: -2%; }
-.pillola-2 { top: 42%; right: -2%; --n: 1; }
-.pillola-3 { bottom: 14%; left: -2%; --n: 2; }
-
-/* ----- Chi sono: titolo a sinistra, nota a destra (composizione .sec-corpo; il ritratto sta nella hero) ----- */
+/* ----- Chi sono: titolo a sinistra, nota a destra (composizione .sec-corpo) ----- */
 
 /* ----- Riquadri blu (schede, banner, pannelli, testata del caso studio) -----
    Vetro dipinto, senza sfocato: dietro ci sono solo sfumature morbide. Le schede sulle sezioni blu sono un velo crema trasparente,
@@ -1502,12 +1480,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 
 @media (min-width: 860px) {
   .sec-corpo { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
-  .hero-in { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 48px; }
-  .ritratto { margin-inline: 0; max-width: 400px; align-self: center; }
-  .pillola-1 { left: -4%; }
-  .pillola-2 { right: -10%; }
-  .pillola-3 { left: -8%; }
-  .hero { padding-bottom: clamp(48px, 6vw, 88px); }
   .schede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .banner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
   .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
@@ -1615,10 +1587,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .btn-p:active, .btn-o:active { transform: scale(0.96); }
   .btn-p .fr, .btn-o .fr { transition: transform 0.5s var(--ease); }
   .btn-p:hover .fr, .btn-o:hover .fr { transform: translate(3px, -3px); }
-
-  /* Schede attorno alla foto: compaiono una volta dopo il titolo (opacità + traslazione) */
-  .js .pillola { opacity: 0; transform: translateY(14px) scale(0.92); }
-  .js.go .pillola { opacity: 1; transform: none; transition: opacity 0.5s var(--ease), transform 0.8s var(--ease); transition-delay: calc(0.95s + var(--n, 0) * 0.22s); }
 
   /* Evidenziatore: con JavaScript ogni parola ha il suo tratto che si stende da sinistra (solo transform). Il testo non cambia colore. */
   .js .hl { padding: 0; margin: 0; background: none; }
@@ -1767,7 +1735,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
     --v-barra-a: #FBF8F0; --v-barra-b: #F7F2E8;
     --v-tendina-a: #FBF8F0; --v-tendina-b: #F7F2E8;
     --v-popup-a: #243580; --v-popup-b: #1A2A63;
-    --v-pillola-a: #243580; --v-pillola-b: #1A2A63;
     --v-tessera: rgba(14, 24, 72, 0.92);
   }
   .chiudi { -webkit-backdrop-filter: none; backdrop-filter: none; background: #223378; }
@@ -1777,7 +1744,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
     --v-barra-a: #FBF8F0; --v-barra-b: #F7F2E8;
     --v-tendina-a: #FBF8F0; --v-tendina-b: #F7F2E8;
     --v-popup-a: #243580; --v-popup-b: #1A2A63;
-    --v-pillola-a: #243580; --v-pillola-b: #1A2A63;
   }
 }
 
