@@ -1,0 +1,7 @@
+# Tutti i motori di ricerca possono leggere tutto il sito.
+# Nota: i motori leggono questo file solo se sta nella radice del dominio (https://dominio/robots.txt).
+# Sul vecchio indirizzo github.io/portfolio-matteo/ viene ignorato; funziona con il dominio personalizzato.
+User-agent: *
+Allow: /
+
+Sitemap: https://matteorp.github.io/portfolio-matteo/sitemap.xml

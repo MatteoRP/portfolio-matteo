@@ -5,10 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Matteo Rapeso | Strategia e contenuti per profili social</title>
   <meta name="description" content="Strategia e contenuti per profili social: creator, attività locali, startup. Il metodo è mostrato in un caso studio dimostrativo con dati fittizi.">
+  <meta name="author" content="Matteo Rapeso">
   <meta name="theme-color" content="#F7F2E8">
   <meta name="color-scheme" content="light">
 
-  <!-- Condivisione (Open Graph). Per og:image e og:url servono indirizzi assoluti:
+  <!-- Indirizzo "ufficiale" della pagina: dice ai motori di ricerca quale indirizzo contare se la stessa pagina è raggiungibile da più strade
+   (con e senza www, o dal vecchio indirizzo github.io). Quando arriva il dominio personalizzato si cambia qui, in og:url, in og:image e nei dati strutturati. -->
+  <link rel="canonical" href="https://matteorp.github.io/portfolio-matteo/">
+
+  <!-- Condivisione (Open Graph). Per og:image, og:url, canonical e dati strutturati servono indirizzi assoluti:
    sono l'unica eccezione ai percorsi relativi del resto del sito. -->
   <meta property="og:url" content="https://matteorp.github.io/portfolio-matteo/">
   <meta property="og:type" content="website">
@@ -21,6 +26,20 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Matteo Rapeso, strategia e contenuti per profili social. Caso studio dimostrativo con dati fittizi.">
   <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Dati strutturati (schema.org) per i motori di ricerca: chi è la persona e dove trovarla. Solo fatti veri:
+   niente clienti, premi o recensioni. Non è codice che gira: è un blocco di testo JSON. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Matteo Rapeso",
+    "url": "https://matteorp.github.io/portfolio-matteo/",
+    "jobTitle": "Social media manager",
+    "description": "Strategia e contenuti per profili social, per creator, attività locali e startup.",
+    "sameAs": ["https://www.instagram.com/matteorapeso/"]
+  }
+  </script>
 
   <!-- Icone: favicon (ICO per i browser che non leggono l'SVG, come Safari su Mac; sizes="32x32" evita che Chrome scelga l'ICO al posto dell'SVG),
    icona per la schermata Home di iPhone e iPad (180x180, piena: la maschera con gli angoli la mette iOS) e manifesto per Android -->
@@ -501,7 +520,7 @@
                 </div>
                 <div>
                   <dt>Tono e regole</dt>
-                  <dd>Calmo, a frasi brevi, mai «devi». Nessuna previsione, nessun prodotto; ogni dato con la sua fonte, da verificare su Istat o Banca d’Italia.</dd>
+                  <dd>Calmo, a frasi brevi, mai «devi». Nessuna previsione, nessun prodotto; ogni dato e ogni definizione con la sua fonte, da verificare su fonti ufficiali come Istat, Banca d’Italia o Consob.</dd>
                 </div>
                 <div>
                   <dt>Canali</dt>
@@ -631,7 +650,7 @@
                 </div>
                 <div>
                   <dt>Processo</dt>
-                  <dd>Nessun contenuto pubblicato senza avviso e senza fonte.</dd>
+                  <dd>Nessun contenuto pubblicato senza avviso; ogni definizione e ogni dato con la sua fonte.</dd>
                 </div>
               </dl>
               <p>A ogni revisione mi chiederei quali pilastri non funzionano e se uno dei canali esclusi vada riconsiderato.</p>
@@ -665,7 +684,7 @@
               <p class="copertina-piede">Le parole dei soldi</p>
             </div>
             <p class="avviso">Contenuto educativo, non consulenza finanziaria.</p>
-            <p class="didascalia"><strong>Numerella</strong> L’inflazione è l’aumento generale dei prezzi nel tempo. Se lo stesso carrello della spesa passa da 100 a 103 euro, i prezzi sono saliti del 3% (numeri di esempio). Nelle prossime slide: come si misura e perché pesa in modo diverso da persona a persona. In Italia la misura ufficiale è pubblicata dall’Istat. Salva il post per rileggerlo.</p>
+            <p class="didascalia"><strong>Numerella</strong> L’inflazione è l’aumento generale e continuo dei prezzi nel tempo. Se lo stesso carrello della spesa passa da 100 a 103 euro, i prezzi sono saliti del 3% (numeri di esempio). Nelle prossime slide: come si misura e perché pesa in modo diverso da persona a persona. In Italia la misura ufficiale è pubblicata dall’Istat. Salva il post per rileggerlo.</p>
             <dl>
               <dt>Pilastro</dt>
               <dd>Le parole dei soldi.</dd>
@@ -689,7 +708,7 @@
               <p class="copertina-piede">Leggere un documento</p>
             </div>
             <p class="avviso">Contenuto educativo, non consulenza finanziaria.</p>
-            <p class="didascalia"><strong>Numerella</strong> Compaiono nelle offerte di finanziamento. Il TAN è il tasso annuo nominale: riguarda gli interessi. Il TAEG include anche le spese collegate al finanziamento, quindi dà un’idea più completa del costo. Misurano cose diverse: saperlo è già un modo per leggere meglio un’offerta.</p>
+            <p class="didascalia"><strong>Numerella</strong> Compaiono nelle offerte di finanziamento. Il TAN è il tasso annuo nominale, cioè il tasso di interesse «puro». Il TAEG include anche commissioni, imposte e costi dei servizi accessori obbligatori, quindi dà un’idea più completa del costo. Misurano cose diverse: saperlo è già un modo per leggere meglio un’offerta. Fonte: Banca d’Italia, «Il credito ai consumatori in parole semplici».</p>
             <dl>
               <dt>Pilastro</dt>
               <dd>Leggere un documento.</dd>
@@ -713,7 +732,7 @@
               <p class="copertina-piede">Errori di ragionamento</p>
             </div>
             <p class="avviso">Contenuto educativo, non consulenza finanziaria.</p>
-            <p class="didascalia"><strong>Numerella</strong> Quando molte persone si muovono nella stessa direzione, tendiamo a pensare che abbiano ragione. In economia comportamentale si chiama effetto gregge. Riconoscerlo non ti dice cosa fare: ti aiuta a notare quando stai scegliendo solo perché lo fanno tutti.</p>
+            <p class="didascalia"><strong>Numerella</strong> Nelle fasi di incertezza molte persone osservano cosa fanno gli altri e tendono a imitarli. In finanza comportamentale si parla di comportamento gregario, o effetto gregge. Riconoscerlo non ti dice cosa fare: ti aiuta a notare quando stai scegliendo solo perché lo fanno tutti. Fonte: Consob, «Errori e trappole comportamentali».</p>
             <dl>
               <dt>Pilastro</dt>
               <dd>Errori di ragionamento.</dd>
