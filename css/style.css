@@ -220,7 +220,13 @@
   --h-m: clamp(22px, 2.6vw, 30px);
 
   --colonna: 1160px;
-  --barra: 76px;                            /* spazio occupato dal menu fisso in alto (barra + distanza dal bordo) */
+  /* Aree sicure (iPhone con notch o isola dinamica, soprattutto in orizzontale): ci sono grazie a viewport-fit=cover nell'<head>.
+     Sono 0 dove non servono (desktop, iPad, iPhone in verticale dentro Safari). Per provarle basta ridefinire queste quattro variabili. */
+  --sa-t: env(safe-area-inset-top, 0px);
+  --sa-r: env(safe-area-inset-right, 0px);
+  --sa-b: env(safe-area-inset-bottom, 0px);
+  --sa-l: env(safe-area-inset-left, 0px);
+  --barra: calc(76px + var(--sa-t));        /* spazio occupato dal menu fisso in alto (barra + distanza dal bordo) */
   --barra-h: 64px;                          /* altezza della barra vera e propria */
   --gutter: clamp(16px, 4vw, 40px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* l'unico easing del sito: ogni animazione usa questo */
@@ -273,6 +279,11 @@ dialog,
    Ogni sfondo ha cinque strati: tre macchie di colore (per il vetro), un alone d'angolo e la sfumatura verticale.
    (La hero ne ha quattro, con due sole macchie: vedi "Hero" nella sezione 4.) */
 section, footer { position: relative; overflow-x: clip; }   /* le luci e le schede che arrivano di lato non allargano mai la pagina (clip: non crea un contenitore di scorrimento) */
+/* Safari fino alla 15 (iPhone 6s/7, iPad Air 2 e mini 4 non vanno oltre) non conosce overflow: clip: ripiego su hidden, che qui è equivalente */
+@supports not (overflow: clip) {
+  body, section, footer, .sfoglia-pagine { overflow-x: hidden; }
+  .hero { overflow: hidden; }
+}
 .sez-chiara { color: var(--fg); }
 section.sez-chiara::before,
 section.sez-scura::before,
@@ -314,11 +325,17 @@ footer.sez-scura::before {
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  background: var(--d-bg);
+  /* Il colore di html si vede dove la pagina non arriva: rimbalzo dello scroll su iPhone e iPad e, in Safari 26, la tinta delle barre
+     (Safari 26 non legge più theme-color: campiona sfondo di body e html; fonti: vedi CLAUDE.md). Di base crema, come l'inizio della pagina;
+     blu solo quando in vista ci sono contatti e piè di pagina (la classe fondo-scuro la mette js/main.js). Non si può dare lo sfondo a body:
+     coprirebbe gli sfondi delle sezioni e le luci, che stanno a z-index -1. */
+  background: var(--l-bg);
   scroll-padding-top: var(--barra);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
+
+html.fondo-scuro { background: var(--d-bg); }
 
 body {
   margin: 0;
@@ -332,6 +349,9 @@ body {
 h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 a { color: inherit; }
+/* Al tocco: iOS disegna un riquadro grigio sui comandi (qui ci sono già lampo e pressione) e ingrandisce la pagina con il doppio tocco
+   (utile da evitare sui tasti, come Prima/Dopo, che si toccano più volte di fila) */
+a, button, summary { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
 /* Focus ben visibile da tastiera */
@@ -343,8 +363,8 @@ a { color: inherit; }
   align-items: center;
   min-height: 44px;             /* area toccabile di almeno 44px anche per il link "Vai al contenuto" */
   position: absolute;
-  left: var(--gutter);
-  top: 0.75rem;
+  left: max(var(--gutter), var(--sa-l));
+  top: calc(0.75rem + var(--sa-t));
   z-index: 100;
   padding: 0.75rem 1rem;
   border-radius: 999px;
@@ -362,7 +382,7 @@ a { color: inherit; }
   width: 100%;
   max-width: var(--colonna);
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  padding-inline: max(var(--gutter), var(--sa-l)) max(var(--gutter), var(--sa-r));
 }
 
 /* ==========================================================================
@@ -414,8 +434,13 @@ dt {
   backdrop-filter: var(--sfoca);
   box-shadow: var(--bordo-l);
 }
-html:not(.js) .nav { margin: 10px 10px 0; }
-.js .nav { position: fixed; top: 10px; left: max(10px, calc((100vw - 1240px) / 2)); right: max(10px, calc((100vw - 1240px) / 2)); }
+html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max(10px, var(--sa-l)); }
+.js .nav {
+  position: fixed;
+  top: max(10px, var(--sa-t));
+  left: max(10px, var(--sa-l), calc((100vw - 1240px) / 2));
+  right: max(10px, var(--sa-r), calc((100vw - 1240px) / 2));
+}
 .nav-in {
   display: flex;
   flex-wrap: wrap;
@@ -466,8 +491,8 @@ html:not(.js) .nav { margin: 10px 10px 0; }
   transform: scaleX(0);
   transform-origin: left;
 }
-.nav-menu a[aria-current="location"]::after,
-.nav-menu a:hover::after { transform: scaleX(1); }
+.nav-menu a[aria-current="location"]::after { transform: scaleX(1); }
+@media (hover: hover) { .nav-menu a:hover::after { transform: scaleX(1); } }
 .menu-btn { display: none; }
 
 /* Telefono: con JavaScript c'è il pulsante "menu" e l'elenco si apre sotto la barra */
@@ -554,8 +579,10 @@ html:not(.js) .nav { margin: 10px 10px 0; }
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 8px 16px -8px rgba(var(--accent-rgb), 0.6);
   color: var(--accent-ink);
 }
-.btn-o:hover,
+/* Il «passaggio» (hover) esiste solo con il mouse: al tocco, su iPhone e iPad, resterebbe attivo dopo il tap (il pulsante rimarrebbe pieno).
+   La pressione (:active) vale per tutti. */
 .btn-o:active { background: var(--fg); color: var(--bg); }
+@media (hover: hover) { .btn-o:hover { background: var(--fg); color: var(--bg); } }
 /* Pulsante principale: vetro colorato (tinta d'accento) con il riflesso in alto.
    Al passaggio diventa vetro chiaro con il contorno d'accento. */
 .btn-p {
@@ -571,11 +598,17 @@ html:not(.js) .nav { margin: 10px 10px 0; }
   font: 500 16px/1.3 var(--f-body);
   text-decoration: none;
 }
-.btn-p:hover,
 .btn-p:active {
   background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
   box-shadow: inset 0 0 0 1px var(--accent), inset 0 1px 0 rgba(255, 255, 255, 0.5);
   color: var(--accent);
+}
+@media (hover: hover) {
+  .btn-p:hover {
+    background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+    box-shadow: inset 0 0 0 1px var(--accent), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    color: var(--accent);
+  }
 }
 
 /* Freccia ↗ disegnata con SVG (il font latin non contiene la freccia) */
@@ -886,7 +919,7 @@ html:not(.js) .hero h1 .it {
   word-break: break-word;
 }
 .mail { display: inline-block; margin-top: 28px; color: var(--fg); text-decoration: none; }
-.mail:hover { color: var(--accent); }
+@media (hover: hover) { .mail:hover { color: var(--accent); } }
 .mailwrap {
   display: inline-block;
   margin-top: 28px;
@@ -905,7 +938,7 @@ html:not(.js) .hero h1 .it {
 
 /* ----- Piè di pagina ----- */
 footer {
-  padding-block: 28px 56px;
+  padding-block: 28px calc(56px + var(--sa-b));
   border-top: 1px solid var(--d-line);
 }
 footer p { font: 400 14px/1.5 var(--f-body); color: var(--muted); }
@@ -1355,9 +1388,9 @@ html:not(.js) .sfoglia-tasti { display: none; }
    ========================================================================== */
 
 .popup {
-  width: min(680px, calc(100vw - 24px));
+  width: min(680px, calc(100vw - 24px - var(--sa-l) - var(--sa-r)));
   max-height: calc(100vh - 32px);
-  max-height: calc(100svh - 32px);
+  max-height: calc(100svh - 32px - var(--sa-t) - var(--sa-b));
   margin: auto;
   padding: 0;
   border: 0;
@@ -1431,7 +1464,7 @@ html:not(.js) .apri-btn, html.no-popup .apri-btn { display: none; }
 
 html.js:not(.no-popup) .popup-in {
   max-height: calc(100vh - 32px);
-  max-height: calc(100svh - 32px);
+  max-height: calc(100svh - 32px - var(--sa-t) - var(--sa-b));
   overflow: auto;
   overscroll-behavior: contain;
 }
@@ -1481,6 +1514,7 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 
 @media (min-width: 700px) {
   .cta > a { flex: 0 0 auto; }
+  .schede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   /* Barra dei tasti: cinque tasti in una riga, la lente è larga un quinto */
   .sfoglia-tasti { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .sfoglia-tasti::before { width: calc((100% - 10px) / 5); }
@@ -1494,9 +1528,33 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .fatti { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* iPad in verticale (744-859px): il profilo di Numerella sta accanto alla sua nota, con la stessa larghezza che ha su telefono (360px),
+   invece di una scheda larga 700px con tre tessere enormi. Sotto i 744px la scheda resta in colonna ma non oltre 520px. */
+.prof-sx { max-width: 520px; }
+@media (min-width: 744px) {
+  .prof-sx { max-width: none; }
+  .prof-corpo { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 32px 40px; align-items: center; }
+}
+
+/* iPad in verticale e telefoni in orizzontale (700-999px): le schede di «Per chi lavoro» sono larghe e basse, quindi a due colonne.
+   A sinistra tipo di cliente, titolo e pulsante; a destra le tre voci. Da 1000px tornano tre schede in colonna. */
+@media (min-width: 700px) and (max-width: 999px) {
+  .cliente {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: "tag voci" "titolo voci" "tasto voci";
+    column-gap: clamp(28px, 5vw, 52px);
+    align-items: start;
+  }
+  .cliente .tag { grid-area: tag; }
+  .cliente h3 { grid-area: titolo; }
+  .cliente .percorso { grid-area: voci; margin: 0; }
+  .cliente .apri-btn { grid-area: tasto; align-self: end; justify-self: start; margin-top: 28px; }
+}
+
 @media (min-width: 860px) {
   .sec-corpo { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
-  .schede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .banner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
   .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
 
@@ -1606,7 +1664,7 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .btn-p, .btn-o { transition: transform 0.5s var(--ease); }
   .btn-p:active, .btn-o:active { transform: scale(0.96); }
   .btn-p .fr, .btn-o .fr { transition: transform 0.5s var(--ease); }
-  .btn-p:hover .fr, .btn-o:hover .fr { transform: translate(3px, -3px); }
+  @media (hover: hover) { .btn-p:hover .fr, .btn-o:hover .fr { transform: translate(3px, -3px); } }
 
   /* Evidenziatore: con JavaScript ogni parola ha il suo tratto che si stende da sinistra (solo transform). Il testo non cambia colore. */
   .js .hl { padding: 0; margin: 0; background: none; }
@@ -1646,7 +1704,8 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   /* ----- Per chi lavoro, popup, prima e dopo ----- */
   /* Al passaggio del mouse (o, al tocco, quando la scheda è al centro) titolo ed etichetta scorrono di 8px */
   .cliente .tag, .cliente h3 { transition: transform 0.6s var(--ease); }
-  .cliente:hover .tag, .cliente.on .tag, .cliente:hover h3, .cliente.on h3 { transform: translateX(8px); }
+  .cliente.on .tag, .cliente.on h3 { transform: translateX(8px); }
+  @media (hover: hover) { .cliente:hover .tag, .cliente:hover h3 { transform: translateX(8px); } }
 
   /* Le tre voci di ogni scheda compaiono una dopo l'altra */
   .js .cliente .percorso li { opacity: 0; transform: translateY(10px); }

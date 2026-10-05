@@ -52,6 +52,9 @@
       return e;
     }
 
+    // iOS Safari applica lo stato :active (la pressione dei pulsanti) solo se la pagina ascolta il tocco: un ascoltatore vuoto basta
+    document.addEventListener('touchstart', function () {}, { passive: true });
+
     // Tutti i riquadri e le sezioni con fondo blu: lì luce e cursore sono beige (altrove sono blu)
     var BLU = '.sez-scura, dialog, .pannello, .banner, .card-blu, .commuta, .scheda-b, .cliente';
 
@@ -602,10 +605,17 @@
 
     var inAttesa = false;
     var ultimaBarra = [];
+    var fondoBlu = false;
     function aggiorna() {
       inAttesa = false;
       if (!misure.sezioni) return;
       var y = window.scrollY, vh = misure.vh;
+
+      // Colore di html: crema di base, blu quando il bordo basso dello schermo è dentro contatti e piè di pagina (le ultime due parti, blu).
+      // Si vede nel rimbalzo dello scroll su iPhone e iPad e, in Safari 26, nella tinta delle barre del browser.
+      var ultima = misure.sezioni[misure.sezioni.length - 1];
+      var blu = ultima ? (y + vh > ultima.top + 80) : false;
+      if (blu !== fondoBlu) { fondoBlu = blu; radice.classList.toggle('fondo-scuro', blu); }
 
       // Barra "storie": un segmento per sezione, si riempie mentre quella sezione passa a metà schermo
       misure.sezioni.forEach(function (s, i) {
