@@ -947,8 +947,6 @@ footer {
 }
 footer p { font: 400 14px/1.5 var(--f-body); color: var(--muted); }
 footer p + p { margin-top: 6px; }
-.foot-in { display: flex; align-items: center; gap: 16px; }
-.foot-logo { flex: none; width: 40px; height: 40px; }
 
 
 /* ==========================================================================
