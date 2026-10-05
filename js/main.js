@@ -494,6 +494,8 @@
           t.setAttribute('aria-selected', k === corrente ? 'true' : 'false');
           t.tabIndex = k === corrente ? 0 : -1;
         });
+        // Il CSS sposta la "lente" di vetro sotto il tasto scelto leggendo questo numero (data-a)
+        lista.setAttribute('data-a', corrente);
         if (conFocus) tasti[corrente].focus();
       }
 

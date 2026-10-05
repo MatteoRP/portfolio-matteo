@@ -5,7 +5,7 @@
 
    Struttura del file:
    1. Font (self-hosted) e fallback
-   2. Variabili e base
+   2. Variabili e base (compresi i materiali del vetro, "Liquid Glass")
    3. Componenti comuni (etichette, menu, pulsanti e bagliori, titoli)
    4. Sezioni, nell'ordine in cui compaiono nella pagina
    5. Caso studio (testata, profilo prima/dopo, post di esempio, approfondimenti a pagine)
@@ -133,7 +133,6 @@
   /* Palette: blu navy e crema. Sfondi con una sfumatura delicata (--*-g1/g2) e un alone (--*-hi).
      --key è il colore delle parole chiave nei titoli. */
   --d-bg: #1A2A63;
-  --d-surface: #223378;
   --d-fg: #F6F1E6;
   --d-muted: #CBD0E4;
   --d-line: rgba(246, 241, 230, 0.2);
@@ -147,7 +146,6 @@
   --d-g2: #1A2A63;
 
   --l-bg: #F7F2E8;
-  --l-surface: #EEE6D5;
   --l-fg: #1B2A5E;
   --l-muted: #46527F;
   --l-line: rgba(27, 42, 94, 0.16);
@@ -163,9 +161,41 @@
   --glow-d: 234, 223, 200;      /* luce su sfondo scuro: beige */
   --glow-l: 70, 100, 215;       /* luce su sfondo chiaro: blu */
 
+  /* ----- Vetro (Liquid Glass) -----
+     Un materiale traslucido con la luce sul bordo, usato su tutto il sito. Quattro regole:
+     1. lo sfocato vero (backdrop-filter) solo dove dietro c'è qualcosa di nitido: barra in alto, tendina del menu, popup, pillole sulla foto;
+     2. altrove il vetro è "dipinto": tinta trasparente + luce sul bordo + ombra morbida, senza sfocato (costa molto meno e dietro non c'è nulla da sfocare);
+     3. lo sfocato non si anima mai: si animano solo transform e opacità, come tutto il resto;
+     4. il testo sul vetro ha sempre il contrasto misurato sul rendering, anche dietro il punto più chiaro. */
+  --sfoca: blur(18px) saturate(1.7);
+  /* Luce sul bordo: un riflesso netto in alto e a sinistra, un'ombra sottile in basso, un filo di luce tutto intorno */
+  --bordo-l: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 1px 0 0 rgba(255, 255, 255, 0.45), inset 0 -1px 0 rgba(27, 42, 94, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  --bordo-d: inset 0 1px 0 rgba(255, 255, 255, 0.34), inset 1px 0 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  --ombra-l: 0 0 0 1px rgba(27, 42, 94, 0.06), 0 14px 32px -12px rgba(27, 42, 94, 0.3), 0 2px 6px rgba(27, 42, 94, 0.08);
+  --ombra-d: 0 20px 44px -16px rgba(3, 7, 34, 0.65), 0 3px 8px rgba(3, 7, 34, 0.25);
+  /* Tinte dei vetri con sfocato (e delle tessere). Con "riduci trasparenza" e dove manca backdrop-filter diventano opache: fine del foglio, sezione 9 */
+  --v-barra-a: rgba(255, 255, 255, 0.8);
+  --v-barra-b: rgba(251, 248, 240, 0.68);
+  --v-tendina-a: rgba(255, 255, 255, 0.88);
+  --v-tendina-b: rgba(251, 248, 240, 0.82);
+  --v-popup-a: rgba(28, 44, 116, 0.82);
+  --v-popup-b: rgba(20, 33, 92, 0.88);
+  --v-pillola-a: rgba(40, 58, 130, 0.8);
+  --v-pillola-b: rgba(22, 35, 92, 0.84);
+  --v-tessera: rgba(255, 255, 255, 0.04);
+  /* Macchie di colore dietro le sezioni (blu e beige, molto morbide): senza colore dietro un vetro non si vede.
+     Ogni macchia sta dentro una mattonella alta 1300px che si ripete in verticale, così non ci sono giunture. */
+  --macchie-l:
+    radial-gradient(320px 320px at 10% 20%, rgba(110, 130, 255, 0.2), transparent 70%),
+    radial-gradient(400px 400px at 90% 56%, rgba(232, 200, 140, 0.3), transparent 70%),
+    radial-gradient(300px 300px at 26% 82%, rgba(110, 130, 255, 0.12), transparent 70%);
+  --macchie-d:
+    radial-gradient(420px 420px at 86% 24%, rgba(var(--glow-l), 0.3), transparent 70%),
+    radial-gradient(340px 340px at 8% 50%, rgba(var(--glow-d), 0.07), transparent 70%),
+    radial-gradient(440px 440px at 74% 74%, rgba(var(--glow-l), 0.22), transparent 70%);
+
   /* Valori correnti (ruolo scuro): le sezioni chiare li ridefiniscono */
   --bg: var(--d-bg);
-  --surface: var(--d-surface);
   --fg: var(--d-fg);
   --muted: var(--d-muted);
   --line: var(--d-line);
@@ -174,6 +204,10 @@
   --accent-rgb: var(--d-rgb);
   --fg-rgb: var(--d-fg-rgb);
   --key: var(--d-key);
+  --vetro-a: rgba(255, 255, 255, 0.14);       /* velo di vetro: più luminoso in alto (a), più trasparente in basso (b) */
+  --vetro-b: rgba(255, 255, 255, 0.04);
+  --bordo: var(--bordo-d);
+  --ombra: var(--ombra-d);
 
   /* Font: prima il font vero, poi il suo fallback regolato, poi i generici */
   --f-body: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -196,7 +230,6 @@
 .sez-chiara,
 .nav {
   --bg: var(--l-bg);
-  --surface: var(--l-surface);
   --fg: var(--l-fg);
   --muted: var(--l-muted);
   --line: var(--l-line);
@@ -205,6 +238,10 @@
   --accent-rgb: var(--l-rgb);
   --fg-rgb: var(--l-fg-rgb);
   --key: var(--l-key);
+  --vetro-a: rgba(255, 255, 255, 0.62);
+  --vetro-b: rgba(255, 255, 255, 0.2);
+  --bordo: var(--bordo-l);
+  --ombra: var(--ombra-l);
   color-scheme: light;
 }
 /* Ruolo scuro, scritto per esteso: sezioni blu, popup, pannelli e banner blu anche quando stanno dentro una sezione crema. */
@@ -215,7 +252,6 @@ dialog,
 .card-blu,
 .commuta {
   --bg: var(--d-bg);
-  --surface: var(--d-surface);
   --fg: var(--d-fg);
   --muted: var(--d-muted);
   --line: var(--d-line);
@@ -224,10 +260,15 @@ dialog,
   --accent-rgb: var(--d-rgb);
   --fg-rgb: var(--d-fg-rgb);
   --key: var(--d-key);
+  --vetro-a: rgba(255, 255, 255, 0.14);
+  --vetro-b: rgba(255, 255, 255, 0.04);
+  --bordo: var(--bordo-d);
+  --ombra: var(--ombra-d);
   color-scheme: dark;
 }
 /* Sfumature di sfondo, molto delicate, dipinte su ::before (z-index -1) in ogni sezione:
-   così sotto il testo c'è sempre la luce del cursore (anch'essa a z-index -1, creata dopo), beige sullo scuro e blu sul chiaro. */
+   così sotto il testo c'è sempre la luce del cursore (anch'essa a z-index -1, creata dopo), beige sullo scuro e blu sul chiaro.
+   Ogni sfondo ha cinque strati: tre macchie di colore (per il vetro), un alone d'angolo e la sfumatura verticale. */
 section, footer { position: relative; overflow-x: clip; }   /* le luci e le schede che arrivano di lato non allargano mai la pagina (clip: non crea un contenitore di scorrimento) */
 .sez-chiara { color: var(--fg); }
 section.sez-chiara::before,
@@ -238,21 +279,27 @@ footer.sez-scura::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  /* le tre macchie si ripetono ogni 1300px; alone e sfumatura coprono tutta la sezione */
+  background-size: 100% 1300px, 100% 1300px, 100% 1300px, 100% 100%, 100% 100%;
+  background-repeat: repeat-y, repeat-y, repeat-y, no-repeat, no-repeat;
 }
 section.sez-chiara::before {
-  background:
+  background-image:
+    var(--macchie-l),
     radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
     linear-gradient(180deg, var(--l-g1), var(--l-g2));
 }
 section.sez-scura::before,
 footer.sez-scura::before {
-  background:
+  background-image:
+    var(--macchie-d),
     radial-gradient(90% 70% at var(--gx, 85%) var(--gy, 0%), var(--d-hi), transparent 70%),
     linear-gradient(180deg, var(--d-g1), var(--d-g2));
 }
 /* Hero e Chi sono sono vicine e tutte e due chiare: la seconda parte dal colore con cui finisce la prima, senza stacco */
 #chi-sono::before {
-  background:
+  background-image:
+    var(--macchie-l),
     radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
     linear-gradient(180deg, var(--l-g2), var(--l-g1));
 }
@@ -345,11 +392,24 @@ dt {
 .nav {
   position: relative;
   z-index: 30;
-  background: var(--bg);
   color: var(--fg);
-  border: 1px solid var(--line);
   border-radius: 24px;
-  box-shadow: 0 8px 28px rgba(27, 42, 94, 0.1);
+  box-shadow: var(--ombra-l);   /* l'ombra sta sulla barra, il vetro sul suo ::before */
+}
+/* Il vetro della barra: tinta chiara trasparente, sfocato e saturazione di ciò che scorre sotto, luce sul bordo.
+   Sta su ::before (non sulla barra) perché un elemento con backdrop-filter diventa la "radice" dello sfocato dei suoi figli:
+   la tendina del menu, che è un figlio della barra, non vedrebbe più la pagina dietro di sé. */
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--v-barra-a), var(--v-barra-b));
+  -webkit-backdrop-filter: var(--sfoca);
+  backdrop-filter: var(--sfoca);
+  box-shadow: var(--bordo-l);
 }
 html:not(.js) .nav { margin: 10px 10px 0; }
 .js .nav { position: fixed; top: 10px; left: max(10px, calc((100vw - 1240px) / 2)); right: max(10px, calc((100vw - 1240px) / 2)); }
@@ -419,10 +479,11 @@ html:not(.js) .nav { margin: 10px 10px 0; }
     position: absolute;
     left: 0; right: 0; top: calc(100% + 8px);
     padding: 8px var(--gutter) 24px;
-    background: var(--bg);
-    border: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--v-tendina-a), var(--v-tendina-b));
+    -webkit-backdrop-filter: var(--sfoca);
+    backdrop-filter: var(--sfoca);
     border-radius: 24px;
-    box-shadow: 0 12px 32px rgba(27, 42, 94, 0.12);
+    box-shadow: var(--bordo-l), var(--ombra-l);   /* tendina di vetro: sfoca la pagina che le scorre dietro */
     visibility: hidden;
     opacity: 0;
     transform: translateY(-8px);
@@ -455,36 +516,50 @@ html:not(.js) .nav { margin: 10px 10px 0; }
 .seg { flex: 1; height: 3px; overflow: hidden; border-radius: 999px; background: rgba(var(--fg-rgb), 0.22); }
 .seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
 
+/* Pulsante vuoto: vetro chiaro (velo trasparente, riflesso in alto) con un contorno sottile.
+   Al passaggio si riempie del colore opposto a quello che ha intorno. */
 .btn-o {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
   padding: 0 20px;
+  border: 0;
   border-radius: 99px;
-  border: 1px solid var(--fg);
-  background: transparent;
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: inset 0 0 0 1px rgba(var(--fg-rgb), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 8px 18px -10px rgba(var(--fg-rgb), 0.4);
   color: var(--fg);
   font: 500 16px/1 var(--f-body);
   text-decoration: none;
 }
-.nav-cta { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+/* "Scrivimi" nella barra: vetro colorato, come il pulsante principale */
+.nav-cta {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 58%), var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 8px 16px -8px rgba(var(--accent-rgb), 0.6);
+  color: var(--accent-ink);
+}
 .btn-o:hover,
 .btn-o:active { background: var(--fg); color: var(--bg); }
-/* Pulsante principale: pieno, nel colore d'accento */
+/* Pulsante principale: vetro colorato (tinta d'accento) con il riflesso in alto.
+   Al passaggio diventa vetro chiaro con il contorno d'accento. */
 .btn-p {
   display: inline-flex;
   align-items: center;
   min-height: 52px;
   padding: 0 28px;
+  border: 0;
   border-radius: 99px;
-  border: 1px solid var(--accent);
-  background: var(--accent);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 58%), var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 12px 24px -10px rgba(var(--accent-rgb), 0.65);
   color: var(--accent-ink);
   font: 500 16px/1.3 var(--f-body);
   text-decoration: none;
 }
 .btn-p:hover,
-.btn-p:active { background: transparent; color: var(--accent); }
+.btn-p:active {
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: inset 0 0 0 1px var(--accent), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: var(--accent);
+}
 
 /* Freccia ↗ disegnata con SVG (il font latin non contiene la freccia) */
 .fr { width: 0.9em; height: 0.9em; margin-left: 0.55em; flex: none; vertical-align: -0.05em; }
@@ -606,9 +681,9 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   align-items: center;
   gap: 10px;
   padding: 10px 18px 10px 14px;
-  border: 1px solid var(--line);
   border-radius: 99px;
-  background: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: var(--bordo), var(--ombra);
   font: 500 16px/1 var(--f-body);
   color: var(--fg);
 }
@@ -660,7 +735,7 @@ html:not(.js) .hero h1 .it {
   object-fit: cover;
   filter: grayscale(1) contrast(1.05);
 }
-/* Pillole blu attorno alla foto: compaiono una volta e restano ferme */
+/* Pillole di vetro scuro attorno alla foto: sfocano la foto che hanno dietro (è il posto dove lo sfocato si vede di più). Compaiono una volta e restano ferme. */
 .pillola {
   position: absolute;
   z-index: 2;
@@ -670,7 +745,10 @@ html:not(.js) .hero h1 .it {
   margin: 0;
   padding: 11px 18px;
   border-radius: 99px;
-  background: var(--d-bg);
+  background: linear-gradient(180deg, var(--v-pillola-a), var(--v-pillola-b));
+  -webkit-backdrop-filter: var(--sfoca);
+  backdrop-filter: var(--sfoca);
+  box-shadow: var(--bordo-d), 0 12px 24px -10px rgba(3, 7, 34, 0.55);
   color: var(--d-fg);
   font: 500 16px/1 var(--f-body);
   white-space: nowrap;
@@ -682,8 +760,10 @@ html:not(.js) .hero h1 .it {
 /* ----- Chi sono: titolo a sinistra, nota a destra (composizione .sec-corpo; il ritratto sta nella hero) ----- */
 
 /* ----- Riquadri blu (schede, banner, pannelli, testata del caso studio) -----
-   Nessun bordo: le schede sulle sezioni blu si staccano con un velo crema trasparente, quelle sul crema con il loro blu.
-   Lo sfondo sta su ::before (z-index -1), così la luce del cursore, che sta sopra gli sfondi ma sotto il testo, si vede anche qui. */
+   Vetro dipinto, senza sfocato: dietro ci sono solo sfumature morbide. Le schede sulle sezioni blu sono un velo crema trasparente,
+   quelle sul crema un blu quasi pieno (su crema un vetro scuro trasparente non reggerebbe il contrasto del testo).
+   Il bordo non è una linea: è la luce sul bordo del vetro (--bordo-d) più un'ombra morbida.
+   Tutto sta su ::before (z-index -1), così la luce del cursore, che sta sopra gli sfondi ma sotto il testo, si vede anche qui. */
 .scheda-b,
 .banner,
 .pannello,
@@ -697,7 +777,11 @@ html:not(.js) .hero h1 .it {
   z-index: -1;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%), rgba(var(--d-fg-rgb), 0.07);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 34%),
+    radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%),
+    rgba(var(--d-fg-rgb), 0.05);
+  box-shadow: var(--bordo-d), var(--ombra-d);
 }
 .banner::before,
 .pannello::before,
@@ -708,7 +792,11 @@ html:not(.js) .hero h1 .it {
   z-index: -1;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(90% 120% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 62%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 36%),
+    radial-gradient(90% 120% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 62%),
+    linear-gradient(180deg, rgba(36, 53, 128, 0.95), rgba(26, 42, 99, 0.96));
+  box-shadow: var(--bordo-d), 0 24px 54px -20px rgba(27, 42, 94, 0.55), 0 4px 10px rgba(27, 42, 94, 0.14);
 }
 
 /* ----- Cosa risolvo: due schede blu sopra lo sfondo ----- */
@@ -738,7 +826,8 @@ html:not(.js) .hero h1 .it {
   margin-top: clamp(48px, 7vw, 80px);
   padding: clamp(20px, 3vw, 32px);
   border-radius: 26px;
-  background: rgba(255, 255, 255, 0.6);
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: var(--bordo), var(--ombra);
 }
 .num {
   position: relative;
@@ -797,7 +886,7 @@ html:not(.js) .hero h1 .it {
 .big { font-size: clamp(56px, 15vw, 200px); line-height: 0.92; }
 #contatti .lead { margin-top: 28px; }
 /* L'email è un link: apre direttamente il programma di posta, con oggetto e testo già pronti.
-   Sta dentro una pillola con il bordo sottile, come i pulsanti. */
+   Sta dentro una pillola di vetro con il contorno sottile, come i pulsanti. */
 .mail,
 .indirizzo {
   font: 700 var(--h-m)/1.3 var(--f-body);
@@ -806,8 +895,20 @@ html:not(.js) .hero h1 .it {
 }
 .mail { display: inline-block; margin-top: 28px; color: var(--fg); text-decoration: none; }
 .mail:hover { color: var(--accent); }
-.mailwrap { display: inline-block; margin-top: 28px; padding: 12px 26px; border: 1px solid var(--accent); border-radius: 999px; }
+.mailwrap {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4), var(--ombra);
+}
 .mailwrap .mail { margin: 0; }
+/* Il focus da tastiera cerchia tutta la pillola (arrotondata), non il solo testo; dove :has() non esiste resta l'anello standard sul link */
+@supports selector(:has(a)) {
+  .mailwrap:has(.mail:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .mailwrap .mail:focus-visible { outline: none; }
+}
 .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
 
 /* ----- Piè di pagina ----- */
@@ -842,21 +943,13 @@ footer p + p { margin-top: 6px; }
   display: inline-block;
   padding: 10px 16px;
   border-radius: 99px;
-  border: 1px solid var(--accent);
+  background: rgba(var(--accent-rgb), 0.12);
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.3);   /* il contorno resta ben visibile: il progetto è dimostrativo */
   font: 500 14px/1.4 var(--f-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
 }
-
-/* Scheda di Numerella: quattro voci con filetto sopra */
-.scheda {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  margin-top: 24px;
-}
-.scheda > div { padding: 24px 24px 28px 0; border-top: 1px solid var(--line); }
-.scheda dd { margin-top: 10px; max-width: 30em; }
 
 .elenco-semplice { margin-top: 24px; max-width: 32em; }
 .elenco-semplice li {
@@ -882,28 +975,43 @@ footer p + p { margin-top: 6px; }
    Senza JavaScript sono uno sotto l'altro. */
 .prof { display: grid; gap: 28px; margin-top: clamp(40px, 6vw, 72px); }
 
-/* Interruttore: pillola blu con due tasti, quello attivo è beige */
+/* Interruttore: capsula di vetro scuro con due tasti; sotto quello scelto scivola la "lente", un pezzo di vetro chiaro (si muove solo con transform) */
 .commuta {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
-  gap: 4px;
   width: max-content;
   max-width: 100%;
   padding: 5px;
   border-radius: 99px;
-  background: var(--bg);
+  background: linear-gradient(180deg, rgba(34, 50, 118, 0.94), rgba(20, 32, 84, 0.96));
+  box-shadow: var(--bordo-d), 0 14px 30px -14px rgba(27, 42, 94, 0.6);
 }
+.commuta::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: -1;
+  width: 104px;
+  height: 44px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), inset 0 -1px 0 rgba(0, 0, 0, 0.14), 0 6px 14px -6px rgba(3, 7, 34, 0.6);
+}
+.prof[data-v="dopo"] .commuta::before { transform: translateX(100%); }
 .commuta button {
-  min-width: 96px;
+  width: 104px;
   min-height: 44px;
-  padding: 0 22px;
+  padding: 0;
   border: 0;
   border-radius: 99px;
   background: transparent;
-  color: var(--fg);
+  color: var(--muted);
   font: 500 16px/1 var(--f-body);
   cursor: pointer;
 }
-.commuta button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.commuta button[aria-pressed="true"] { color: var(--fg); }
 html:not(.js) .commuta { display: none; }   /* senza JavaScript non serve: i due stati sono già entrambi in pagina */
 
 .prof-corpo { display: grid; gap: 32px; align-items: start; }
@@ -959,7 +1067,7 @@ html:not(.js) .prof-strato { grid-area: auto; }
   font: 500 14px/1.3 var(--f-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--fg);   /* crema, non beige: il chip sta nell'angolo più chiaro della scheda blu */
 }
 .bio { margin-top: 18px; font-size: 16px; line-height: 1.5; color: var(--fg); }
 .bio-fioca { color: var(--muted); }
@@ -975,6 +1083,7 @@ html:not(.js) .prof-strato { grid-area: auto; }
   height: 48px;
   border-radius: 50%;
   background: rgba(var(--fg-rgb), 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   font: 700 16px/1 var(--f-body);
   font-style: normal;
   color: var(--fg);
@@ -993,20 +1102,25 @@ html:not(.js) .prof-strato { grid-area: auto; }
   padding: 10px;
   border-radius: 14px;
   background: rgba(var(--fg-rgb), 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);   /* luce sul bordo, come tutto il vetro */
   color: var(--fg);
   font: 700 16px/1.08 var(--f-body);
   letter-spacing: -0.02em;
   text-decoration: none;
   overflow-wrap: anywhere;
 }
-.tassello-chiaro { background: var(--accent); color: var(--accent-ink); }
+.tassello-chiaro {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 55%), var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  color: var(--accent-ink);
+}
 .tassello-alto { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 .tassello .glifo { flex: none; width: 20px; height: 20px; color: inherit; }
 .tassello .pil { width: 24px; height: 24px; }
 /* Sulle tessere beige (post 1 e 3) i pallini dei pilastri si invertono: scuro su chiaro */
 .tassello-chiaro .pil.p1 { background: var(--accent-ink); color: var(--accent); }
 .tassello-chiaro .pil.p3 { background: rgba(26, 42, 99, 0.28); color: var(--accent-ink); }
-.tassello-vuoto { background: transparent; color: var(--muted); }   /* solo in calendario: senza fondo e non si apre */
+.tassello-vuoto { background: transparent; box-shadow: none; color: var(--muted); }   /* solo in calendario: senza fondo e non si apre */
 .tassello-vuoto .pil { background: rgba(var(--fg-rgb), 0.16); border-color: transparent; color: var(--muted); }   /* anche il pallino del pilastro è smorzato */
 .tassello-fitto { justify-content: flex-start; gap: 5px; }
 .tassello-fitto i { display: block; height: 4px; border-radius: 2px; background: rgba(var(--fg-rgb), 0.3); }
@@ -1033,9 +1147,14 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
   padding: 16px 18px 18px;
   border-radius: 18px;
   background: rgba(9, 14, 40, 0.3);   /* velo scuro: il testo chiaro resta sopra 4.5:1 anche dove l'alone blu del popup è al massimo */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   color: var(--fg);
 }
-.copertina-chiara { background: var(--accent); color: var(--accent-ink); }
+.copertina-chiara {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 55%), var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: var(--accent-ink);
+}
 .copertina-formato,
 .copertina-piede { font: 500 14px/1.3 var(--f-body); letter-spacing: 0.1em; text-transform: uppercase; }
 .copertina-formato { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); }
@@ -1049,24 +1168,17 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
 .didascalia { max-width: 34em; font-size: 16px; line-height: 1.55; color: var(--fg); }
 .didascalia strong { font-weight: 500; }
 
-/* ----- Strategia ----- */
-.righe > div {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 10px 40px;
-  padding-block: 24px 28px;
-  border-top: 1px solid var(--line);
-}
-.righe > div:last-child { border-bottom: 1px solid var(--line); }
-.righe dd { max-width: 34em; }
+/* ----- Strategia: i quattro pilastri come pillole di vetro ----- */
 .pilastri { display: flex; flex-wrap: wrap; gap: 8px; }
 .pilastri li {
   display: inline-flex;
   align-items: baseline;
   gap: 10px;
   padding: 8px 16px;
-  border: 1px solid var(--line);
   border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  color: var(--fg);
   font-size: 16px;
   line-height: 1.4;
 }
@@ -1089,8 +1201,8 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
   font: 700 14px/1 var(--f-body);
 }
 .pil.p1 { background: var(--accent); color: var(--accent-ink); }
-.pil.p2 { background: rgba(var(--accent-rgb), 0.26); color: var(--fg); }
-.pil.p3 { background: rgba(var(--accent-rgb), 0.14); color: var(--fg); }
+.pil.p2 { background: rgba(var(--accent-rgb), 0.18); color: var(--fg); }
+.pil.p3 { background: rgba(var(--accent-rgb), 0.1); color: var(--fg); }
 .pil.p4 { border: 1.5px solid var(--accent); color: var(--fg); }
 .striscia-scorri {
   margin-top: 14px;
@@ -1114,7 +1226,6 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
   width: 11.5rem;
   padding: 16px;
   border-radius: 16px;
-  background: var(--surface);
   scroll-snap-align: start;
   font-size: 16px;
   line-height: 1.35;
@@ -1124,38 +1235,111 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
 .cella .formato { grid-area: formato; align-self: center; font: 500 14px/1.2 var(--f-body); letter-spacing: 0.04em; color: var(--accent); }
 .cella .tema { grid-area: tema; font-weight: 500; color: var(--fg); }
 .cella .pil { grid-area: pil; justify-self: start; align-self: end; margin-top: 6px; }
-.cella-vuota { display: flex; flex-direction: column; gap: 8px; width: 6.5rem; background: transparent; border: 1px dashed var(--line); }
+.cella-vuota { display: flex; flex-direction: column; gap: 8px; width: 6.5rem; border: 1px dashed var(--line); }   /* giorno senza uscita: tessera fantasma, senza vetro */
 .cella-vuota .riposo { font-size: 14px; line-height: 1.35; color: var(--muted); }
 
-/* ----- Approfondimenti: pagine che scorrono di lato ----- */
+/* ----- Approfondimenti: scena "aurora" di vetro -----
+   Una grafica a parte rispetto al resto del sito: fondo blu profondo con macchie di luce morbide, una barra di vetro con la lente che scivola
+   sul tasto scelto e le voci come tessere di vetro (niente linee di separazione). Le pagine scorrono di lato come prima. */
 .approfondimenti { margin-top: clamp(56px, 8vw, 110px); }
-/* Pannello blu degli approfondimenti, con la stessa luce dei popup */
 .pannello {
   padding: clamp(24px, 4vw, 48px);
   border-radius: 28px;
   color: var(--fg);
 }
+.approfondimenti.pannello {
+  padding: clamp(20px, 4vw, 48px) clamp(14px, 4vw, 48px) clamp(24px, 4vw, 48px);
+  border-radius: 32px;
+}
+/* La scena: blu profondo e tre macchie (lavanda, cobalto, beige). Le macchie sono ancorate in alto o in basso, così non saltano quando cambia l'altezza della pagina. */
+.approfondimenti .label { color: var(--fg); }
+.approfondimenti::before {
+  background:
+    radial-gradient(460px 340px at 4% 0, rgba(143, 166, 240, 0.26), transparent 70%),
+    radial-gradient(560px 420px at 100% 280px, rgba(var(--glow-l), 0.38), transparent 70%),
+    radial-gradient(520px 380px at 14% calc(100% - 40px), rgba(var(--glow-d), 0.13), transparent 70%),
+    linear-gradient(165deg, #1C2E70, #121C4D);
+}
+/* Barra dei tasti: su telefono tre per riga (cinque tasti, la seconda riga è centrata), da 700px tutti in una riga.
+   I tasti sono tutti uguali, così la lente è un pezzo di vetro di misura fissa e si muove solo con transform. */
+.sfoglia-tasti {
+  --c: 0;   /* colonna della lente, in larghezze di tasto */
+  --r: 0;   /* riga della lente */
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 44px;
+  width: 100%;
+  max-width: 660px;
+  margin-top: 20px;
+  padding: 5px;
+  border-radius: 27px;
+  background: linear-gradient(180deg, rgba(8, 14, 48, 0.55), rgba(8, 14, 48, 0.38));
+  box-shadow: var(--bordo-d), inset 0 10px 20px -12px rgba(0, 0, 0, 0.35);
+}
+.sfoglia-tasti::before {   /* la lente */
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: -1;
+  width: calc((100% - 10px) / 3);
+  height: 44px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.1));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), inset 0 -1px 0 rgba(0, 0, 0, 0.14), 0 6px 14px -6px rgba(3, 7, 34, 0.6);
+  transform: translate(calc(var(--c) * 100%), calc(var(--r) * 100%));
+}
+/* Dove sta la lente: JavaScript scrive il numero del tasto scelto in data-a */
+.sfoglia-tasti[data-a="1"] { --c: 1; }
+.sfoglia-tasti[data-a="2"] { --c: 2; }
+.sfoglia-tasti[data-a="3"] { --c: 0.5; --r: 1; }
+.sfoglia-tasti[data-a="4"] { --c: 1.5; --r: 1; }
+.sfoglia-tasto {
+  grid-column: span 2;
+  min-height: 44px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--muted);
+  font: 500 14px/1 var(--f-body);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.sfoglia-tasto:nth-child(4) { grid-column: 2 / span 2; }
+.sfoglia-tasto:nth-child(5) { grid-column: 4 / span 2; }
+.sfoglia-tasto[aria-selected="true"] { color: var(--fg); }
+.sfoglia-tasto:focus-visible { outline-offset: -4px; }
+html:not(.js) .sfoglia-tasti { display: none; }
 /* Le pagine: con JavaScript i tasti scelgono quale vedere (classe "on") e le altre non occupano spazio (display: none),
    così il pannello ha l'altezza della pagina visibile e non resta vuoto sotto le pagine corte.
    Senza JavaScript non ci sono tasti e le pagine sono una sotto l'altra. */
-.sfoglia-tasti { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
-.sfoglia-tasto {
-  flex: 1 1 auto;   /* su telefono i tasti riempiono la riga (si sistemano in due righe ordinate) */
-  min-height: 44px;
-  padding: 0 14px;
-  border: 0;
-  border-radius: 99px;
-  background: rgba(var(--fg-rgb), 0.1);
-  color: var(--fg);
-  font: 500 16px/1 var(--f-body);
-  cursor: pointer;
-}
-.sfoglia-tasto[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
-html:not(.js) .sfoglia-tasti { display: none; }
-.sfoglia-pagine { position: relative; display: grid; gap: 56px; margin-top: 32px; overflow: clip; }   /* clip: la pagina che scorre non esce dal pannello */
+.sfoglia-pagine { position: relative; display: grid; gap: 56px; margin-top: 32px; overflow-x: clip; }   /* clip solo in orizzontale: la pagina che scorre non esce dal pannello, le ombre in basso non si tagliano */
 .sfoglia-pagina { min-width: 0; }
 .js .sfoglia-pagina { display: none; }
 .js .sfoglia-pagina.on { display: block; }
+
+/* Tessere di vetro: le voci di Scheda, Strategia, Obiettivi e Altri clienti (e i giorni del calendario).
+   Vetro smerigliato dipinto: più chiaro dello sfondo, con un velo di luce che sfuma verso il basso e la luce sul bordo.
+   Non c'è sfocato: dietro ci sono solo macchie morbide, e così il colore dello sfondo cambia da una tessera all'altra come attraverso un vetro vero. */
+.tessere { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.tessere > div { position: relative; padding: 22px; border-radius: 22px; }
+.tessere > div::before,
+.cella:not(.cella-vuota)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)),
+    var(--v-tessera);
+  box-shadow: var(--bordo-d);
+}
+.tessere > div::before { box-shadow: var(--bordo-d), 0 14px 30px -14px rgba(3, 7, 34, 0.6); }
 /* Segno "+" disegnato con due linee */
 .piu { position: relative; flex: none; }
 .piu::before, .piu::after {
@@ -1184,14 +1368,17 @@ html:not(.js) .sfoglia-tasti { display: none; }
   padding: 0;
   border: 0;
   border-radius: 28px;
-  background-color: var(--d-bg);
-  background-image: radial-gradient(90% 60% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
-  box-shadow: 0 0 90px rgba(var(--glow-l), 0.35);
+  /* Vetro scuro: tinta blu trasparente che sfoca la pagina oscurata dietro, alone azzurro in alto a destra, luce sul bordo */
+  background-color: transparent;
+  background-image: radial-gradient(90% 60% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--v-popup-a), var(--v-popup-b));
+  -webkit-backdrop-filter: var(--sfoca);
+  backdrop-filter: var(--sfoca);
+  box-shadow: var(--bordo-d), 0 0 90px rgba(var(--glow-l), 0.3), 0 30px 70px -20px rgba(3, 7, 34, 0.6);
   color: var(--fg);
   overflow: hidden;           /* lo scorrimento sta in .popup-in */
   overscroll-behavior: contain;
 }
-.popup::backdrop { background: rgba(8, 12, 32, 0.6); }
+.popup::backdrop { background: rgba(8, 12, 32, 0.52); }
 .popup-in { position: relative; z-index: 1; padding: 0 clamp(22px, 5vw, 52px) clamp(28px, 5vw, 52px); }
 /* Stesso testo dei popup anche nelle pagine degli approfondimenti (.sfoglia-pagina) */
 .popup-in > h3, .sfoglia-pagina > h3 { margin-top: 10px; max-width: 14em; }
@@ -1202,9 +1389,6 @@ html:not(.js) .sfoglia-tasti { display: none; }
 .popup-in dt, .sfoglia-pagina dt { margin-top: 20px; color: var(--accent); }
 .popup-in dt:first-child, .sfoglia-pagina dt:first-child { margin-top: 0; }
 .popup-in dd, .sfoglia-pagina dd { margin-top: 6px; max-width: 34em; color: var(--muted); font-size: 16px; }
-.sfoglia-pagina .corpo > * + * { margin-top: 14px; }
-.sfoglia-pagina .corpo > * + h4 { margin-top: 28px; }
-.sfoglia-pagina .corpo > h4 + p { margin-top: 8px; }
 .sfoglia-pagina .calendario-caso { margin-top: 28px; }
 .chiudi {
   position: sticky;
@@ -1219,7 +1403,10 @@ html:not(.js) .sfoglia-tasti { display: none; }
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--bg);
+  background: rgba(34, 51, 120, 0.82);   /* abbastanza pieno da restare leggibile anche dove lo sfocato non c'è */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);           /* sfoca il testo che scorre sotto la X */
+  box-shadow: var(--bordo-d), 0 6px 14px -6px rgba(3, 7, 34, 0.6);
   color: var(--fg);
   cursor: pointer;
 }
@@ -1233,8 +1420,13 @@ html:not(.js) .popup, html.no-popup .popup {
   width: auto;
   max-height: none;
   margin: 24px 0 0;
+  /* senza JavaScript il popup è un riquadro in pagina, pieno (niente vetro) e con il bordo che lo stacca dallo sfondo */
+  background-color: var(--d-bg);
+  background-image: radial-gradient(90% 60% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   box-shadow: none;
-  border: 1px solid var(--line);   /* senza JavaScript il popup è un riquadro in pagina: qui il bordo serve a staccarlo dallo sfondo */
+  border: 1px solid var(--line);
 }
 html:not(.js) .popup .chiudi, html.no-popup .popup .chiudi,
 html:not(.js) .apri-btn, html.no-popup .apri-btn { display: none; }
@@ -1271,6 +1463,7 @@ html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
   padding: 22px;
   border-radius: 20px;
   background: rgba(var(--fg-rgb), 0.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.04);   /* dentro il popup (che è già vetro) niente sfocato: solo luce sul bordo */
 }
 .blocco h4 { margin: 0; }
 .blocco p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--fg); }
@@ -1294,8 +1487,15 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 
 @media (min-width: 700px) {
   .cta > a { flex: 0 0 auto; }
-  .sfoglia-tasti { gap: 8px; }
-  .sfoglia-tasto { flex: 0 0 auto; padding: 0 20px; }
+  /* Barra dei tasti: cinque tasti in una riga, la lente è larga un quinto */
+  .sfoglia-tasti { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .sfoglia-tasti::before { width: calc((100% - 10px) / 5); }
+  .sfoglia-tasto,
+  .sfoglia-tasto:nth-child(4),
+  .sfoglia-tasto:nth-child(5) { grid-column: auto; padding: 0 12px; font-size: 16px; }
+  .sfoglia-tasti[data-a="3"] { --c: 3; --r: 0; }
+  .sfoglia-tasti[data-a="4"] { --c: 4; --r: 0; }
+  .tessere { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fatti { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -1311,8 +1511,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .schede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .banner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
   .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
-  .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
-  .righe > div { grid-template-columns: 12rem minmax(0, 1fr); }
 
   /* Prima e dopo: scheda a sinistra, note a destra */
   .prof-corpo { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: center; }
@@ -1407,6 +1605,10 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .js.go .hero .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 55ms + 180ms); }
   /* Titoli di sezione: le parole salgono dalla maschera quando il titolo entra nello schermo */
   .js .tit.in .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 50ms); }
+
+  /* Lente dell'interruttore e della barra degli approfondimenti: scivola da un tasto all'altro (solo transform) */
+  .commuta::before,
+  .sfoglia-tasti::before { transition: transform 0.6s var(--ease); }
 
   /* Pulsanti: la freccia scatta in avanti, la pressione schiaccia un poco (solo transform) */
   .btn-p, .btn-o { transition: transform 0.5s var(--ease); }
@@ -1555,3 +1757,32 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   }
 }
 @media (prefers-reduced-motion: reduce) { .lampo, .luce-b { display: none; } }
+
+/* Vetro opaco: dove il browser non sa sfocare (backdrop-filter) e quando l'utente chiede meno trasparenza o più contrasto,
+   le tinte del vetro diventano piene e lo sfocato sparisce. Il sito resta uguale, solo senza trasparenze.
+   (prefers-reduced-transparency è ancora poco diffuso: per ora funziona solo in alcuni browser, gli altri leggono prefers-contrast.) */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root {
+    --sfoca: none;
+    --v-barra-a: #FBF8F0; --v-barra-b: #F7F2E8;
+    --v-tendina-a: #FBF8F0; --v-tendina-b: #F7F2E8;
+    --v-popup-a: #243580; --v-popup-b: #1A2A63;
+    --v-pillola-a: #243580; --v-pillola-b: #1A2A63;
+    --v-tessera: rgba(14, 24, 72, 0.92);
+  }
+  .chiudi { -webkit-backdrop-filter: none; backdrop-filter: none; background: #223378; }
+}
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  :root {
+    --v-barra-a: #FBF8F0; --v-barra-b: #F7F2E8;
+    --v-tendina-a: #FBF8F0; --v-tendina-b: #F7F2E8;
+    --v-popup-a: #243580; --v-popup-b: #1A2A63;
+    --v-pillola-a: #243580; --v-pillola-b: #1A2A63;
+  }
+}
+
+/* Colori forzati (alto contrasto di Windows): le luci sul bordo spariscono, quindi i tasti e le schede scelte ritrovano un contorno vero */
+@media (forced-colors: active) {
+  .btn-p, .btn-o, .mailwrap, .chiudi, .commuta, .sfoglia-tasti { border: 1px solid ButtonText; }
+  .commuta button[aria-pressed="true"], .sfoglia-tasto[aria-selected="true"] { border: 1px solid Highlight; }
+}
