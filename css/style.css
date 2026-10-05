@@ -563,17 +563,6 @@ section { padding-block: clamp(80px, 12vw, 160px); }
 .sec-nota { display: grid; gap: 22px; }
 .sec-nota .muted { max-width: 34em; }
 
-/* Link di testo con sottolineatura beige */
-.link-testo {
-  display: inline-block;
-  padding-block: 10px;
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.3em;
-}
-.link-testo:hover { color: var(--accent); }
-
 /* Testo solo per screen reader: nascosto alla vista, ma letto */
 .sr {
   position: absolute;
@@ -631,7 +620,11 @@ section { padding-block: clamp(80px, 12vw, 160px); }
   max-width: 15em;
 }
 .hero-lead { margin-top: clamp(20px, 3vw, 28px); color: var(--fg); }
-.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 28px; }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
+/* Su telefono i due pulsanti della hero (principale e "caso studio") occupano tutta la larghezza, uno sotto l'altro, alti uguali:
+   affiancati non ci starebbero (le due scritte servono circa 520px, il telefono ne dà 358). Da 700px stanno in riga. */
+.cta > a { flex: 1 1 100%; justify-content: center; }
+.cta .btn-o { min-height: 52px; }
 /* Evidenziatore, come un pennarello: un tratto tenue sotto la parte bassa del testo. Il colore del testo non cambia. */
 .hl {
   padding: 0 0.12em;
@@ -667,8 +660,8 @@ html:not(.js) .hero h1 .it {
   object-fit: cover;
   filter: grayscale(1) contrast(1.05);
 }
-/* Schede "pop-up" attorno alla foto: pillole blu, compaiono una volta e restano ferme */
-.pop {
+/* Pillole blu attorno alla foto: compaiono una volta e restano ferme */
+.pillola {
   position: absolute;
   z-index: 2;
   display: inline-flex;
@@ -682,10 +675,9 @@ html:not(.js) .hero h1 .it {
   font: 500 16px/1 var(--f-body);
   white-space: nowrap;
 }
-.pop b { font-weight: 500; color: var(--d-accent); }
-.pop-1 { top: 10%; left: -2%; }
-.pop-2 { top: 42%; right: -2%; --n: 1; }
-.pop-3 { bottom: 14%; left: -2%; --n: 2; }
+.pillola-1 { top: 10%; left: -2%; }
+.pillola-2 { top: 42%; right: -2%; --n: 1; }
+.pillola-3 { bottom: 14%; left: -2%; --n: 2; }
 
 /* ----- Chi sono: titolo a sinistra, nota a destra (composizione .sec-corpo; il ritratto sta nella hero) ----- */
 
@@ -872,7 +864,6 @@ footer p + p { margin-top: 6px; }
   padding-top: clamp(28px, 4vw, 48px);
   border-top: 1px solid var(--line);
 }
-.strategia h3 { font-size: var(--h-l); line-height: 1; }
 
 .elenco-semplice { margin-top: 24px; max-width: 32em; }
 .elenco-semplice li {
@@ -1019,11 +1010,9 @@ html:not(.js) .prof-strato { grid-area: auto; }
 .tassello-alto { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 .tassello .glifo { flex: none; width: 20px; height: 20px; color: inherit; }
 .tassello .pil { width: 24px; height: 24px; }
-/* Sulle tessere beige i pallini dei pilastri si invertono (scuro su chiaro) */
+/* Sulle tessere beige (post 1 e 3) i pallini dei pilastri si invertono: scuro su chiaro */
 .tassello-chiaro .pil.p1 { background: var(--accent-ink); color: var(--accent); }
-.tassello-chiaro .pil.p2 { background: rgba(26, 42, 99, 0.62); color: var(--accent); }
 .tassello-chiaro .pil.p3 { background: rgba(26, 42, 99, 0.28); color: var(--accent-ink); }
-.tassello-chiaro .pil.p4 { background: transparent; border-color: var(--accent-ink); color: var(--accent-ink); }
 .tassello-vuoto { background: transparent; color: var(--muted); }   /* solo in calendario: senza fondo e non si apre */
 .tassello-vuoto .pil { background: rgba(var(--fg-rgb), 0.16); border-color: transparent; color: var(--muted); }   /* anche il pallino del pilastro è smorzato */
 .tassello-fitto { justify-content: flex-start; gap: 5px; }
@@ -1315,6 +1304,7 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
    ========================================================================== */
 
 @media (min-width: 700px) {
+  .cta > a { flex: 0 0 auto; }
   .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fatti { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -1323,9 +1313,9 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .sec-corpo { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
   .hero-in { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 48px; }
   .ritratto { margin-inline: 0; max-width: 400px; align-self: center; }
-  .pop-1 { left: -4%; }
-  .pop-2 { right: -10%; }
-  .pop-3 { left: -8%; }
+  .pillola-1 { left: -4%; }
+  .pillola-2 { right: -10%; }
+  .pillola-3 { left: -8%; }
   .hero { padding-bottom: clamp(48px, 6vw, 88px); }
   .schede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .banner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
@@ -1358,7 +1348,7 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
    8. MOVIMENTO
    Regole (le stesse di CLAUDE.md, "Sistema di movimento"):
    - un solo easing, var(--ease);
-   - si animano solo transform e opacity (eccezione: stroke-dashoffset per le linee a mano);
+   - si animano solo transform e opacity (eccezione: stroke-dashoffset per l'anello dell'avatar);
    - gli stati iniziali nascosti esistono solo sotto ".js" e solo se l'utente non ha chiesto
      di ridurre il movimento: senza JavaScript o con "riduci movimento" è tutto già al suo posto.
    ========================================================================== */
@@ -1433,25 +1423,8 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .btn-p:hover .fr, .btn-o:hover .fr { transform: translate(3px, -3px); }
 
   /* Schede attorno alla foto: compaiono una volta dopo il titolo (opacità + traslazione) */
-  .js .pop { opacity: 0; transform: translateY(14px) scale(0.92); }
-  .js.go .pop { opacity: 1; transform: none; transition: opacity 0.5s var(--ease), transform 0.8s var(--ease); transition-delay: calc(0.95s + var(--n, 0) * 0.22s); }
-
-  /* Etichette che si scrivono, con cursore che lampeggia poche volte */
-  .label .pw { display: inline-block; white-space: nowrap; }
-  .js .label .c { opacity: 0; }
-  .js .label .c.v { opacity: 1; }
-  .caret { position: relative; display: inline-block; width: 0; height: 1em; vertical-align: -0.12em; }
-  .caret::after {
-    content: "";
-    position: absolute;
-    left: 2px;
-    top: 0;
-    width: 0.55em;
-    height: 1em;
-    background: var(--accent);
-    animation: lampeggia 0.9s var(--ease) 3;
-  }
-  @keyframes lampeggia { 50% { opacity: 0; } }
+  .js .pillola { opacity: 0; transform: translateY(14px) scale(0.92); }
+  .js.go .pillola { opacity: 1; transform: none; transition: opacity 0.5s var(--ease), transform 0.8s var(--ease); transition-delay: calc(0.95s + var(--n, 0) * 0.22s); }
 
   /* Evidenziatore: con JavaScript ogni parola ha il suo tratto che si stende da sinistra (solo transform). Il testo non cambia colore. */
   .js .hl { padding: 0; margin: 0; background: none; }

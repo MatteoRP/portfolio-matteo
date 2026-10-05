@@ -2,7 +2,7 @@
    Portfolio di Matteo Rapeso: JavaScript
    Il sito funziona anche senza JavaScript: qui c'è solo il movimento.
    Le regole del movimento sono in CLAUDE.md ("Sistema di movimento"):
-   - si animano solo transform e opacità (le linee a mano usano stroke-dashoffset);
+   - si animano solo transform e opacità (l'anello dell'avatar usa stroke-dashoffset);
    - tutto parte da scroll, puntatore o tocco; niente scroll-jacking;
    - con "riduci movimento" attivo il sito è già nello stato finale e qui non si anima nulla.
 
@@ -49,12 +49,6 @@
     function crea(tag, classe) {
       var e = document.createElement(tag);
       if (classe) e.className = classe;
-      return e;
-    }
-    // Testo da leggere per chi usa lo screen reader (nascosto alla vista)
-    function testoNascosto(testo) {
-      var e = crea('span', 'sr');
-      e.textContent = testo;
       return e;
     }
 
@@ -122,54 +116,6 @@
       });
     }
 
-    // --- Etichetta della hero: si scrive lettera per lettera, con un cursore che lampeggia poche volte ---
-    function preparaEtichetta(etichetta) {
-      var testo = etichetta.textContent.replace(/\s+/g, ' ').trim();
-      etichetta.textContent = '';
-      etichetta.appendChild(testoNascosto(testo));
-      var animato = crea('span');
-      animato.setAttribute('aria-hidden', 'true');
-      var lettere = [];
-      testo.split(' ').forEach(function (parola, i) {
-        if (i) animato.appendChild(document.createTextNode(' '));
-        var gruppo = crea('span', 'pw');
-        parola.split('').forEach(function (carattere) {
-          var c = crea('span', 'c');
-          c.textContent = carattere;
-          gruppo.appendChild(c);
-          lettere.push(c);
-        });
-        animato.appendChild(gruppo);
-      });
-      etichetta.appendChild(animato);
-      etichetta._lettere = lettere;
-    }
-
-    var inScrittura = [];
-    function scrivi(etichetta) {
-      if (!etichetta._lettere) return;
-      var cursore = crea('i', 'caret');
-      inScrittura.push({ lettere: etichetta._lettere, partenza: performance.now(), fatte: 0, cursore: cursore });
-      if (inScrittura.length === 1) requestAnimationFrame(passoScrittura);
-    }
-    // Un solo ciclo per tutte le etichette che si stanno scrivendo: una lettera ogni 26 ms
-    function passoScrittura(ora) {
-      inScrittura = inScrittura.filter(function (q) {
-        var totale = q.lettere.length;
-        var quante = Math.min(totale, Math.max(1, Math.floor((ora - q.partenza) / 26) + 1));
-        if (quante !== q.fatte) {
-          for (; q.fatte < quante; q.fatte++) q.lettere[q.fatte].classList.add('v');
-          q.lettere[quante - 1].after(q.cursore);        // il cursore sta dopo l'ultima lettera scritta
-        }
-        if (quante >= totale) {
-          setTimeout(function () { q.cursore.remove(); }, 1100);
-          return false;
-        }
-        return true;
-      });
-      if (inScrittura.length) requestAnimationFrame(passoScrittura);
-    }
-
     // --- Numeri: salgono da 0 con andamento esponenziale, una volta sola ---
     // Il numero vero resta nel testo (lo legge lo screen reader); quello che sale è una copia sovrapposta
     function preparaNumero(numero) {
@@ -232,14 +178,11 @@
         });
       });
       tutti('.hl').forEach(dividiEvidenziatore);
-      // Solo l'etichetta della hero si scrive lettera per lettera; le altre compaiono con il normale reveal (classe "rv")
-      tutti('.hero .label').forEach(preparaEtichetta);
       tutti('.num').forEach(preparaNumero);
 
-      var bersagli = tutti('.rv, .tit, .label, .num, .hl');
+      var bersagli = tutti('.rv, .tit, .num, .hl');
       var comparsa = function (elemento) {
         elemento.classList.add('in');
-        if (elemento.classList.contains('label')) scrivi(elemento);
         if (elemento.classList.contains('num')) conta(elemento);
       };
 
