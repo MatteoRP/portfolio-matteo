@@ -11,7 +11,7 @@
    2. Hero e comparse allo scroll
    3. Righe di "Per chi lavoro" al tocco, popup dei dettagli, bagliori sui tasti
    4. Luce della hero e cursore ad anello (solo mouse)
-   5. Prima e dopo del caso studio (interruttore del profilo)
+   5. Caso studio: prima e dopo del profilo, pagine degli approfondimenti
    6. Menu in alto e scroll: barra "storie" e voce attiva
    ========================================================================== */
 
@@ -268,7 +268,7 @@
        ====================================================================== */
 
     if (!RIDOTTO) {
-      var TASTI = '.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap, .commuta button, a.tassello';
+      var TASTI = '.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap, .commuta button, .sfoglia-tasto, a.tassello';
       // La luce deve vedersi sul fondo del tasto: beige su fondo scuro, blu su fondo chiaro.
       // I tasti vuoti (.btn-o) al passaggio si riempiono del colore opposto a quello che hanno intorno, e le tessere beige (.tassello-chiaro)
       // sono chiare dentro una scheda blu: per loro la regola si inverte.
@@ -441,9 +441,12 @@
     }
 
     /* ======================================================================
-       5. PRIMA E DOPO DEL CASO STUDIO
-       Un interruttore (Prima / Dopo) cambia l'attributo data-v del contenitore .prof.
-       Il resto (quale stato si vede, le dissolvenze, l'anello dell'avatar) lo fa il CSS.
+       5. CASO STUDIO: PRIMA E DOPO, PAGINE DEGLI APPROFONDIMENTI
+       a) Un interruttore (Prima / Dopo) cambia l'attributo data-v del contenitore .prof.
+          Il resto (quale stato si vede, le dissolvenze, l'anello dell'avatar) lo fa il CSS.
+       b) Quattro tasti scelgono quale pagina degli approfondimenti si vede: JavaScript sposta
+          la classe "on" (pagina che entra) e "esce" (pagina che se ne va) e dice al CSS da che
+          parte scorre (--dir). L'animazione e lo spostamento sono tutti nel CSS.
        ====================================================================== */
 
     tutti('[data-prof]').forEach(function (blocco) {
@@ -456,6 +459,85 @@
       tasti.forEach(function (t) {
         t.addEventListener('click', function () { impostaStato(t.getAttribute('data-v')); });
       });
+    });
+
+    tutti('[data-sfoglia]').forEach(function (blocco) {
+      var lista = blocco.querySelector('.sfoglia-tasti');
+      var tasti = tutti('.sfoglia-tasto', blocco);
+      var pagine = tasti.map(function (t) { return document.getElementById(t.getAttribute('data-pagina')); });
+      var corrente = 0;
+
+      // Per gli screen reader: una lista di schede (tab), ognuna collegata alla sua pagina (tabpanel)
+      lista.setAttribute('role', 'tablist');
+      lista.setAttribute('aria-label', 'Approfondimenti sul caso studio');
+      tasti.forEach(function (t, i) {
+        t.id = 'tab-' + pagine[i].id;
+        t.setAttribute('role', 'tab');
+        t.setAttribute('aria-controls', pagine[i].id);
+        pagine[i].setAttribute('role', 'tabpanel');
+        pagine[i].setAttribute('aria-labelledby', t.id);
+      });
+
+      // Mostra la pagina numero i. Il verso (+1 avanti, -1 indietro) decide da che parte entra e da che parte esce.
+      function vai(i, conFocus) {
+        if (i < 0 || i >= pagine.length) return;
+        if (i !== corrente) {
+          blocco.style.setProperty('--dir', i > corrente ? 1 : -1);
+          pagine[corrente].classList.remove('on');
+          pagine[corrente].classList.add('esce');
+          pagine[i].classList.remove('esce');
+          pagine[i].classList.add('on');
+          corrente = i;
+        }
+        // aria-selected dice quale scheda è attiva; con tabindex solo quella attiva si raggiunge con Tab, le altre con le frecce
+        tasti.forEach(function (t, k) {
+          t.setAttribute('aria-selected', k === corrente ? 'true' : 'false');
+          t.tabIndex = k === corrente ? 0 : -1;
+        });
+        if (conFocus) tasti[corrente].focus();
+      }
+
+      pagine[0].classList.add('on');
+      vai(0, false);
+
+      // Quando la pagina che esce ha finito di dissolversi le tolgo la classe "esce": sparisce del tutto dal layout
+      pagine.forEach(function (pagina) {
+        pagina.addEventListener('animationend', function (e) {
+          if (e.target === pagina && e.animationName === 'pagina-esce') pagina.classList.remove('esce');
+        });
+      });
+
+      tasti.forEach(function (t, i) {
+        t.addEventListener('click', function () { vai(i, false); });
+        // Tastiera: frecce, Home e Fine passano da una scheda all'altra
+        t.addEventListener('keydown', function (e) {
+          var k = e.key, n = tasti.length, dest = -1;
+          if (k === 'ArrowRight' || k === 'ArrowDown') dest = (corrente + 1) % n;
+          else if (k === 'ArrowLeft' || k === 'ArrowUp') dest = (corrente - 1 + n) % n;
+          else if (k === 'Home') dest = 0;
+          else if (k === 'End') dest = n - 1;
+          if (dest < 0) return;
+          e.preventDefault();
+          vai(dest, true);
+        });
+      });
+
+      // Al tocco: uno scorrimento orizzontale sulla pagina passa alla successiva o alla precedente
+      var zona = blocco.querySelector('.sfoglia-pagine');
+      var x0 = 0, y0 = 0;
+      var tocco = false;
+      zona.addEventListener('touchstart', function (e) {
+        x0 = e.touches[0].clientX;
+        y0 = e.touches[0].clientY;
+        // se il dito parte da una striscia del calendario, lo scorrimento è suo (sposta i giorni): non cambio pagina
+        tocco = !e.target.closest('.striscia-scorri');
+      }, { passive: true });
+      zona.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - x0;
+        var dy = e.changedTouches[0].clientY - y0;
+        // conta solo un gesto deciso e più orizzontale che verticale (altrimenti è uno scroll della pagina)
+        if (tocco && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) vai(corrente + (dx < 0 ? 1 : -1), false);
+      }, { passive: true });
     });
 
     /* ======================================================================

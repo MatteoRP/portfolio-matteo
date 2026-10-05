@@ -454,170 +454,43 @@
           </div>
         </div>
 
-        <!-- ===== Approfondimenti: ogni voce si apre in un popup (senza JavaScript i contenuti restano tutti leggibili, uno sotto l’altro) ===== -->
-        <div class="approfondimenti pannello rv">
+        <!-- ===== Approfondimenti: cinque pagine che scorrono di lato (Scheda, Strategia, Calendario, Obiettivi, Altri clienti).
+         Senza JavaScript i tasti non ci sono e le pagine stanno una sotto l’altra, tutte leggibili. ===== -->
+        <div class="approfondimenti pannello rv" data-sfoglia>
           <p class="label">Approfondimenti</p>
-          <ul class="righeb" role="list">
-            <li>
-              <h3 class="riga-h"><button class="riga-b" type="button" data-apri="p-calendario" aria-haspopup="dialog"><span class="riga-t">Calendario di due settimane</span><span class="blocco-sintesi">Giorno per giorno, con formato e pilastro</span><span class="indicatore" aria-hidden="true"></span></button></h3>
-            </li>
-            <li>
-              <h3 class="riga-h"><button class="riga-b" type="button" data-apri="p-scheda" aria-haspopup="dialog"><span class="riga-t">La scheda di Numerella</span><span class="blocco-sintesi">Slogan, fondatori, offerta e cosa non fa (tutto fittizio)</span><span class="indicatore" aria-hidden="true"></span></button></h3>
-            </li>
-            <li>
-              <h3 class="riga-h"><button class="riga-b" type="button" data-apri="p-strategia" aria-haspopup="dialog"><span class="riga-t">Strategia</span><span class="blocco-sintesi">Pubblico, pilastri, tono e canali</span><span class="indicatore" aria-hidden="true"></span></button></h3>
-            </li>
-            <li>
-              <h3 class="riga-h"><button class="riga-b" type="button" data-apri="p-obiettivi" aria-haspopup="dialog"><span class="riga-t">Obiettivi, come ipotesi</span><span class="blocco-sintesi">Nessun risultato: solo ciò che si vorrebbe verificare</span><span class="indicatore" aria-hidden="true"></span></button></h3>
-            </li>
-            <li>
-              <h3 class="riga-h"><button class="riga-b" type="button" data-apri="p-altri" aria-haspopup="dialog"><span class="riga-t">Come cambierebbe per altri clienti</span><span class="blocco-sintesi">Lo stesso metodo per un creator e per un’attività locale</span><span class="indicatore" aria-hidden="true"></span></button></h3>
-            </li>
-          </ul>
-        </div>
-
-        <dialog class="popup larga" id="p-calendario" aria-labelledby="t-p-calendario">
-          <span class="pop-luce" aria-hidden="true"></span>
-          <div class="popup-in">
-            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-            <p class="k">Piano di lavoro</p>
-            <h3 id="t-p-calendario">Calendario di due settimane</h3>
-            <p class="nota-pop">Piano di lavoro, non contenuti pubblicati: tre post, una storia e una newsletter a settimana. Il ritmo è un’ipotesi di impegno sostenibile per una squadra piccolissima.</p>
-            <ul class="legenda-cal" role="list" aria-label="Pilastri">
-              <li><span class="pil p1" aria-hidden="true">1</span>Le parole dei soldi</li>
-              <li><span class="pil p2" aria-hidden="true">2</span>Leggere un documento</li>
-              <li><span class="pil p3" aria-hidden="true">3</span>Errori di ragionamento</li>
-              <li><span class="pil p4" aria-hidden="true">4</span>Domande vere</li>
-            </ul>
-            <div class="calendario-caso">
-              <div class="settimana">
-                <h4>Settimana 1</h4>
-                <p class="suggerimento">Scorri di lato per vedere tutti i giorni.</p>
-                <div class="striscia-scorri" role="region" aria-label="Settimana 1" tabindex="0">
-                  <ol class="striscia">
-                    <li class="cella">
-                      <span class="giorno">Lun</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
-                      <span class="formato">Carosello</span>
-                      <span class="tema">Cos’è l’inflazione, in 6 slide</span>
-                      <span class="pil p1" aria-hidden="true">1</span><span class="sr">Pilastro: Le parole dei soldi</span>
-                    </li>
-                    <li class="cella">
-                      <span class="giorno">Mar</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
-                      <span class="formato">Storia</span>
-                      <span class="tema">Sondaggio: quale parola dei soldi ti suona più oscura?</span>
-                      <span class="sr">Raccolta di temi</span>
-                    </li>
-                    <li class="cella">
-                      <span class="giorno">Mer</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
-                      <span class="formato">Reel di 30"</span>
-                      <span class="tema">Interesse semplice e composto, con un esempio numerico dichiarato come tale</span>
-                      <span class="pil p1" aria-hidden="true">1</span><span class="sr">Pilastro: Le parole dei soldi</span>
-                    </li>
-                    <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
-                    <li class="cella">
-                      <span class="giorno">Ven</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
-                      <span class="formato">Carosello</span>
-                      <span class="tema">Le voci principali di una busta paga</span>
-                      <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
-                    </li>
-                    <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
-                    <li class="cella">
-                      <span class="giorno">Dom</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
-                      <span class="formato">Newsletter</span>
-                      <span class="tema">Il glossario della settimana e le risposte al sondaggio</span>
-                      <span class="sr">Tutti i pilastri</span>
-                    </li>
-                  </ol>
+          <div class="sfoglia-tasti">
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-scheda">Scheda</button>
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-strategia">Strategia</button>
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-calendario">Calendario</button>
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-obiettivi">Obiettivi</button>
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-altri">Altri clienti</button>
+          </div>
+          <div class="sfoglia-pagine">
+            <div class="sfoglia-pagina" id="sf-scheda">
+              <p class="k">Attività fittizia</p>
+              <h3>La scheda di Numerella</h3>
+              <dl class="scheda">
+                <div>
+                  <dt>Slogan (fittizio)</dt>
+                  <dd>«Prima si capisce, poi si decide.»</dd>
                 </div>
-              </div>
-
-              <div class="settimana">
-                <h4>Settimana 2</h4>
-                <div class="striscia-scorri" role="region" aria-label="Settimana 2" tabindex="0">
-                  <ol class="striscia">
-                    <li class="cella">
-                      <span class="giorno">Lun</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
-                      <span class="formato">Carosello</span>
-                      <span class="tema">TAN e TAEG: due sigle, due cose diverse</span>
-                      <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
-                    </li>
-                    <li class="cella">
-                      <span class="giorno">Mar</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
-                      <span class="formato">Storia</span>
-                      <span class="tema">Domanda aperta: cosa vorresti capire di un preventivo?</span>
-                      <span class="pil p4" aria-hidden="true">4</span><span class="sr">Pilastro: Domande vere</span>
-                    </li>
-                    <li class="cella">
-                      <span class="giorno">Mer</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
-                      <span class="formato">Reel di 30"</span>
-                      <span class="tema">L’effetto gregge: perché ci muoviamo come gli altri</span>
-                      <span class="pil p3" aria-hidden="true">3</span><span class="sr">Pilastro: Errori di ragionamento</span>
-                    </li>
-                    <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
-                    <li class="cella">
-                      <span class="giorno">Ven</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
-                      <span class="formato">Carosello</span>
-                      <span class="tema">Perché non rispondiamo a «cosa dovrei fare?»</span>
-                      <span class="pil p4" aria-hidden="true">4</span><span class="sr">Pilastro: Domande vere</span>
-                    </li>
-                    <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
-                    <li class="cella">
-                      <span class="giorno">Dom</span>
-                      <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
-                      <span class="formato">Newsletter</span>
-                      <span class="tema">Come si legge un preventivo</span>
-                      <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
-                    </li>
-                  </ol>
+                <div>
+                  <dt>Fondatori (fittizi)</dt>
+                  <dd>Due, descritti solo per ruolo: un profilo di divulgazione economica e uno di design di prodotto. Il brand non mostra volti.</dd>
                 </div>
-              </div>
+                <div>
+                  <dt>Offerta</dt>
+                  <dd>Contenuti gratuiti: caroselli e video brevi su Instagram, una newsletter settimanale, un glossario online.</dd>
+                </div>
+                <div>
+                  <dt>Cosa non fa</dt>
+                  <dd>Non consiglia cosa comprare, non fa previsioni, non offre consulenza personalizzata, non ha link di affiliazione.</dd>
+                </div>
+              </dl>
             </div>
-          </div>
-        </dialog>
-
-        <dialog class="popup" id="p-scheda" aria-labelledby="t-p-scheda">
-          <span class="pop-luce" aria-hidden="true"></span>
-          <div class="popup-in">
-            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-            <p class="k">Attività fittizia</p>
-            <h3 id="t-p-scheda">La scheda di Numerella</h3>
-            <dl class="scheda">
-              <div>
-                <dt>Slogan (fittizio)</dt>
-                <dd>«Prima si capisce, poi si decide.»</dd>
-              </div>
-              <div>
-                <dt>Fondatori (fittizi)</dt>
-                <dd>Due, descritti solo per ruolo: un profilo di divulgazione economica e uno di design di prodotto. Il brand non mostra volti.</dd>
-              </div>
-              <div>
-                <dt>Offerta</dt>
-                <dd>Contenuti gratuiti: caroselli e video brevi su Instagram, una newsletter settimanale, un glossario online.</dd>
-              </div>
-              <div>
-                <dt>Cosa non fa</dt>
-                <dd>Non consiglia cosa comprare, non fa previsioni, non offre consulenza personalizzata, non ha link di affiliazione.</dd>
-              </div>
-            </dl>
-          </div>
-        </dialog>
-
-        <dialog class="popup" id="p-strategia" aria-labelledby="t-p-strategia">
-          <span class="pop-luce" aria-hidden="true"></span>
-          <div class="popup-in">
-            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-            <p class="k">Metodo</p>
-            <h3 id="t-p-strategia">Strategia</h3>
-            <div class="strategia">
+            <div class="sfoglia-pagina" id="sf-strategia">
+              <p class="k">Metodo</p>
+              <h3>Strategia</h3>
               <dl class="righe">
                 <div>
                   <dt>Pubblico (ipotesi)</dt>
@@ -644,42 +517,135 @@
                 </div>
               </dl>
             </div>
-          </div>
-        </dialog>
-
-        <dialog class="popup" id="p-obiettivi" aria-labelledby="t-p-obiettivi">
-          <span class="pop-luce" aria-hidden="true"></span>
-          <div class="popup-in">
-            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-            <p class="k">Ipotesi di lavoro</p>
-            <h3 id="t-p-obiettivi">Obiettivi, come ipotesi</h3>
-            <div class="corpo">
-              <p>Ipotesi di lavoro su otto settimane. I numeri sono inventati, non derivano da benchmark e non sono risultati.</p>
-              <ul class="elenco-semplice">
-                <li><strong>Newsletter:</strong> obiettivo ipotetico di 300 iscritti, partendo da zero.</li>
-                <li><strong>Salvataggi dei caroselli:</strong> crescita rispetto alle prime due settimane. Se la linea editoriale funziona, i post più didattici dovrebbero essere salvati di più.</li>
-                <li><strong>Domande:</strong> almeno una a settimana dalle storie, come segnale di interesse reale.</li>
-                <li><strong>Processo:</strong> nessun contenuto pubblicato senza avviso e senza fonte.</li>
+            <div class="sfoglia-pagina" id="sf-calendario">
+              <p class="k">Piano di lavoro</p>
+              <h3>Calendario di due settimane</h3>
+              <p class="nota-pop">Piano di lavoro, non contenuti pubblicati: tre post, una storia e una newsletter a settimana. Il ritmo è un’ipotesi di impegno sostenibile per una squadra piccolissima.</p>
+              <ul class="legenda-cal" role="list" aria-label="Pilastri">
+                <li><span class="pil p1" aria-hidden="true">1</span>Le parole dei soldi</li>
+                <li><span class="pil p2" aria-hidden="true">2</span>Leggere un documento</li>
+                <li><span class="pil p3" aria-hidden="true">3</span>Errori di ragionamento</li>
+                <li><span class="pil p4" aria-hidden="true">4</span>Domande vere</li>
               </ul>
-              <p>A ogni revisione mi chiederei quali pilastri non funzionano e se uno dei canali esclusi vada riconsiderato.</p>
-            </div>
-          </div>
-        </dialog>
+              <div class="calendario-caso">
+                <div class="settimana">
+                  <h4>Settimana 1</h4>
+                  <p class="suggerimento">Scorri di lato per vedere tutti i giorni.</p>
+                  <div class="striscia-scorri" role="region" aria-label="Settimana 1" tabindex="0">
+                    <ol class="striscia">
+                      <li class="cella">
+                        <span class="giorno">Lun</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
+                        <span class="formato">Carosello</span>
+                        <span class="tema">Cos’è l’inflazione, in 6 slide</span>
+                        <span class="pil p1" aria-hidden="true">1</span><span class="sr">Pilastro: Le parole dei soldi</span>
+                      </li>
+                      <li class="cella">
+                        <span class="giorno">Mar</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
+                        <span class="formato">Storia</span>
+                        <span class="tema">Sondaggio: quale parola dei soldi ti suona più oscura?</span>
+                        <span class="sr">Raccolta di temi</span>
+                      </li>
+                      <li class="cella">
+                        <span class="giorno">Mer</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
+                        <span class="formato">Reel di 30"</span>
+                        <span class="tema">Interesse semplice e composto, con un esempio numerico dichiarato come tale</span>
+                        <span class="pil p1" aria-hidden="true">1</span><span class="sr">Pilastro: Le parole dei soldi</span>
+                      </li>
+                      <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
+                      <li class="cella">
+                        <span class="giorno">Ven</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
+                        <span class="formato">Carosello</span>
+                        <span class="tema">Le voci principali di una busta paga</span>
+                        <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
+                      </li>
+                      <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
+                      <li class="cella">
+                        <span class="giorno">Dom</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
+                        <span class="formato">Newsletter</span>
+                        <span class="tema">Il glossario della settimana e le risposte al sondaggio</span>
+                        <span class="sr">Tutti i pilastri</span>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
 
-        <dialog class="popup" id="p-altri" aria-labelledby="t-p-altri">
-          <span class="pop-luce" aria-hidden="true"></span>
-          <div class="popup-in">
-            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-            <p class="k">Altri clienti</p>
-            <h3 id="t-p-altri">Come cambierebbe per altri clienti</h3>
-            <div class="corpo">
-              <h4>Un creator, ad esempio YouTuber</h4>
-              <p>Il canale principale è il video: i contenuti brevi diventano un ponte verso quello lungo. Il tono è personale, non del brand. L’obiettivo diventa il ritorno sul canale e l’iscrizione, non la newsletter.</p>
-              <h4>Un’attività locale, ad esempio un barbiere o un ristorante</h4>
-              <p>L’obiettivo è la prenotazione: bio, link e storie portano a un numero o a un modulo. I contenuti mostrano il lavoro quotidiano e il luogo. Il ritmo è più basso, la zona geografica conta e la newsletter probabilmente non serve.</p>
+                <div class="settimana">
+                  <h4>Settimana 2</h4>
+                  <div class="striscia-scorri" role="region" aria-label="Settimana 2" tabindex="0">
+                    <ol class="striscia">
+                      <li class="cella">
+                        <span class="giorno">Lun</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
+                        <span class="formato">Carosello</span>
+                        <span class="tema">TAN e TAEG: due sigle, due cose diverse</span>
+                        <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
+                      </li>
+                      <li class="cella">
+                        <span class="giorno">Mar</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
+                        <span class="formato">Storia</span>
+                        <span class="tema">Domanda aperta: cosa vorresti capire di un preventivo?</span>
+                        <span class="pil p4" aria-hidden="true">4</span><span class="sr">Pilastro: Domande vere</span>
+                      </li>
+                      <li class="cella">
+                        <span class="giorno">Mer</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
+                        <span class="formato">Reel di 30"</span>
+                        <span class="tema">L’effetto gregge: perché ci muoviamo come gli altri</span>
+                        <span class="pil p3" aria-hidden="true">3</span><span class="sr">Pilastro: Errori di ragionamento</span>
+                      </li>
+                      <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
+                      <li class="cella">
+                        <span class="giorno">Ven</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
+                        <span class="formato">Carosello</span>
+                        <span class="tema">Perché non rispondiamo a «cosa dovrei fare?»</span>
+                        <span class="pil p4" aria-hidden="true">4</span><span class="sr">Pilastro: Domande vere</span>
+                      </li>
+                      <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
+                      <li class="cella">
+                        <span class="giorno">Dom</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
+                        <span class="formato">Newsletter</span>
+                        <span class="tema">Come si legge un preventivo</span>
+                        <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sfoglia-pagina" id="sf-obiettivi">
+              <p class="k">Ipotesi di lavoro</p>
+              <h3>Obiettivi, come ipotesi</h3>
+              <div class="corpo">
+                <p>Ipotesi di lavoro su otto settimane. I numeri sono inventati, non derivano da benchmark e non sono risultati.</p>
+                <ul class="elenco-semplice">
+                  <li><strong>Newsletter:</strong> obiettivo ipotetico di 300 iscritti, partendo da zero.</li>
+                  <li><strong>Salvataggi dei caroselli:</strong> crescita rispetto alle prime due settimane. Se la linea editoriale funziona, i post più didattici dovrebbero essere salvati di più.</li>
+                  <li><strong>Domande:</strong> almeno una a settimana dalle storie, come segnale di interesse reale.</li>
+                  <li><strong>Processo:</strong> nessun contenuto pubblicato senza avviso e senza fonte.</li>
+                </ul>
+                <p>A ogni revisione mi chiederei quali pilastri non funzionano e se uno dei canali esclusi vada riconsiderato.</p>
+              </div>
+            </div>
+            <div class="sfoglia-pagina" id="sf-altri">
+              <p class="k">Altri clienti</p>
+              <h3>Come cambierebbe per altri clienti</h3>
+              <div class="corpo">
+                <h4>Un creator, ad esempio YouTuber</h4>
+                <p>Il canale principale è il video: i contenuti brevi diventano un ponte verso quello lungo. Il tono è personale, non del brand. L’obiettivo diventa il ritorno sul canale e l’iscrizione, non la newsletter.</p>
+                <h4>Un’attività locale, ad esempio un barbiere o un ristorante</h4>
+                <p>L’obiettivo è la prenotazione: bio, link e storie portano a un numero o a un modulo. I contenuti mostrano il lavoro quotidiano e il luogo. Il ritmo è più basso, la zona geografica conta e la newsletter probabilmente non serve.</p>
+              </div>
             </div>
           </div>
-        </dialog>
+        </div>
 
         <dialog class="popup" id="p-post1" aria-labelledby="t-p-post1">
           <span class="pop-luce" aria-hidden="true"></span>

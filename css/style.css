@@ -8,7 +8,7 @@
    2. Variabili e base
    3. Componenti comuni (etichette, menu, pulsanti e bagliori, titoli)
    4. Sezioni, nell'ordine in cui compaiono nella pagina
-   5. Caso studio (testata, profilo prima/dopo, post di esempio, strategia, calendario)
+   5. Caso studio (testata, profilo prima/dopo, post di esempio, approfondimenti a pagine)
    6. Popup
    7. Tablet e desktop (si parte dal telefono, poi si allarga)
    8. Movimento (gli stati nascosti esistono solo con .js e solo se l'utente non ha chiesto di ridurre il movimento)
@@ -492,8 +492,8 @@ html:not(.js) .nav { margin: 10px 10px 0; }
 /* ----- Bagliori sui tasti -----
    Ogni tasto ha una luce morbida che segue il mouse (solo mouse) e un lampo che parte dal punto premuto (mouse, tocco e tastiera).
    Le luci sono due cerchi sfumati che cambiano solo transform e opacità; stanno dietro il testo. Le crea js/main.js. */
-.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap, .commuta button, a.tassello { overflow: hidden; isolation: isolate; }
-.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .mailwrap, .commuta button { position: relative; }
+.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap, .commuta button, .sfoglia-tasto, a.tassello { overflow: hidden; isolation: isolate; }
+.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .mailwrap, .commuta button, .sfoglia-tasto { position: relative; }
 .lampo, .luce-b {
   position: absolute;
   left: 0; top: 0;
@@ -853,17 +853,10 @@ footer p + p { margin-top: 6px; }
 .scheda {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  margin-top: clamp(40px, 6vw, 72px);
+  margin-top: 24px;
 }
 .scheda > div { padding: 24px 24px 28px 0; border-top: 1px solid var(--line); }
 .scheda dd { margin-top: 10px; max-width: 30em; }
-
-/* Sotto la storia: strategia e approfondimenti, ognuno con il suo filetto e il suo spazio */
-.strategia {
-  margin-top: clamp(56px, 8vw, 110px);
-  padding-top: clamp(28px, 4vw, 48px);
-  border-top: 1px solid var(--line);
-}
 
 .elenco-semplice { margin-top: 24px; max-width: 32em; }
 .elenco-semplice li {
@@ -1057,7 +1050,6 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
 .didascalia strong { font-weight: 500; }
 
 /* ----- Strategia ----- */
-.righe { margin-top: 32px; }
 .righe > div {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1135,39 +1127,38 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
 .cella-vuota { display: flex; flex-direction: column; gap: 8px; width: 6.5rem; background: transparent; border: 1px dashed var(--line); }
 .cella-vuota .riposo { font-size: 14px; line-height: 1.35; color: var(--muted); }
 
-/* ----- Approfondimenti: righe che aprono un popup ----- */
+/* ----- Approfondimenti: pagine che scorrono di lato ----- */
 .approfondimenti { margin-top: clamp(56px, 8vw, 110px); }
-/* Pannello blu: l'elenco degli approfondimenti, con la stessa luce dei popup */
+/* Pannello blu degli approfondimenti, con la stessa luce dei popup */
 .pannello {
   padding: clamp(24px, 4vw, 48px);
   border-radius: 28px;
   color: var(--fg);
 }
-.righeb { margin-top: 20px; border-bottom: 1px solid var(--line); }
-.righeb li { border-top: 1px solid var(--line); }
-.riga-h { margin: 0; }
-.riga-b {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: "titolo indicatore" "sintesi indicatore";
-  align-items: center;
-  gap: 6px 16px;
-  width: 100%;
+/* Le pagine: con JavaScript i tasti scelgono quale vedere (classe "on") e le altre non occupano spazio (display: none),
+   così il pannello ha l'altezza della pagina visibile e non resta vuoto sotto le pagine corte.
+   Senza JavaScript non ci sono tasti e le pagine sono una sotto l'altra. */
+.sfoglia-tasti { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+.sfoglia-tasto {
+  flex: 1 1 auto;   /* su telefono i tasti riempiono la riga (si sistemano in due righe ordinate) */
   min-height: 44px;
-  padding: 26px 0;
+  padding: 0 14px;
   border: 0;
-  background: transparent;
-  color: inherit;
-  text-align: left;
+  border-radius: 99px;
+  background: rgba(var(--fg-rgb), 0.1);
+  color: var(--fg);
+  font: 500 16px/1 var(--f-body);
   cursor: pointer;
 }
-.riga-t { grid-area: titolo; font: 700 var(--h-m)/1.1 var(--f-body); letter-spacing: -0.03em; }
-.riga-b:hover .riga-t { color: var(--accent); }
-.blocco-sintesi { grid-area: sintesi; font: 400 16px/1.5 var(--f-body); letter-spacing: 0; text-transform: none; color: var(--muted); }
+.sfoglia-tasto[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+html:not(.js) .sfoglia-tasti { display: none; }
+.sfoglia-pagine { position: relative; display: grid; gap: 56px; margin-top: 32px; overflow: clip; }   /* clip: la pagina che scorre non esce dal pannello */
+.sfoglia-pagina { min-width: 0; }
+.js .sfoglia-pagina { display: none; }
+.js .sfoglia-pagina.on { display: block; }
 /* Segno "+" disegnato con due linee */
-.indicatore, .piu { position: relative; flex: none; }
-.indicatore { grid-area: indicatore; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; }
-.indicatore::before, .indicatore::after, .piu::before, .piu::after {
+.piu { position: relative; flex: none; }
+.piu::before, .piu::after {
   content: "";
   position: absolute;
   top: 50%; left: 50%;
@@ -1175,7 +1166,7 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
   margin: -0.5px 0 0 -7px;
   background: var(--accent);
 }
-.indicatore::after, .piu::after { transform: rotate(90deg); }
+.piu::after { transform: rotate(90deg); }
 
 .nota-fittizio { margin-top: 48px; max-width: 34em; font-size: 16px; color: var(--muted); }
 
@@ -1200,22 +1191,21 @@ html:not(.js) .nota + .nota { margin-top: 28px; }
   overflow: hidden;           /* lo scorrimento sta in .popup-in */
   overscroll-behavior: contain;
 }
-.popup.larga { width: min(1120px, calc(100vw - 24px)); }
 .popup::backdrop { background: rgba(8, 12, 32, 0.6); }
 .popup-in { position: relative; z-index: 1; padding: 0 clamp(22px, 5vw, 52px) clamp(28px, 5vw, 52px); }
-.popup-in > h3 { margin-top: 10px; max-width: 14em; }
-.popup-in > * + * { margin-top: 20px; }
-.popup-in > .k { margin-top: 0; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+/* Stesso testo dei popup anche nelle pagine degli approfondimenti (.sfoglia-pagina) */
+.popup-in > h3, .sfoglia-pagina > h3 { margin-top: 10px; max-width: 14em; }
+.popup-in > * + *, .sfoglia-pagina > * + * { margin-top: 20px; }
+.popup-in > .k, .sfoglia-pagina > .k { margin-top: 0; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
 .popup-in > .chiudi + .k { margin-top: 0; }
-.popup-in dl { margin-top: 24px; }
-.popup-in dt { margin-top: 20px; color: var(--accent); }
-.popup-in dt:first-child { margin-top: 0; }
-.popup-in dd { margin-top: 6px; max-width: 34em; color: var(--muted); font-size: 16px; }
-.popup-in .scheda { margin-top: 24px; }
-.popup-in .strategia { margin: 0; padding: 0; border: 0; }
-.popup-in .corpo { padding-bottom: 0; }
-.popup-in .calendario-caso { margin-top: 28px; }
-.popup-in .righe { margin-top: 0; }
+.popup-in dl, .sfoglia-pagina dl { margin-top: 24px; }
+.popup-in dt, .sfoglia-pagina dt { margin-top: 20px; color: var(--accent); }
+.popup-in dt:first-child, .sfoglia-pagina dt:first-child { margin-top: 0; }
+.popup-in dd, .sfoglia-pagina dd { margin-top: 6px; max-width: 34em; color: var(--muted); font-size: 16px; }
+.sfoglia-pagina .corpo > * + * { margin-top: 14px; }
+.sfoglia-pagina .corpo > * + h4 { margin-top: 28px; }
+.sfoglia-pagina .corpo > h4 + p { margin-top: 8px; }
+.sfoglia-pagina .calendario-caso { margin-top: 28px; }
 .chiudi {
   position: sticky;
   top: 0;
@@ -1247,8 +1237,7 @@ html:not(.js) .popup, html.no-popup .popup {
   border: 1px solid var(--line);   /* senza JavaScript il popup è un riquadro in pagina: qui il bordo serve a staccarlo dallo sfondo */
 }
 html:not(.js) .popup .chiudi, html.no-popup .popup .chiudi,
-html:not(.js) .apri-btn, html.no-popup .apri-btn,
-html:not(.js) .approfondimenti, html.no-popup .approfondimenti { display: none; }
+html:not(.js) .apri-btn, html.no-popup .apri-btn { display: none; }
 /* "Come lavoro": link che apre il popup di una riga di "Per chi lavoro" */
 .apri-btn { gap: 12px; }
 .apri-btn .piu { width: 14px; height: 14px; }
@@ -1276,7 +1265,7 @@ html.js:not(.no-popup) .popup-in {
 html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
 .popup-in > .titolo-pop { max-width: none; margin-top: 8px; font-size: var(--h-xl); line-height: 1.02; }
 .popup-in > .lead { max-width: 30em; }
-.popup-in > .nota-pop { max-width: 34em; font-size: 16px; color: var(--muted); }
+.sfoglia-pagina > .nota-pop { max-width: 34em; font-size: 16px; color: var(--muted); }
 .duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .blocco {
   padding: 22px;
@@ -1305,6 +1294,8 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 
 @media (min-width: 700px) {
   .cta > a { flex: 0 0 auto; }
+  .sfoglia-tasti { gap: 8px; }
+  .sfoglia-tasto { flex: 0 0 auto; padding: 0 20px; }
   .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fatti { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -1337,9 +1328,10 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 @media (min-width: 1100px) {
   /* Sette giorni affiancati, senza scorrimento */
   .striscia-scorri { overflow-x: visible; }
-  .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
   .cella,
   .cella-vuota { width: auto; }
+  .cella { padding-inline: 10px; }   /* dentro il pannello le celle sono strette: così "Newsletter" ci sta */
   .suggerimento { display: none; }
 }
 
@@ -1461,8 +1453,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .cur-glow { transition: opacity 0.5s var(--ease); }
   .cur-glow i { transition: transform 0.6s var(--ease), opacity 0.5s var(--ease); }
 
-  .indicatore { transition: transform 0.3s var(--ease); }
-
   /* ----- Per chi lavoro, popup, prima e dopo ----- */
   /* Al passaggio del mouse (o, al tocco, quando la scheda è al centro) titolo ed etichetta scorrono di 8px */
   .cliente .tag, .cliente h3 { transition: transform 0.6s var(--ease); }
@@ -1517,6 +1507,12 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .prof-dopo > :nth-child(4) { --j: 3; }
   .prof-dopo > :nth-child(5) { --j: 4; }
   .avatar circle { transition: stroke-dashoffset 1.1s var(--ease) 0.4s; }
+  /* Approfondimenti: la pagina nuova entra di lato (da destra se si va avanti, da sinistra se si torna indietro) e la vecchia esce dall'altra parte.
+     La direzione arriva da --dir (la imposta js/main.js sul pannello). Cambiano solo opacità e transform; la pagina che esce sta sopra le altre (position: absolute) solo per i 0,2 s della dissolvenza, poi JavaScript le toglie la classe "esce". */
+  .js .sfoglia-pagina.on { animation: pagina-entra 0.7s var(--ease) 0.14s both; }
+  .js .sfoglia-pagina.esce { display: block; position: absolute; inset: 0 0 auto 0; animation: pagina-esce 0.2s var(--ease) both; }
+  @keyframes pagina-entra { from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 36px)); } to { opacity: 1; transform: none; } }
+  @keyframes pagina-esce { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(calc(var(--dir, 1) * -36px)); } }
   /* Le tessere dei post: con il mouse si alzano un poco, al tocco (e alla pressione) si schiacciano come i pulsanti */
   a.tassello { transition: transform 0.5s var(--ease); }
   a.tassello:active { transform: scale(0.96); }
