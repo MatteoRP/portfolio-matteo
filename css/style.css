@@ -671,7 +671,6 @@ html:not(.js) .hero h1 .it {
   gap: 8px;
   margin: 0;
   padding: 11px 18px;
-  border: 1px solid rgba(246, 241, 230, 0.22);
   border-radius: 99px;
   background: var(--d-bg);
   color: var(--d-fg);
@@ -687,8 +686,9 @@ html:not(.js) .hero h1 .it {
 .who { display: grid; gap: 22px; max-width: 40rem; }
 .who .muted { max-width: 34em; }
 
-/* ----- Riquadri blu (schede, banner, pannelli, testata del caso studio) ----- */
-/* Riquadri blu: lo sfondo sta su ::before (z-index -1), così la luce del cursore, che sta sopra gli sfondi ma sotto il testo, si vede anche qui */
+/* ----- Riquadri blu (schede, banner, pannelli, testata del caso studio) -----
+   Nessun bordo: le schede sulle sezioni blu si staccano con un velo crema trasparente, quelle sul crema con il loro blu.
+   Lo sfondo sta su ::before (z-index -1), così la luce del cursore, che sta sopra gli sfondi ma sotto il testo, si vede anche qui. */
 .scheda-b,
 .banner,
 .pannello,
@@ -702,7 +702,7 @@ html:not(.js) .hero h1 .it {
   z-index: -1;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%), var(--d-surface);
+  background: radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%), rgba(var(--d-fg-rgb), 0.07);
 }
 .banner::before,
 .pannello::before,
@@ -720,20 +720,18 @@ html:not(.js) .hero h1 .it {
 .schede { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(32px, 5vw, 56px); }
 .scheda-b {
   padding: clamp(24px, 3.4vw, 36px);
-  border: 1px solid var(--line);
   border-radius: 26px;
 }
 .scheda-b h3 { font-size: var(--h-m); line-height: 1.08; }
 .scheda-b p { margin-top: 12px; color: var(--muted); }
 
-/* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono), ognuno sotto un filetto ----- */
+/* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono) ----- */
 .passi {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px 24px;
   margin-top: clamp(40px, 6vw, 72px);
 }
-.passo { padding-top: 22px; border-top: 1px solid var(--line); }
 .passo h3 { font-size: var(--h-m); line-height: 1.1; }
 .passo p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--muted); }
 
@@ -744,9 +742,8 @@ html:not(.js) .hero h1 .it {
   gap: 12px;
   margin-top: clamp(48px, 7vw, 80px);
   padding: clamp(20px, 3vw, 32px);
-  border: 1px solid var(--line);
   border-radius: 26px;
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.6);
 }
 .num {
   position: relative;
@@ -777,7 +774,7 @@ html:not(.js) .hero h1 .it {
 .num-an { display: none; }
 .js .num-an { display: block; position: absolute; left: 0; top: 0; }
 
-/* ----- Per chi lavoro: tre schede blu con un percorso che si accende, e il filo del metodo ----- */
+/* ----- Per chi lavoro: tre schede blu (problema, cosa faccio, obiettivo) e, sotto, il metodo comune ----- */
 .introduzione { margin-top: 28px; }
 .clienti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 72px); }
 .cliente {
@@ -785,69 +782,22 @@ html:not(.js) .hero h1 .it {
   flex-direction: column;
   align-items: flex-start;
   padding: clamp(24px, 3vw, 34px);
-  border: 1px solid var(--line);
   border-radius: 28px;
-}
-.cliente::after {            /* filetto beige che si disegna al passaggio del mouse (o quando la scheda è al centro, al tocco) */
-  content: "";
-  position: absolute;
-  left: 28px; right: 28px; top: -1px;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-.cliente.on::after { transform: scaleX(1); }
-@media (hover: hover) {
-  .cliente:hover::after { transform: scaleX(1); }
 }
 .cliente .tag { display: block; }
 .cliente h3 { margin-top: 8px; font-size: var(--h-m); line-height: 1.04; }
 .cliente .apri-btn { margin-top: auto; }
 
-/* Il percorso: problema, cosa faccio, obiettivo. Una linea con tre punti */
-.percorso { position: relative; display: grid; gap: 22px; width: 100%; margin: 26px 0 30px; padding-left: 34px; }
-.percorso::before,
-.percorso::after { content: ""; position: absolute; left: 5px; top: 10px; bottom: 12px; width: 1px; transform-origin: top; }
-.percorso::before { background: var(--line); }
-.percorso::after { background: var(--accent); }
-.percorso li { position: relative; }
-.percorso li::before {
-  content: "";
-  position: absolute;
-  left: -34px; top: 5px;
-  width: 11px; height: 11px;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  background: var(--d-bg);
-}
-.percorso li::after {
-  content: "";
-  position: absolute;
-  left: -31px; top: 8px;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--accent);
-}
+/* Tre voci una sotto l'altra: l'etichetta le distingue, nessuna linea */
+.percorso { display: grid; gap: 22px; width: 100%; margin: 26px 0 30px; }
 .pt { display: block; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .percorso p { margin-top: 4px; font-size: 16px; line-height: 1.5; color: var(--fg); }
 
-/* Il filo: lo stesso metodo in quattro passi */
+/* Il metodo comune: quattro parole, ognuna con un puntino */
 .filo { display: grid; gap: 18px; margin-top: clamp(32px, 4vw, 52px); }
-.filo-passi { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.filo-passi::before,
-.filo-passi::after { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1px; transform-origin: left; }
-.filo-passi::before { background: var(--line); }
-.filo-passi::after { background: var(--accent); }
-.filo-passi li { position: relative; padding-top: 26px; font: 500 16px/1.3 var(--f-body); color: var(--fg); }
-.filo-passi li::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0;
-  width: 11px; height: 11px;
-  border-radius: 50%;
-  background: var(--accent);
-}
+.filo-passi { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.filo-passi li { display: flex; align-items: center; gap: 10px; font: 500 16px/1.3 var(--f-body); color: var(--fg); }
+.filo-passi li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 
 /* ----- Contatti ----- */
 .big { font-size: clamp(56px, 15vw, 200px); line-height: 0.92; }
@@ -885,13 +835,13 @@ footer p + p { margin-top: 6px; }
 .case-head { display: grid; gap: 22px; }
 .case-head.card-blu {
   padding: clamp(26px, 5vw, 56px);
-  border: 1px solid rgba(246, 241, 230, 0.2);
   border-radius: 30px;
   color: var(--fg);
 }
 .case-head h2 { max-width: 14em; }
-.fatti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 28px; margin-top: 8px; }
-.fatti li { padding: 18px 0 6px; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.4; color: var(--fg); }
+.fatti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 28px; margin-top: 8px; }
+.fatti li { display: flex; align-items: baseline; gap: 10px; font-size: 16px; line-height: 1.4; color: var(--fg); }
+.fatti li::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 
 /* Etichetta ben visibile: il progetto è dimostrativo */
 .etichetta-fittizio span {
@@ -1388,7 +1338,6 @@ footer p + p { margin-top: 6px; }
 /* Pannello blu: l'elenco degli approfondimenti, con la stessa luce dei popup */
 .pannello {
   padding: clamp(24px, 4vw, 48px);
-  border: 1px solid rgba(246, 241, 230, 0.2);
   border-radius: 28px;
   color: var(--fg);
 }
@@ -1440,7 +1389,7 @@ footer p + p { margin-top: 6px; }
   max-height: calc(100svh - 32px);
   margin: auto;
   padding: 0;
-  border: 1px solid rgba(246, 241, 230, 0.24);
+  border: 0;
   border-radius: 28px;
   background-color: var(--d-bg);
   background-image: radial-gradient(90% 60% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
@@ -1493,6 +1442,7 @@ html:not(.js) .popup, html.no-popup .popup {
   max-height: none;
   margin: 24px 0 0;
   box-shadow: none;
+  border: 1px solid var(--line);   /* senza JavaScript il popup è un riquadro in pagina: qui il bordo serve a staccarlo dallo sfondo */
 }
 html:not(.js) .popup .chiudi, html.no-popup .popup .chiudi,
 html:not(.js) .apri-btn, html.no-popup .apri-btn,
@@ -1527,13 +1477,12 @@ html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
 .duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .blocco {
   padding: 22px;
-  border: 1px solid var(--line);
   border-radius: 20px;
-  background: rgba(var(--fg-rgb), 0.05);
+  background: rgba(var(--fg-rgb), 0.07);
 }
 .blocco h4 { margin: 0; }
 .blocco p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--fg); }
-.filo-pop { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.filo-pop { margin-top: 28px; }
 .popup-in > .filo-pop + .btn-p { margin-top: 28px; }
 .passi-mini { display: grid; gap: 14px; }
 .passi-mini li { position: relative; padding-left: 26px; }
@@ -1810,26 +1759,20 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .indicatore { transition: transform 0.3s var(--ease); }
 
   /* ----- Per chi lavoro, popup, telefono ----- */
-  .cliente::after { transition: transform 0.9s var(--ease); }
+  /* Al passaggio del mouse (o, al tocco, quando la scheda è al centro) titolo ed etichetta scorrono di 8px */
   .cliente .tag, .cliente h3 { transition: transform 0.6s var(--ease); }
   .cliente:hover .tag, .cliente.on .tag, .cliente:hover h3, .cliente.on h3 { transform: translateX(8px); }
 
-  /* Il percorso si accende da solo: linea che scende, punti e testi uno dopo l'altro */
-  .js .cliente .percorso::after { transform: scaleY(0); }
-  .js .cliente.in .percorso::after { transform: scaleY(1); transition: transform 1.6s var(--ease) calc(var(--d, 0ms) + 0.5s); }
+  /* Le tre voci di ogni scheda compaiono una dopo l'altra */
   .js .cliente .percorso li { opacity: 0; transform: translateY(10px); }
-  .js .cliente .percorso li::after { transform: scale(0); }
-  .js .cliente.in .percorso li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(var(--d, 0ms) + 0.5s + var(--k) * 0.5s), transform 0.8s var(--ease) calc(var(--d, 0ms) + 0.5s + var(--k) * 0.5s); }
-  .js .cliente.in .percorso li::after { transform: scale(1); transition: transform 0.5s var(--ease) calc(var(--d, 0ms) + 0.6s + var(--k) * 0.5s); }
+  .js .cliente.in .percorso li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(var(--d, 0ms) + 0.4s + var(--k) * 0.18s), transform 0.8s var(--ease) calc(var(--d, 0ms) + 0.4s + var(--k) * 0.18s); }
   .percorso li:nth-child(1) { --k: 0; }
   .percorso li:nth-child(2) { --k: 1; }
   .percorso li:nth-child(3) { --k: 2; }
 
-  /* Il filo del metodo si disegna una volta */
-  .js .filo.rv .filo-passi::after { transform: scaleX(0); }
-  .js .filo.rv.in .filo-passi::after { transform: scaleX(1); transition: transform 1.8s var(--ease) 0.4s; }
+  /* Le quattro parole del metodo compaiono una dopo l'altra */
   .js .filo.rv .filo-passi li { opacity: 0; transform: translateY(8px); }
-  .js .filo.rv.in .filo-passi li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(0.4s + var(--k) * 0.4s), transform 0.8s var(--ease) calc(0.4s + var(--k) * 0.4s); }
+  .js .filo.rv.in .filo-passi li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(0.3s + var(--k) * 0.12s), transform 0.8s var(--ease) calc(0.3s + var(--k) * 0.12s); }
   .filo-passi li:nth-child(1) { --k: 0; }
   .filo-passi li:nth-child(2) { --k: 1; }
   .filo-passi li:nth-child(3) { --k: 2; }
