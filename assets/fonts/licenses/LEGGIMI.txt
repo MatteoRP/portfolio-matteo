@@ -1,19 +1,19 @@
 Font di questo sito: licenze e provenienza
 ==========================================
 
-Tutti i font sono usati in locale (self-hosted), solo nel sottoinsieme "latin", un file .woff2 per ogni peso.
-I file sono presi dai pacchetti npm @fontsource (versione 5.3.0) e confrontati con le licenze nei repository ufficiali.
+Il sito usa solo due famiglie, tutte in locale (self-hosted): niente collegamenti a servizi esterni.
+Sono nel sottoinsieme "latin", un file .woff2 per ogni peso, e si caricano con font-display: swap.
 
-Font              Uso                               Licenza     Licenza (file)                  Repository ufficiale
-----------------  --------------------------------  ----------  ------------------------------  --------------------------------------------
-Inter Tight       titoli (600, 700, 800)            OFL 1.1     OFL-inter-tight.txt             https://github.com/rsms/inter-tight
-Inter             testo (400, 500)                  OFL 1.1     OFL-inter.txt                   https://github.com/rsms/inter
-Instrument Serif  parole chiave (400, 400 corsivo)  OFL 1.1     OFL-instrument-serif.txt        https://github.com/Instrument/instrument-serif
-Geist Mono        etichette (400, 500)              OFL 1.1     OFL-geist-mono.txt              https://github.com/vercel/geist-font
-Rock Salt         annotazioni a gesso (400)         Apache 2.0  Apache-2.0-rock-salt.txt        https://github.com/google/fonts/tree/main/apache/rocksalt
+Font              Uso                                         Pesi           Licenza   Licenza (file)            Repository ufficiale
+----------------  ------------------------------------------  -------------  --------  ------------------------  ----------------------------------------------
+Inter             titoli (700), testo e pulsanti (400, 500)   400, 500, 700  OFL 1.1   OFL-inter.txt             https://github.com/rsms/inter
+Instrument Serif  parole chiave, lead e numeri grandi         400 corsivo    OFL 1.1   OFL-instrument-serif.txt  https://github.com/Instrument/instrument-serif
 
-Rock Salt: copyright 2010 Font Diner, Inc DBA Sideshow. Le annotazioni a gesso arrivano in un passo successivo:
-per ora il font è dichiarato nel CSS ma non viene scaricato dal browser, perché nessun elemento lo usa.
+Provenienza dei file
+- Inter: file OTF di Inter 4.0, ridotti al sottoinsieme latin e convertiti in .woff2 con pyftsubset (fonttools).
+- Instrument Serif: pacchetto npm @fontsource/instrument-serif (versione 5.x), file latin 400 corsivo.
 
-Tutte queste licenze permettono di ospitare i file sul proprio sito. L'OFL non permette di vendere i font da soli:
+Cosa NON c'è più: Inter Tight, Geist Mono, Rock Salt e il tondo di Instrument Serif non sono più usati e i loro file sono stati tolti.
+
+Le licenze permettono di ospitare i file sul proprio sito. L'OFL non permette di vendere i font da soli:
 qui non vengono venduti, sono parte del sito.

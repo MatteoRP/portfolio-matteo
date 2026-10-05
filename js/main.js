@@ -2,17 +2,17 @@
    Portfolio di Matteo Rapeso: JavaScript
    Il sito funziona anche senza JavaScript: qui c'è solo il movimento.
    Le regole del movimento sono in CLAUDE.md ("Sistema di movimento"):
-   - si animano solo transform e opacità (le linee a mano usano stroke-dashoffset);
+   - si animano solo transform e opacità (l'anello dell'avatar usa stroke-dashoffset);
    - tutto parte da scroll, puntatore o tocco; niente scroll-jacking;
    - con "riduci movimento" attivo il sito è già nello stato finale e qui non si anima nulla.
 
    Indice:
    1. Preparazione
    2. Hero e comparse allo scroll
-   3. Righe di "Per chi lavoro" al tocco
+   3. Righe di "Per chi lavoro" al tocco, popup dei dettagli, bagliori sui tasti
    4. Luce della hero e cursore ad anello (solo mouse)
-   5. Storia del caso studio (telefono)
-   6. Scroll: barra "storie", parallasse della foto, stato del telefono
+   5. Caso studio: prima e dopo del profilo, pagine degli approfondimenti
+   6. Menu in alto e scroll: barra "storie" e voce attiva
    ========================================================================== */
 
 (function () {
@@ -51,12 +51,12 @@
       if (classe) e.className = classe;
       return e;
     }
-    // Testo da leggere per chi usa lo screen reader (nascosto alla vista)
-    function testoNascosto(testo) {
-      var e = crea('span', 'sr');
-      e.textContent = testo;
-      return e;
-    }
+
+    // iOS Safari applica lo stato :active (la pressione dei pulsanti) solo se la pagina ascolta il tocco: un ascoltatore vuoto basta
+    document.addEventListener('touchstart', function () {}, { passive: true });
+
+    // Tutti i riquadri e le sezioni con fondo blu: lì luce e cursore sono beige (altrove sono blu)
+    var BLU = '.sez-scura, dialog, .pannello, .banner, .card-blu, .commuta, .scheda-b, .cliente';
 
     var hero = document.querySelector('.hero');
     var luceInterna = document.querySelector('.luce-in');
@@ -73,13 +73,25 @@
       (function visita(nodo) {
         Array.prototype.slice.call(nodo.childNodes).forEach(function (figlio) {
           if (figlio.nodeType === 3) {
+            var testo = figlio.textContent;
+            // La punteggiatura attaccata alla parola precedente (es. "problema" + ", non") resta unita a lei, senza andare a capo da sola
+            var precedente = figlio.previousSibling;
+            var attaccato = /^[^\s]+/.exec(testo);
+            if (attaccato && precedente && precedente.nodeType === 1) {
+              var parole = precedente.querySelectorAll('.wi');
+              if (parole.length) {
+                parole[parole.length - 1].textContent += attaccato[0];
+                testo = testo.slice(attaccato[0].length);
+              }
+            }
             var pezzi = document.createDocumentFragment();
-            figlio.textContent.split(/(\s+)/).forEach(function (parte) {
+            testo.split(/(\s+)/).forEach(function (parte) {
               if (!parte) return;
               if (/^\s+$/.test(parte)) { pezzi.appendChild(document.createTextNode(' ')); return; }
               var maschera = crea('span', 'w');
               maschera.setAttribute('aria-hidden', 'true');
               var parola = crea('span', 'wi');
+              maschera.style.setProperty('--i', numero);
               parola.style.setProperty('--i', numero++);
               parola.textContent = parte;
               maschera.appendChild(parola);
@@ -94,7 +106,7 @@
       titolo.classList.add('diviso');
     }
 
-    // --- Evidenziatore: ogni parola ha due copie del testo: una chiara e una scura, che si scambiano con l'opacità ---
+    // --- Evidenziatore: ogni parola ha il suo tratto di colore che si stende da sinistra (il testo non cambia) ---
     function dividiEvidenziatore(evidenziato) {
       var parole = evidenziato.textContent.replace(/\s+/g, ' ').trim().split(' ');
       evidenziato.textContent = '';
@@ -102,84 +114,9 @@
         if (i) evidenziato.appendChild(document.createTextNode(' '));
         var contenitore = crea('span', 'hw');
         contenitore.style.setProperty('--w', i);
-        var chiara = crea('span', 't0');
-        chiara.textContent = parola;
-        var scura = crea('span', 't1');
-        scura.textContent = parola;
-        scura.setAttribute('aria-hidden', 'true');
-        contenitore.appendChild(chiara);
-        contenitore.appendChild(scura);
+        contenitore.textContent = parola;
         evidenziato.appendChild(contenitore);
       });
-    }
-
-    // --- Gesso: testo scritto lettera per lettera. Le parole intere non si spezzano mai ---
-    function gesso(elemento, testo) {
-      elemento.textContent = '';
-      elemento.appendChild(testoNascosto(testo));
-      var animato = crea('span', 'cw');
-      animato.setAttribute('aria-hidden', 'true');
-      var k = 0;
-      testo.split(' ').forEach(function (parola, i) {
-        if (i) animato.appendChild(document.createTextNode(' '));
-        var gruppo = crea('span', 'cwd');
-        parola.split('').forEach(function (lettera) {
-          var l = crea('span', 'ch');
-          l.style.setProperty('--k', k++);
-          l.textContent = lettera;
-          gruppo.appendChild(l);
-        });
-        animato.appendChild(gruppo);
-      });
-      elemento.appendChild(animato);
-    }
-
-    // --- Etichette mono: si scrivono con un cursore che lampeggia poche volte ---
-    function preparaEtichetta(etichetta) {
-      var testo = etichetta.textContent.replace(/\s+/g, ' ').trim();
-      etichetta.textContent = '';
-      etichetta.appendChild(testoNascosto(testo));
-      var animato = crea('span');
-      animato.setAttribute('aria-hidden', 'true');
-      var lettere = [];
-      testo.split(' ').forEach(function (parola, i) {
-        if (i) animato.appendChild(document.createTextNode(' '));
-        var gruppo = crea('span', 'pw');
-        parola.split('').forEach(function (carattere) {
-          var c = crea('span', 'c');
-          c.textContent = carattere;
-          gruppo.appendChild(c);
-          lettere.push(c);
-        });
-        animato.appendChild(gruppo);
-      });
-      etichetta.appendChild(animato);
-      etichetta._lettere = lettere;
-    }
-
-    var inScrittura = [];
-    function scrivi(etichetta) {
-      if (!etichetta._lettere) return;
-      var cursore = crea('i', 'caret');
-      inScrittura.push({ lettere: etichetta._lettere, partenza: performance.now(), fatte: 0, cursore: cursore });
-      if (inScrittura.length === 1) requestAnimationFrame(passoScrittura);
-    }
-    // Un solo ciclo per tutte le etichette che si stanno scrivendo: una lettera ogni 26 ms
-    function passoScrittura(ora) {
-      inScrittura = inScrittura.filter(function (q) {
-        var totale = q.lettere.length;
-        var quante = Math.min(totale, Math.max(1, Math.floor((ora - q.partenza) / 26) + 1));
-        if (quante !== q.fatte) {
-          for (; q.fatte < quante; q.fatte++) q.lettere[q.fatte].classList.add('v');
-          q.lettere[quante - 1].after(q.cursore);        // il cursore sta dopo l'ultima lettera scritta
-        }
-        if (quante >= totale) {
-          setTimeout(function () { q.cursore.remove(); }, 1100);
-          return false;
-        }
-        return true;
-      });
-      if (inScrittura.length) requestAnimationFrame(passoScrittura);
     }
 
     // --- Numeri: salgono da 0 con andamento esponenziale, una volta sola ---
@@ -212,16 +149,43 @@
     if (!RIDOTTO) {
       var titolo = document.querySelector('.hero h1');
       if (titolo) dividiTitolo(titolo);
+      // Anche i titoli di sezione salgono parola per parola quando entrano nello schermo
+      tutti('main h2').forEach(function (t) {
+        if (t.closest('dialog')) return;
+        t.classList.remove('rv');
+        t.classList.add('tit');
+        dividiTitolo(t);
+      });
+      // Scalino: gli elementi fratelli che compaiono insieme entrano uno dopo l'altro (max 4 passi)
+      var gruppi = new Map();
+      tutti('.rv').forEach(function (el) {
+        var lista = gruppi.get(el.parentNode) || [];
+        lista.push(el);
+        gruppi.set(el.parentNode, lista);
+      });
+      gruppi.forEach(function (lista) {
+        var n = lista.length;
+        lista.forEach(function (el, i) {
+          if (n > 1 && !el.style.getPropertyValue('--d')) el.style.setProperty('--d', Math.min(i, 3) * 110 + 'ms');   // chi ha già un ritardo suo lo tiene
+          if (/\ba-/.test(el.className)) return;
+          var v = '';
+          if (el.classList.contains('lead')) v = 'a-dolce';
+          else if (el.classList.contains('card-blu') || el.classList.contains('banner') || el.classList.contains('pannello')) v = 'a-zoom';
+          else if (/\b(scheda-b|cliente|passo)\b/.test(el.className)) {
+            // schede in fila: la prima arriva da sinistra, l'ultima da destra, quelle in mezzo salgono ingrandendosi
+            if (n === 2) v = i ? 'a-dx' : 'a-sx';
+            else if (n === 3) v = ['a-sx', 'a-zoom', 'a-dx'][i];
+            else if (n > 3) v = i % 2 ? 'a-zoom' : '';
+          } else if (el.classList.contains('label')) v = 'a-alto';
+          if (v) el.classList.add(v);
+        });
+      });
       tutti('.hl').forEach(dividiEvidenziatore);
-      tutti('.chalk:not(.cnote)').forEach(function (g) { gesso(g, g.textContent.replace(/\s+/g, ' ').trim()); });
-      // Solo l'etichetta della hero si scrive lettera per lettera; le altre compaiono con il normale reveal (classe "rv")
-      tutti('.hero .label').forEach(preparaEtichetta);
       tutti('.num').forEach(preparaNumero);
 
-      var bersagli = tutti('.rv, .label, .num, .hl, .meta, .chalk:not(.cnote), .draw');
+      var bersagli = tutti('.rv, .tit, .num, .hl');
       var comparsa = function (elemento) {
         elemento.classList.add('in');
-        if (elemento.classList.contains('label')) scrivi(elemento);
         if (elemento.classList.contains('num')) conta(elemento);
       };
 
@@ -254,7 +218,112 @@
       var righe = new IntersectionObserver(function (voci) {
         voci.forEach(function (voce) { voce.target.classList.toggle('on', voce.isIntersecting); });
       }, { rootMargin: '-42% 0px -42% 0px' });
-      tutti('.row-c').forEach(function (r) { righe.observe(r); });
+      tutti('.cliente').forEach(function (r) { righe.observe(r); });
+    }
+
+    /* ======================================================================
+       3b. POPUP
+       I dettagli si aprono in un <dialog>. Senza JavaScript (o dove <dialog> non esiste) restano contenuti normali nella pagina.
+       ====================================================================== */
+
+    if (typeof HTMLDialogElement === 'undefined' || !document.createElement('dialog').showModal) {
+      radice.classList.add('no-popup');
+    } else {
+      tutti('[data-apri]').forEach(function (bottone) {
+        bottone.addEventListener('click', function (e) {
+          var finestra = document.getElementById(bottone.getAttribute('data-apri'));
+          if (!finestra) return;
+          e.preventDefault();                                   // il link a #contatti serve solo senza JavaScript
+          var aperta = bottone.closest('dialog');
+          if (aperta && aperta !== finestra) aperta.close();    // da un popup a un altro
+          finestra.showModal();
+          finestra.scrollTop = 0;
+          var dentro = finestra.querySelector('.popup-in');
+          if (dentro) dentro.scrollTop = 0;
+          radice.classList.add('blocca');     // la pagina sotto non scorre
+        });
+      });
+      tutti('dialog').forEach(function (finestra) {
+        // Si chiude con la X, con Esc (lo fa il browser) o con un tocco fuori dalla carta
+        finestra.addEventListener('click', function (e) {
+          if (e.target === finestra || (e.target.closest && e.target.closest('[data-chiudi]'))) finestra.close();
+        });
+        finestra.addEventListener('close', function () {
+          finestra.classList.remove('luce-on');
+          if (!document.querySelector('dialog[open]')) radice.classList.remove('blocca');
+        });
+        // Con il mouse, una luce beige segue il puntatore dentro il popup
+        var luceDentro = finestra.querySelector('.pop-luce');
+        if (luceDentro && MOUSE && !RIDOTTO) {
+          finestra.addEventListener('pointermove', function (e) {
+            var r = finestra.getBoundingClientRect();
+            luceDentro.style.transform = 'translate3d(' + (e.clientX - r.left).toFixed(0) + 'px,' + (e.clientY - r.top).toFixed(0) + 'px,0)';
+            finestra.classList.add('luce-on');
+          }, { passive: true });
+          finestra.addEventListener('pointerleave', function () { finestra.classList.remove('luce-on'); });
+        }
+      });
+    }
+
+    /* ======================================================================
+       3c. BAGLIORI SUI TASTI
+       Luce che segue il mouse dentro il tasto e lampo dal punto premuto (anche tocco e tastiera).
+       ====================================================================== */
+
+    if (!RIDOTTO) {
+      var TASTI = '.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap, .commuta button, .sfoglia-tasto, a.tassello';
+      // La luce deve vedersi sul fondo del tasto: beige su fondo scuro, blu su fondo chiaro.
+      // I tasti vuoti (.btn-o) al passaggio si riempiono del colore opposto a quello che hanno intorno, e le tessere beige (.tassello-chiaro)
+      // sono chiare dentro una scheda blu: per loro la regola si inverte.
+      var luceBeige = function (tasto) {
+        var scuro = !!tasto.closest(BLU);
+        return tasto.matches('.btn-o, .tassello-chiaro') ? !scuro : scuro;
+      };
+      var coloreLuce = function (tasto) {
+        return luceBeige(tasto) ? '234, 223, 200' : '70, 100, 215';
+      };
+      var lampo = function (tasto, x, y) {
+        var r = tasto.getBoundingClientRect();
+        var l = crea('span', 'lampo');
+        l.setAttribute('aria-hidden', 'true');
+        l.style.setProperty('--lc', coloreLuce(tasto));
+        l.style.setProperty('--lx', (x - r.left) + 'px');
+        l.style.setProperty('--ly', (y - r.top) + 'px');
+        // Ogni lampo è un po' diverso: durata e grandezza variano a caso
+        l.style.setProperty('--ld', (0.65 + Math.random() * 0.45).toFixed(2) + 's');
+        l.style.setProperty('--le', (2 + Math.random() * 1.2).toFixed(2));
+        tasto.appendChild(l);
+        l.addEventListener('animationend', function () { l.remove(); });
+      };
+      document.addEventListener('pointerdown', function (e) {
+        var t = e.target.closest && e.target.closest(TASTI);
+        if (t) lampo(t, e.clientX, e.clientY);
+      }, { passive: true });
+      // Tastiera (Invio o Spazio): il lampo parte dal centro del tasto
+      document.addEventListener('click', function (e) {
+        if (e.detail !== 0) return;
+        var t = e.target.closest && e.target.closest(TASTI);
+        if (!t) return;
+        var r = t.getBoundingClientRect();
+        lampo(t, r.left + r.width / 2, r.top + r.height / 2);
+      });
+      if (MOUSE) {
+        document.addEventListener('pointermove', function (e) {
+          var t = e.target.closest && e.target.closest(TASTI);
+          if (!t) return;
+          var luce = t.querySelector(':scope > .luce-b');
+          if (!luce) {
+            luce = crea('span', 'luce-b');
+            luce.setAttribute('aria-hidden', 'true');
+            luce.style.setProperty('--lc', coloreLuce(t));
+            luce.style.setProperty('--la', luceBeige(t) ? '0.3' : '0.36');   // un po' meno forte la luce beige, perché il testo sopra è beige
+            t.appendChild(luce);
+          }
+          var r = t.getBoundingClientRect();
+          luce.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          luce.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        }, { passive: true });
+      }
     }
 
     /* ======================================================================
@@ -292,6 +361,9 @@
         var cima = (misure.heroTop || 0) - window.scrollY;
         meta.x = (e.clientX - window.innerWidth / 2) * 0.55;
         meta.y = (e.clientY - cima - (misure.heroH || 0) * 0.4) * 0.45;
+        // Verso il basso la luce non va oltre il suo posto di riposo: più giù il bordo della hero la taglierebbe
+        // e tra la hero e "Chi sono" si vedrebbe un gradino di colore (misurato: fino a 16 livelli su 255)
+        if (meta.y > 0) meta.y = 0;
         if (!luceInCorsa) { luceInCorsa = true; requestAnimationFrame(giraLuce); }
       }, { passive: true });
     }
@@ -303,7 +375,8 @@
       anello.appendChild(crea('i'));
       var bagliore = crea('div', 'cur-glow');
       bagliore.setAttribute('aria-hidden', 'true');
-      bagliore.appendChild(crea('i'));
+      bagliore.appendChild(crea('i', 'd'));   // strato beige (sfondo scuro)
+      bagliore.appendChild(crea('i', 'l'));   // strato blu (sfondo chiaro)
       document.body.appendChild(bagliore);
       document.body.appendChild(anello);
 
@@ -317,19 +390,55 @@
                       Math.abs(mouse.x - b.x) > 0.4 || Math.abs(mouse.y - b.y) > 0.4;
         if (lontano) requestAnimationFrame(giraCursore); else cursoreInCorsa = false;
       };
+      // Il fondo sotto il puntatore è chiaro o scuro? Si risale dall'elemento: il primo antenato con uno sfondo pieno decide
+      // (un pulsante blu in una sezione crema è scuro; un pulsante beige dentro il banner blu è chiaro).
+      // Le sfumature stanno su ::before e sulle classi blu: per quelle si guarda la classe.
+      function fondoScuro(el) {
+        for (var e = el; e && e.nodeType === 1; e = e.parentElement) {
+          if (e.matches(BLU)) return true;
+          if (e.matches('.sez-chiara, .nav')) return false;
+          var m = /rgba?\(([^)]+)\)/.exec(getComputedStyle(e).backgroundColor);
+          if (m) {
+            var c = m[1].split(/[ ,\/]+/).map(Number);
+            var alfa = c.length > 3 ? c[3] : 1;
+            if (alfa >= 0.6) return (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) < 120;   // luminosità approssimata
+          }
+        }
+        return false;
+      }
+      function aggiornaCursore(sopra) {
+        if (!sopra || !sopra.closest) return;
+        var grande = !!sopra.closest('a, button, summary, .cliente');
+        var nellaHero = !!sopra.closest('.hero');
+        // Anello: segue l'elemento sotto il puntatore (anche un riquadro blu dentro una sezione crema)
+        var anelloChiaro = !fondoScuro(sopra);
+        // Bagliore: sta sopra gli sfondi (anche quelli dei riquadri blu) e sotto il testo; stesso criterio dell'anello
+        // (sfondo chiaro = luce blu, sfondo scuro = luce beige)
+        anello.classList.add('vis');
+        bagliore.classList.add('vis');
+        anello.classList.toggle('big', grande);
+        anello.classList.toggle('su-chiaro', anelloChiaro);
+        bagliore.classList.toggle('big', grande);
+        bagliore.classList.toggle('su-chiaro', anelloChiaro);
+        bagliore.classList.toggle('fuori', nellaHero);   // nella hero c'è già la sua luce
+        if (!cursoreInCorsa) { cursoreInCorsa = true; requestAnimationFrame(giraCursore); }
+      }
       window.addEventListener('pointermove', function (e) {
         if (e.pointerType && e.pointerType !== 'mouse') return;
         if (!anello.classList.contains('vis')) { a.x = b.x = e.clientX; a.y = b.y = e.clientY; }
         mouse.x = e.clientX; mouse.y = e.clientY;
-        var sopra = e.target && e.target.closest ? e.target : null;
-        var grande = !!(sopra && sopra.closest('a, button, summary, .row-c'));
-        var nellaHero = !!(sopra && sopra.closest('.hero'));
-        anello.classList.add('vis');
-        bagliore.classList.add('vis');
-        anello.classList.toggle('big', grande);
-        bagliore.classList.toggle('big', grande);
-        bagliore.classList.toggle('fuori', nellaHero);   // nella hero c'è già la sua luce
-        if (!cursoreInCorsa) { cursoreInCorsa = true; requestAnimationFrame(giraCursore); }
+        aggiornaCursore(e.target);
+      }, { passive: true });
+      // Anche quando il mouse sta fermo e scorre la pagina, sotto il puntatore arriva un altro sfondo
+      var scrollInCorsa = false;
+      window.addEventListener('scroll', function () {
+        if (scrollInCorsa || !anello.classList.contains('vis')) return;
+        scrollInCorsa = true;
+        requestAnimationFrame(function () {
+          scrollInCorsa = false;
+          var el = document.elementFromPoint(mouse.x, mouse.y);
+          if (el) aggiornaCursore(el);
+        });
       }, { passive: true });
       radice.addEventListener('mouseleave', function () {
         anello.classList.remove('vis');
@@ -338,60 +447,115 @@
     }
 
     /* ======================================================================
-       5. STORIA DEL CASO STUDIO
-       Il telefono è uno solo e mostra lo stato del passo che si sta leggendo.
+       5. CASO STUDIO: PRIMA E DOPO, PAGINE DEGLI APPROFONDIMENTI
+       a) Un interruttore (Prima / Dopo) cambia l'attributo data-v del contenitore .prof.
+          Il resto (quale stato si vede, le dissolvenze, l'anello dell'avatar) lo fa il CSS.
+       b) Quattro tasti scelgono quale pagina degli approfondimenti si vede: JavaScript sposta
+          la classe "on" (pagina che entra) e "esce" (pagina che se ne va) e dice al CSS da che
+          parte scorre (--dir). L'animazione e lo spostamento sono tutti nel CSS.
        ====================================================================== */
 
-    var storia = document.getElementById('story');
-    var stage = document.getElementById('stage');
-    var passi = tutti('.step');
-    var stati = tutti('.scr');
-    var alone = document.getElementById('halo');
-    var nota = document.getElementById('cnote');
-
-    // Un'annotazione a gesso per ogni passo, sotto il telefono
-    var NOTE = [
-      'nessun passo da fare',
-      'una promessa e un passo',
-      'definizione, non consigli',
-      'due sigle, una differenza',
-      'un meccanismo, non paura',
-      'il limite, detto chiaro',
-      '2 settimane, 4 pilastri'
-    ];
-
-    var statoCorrente = -2;
-    var numeroNota = 0;
-    function impostaStato(n) {
-      if (n === statoCorrente) return;
-      statoCorrente = n;
-      stati.forEach(function (s, i) { s.classList.toggle('on', i === n); });
-      passi.forEach(function (p, i) { p.classList.toggle('on', i === n); });
-      if (!nota) return;
-      var questa = ++numeroNota;
-      nota.classList.remove('in');
-      if (n < 0) { nota.textContent = ''; return; }
-      if (RIDOTTO) { nota.textContent = NOTE[n]; return; }
-      gesso(nota, NOTE[n]);
-      // Aspetto due frame così le lettere nascoste sono già disegnate, poi parte la scrittura
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { if (questa === numeroNota) nota.classList.add('in'); });
-      });
-      // La luce dietro il telefono pulsa una volta a ogni cambio
-      if (alone) {
-        alone.classList.remove('pulse');
-        void alone.offsetWidth;
-        alone.classList.add('pulse');
+    tutti('[data-prof]').forEach(function (blocco) {
+      var tasti = tutti('.commuta button', blocco);
+      function impostaStato(stato) {
+        blocco.setAttribute('data-v', stato);
+        // aria-pressed dice allo screen reader quale dei due tasti è attivo
+        tasti.forEach(function (t) { t.setAttribute('aria-pressed', t.getAttribute('data-v') === stato ? 'true' : 'false'); });
       }
-    }
+      tasti.forEach(function (t) {
+        t.addEventListener('click', function () { impostaStato(t.getAttribute('data-v')); });
+      });
+    });
+
+    tutti('[data-sfoglia]').forEach(function (blocco) {
+      var lista = blocco.querySelector('.sfoglia-tasti');
+      var tasti = tutti('.sfoglia-tasto', blocco);
+      var pagine = tasti.map(function (t) { return document.getElementById(t.getAttribute('data-pagina')); });
+      var corrente = 0;
+
+      // Per gli screen reader: una lista di schede (tab), ognuna collegata alla sua pagina (tabpanel)
+      lista.setAttribute('role', 'tablist');
+      lista.setAttribute('aria-label', 'Approfondimenti sul caso studio');
+      tasti.forEach(function (t, i) {
+        t.id = 'tab-' + pagine[i].id;
+        t.setAttribute('role', 'tab');
+        t.setAttribute('aria-controls', pagine[i].id);
+        pagine[i].setAttribute('role', 'tabpanel');
+        pagine[i].setAttribute('aria-labelledby', t.id);
+      });
+
+      // Mostra la pagina numero i. Il verso (+1 avanti, -1 indietro) decide da che parte entra e da che parte esce.
+      function vai(i, conFocus) {
+        if (i < 0 || i >= pagine.length) return;
+        if (i !== corrente) {
+          blocco.style.setProperty('--dir', i > corrente ? 1 : -1);
+          pagine[corrente].classList.remove('on');
+          pagine[corrente].classList.add('esce');
+          pagine[i].classList.remove('esce');
+          pagine[i].classList.add('on');
+          corrente = i;
+        }
+        // aria-selected dice quale scheda è attiva; con tabindex solo quella attiva si raggiunge con Tab, le altre con le frecce
+        tasti.forEach(function (t, k) {
+          t.setAttribute('aria-selected', k === corrente ? 'true' : 'false');
+          t.tabIndex = k === corrente ? 0 : -1;
+        });
+        // Il CSS sposta la "lente" di vetro sotto il tasto scelto leggendo questo numero (data-a)
+        lista.setAttribute('data-a', corrente);
+        if (conFocus) tasti[corrente].focus();
+      }
+
+      pagine[0].classList.add('on');
+      vai(0, false);
+
+      // Quando la pagina che esce ha finito di dissolversi le tolgo la classe "esce": sparisce del tutto dal layout
+      pagine.forEach(function (pagina) {
+        pagina.addEventListener('animationend', function (e) {
+          if (e.target === pagina && e.animationName === 'pagina-esce') pagina.classList.remove('esce');
+        });
+      });
+
+      tasti.forEach(function (t, i) {
+        t.addEventListener('click', function () { vai(i, false); });
+        // Tastiera: frecce, Home e Fine passano da una scheda all'altra
+        t.addEventListener('keydown', function (e) {
+          var k = e.key, n = tasti.length, dest = -1;
+          if (k === 'ArrowRight' || k === 'ArrowDown') dest = (corrente + 1) % n;
+          else if (k === 'ArrowLeft' || k === 'ArrowUp') dest = (corrente - 1 + n) % n;
+          else if (k === 'Home') dest = 0;
+          else if (k === 'End') dest = n - 1;
+          if (dest < 0) return;
+          e.preventDefault();
+          vai(dest, true);
+        });
+      });
+
+      // Al tocco: uno scorrimento orizzontale sulla pagina passa alla successiva o alla precedente
+      var zona = blocco.querySelector('.sfoglia-pagine');
+      var x0 = 0, y0 = 0;
+      var tocco = false;
+      zona.addEventListener('touchstart', function (e) {
+        x0 = e.touches[0].clientX;
+        y0 = e.touches[0].clientY;
+        // se il dito parte da una striscia del calendario, lo scorrimento è suo (sposta i giorni): non cambio pagina
+        tocco = !e.target.closest('.striscia-scorri');
+      }, { passive: true });
+      zona.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - x0;
+        var dy = e.changedTouches[0].clientY - y0;
+        // conta solo un gesto deciso e più orizzontale che verticale (altrimenti è uno scroll della pagina)
+        if (tocco && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) vai(corrente + (dx < 0 ? 1 : -1), false);
+      }, { passive: true });
+    });
 
     /* ======================================================================
-       6. SCROLL: BARRA "STORIE", PARALLASSE DELLA FOTO, STATO DEL TELEFONO
+       6. MENU E SCROLL: BARRA "STORIE" E VOCE ATTIVA
        Un solo gestore, al massimo una volta per frame. Le posizioni sono misurate una volta
        (e rimisurate se la pagina cambia dimensione), così a ogni scroll non si legge il layout.
        ====================================================================== */
 
     var sezioni = tutti('main > section');
+    var menu = document.getElementById('nav');
     var riempimenti = [];
     var barra = crea('div', 'story-bar');
     barra.setAttribute('aria-hidden', 'true');
@@ -402,14 +566,31 @@
       barra.appendChild(segmento);
       riempimenti.push(riempimento);
     });
-    document.body.appendChild(barra);
+    (menu || document.body).appendChild(barra);
 
-    var foto = document.querySelector('.photo');
+    // Voce del menu della sezione in lettura (una per id di sezione)
+    var vociMenu = {};
+    tutti('.nav-menu a').forEach(function (a) { vociMenu[a.getAttribute('href').slice(1)] = a; });
+    var voceCorrente = null;
+
+    // Pulsante "menu" sul telefono: apre e chiude l'elenco. Si chiude con Esc, con un tocco su una voce o sul resto della pagina
+    var pulsante = document.querySelector('.menu-btn');
+    function apriMenu(si) {
+      if (!menu || !pulsante) return;
+      menu.classList.toggle('aperto', si);
+      pulsante.setAttribute('aria-expanded', si ? 'true' : 'false');
+      pulsante.setAttribute('aria-label', si ? 'Chiudi il menu' : 'Apri il menu');
+    }
+    if (pulsante && menu) {
+      pulsante.addEventListener('click', function () { apriMenu(!menu.classList.contains('aperto')); });
+      menu.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.nav-menu a')) apriMenu(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') apriMenu(false); });
+      document.addEventListener('click', function (e) { if (!menu.contains(e.target)) apriMenu(false); });
+    }
 
     function misura() {
       var y = window.scrollY;
       misure.vh = window.innerHeight;
-      misure.larga = window.innerWidth >= 860;
       misure.massimo = Math.max(0, document.documentElement.scrollHeight - misure.vh);
       misure.sezioni = sezioni.map(function (s) {
         var r = s.getBoundingClientRect();
@@ -420,25 +601,21 @@
         misure.heroTop = rh.top + y;
         misure.heroH = rh.height;
       }
-      if (storia && stage) {
-        var rs = storia.getBoundingClientRect();
-        misure.storiaTop = rs.top + y;
-        misure.storiaH = rs.height;
-        misure.stageH = stage.offsetHeight;
-        misure.passi = passi.map(function (p) { return p.getBoundingClientRect().top + y; });
-      }
-      if (foto) {
-        var rf = foto.getBoundingClientRect();
-        misure.foto = { top: rf.top + y, h: rf.height };
-      }
     }
 
     var inAttesa = false;
     var ultimaBarra = [];
+    var fondoBlu = false;
     function aggiorna() {
       inAttesa = false;
       if (!misure.sezioni) return;
       var y = window.scrollY, vh = misure.vh;
+
+      // Colore di html: crema di base, blu quando il bordo basso dello schermo è dentro contatti e piè di pagina (le ultime due parti, blu).
+      // Si vede nel rimbalzo dello scroll su iPhone e iPad e, in Safari 26, nella tinta delle barre del browser.
+      var ultima = misure.sezioni[misure.sezioni.length - 1];
+      var blu = ultima ? (y + vh > ultima.top + 80) : false;
+      if (blu !== fondoBlu) { fondoBlu = blu; radice.classList.toggle('fondo-scuro', blu); }
 
       // Barra "storie": un segmento per sezione, si riempie mentre quella sezione passa a metà schermo
       misure.sezioni.forEach(function (s, i) {
@@ -450,29 +627,14 @@
         if (valore !== ultimaBarra[i]) { riempimenti[i].style.transform = valore; ultimaBarra[i] = valore; }
       });
 
-      // Ritratto: leggero parallasse, solo transform (con "riduci movimento" non si muove)
-      if (foto && !RIDOTTO && misure.foto) {
-        var q = (misure.foto.top + misure.foto.h / 2 - y - vh / 2) / vh;
-        if (Math.abs(q) < 1.3) foto.style.setProperty('--py', Math.max(-15, Math.min(15, q * -30)).toFixed(1) + 'px');
-      }
-
-      // Telefono: quale passo si sta leggendo?
-      if (storia && misure.passi) {
-        if (y < misure.storiaTop - vh || y > misure.storiaTop + misure.storiaH) {
-          impostaStato(-1);
-        } else {
-          var soglia;   // un passo è "in lettura" quando la sua cima supera questa linea (in coordinate della pagina)
-          if (misure.larga) {
-            soglia = y + vh * 0.55;
-          } else {
-            // Su telefono lo stage è fisso in alto: sotto il suo bordo inferiore (+ 40px) c'è il testo del passo
-            var bordoStage = Math.max(misure.stageH, misure.storiaTop + misure.stageH - y);
-            soglia = y + bordoStage + 40;
-          }
-          var attivo = 0;
-          misure.passi.forEach(function (cima, i) { if (cima <= soglia) attivo = i; });
-          impostaStato(attivo);
-        }
+      // Voce del menu: l'ultima sezione la cui cima ha superato il 40% dello schermo
+      var attiva = 0;
+      misure.sezioni.forEach(function (s, i) { if (s.top <= y + vh * 0.4) attiva = i; });
+      var voce = vociMenu[sezioni[attiva].id] || null;
+      if (voce !== voceCorrente) {
+        if (voceCorrente) voceCorrente.removeAttribute('aria-current');
+        if (voce) voce.setAttribute('aria-current', 'location');
+        voceCorrente = voce;
       }
     }
     function pianifica() {

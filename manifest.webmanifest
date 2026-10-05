@@ -1,0 +1,16 @@
+{
+  "name": "Matteo Rapeso | Strategia e contenuti per profili social",
+  "short_name": "Matteo Rapeso",
+  "description": "Strategia e contenuti per profili social: creator, attività locali, startup.",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#F7F2E8",
+  "theme_color": "#F7F2E8",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

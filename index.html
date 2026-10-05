@@ -2,38 +2,62 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Matteo Rapeso | Strategia e contenuti per profili social</title>
   <meta name="description" content="Strategia e contenuti per profili social: creator, attività locali, startup. Il metodo è mostrato in un caso studio dimostrativo con dati fittizi.">
-  <meta name="theme-color" content="#0B0B0A">
-  <meta name="color-scheme" content="dark">
+  <meta name="author" content="Matteo Rapeso">
+  <meta name="theme-color" content="#F7F2E8">
+  <meta name="color-scheme" content="light">
 
-  <!-- Condivisione (Open Graph). Per og:image e og:url servono indirizzi assoluti:
-       sono l'unica eccezione ai percorsi relativi del resto del sito. -->
+  <!-- Indirizzo "ufficiale" della pagina: dice ai motori di ricerca quale indirizzo contare se la stessa pagina è raggiungibile da più strade
+   (con e senza www, o dal vecchio indirizzo github.io). Quando arriva il dominio personalizzato si cambia qui, in og:url, in og:image e nei dati strutturati. -->
+  <link rel="canonical" href="https://matteorp.github.io/portfolio-matteo/">
+
+  <!-- Condivisione (Open Graph). Per og:image, og:url, canonical e dati strutturati servono indirizzi assoluti:
+   sono l'unica eccezione ai percorsi relativi del resto del sito. -->
   <meta property="og:url" content="https://matteorp.github.io/portfolio-matteo/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
   <meta property="og:title" content="Matteo Rapeso | Strategia e contenuti per profili social">
   <meta property="og:description" content="Strategia e contenuti per profili social: creator, attività locali, startup. Il metodo è mostrato in un caso studio dimostrativo con dati fittizi.">
-  <meta property="og:image" content="https://matteorp.github.io/portfolio-matteo/assets/og-image.png">
+  <meta property="og:image" content="https://matteorp.github.io/portfolio-matteo/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Matteo Rapeso, strategia e contenuti per profili social">
+  <meta property="og:image:alt" content="Matteo Rapeso, strategia e contenuti per profili social. Caso studio dimostrativo con dati fittizi.">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Icone -->
+  <!-- Dati strutturati (schema.org) per i motori di ricerca: chi è la persona e dove trovarla. Solo fatti veri:
+   niente clienti, premi o recensioni. Non è codice che gira: è un blocco di testo JSON. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Matteo Rapeso",
+    "url": "https://matteorp.github.io/portfolio-matteo/",
+    "jobTitle": "Social media manager",
+    "description": "Strategia e contenuti per profili social, per creator, attività locali e startup.",
+    "sameAs": ["https://www.instagram.com/matteorapeso/"]
+  }
+  </script>
+
+  <!-- Icone: favicon (ICO per i browser che non leggono l'SVG, come Safari su Mac; sizes="32x32" evita che Chrome scelga l'ICO al posto dell'SVG),
+   icona per la schermata Home di iPhone e iPad (180x180, piena: la maschera con gli angoli la mette iOS) e manifesto per Android -->
+  <link rel="icon" href="assets/favicon.ico" sizes="32x32">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="Matteo Rapeso">
 
   <!-- Font in locale. Si precaricano solo i tre critici per la prima schermata:
-       titolo (Inter Tight 800), testo (Inter 400) e parola chiave (Instrument Serif corsivo). -->
-  <link rel="preload" href="assets/fonts/inter-tight-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+   titoli (Inter 700), testo (Inter 400 e 500) e parola chiave (Instrument Serif corsivo). -->
+  <link rel="preload" href="assets/fonts/inter-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Segnala al CSS che JavaScript è attivo: gli stati iniziali nascosti del movimento (titoli, comparse, telefono del caso studio)
-       esistono solo sotto la classe "js". Senza JS tutti i contenuti restano visibili.
-       Paracadute: se main.js non parte entro 3 secondi, tolgo "js" così nulla resta nascosto in attesa dell'animazione. -->
+  <!-- Segnala al CSS che JavaScript è attivo: gli stati iniziali nascosti del movimento (titoli, comparse, profilo prima/dopo del caso studio)
+   esistono solo sotto la classe "js". Senza JS tutti i contenuti restano visibili.
+   Paracadute: se main.js non parte entro 3 secondi, tolgo "js" così nulla resta nascosto in attesa dell'animazione. -->
   <script>
     document.documentElement.className += ' js';
     setTimeout(function () {
@@ -48,13 +72,9 @@
 </head>
 <body>
 
-  <!-- Icone del mockup e freccia, definite una sola volta e riutilizzate -->
+  <!-- Icone (freccia e formati del calendario), definite una sola volta e riutilizzate -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <symbol id="i-freccia" viewBox="0 0 12 12"><path d="M2.5 9.5 9.5 2.5M3.8 2.5h5.7v5.7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="i-cuore" viewBox="0 0 24 24"><path d="M12 20s-7.2-4.4-7.2-9.9A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.2 2.5C19.2 15.6 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
-    <symbol id="i-commento" viewBox="0 0 24 24"><path d="M20 11.4a7.4 7.4 0 0 1-10.7 6.6L4.5 19.3l1.3-4.2A7.4 7.4 0 1 1 20 11.4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
-    <symbol id="i-invia" viewBox="0 0 24 24"><path d="M20.5 4 3.8 10.4l6.2 2.4 2.4 6.2L20.5 4zM10 12.8l4.6-4.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/></symbol>
-    <symbol id="i-salva" viewBox="0 0 24 24"><path d="M6.5 4h11v16l-5.5-4-5.5 4V4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
     <symbol id="i-carosello" viewBox="0 0 24 24"><rect x="3.5" y="7" width="12" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8.5 4.5h10a1.5 1.5 0 0 1 1.5 1.5v10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
     <symbol id="i-reel" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 8.5v7l5.5-3.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
     <symbol id="i-storia" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3.2 2.4"/><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
@@ -63,655 +83,739 @@
 
   <a class="salta" href="#contenuto">Vai al contenuto</a>
 
-  <header class="wrap bar">
-    <a class="brand" href="#top">Matteo Rapeso</a>
-    <a class="btn-o" href="#contatti">Scrivimi <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+  <!-- Menu in alto, fisso. La barra "storie" (un segmento per sezione) la crea JavaScript dentro questo elemento.
+   Senza JavaScript il menu resta visibile sotto la barra e non è fisso. -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <!-- Marchio MR + nome. Su telefono stretto resta solo il marchio (il nome è letto comunque dagli screen reader) -->
+      <a class="brand" href="#top"><img class="brand-logo" src="assets/logo.svg" width="36" height="36" alt=""><span class="brand-nome">Matteo Rapeso</span></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Apri il menu"><span></span><span></span></button>
+      <nav class="nav-menu" id="menu" aria-label="Principale">
+        <ul>
+          <li><a href="#chi-sono">Chi sono</a></li>
+          <li><a href="#metodo">Metodo</a></li>
+          <li><a href="#clienti">Per chi lavoro</a></li>
+          <li><a href="#caso-studio">Caso studio</a></li>
+        </ul>
+      </nav>
+      <a class="btn-o nav-cta" href="#contatti">Scrivimi <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+    </div>
   </header>
 
   <main id="contenuto">
 
-    <!-- ============ 1. HERO (testo del riferimento) ============ -->
-    <section class="hero" id="top" aria-labelledby="titolo-hero">
-      <!-- Luce beige dietro il titolo: respira da sola e, con il mouse, segue il puntatore -->
+    <!-- ============ 1. HERO: presentazione personale, solo testo e centrata ============ -->
+    <section class="hero sez-chiara" id="top" aria-labelledby="titolo-hero">
+      <!-- Luce dietro il titolo: respira da sola e, con il mouse, segue il puntatore -->
       <div class="luce" aria-hidden="true"><div class="luce-in"></div></div>
-      <div class="wrap">
-        <div class="toprow">
-          <p class="label">Strategia e contenuti per profili social</p>
-          <!-- Annotazione a gesso: il testo è scritto qui, JavaScript lo anima lettera per lettera -->
-          <div class="note-c">
-            <span class="chalk" style="--d:1100ms">ciao, sono Matteo</span>
-            <svg class="draw" viewBox="0 0 56 44" aria-hidden="true" focusable="false" style="--d:1500ms"><path pathLength="1" d="M4 8 C 22 2, 46 14, 50 36"/><path pathLength="1" d="M40 30 L50 38 L53 24"/></svg>
-          </div>
-        </div>
+      <div class="wrap hero-testo">
+        <!-- "Sono Matteo" ha il suo posto: una pillola sopra il titolo, non dentro la frase -->
+        <p class="saluto"><span class="punto" aria-hidden="true"></span>Ciao, sono Matteo</p>
 
-        <h1 id="titolo-hero">L’attenzione sul tuo profilo può diventare <em class="it">contatti, prenotazioni o iscrizioni.</em></h1>
+        <h1 id="titolo-hero">Strategia e contenuti, perché l’attenzione su un profilo possa diventare <em class="it">contatti, prenotazioni o iscrizioni.</em></h1>
 
-        <div class="hero-grid">
-          <div class="rv" style="--d:500ms">
-            <p class="lead">Ti mostro il metodo, <span class="hl">non risultati inventati</span>. Il sito racconta come lavoro con un caso dimostrativo: audit, strategia, calendario e post di esempio.</p>
-          </div>
-          <dl class="meta">
-            <div><dt>Ruolo</dt><dd>Strategia e contenuti per profili social</dd></div>
-            <div><dt>Per chi</dt><dd>Creator, attività locali, startup e brand digitali</dd></div>
-            <div><dt>Primo passo</dt><dd><a class="link-testo azione" href="#contatti">Call conoscitiva gratuita di 15 minuti <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a></dd></div>
-          </dl>
+        <p class="lead hero-lead rv" style="--d:500ms">Ti mostro il metodo, <span class="hl">non risultati inventati</span>, con un caso dimostrativo.</p>
+
+        <div class="cta rv" style="--d:600ms">
+          <a class="btn-p" href="#contatti" data-apri="p-call" aria-haspopup="dialog">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+          <a class="btn-o" href="#caso-studio">Guarda il caso studio <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
         </div>
       </div>
     </section>
 
-    <!-- ============ 2. COSA RISOLVO ============ -->
-    <section id="problemi" aria-labelledby="titolo-problemi">
-      <div class="wrap">
-        <!-- Un blocco unico, senza filetti: etichetta, frase grande e, di lato, il testo breve in colonna stretta -->
-        <div class="sec sec-problemi">
-          <p class="label rv">Cosa risolvo</p>
-          <h2 class="frase rv" id="titolo-problemi">Parto da un <span class="it">problema</span>, non da un settore.</h2>
-          <div class="problemi-testo">
-            <article class="problema rv" style="--d:120ms">
-              <p class="n" aria-hidden="true">01</p>
-              <h3>Un profilo poco riconoscibile</h3>
-              <p>Chi arriva sul profilo non capisce subito di cosa ti occupi, cosa ti distingue e perché dovrebbe seguirti. Lavoro su posizionamento, linea editoriale e formati ricorrenti, perché ogni contenuto abbia un ruolo preciso.</p>
-            </article>
-            <article class="problema rv" style="--d:200ms">
-              <p class="n" aria-hidden="true">02</p>
-              <h3>Attenzione che non diventa azione</h3>
-              <p>Il profilo viene guardato, ma non è chiaro cosa fare dopo: scrivere, prenotare, iscriversi. Lavoro sul percorso che porta dal contenuto al passo successivo: bio, link, inviti all’azione e contenuti pensati per arrivarci.</p>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 3. IL METODO, IN NUMERI ============
-         Quattro passi in colonne affiancate (testi esistenti), poi la striscia dei numeri del riferimento, più piccola:
-         le due cose si leggono come una sola sezione. La striscia ha tre numeri (2, 4, 15): il "4 passi di lavoro" è stato tolto
-         perché ripeteva le quattro colonne qui sopra. -->
-    <section id="metodo" aria-labelledby="titolo-metodo">
+    <!-- ============ 2. CHI SONO ============ -->
+    <section class="sez-chiara" id="chi-sono" aria-labelledby="titolo-chi">
       <div class="wrap">
         <div class="sec">
+          <p class="label rv">Chi sono</p>
+          <div class="sec-corpo">
+            <h2 class="rv" id="titolo-chi">Matteo <span class="it">Rapeso.</span></h2>
+            <div class="sec-nota">
+              <p class="lead rv" style="--d:100ms">Mi occupo di strategia e contenuti per profili social. Analizzo come un profilo si presenta, definisco una linea editoriale, pianifico i contenuti e rivedo il lavoro sui dati disponibili.</p>
+              <p class="muted rv" style="--d:160ms">Questo sito è il mio primo progetto: non mostra clienti né risultati reali, ma il metodo con cui lavoro, applicato a un caso dimostrativo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. COSA RISOLVO ============ -->
+    <section class="sez-scura" id="problemi" aria-labelledby="titolo-problemi">
+      <div class="wrap">
+        <div class="sec sec-centro">
+          <p class="label rv">Cosa risolvo</p>
+          <div>
+            <h2 class="rv" id="titolo-problemi">Parto da un <span class="it">problema</span>, non da un settore.</h2>
+            <div class="schede">
+              <article class="scheda-b rv" style="--d:120ms">
+                <h3>Un profilo poco riconoscibile</h3>
+                <p>Chi arriva non capisce subito di cosa ti occupi né perché dovrebbe seguirti.</p>
+              </article>
+              <article class="scheda-b rv" style="--d:200ms">
+                <h3>Attenzione che non diventa azione</h3>
+                <p>Il profilo viene guardato, ma non è chiaro cosa fare dopo: scrivere, prenotare, iscriversi.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. IL METODO, IN NUMERI ============
+     Quattro passi in colonne affiancate (testi esistenti), poi la striscia dei numeri, più piccola:
+     le due cose si leggono come una sola sezione. La striscia ha tre numeri (2, 4, 15): il "4 passi di lavoro" è stato tolto
+     perché ripeteva le quattro colonne qui sopra. -->
+    <section class="sez-chiara" id="metodo" aria-labelledby="titolo-metodo">
+      <div class="wrap">
+        <div class="sec sec-centro">
           <p class="label rv">Il metodo, in numeri</p>
           <h2 class="rv" id="titolo-metodo">Quattro passi, una <span class="it">ragione</span> per ognuno.</h2>
         </div>
 
         <ol class="passi">
           <li class="passo rv" style="--d:0ms">
-            <p class="n" aria-hidden="true">01</p>
             <h3>Audit</h3>
-            <p>Guardo il profilo come lo vede chi arriva per la prima volta: cosa dice, cosa promette, cosa chiede di fare.</p>
+            <p>Guardo il profilo come lo vede chi arriva per la prima volta.</p>
           </li>
           <li class="passo rv" style="--d:80ms">
-            <p class="n" aria-hidden="true">02</p>
             <h3>Strategia</h3>
-            <p>Pilastri di contenuto, tono e canali. Ogni scelta ha una motivazione scritta, così si può discutere e correggere.</p>
+            <p>Pilastri, tono e canali, ognuno con la sua motivazione.</p>
           </li>
           <li class="passo rv" style="--d:160ms">
-            <p class="n" aria-hidden="true">03</p>
-            <h3>Calendario e contenuti</h3>
-            <p>Un calendario che chi lo segue riesce davvero a mantenere. Per ogni post, una logica dichiarata: perché esiste e cosa deve far fare.</p>
+            <h3>Calendario</h3>
+            <p>Un calendario sostenibile, con una logica per ogni post.</p>
           </li>
           <li class="passo rv" style="--d:240ms">
-            <p class="n" aria-hidden="true">04</p>
             <h3>Revisione</h3>
-            <p>Obiettivi dichiarati come ipotesi, riletti sui dati dopo le prime settimane: cosa tenere, cosa cambiare.</p>
+            <p>Obiettivi come ipotesi, riletti sui dati dopo le prime settimane.</p>
           </li>
         </ol>
 
-        <ul class="stats" role="list">
-          <li class="stat rv" style="--d:0ms"><span class="num">2</span><p>Settimane di calendario</p></li>
-          <li class="stat rv" style="--d:80ms"><span class="num">4</span><p>Pilastri di contenuto</p></li>
-          <li class="stat rv" style="--d:160ms"><span class="num">15</span><p>Minuti, la prima call</p></li>
+        <ul class="stats rv" role="list">
+          <li class="stat"><span class="num">2</span><p>Settimane di calendario</p></li>
+          <li class="stat"><span class="num">4</span><p>Pilastri di contenuto</p></li>
+          <li class="stat"><span class="num">15</span><p>Minuti, la prima call</p></li>
         </ul>
-        <div class="noterow">
-          <p class="note rv" style="--d:240ms">Sono numeri del metodo, non risultati. Il caso studio è dimostrativo: attività e dati fittizi.</p>
-          <div class="note-c">
-            <svg class="draw" viewBox="0 0 56 44" aria-hidden="true" focusable="false" style="--d:600ms"><path pathLength="1" d="M6 40 C 10 18, 34 8, 50 10"/><path pathLength="1" d="M40 2 L51 10 L40 18"/></svg>
-            <span class="chalk" style="--d:400ms">metodo, non risultati</span>
+        <!-- Banner blu: è la nota di onestà, ma con più peso -->
+        <div class="banner rv">
+          <div>
+            <p class="piccolo">Onestà</p>
+            <p class="banner-testo">Sono numeri del metodo, <span class="it">non risultati.</span></p>
           </div>
+          <a class="btn-p" href="#caso-studio">Guarda il caso studio <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
         </div>
-
-        <p class="rimando rv"><a class="link-testo" href="#caso-studio">Questi passi, applicati a un caso dimostrativo</a></p>
       </div>
     </section>
 
-    <!-- ============ 4. PER CHI LAVORO ============ -->
-    <section id="clienti" aria-labelledby="titolo-clienti">
+    <!-- ============ 5. PER CHI LAVORO ============ -->
+    <section class="sez-scura" id="clienti" aria-labelledby="titolo-clienti">
       <div class="wrap">
         <div class="sec">
           <p class="label rv">Per chi lavoro</p>
-          <div>
+          <div class="sec-corpo">
             <h2 class="rv" id="titolo-clienti">Tre tipi di cliente, un solo <span class="it">metodo</span>.</h2>
-            <p class="lead muted introduzione rv" style="--d:100ms">Cambiano i canali e l’obiettivo, non il modo di ragionare. Quelli che seguono non sono clienti già seguiti: sono i problemi tipici di ciascun contesto.</p>
-
-            <div class="rows">
-              <article class="row-c rv">
-                <div>
-                  <h3>Creator</h3>
-                  <span class="tag">Ad esempio YouTuber</span>
-                </div>
-                <dl>
-                  <dt>Il problema tipico</dt>
-                  <dd>Il pubblico guarda i video, ma gli altri profili sono gestiti a intermittenza: non hanno una linea riconoscibile e non riportano l’attenzione sul canale principale.</dd>
-                  <dt>Cosa faccio</dt>
-                  <dd>Definisco il ruolo di ogni canale rispetto a quello principale, una linea editoriale con formati ricorrenti, il riuso dei contenuti lunghi in contenuti brevi e un calendario che una persona sola riesca a mantenere.</dd>
-                </dl>
-              </article>
-
-              <article class="row-c rv" style="--d:80ms">
-                <div>
-                  <h3>Attività locali</h3>
-                  <span class="tag">Ad esempio barbieri, ristoranti, hotel</span>
-                </div>
-                <dl>
-                  <dt>Il problema tipico</dt>
-                  <dd>Il profilo è una galleria di foto curate ma simili a quelle delle altre attività della zona, e non è chiaro né cosa distingue il posto né come prenotare.</dd>
-                  <dt>Cosa faccio</dt>
-                  <dd>Definisco l’identità del profilo (cosa mostrare e cosa no), organizzo bio, in evidenza e link attorno alla prenotazione, e imposto contenuti ricorrenti basati sul lavoro quotidiano.</dd>
-                </dl>
-              </article>
-
-              <article class="row-c rv" style="--d:160ms">
-                <div>
-                  <h3>Startup e brand digitali</h3>
-                  <span class="tag">Prodotti e servizi nuovi, online</span>
-                </div>
-                <dl>
-                  <dt>Il problema tipico</dt>
-                  <dd>Il team conosce il prodotto a fondo e comunica nel proprio linguaggio, mentre chi arriva dai social non capisce cosa offre né perché iscriversi.</dd>
-                  <dt>Cosa faccio</dt>
-                  <dd>Traduco l’offerta in pochi messaggi chiari, definisco pilastri di contenuto e tono, costruisco il percorso dal contenuto all’iscrizione o alla richiesta di demo, e rivedo i formati sui dati dopo le prime settimane.</dd>
-                </dl>
-              </article>
-            </div>
+            <p class="lead rv" style="--d:100ms">Cambiano i canali e l’obiettivo, non il modo di ragionare. Sono problemi tipici, non clienti già seguiti.</p>
           </div>
         </div>
+
+        <!-- Tre schede: ognuna ha tre voci in colonna (problema, cosa faccio, obiettivo), distinte dall'etichetta, senza linee -->
+        <div class="clienti">
+          <article class="cliente rv" style="--d:0ms">
+            <span class="tag">Ad esempio YouTuber</span>
+            <h3>Creator</h3>
+            <ol class="percorso">
+              <li><span class="pt">Il problema tipico</span><p>Gli altri profili sono gestiti a intermittenza e non riportano l’attenzione sul canale principale.</p></li>
+              <li><span class="pt">Cosa faccio</span><p>Un ruolo per ogni canale e un calendario che una persona sola riesca a mantenere.</p></li>
+              <li><span class="pt">Obiettivo, come ipotesi</span><p>Portare più attenzione dai profili secondari al canale principale.</p></li>
+            </ol>
+            <button class="btn-o apri-btn" type="button" data-apri="p-creator" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
+          </article>
+          <article class="cliente rv" style="--d:90ms">
+            <span class="tag">Ad esempio barbieri, ristoranti, hotel</span>
+            <h3>Attività locali</h3>
+            <ol class="percorso">
+              <li><span class="pt">Il problema tipico</span><p>Belle foto, ma non è chiaro cosa distingue il posto né come prenotare.</p></li>
+              <li><span class="pt">Cosa faccio</span><p>Un’identità chiara per il profilo e un percorso che porta alla prenotazione.</p></li>
+              <li><span class="pt">Obiettivo, come ipotesi</span><p>Rendere evidente cosa offre il posto e come prenotare.</p></li>
+            </ol>
+            <button class="btn-o apri-btn" type="button" data-apri="p-locali" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
+          </article>
+          <article class="cliente rv" style="--d:180ms">
+            <span class="tag">Prodotti e servizi nuovi, online</span>
+            <h3>Startup e brand digitali</h3>
+            <ol class="percorso">
+              <li><span class="pt">Il problema tipico</span><p>Il team parla nel proprio linguaggio: chi arriva non capisce cosa offre né perché iscriversi.</p></li>
+              <li><span class="pt">Cosa faccio</span><p>Pochi messaggi chiari e un percorso dal contenuto all’iscrizione o alla richiesta di demo.</p></li>
+              <li><span class="pt">Obiettivo, come ipotesi</span><p>Far capire l’offerta e rendere semplice il passo successivo.</p></li>
+            </ol>
+            <button class="btn-o apri-btn" type="button" data-apri="p-startup" aria-haspopup="dialog">Come lavoro <span class="piu" aria-hidden="true"></span></button>
+          </article>
+        </div>
+
+        <!-- Il filo: lo stesso metodo attraversa le tre schede -->
+        <div class="filo rv">
+          <p class="piccolo">Lo stesso metodo per tutti e tre</p>
+          <ol class="filo-passi">
+            <li>Audit</li>
+            <li>Strategia</li>
+            <li>Calendario</li>
+            <li>Revisione</li>
+          </ol>
+        </div>
+
+        <dialog class="popup" id="p-creator" aria-labelledby="t-p-creator">
+          <span class="pop-luce" aria-hidden="true"></span>
+          <div class="popup-in">
+            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <p class="k">Per chi lavoro</p>
+            <h3 class="titolo-pop" id="t-p-creator"><span class="it">Creator</span></h3>
+            <p class="lead">Ad esempio YouTuber.</p>
+            <div class="duo">
+              <section class="blocco">
+                <h4>Il problema tipico</h4>
+                <p>Il pubblico guarda i video, ma gli altri profili sono gestiti a intermittenza: non hanno una linea riconoscibile e non riportano l’attenzione sul canale principale.</p>
+              </section>
+              <section class="blocco">
+                <h4>Cosa faccio</h4>
+                <p>Definisco il ruolo di ogni canale rispetto a quello principale, una linea editoriale con formati ricorrenti, il riuso dei contenuti lunghi in contenuti brevi e un calendario che una persona sola riesca a mantenere.</p>
+              </section>
+            </div>
+            <div class="filo filo-pop">
+              <p class="piccolo">Lo stesso metodo, in quattro passi</p>
+              <ol class="filo-passi">
+                <li>Audit</li>
+                <li>Strategia</li>
+                <li>Calendario</li>
+                <li>Revisione</li>
+              </ol>
+            </div>
+            <button class="btn-p" type="button" data-apri="p-call" aria-haspopup="dialog">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></button>
+          </div>
+        </dialog>
+
+        <dialog class="popup" id="p-locali" aria-labelledby="t-p-locali">
+          <span class="pop-luce" aria-hidden="true"></span>
+          <div class="popup-in">
+            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <p class="k">Per chi lavoro</p>
+            <h3 class="titolo-pop" id="t-p-locali">Attività <span class="it">locali</span></h3>
+            <p class="lead">Ad esempio barbieri, ristoranti, hotel.</p>
+            <div class="duo">
+              <section class="blocco">
+                <h4>Il problema tipico</h4>
+                <p>Il profilo è una galleria di foto curate ma simili a quelle delle altre attività della zona, e non è chiaro né cosa distingue il posto né come prenotare.</p>
+              </section>
+              <section class="blocco">
+                <h4>Cosa faccio</h4>
+                <p>Definisco l’identità del profilo (cosa mostrare e cosa no), organizzo bio, in evidenza e link attorno alla prenotazione, e imposto contenuti ricorrenti basati sul lavoro quotidiano.</p>
+              </section>
+            </div>
+            <div class="filo filo-pop">
+              <p class="piccolo">Lo stesso metodo, in quattro passi</p>
+              <ol class="filo-passi">
+                <li>Audit</li>
+                <li>Strategia</li>
+                <li>Calendario</li>
+                <li>Revisione</li>
+              </ol>
+            </div>
+            <button class="btn-p" type="button" data-apri="p-call" aria-haspopup="dialog">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></button>
+          </div>
+        </dialog>
+
+        <dialog class="popup" id="p-startup" aria-labelledby="t-p-startup">
+          <span class="pop-luce" aria-hidden="true"></span>
+          <div class="popup-in">
+            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <p class="k">Per chi lavoro</p>
+            <h3 class="titolo-pop" id="t-p-startup">Startup e brand <span class="it">digitali</span></h3>
+            <p class="lead">Prodotti e servizi nuovi, online.</p>
+            <div class="duo">
+              <section class="blocco">
+                <h4>Il problema tipico</h4>
+                <p>Il team conosce il prodotto a fondo e comunica nel proprio linguaggio, mentre chi arriva dai social non capisce cosa offre né perché iscriversi.</p>
+              </section>
+              <section class="blocco">
+                <h4>Cosa faccio</h4>
+                <p>Traduco l’offerta in pochi messaggi chiari, definisco pilastri di contenuto e tono, costruisco il percorso dal contenuto all’iscrizione o alla richiesta di demo, e rivedo i formati sui dati dopo le prime settimane.</p>
+              </section>
+            </div>
+            <div class="filo filo-pop">
+              <p class="piccolo">Lo stesso metodo, in quattro passi</p>
+              <ol class="filo-passi">
+                <li>Audit</li>
+                <li>Strategia</li>
+                <li>Calendario</li>
+                <li>Revisione</li>
+              </ol>
+            </div>
+            <button class="btn-p" type="button" data-apri="p-call" aria-haspopup="dialog">Scrivimi per la call gratuita <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></button>
+          </div>
+        </dialog>
       </div>
     </section>
 
-    <!-- ============ 5. CASO STUDIO DIMOSTRATIVO (contenuti invariati: cambia solo come si muovono) ============ -->
-    <section id="caso-studio" aria-labelledby="titolo-caso">
+    <!-- ============ 6. CASO STUDIO DIMOSTRATIVO (attività e dati fittizi) ============ -->
+    <section class="sez-chiara" id="caso-studio" aria-labelledby="titolo-caso">
       <div class="wrap">
 
-        <div class="case-head">
-          <p class="etichetta-fittizio rv"><span>Progetto dimostrativo: attività e dati fittizi</span></p>
-          <p class="label rv">Caso studio</p>
-          <h2 class="rv" id="titolo-caso">Una startup che <span class="it">non esiste</span>, per mostrare come lavoro.</h2>
-          <p class="lead muted rv" style="--d:100ms">Numerella è un’attività inventata: una startup di educazione finanziaria che vuole ridurre l’analfabetismo finanziario in Italia. Nome, offerta, slogan, fondatori e numeri sono di fantasia e nessun profilo reale esiste. Fa solo divulgazione educativa: nessun consiglio su cosa comprare, nessuna promessa di rendimento, nessuna consulenza personalizzata.</p>
+        <!-- Testata in scheda blu, come gli altri riquadri importanti -->
+        <div class="case-head card-blu rv">
+          <p class="etichetta-fittizio"><span>Progetto dimostrativo: attività e dati fittizi</span></p>
+          <p class="label">Caso studio</p>
+          <h2 id="titolo-caso">Una startup che <span class="it">non esiste</span>, per mostrare come lavoro.</h2>
+          <p class="lead">Numerella è un’attività inventata: una startup di educazione finanziaria. Nome, offerta, fondatori e numeri sono di fantasia e nessun profilo reale esiste. Fa solo divulgazione educativa: nessun consiglio, nessuna promessa di rendimento.</p>
+          <ul class="fatti" role="list">
+            <li>Audit di un profilo ipotetico</li>
+            <li>Strategia e calendario di due settimane</li>
+            <li>Quattro esempi di post</li>
+          </ul>
         </div>
 
-        <!-- ===== Storia: un telefono fisso che cambia stato mentre si legge (sette passi).
-             I passi con i testi scorrono accanto (o sotto, su telefono); il telefono mostra lo stato del passo in lettura.
-             Senza JavaScript i sette stati del telefono stanno uno sotto l’altro e i passi restano tutti leggibili. ===== -->
-        <div class="story" id="story">
+        <!-- ===== Prima e dopo: lo stesso profilo di Numerella, prima e dopo la strategia.
+         Con JavaScript un interruttore cambia l’attributo data-v e il CSS fa il resto.
+         Senza JavaScript i due stati e le due note stanno uno sotto l’altro, e le tessere portano ai post in fondo alla sezione. ===== -->
+        <div class="prof" id="profilo-caso" data-prof data-v="prima">
+          <div class="commuta rv" role="group" aria-label="Stato del profilo">
+            <button type="button" data-v="prima" aria-pressed="true">Prima</button>
+            <button type="button" data-v="dopo" aria-pressed="false">Dopo</button>
+          </div>
 
-          <div class="stage" id="stage">
-            <div class="halo" id="halo" aria-hidden="true"></div>
-            <figure class="telefono-area">
-              <div class="phone">
-                <div class="screen">
-                  <div class="notch" aria-hidden="true"></div>
+          <div class="prof-corpo">
+            <figure class="prof-sx">
+              <div class="prof-scheda card-blu rv">
+                <div class="prof-strati">
 
-                  <!-- 0: profilo prima -->
-                  <div class="scr" data-s="0" role="group" aria-label="Profilo prima dell’intervento">
-                    <div class="profilo-testa a" style="--j:0">
-                      <span class="avatar avatar-grande" aria-hidden="true">N</span>
+                  <!-- Prima: bio generica, griglia di post senza un filo -->
+                  <div class="prof-strato prof-prima" role="group" aria-label="Profilo prima dell’intervento">
+                    <div class="profilo-testa">
+                      <span class="avatar" aria-hidden="true">N</span>
                       <div>
                         <p class="nome">Numerella</p>
                         <p class="stato">Profilo fittizio</p>
                       </div>
-                      <span class="esempio-chip">Prima</span>
+                      <span class="chip-stato">Prima</span>
                     </div>
-                    <p class="bio bio-fioca a" style="--j:1">Educazione finanziaria per tutti.</p>
-                    <div class="mini-griglia a" style="--j:2" aria-hidden="true">
-                      <span class="tessera tessera-densa"><i></i><i></i><i></i><i></i><i></i><i></i></span>
-                      <span class="tessera tessera-densa"><i></i><i></i><i></i><i></i></span>
-                      <span class="tessera tessera-densa"><i></i><i></i><i></i><i></i><i></i></span>
+                    <p class="bio bio-fioca">Educazione finanziaria per tutti.</p>
+                    <div class="griglia-post" aria-hidden="true">
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i></span>
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i><i></i></span>
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i><i></i></span>
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i></span>
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i></span>
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                      <span class="tassello tassello-fitto"><i></i><i></i><i></i><i></i><i></i></span>
                     </div>
                   </div>
 
-                  <!-- 1: profilo dopo (l’anello dell’avatar si disegna) -->
-                  <div class="scr" data-s="1" role="group" aria-label="Profilo dopo la strategia">
-                    <div class="profilo-testa a" style="--j:0">
-                      <span class="avatar avatar-grande" aria-hidden="true">N<svg viewBox="0 0 36 36" focusable="false"><circle pathLength="1" cx="18" cy="18" r="17.2"/></svg></span>
+                  <!-- Dopo: l’anello dell’avatar si disegna, i blocchi entrano a scalini -->
+                  <div class="prof-strato prof-dopo" role="group" aria-label="Profilo dopo la strategia">
+                    <div class="profilo-testa">
+                      <span class="avatar" aria-hidden="true">N<svg viewBox="0 0 36 36" focusable="false"><circle pathLength="1" cx="18" cy="18" r="17.2"/></svg></span>
                       <div>
                         <p class="nome">Numerella</p>
                         <p class="stato">Profilo fittizio</p>
                       </div>
-                      <span class="esempio-chip">Dopo</span>
+                      <span class="chip-stato">Dopo</span>
                     </div>
-                    <p class="bio a" style="--j:1">Prima si capisce, poi si decide.<br>Le parole dei soldi, i documenti, gli errori di ragionamento.<br>Solo divulgazione, nessuna consulenza.</p>
-                    <p class="bio-link a" style="--j:2">Newsletter e glossario</p>
-                    <div class="storie a" style="--j:3" aria-hidden="true">
+                    <p class="bio">Prima si capisce, poi si decide.<br>Le parole dei soldi, i documenti, gli errori di ragionamento.<br>Solo divulgazione, nessuna consulenza.</p>
+                    <p class="bio-link">Newsletter e glossario</p>
+                    <div class="storie" aria-hidden="true">
                       <span class="storia"><i>1</i>Parole</span>
                       <span class="storia"><i>2</i>Documenti</span>
                       <span class="storia"><i>3</i>Errori</span>
                       <span class="storia"><i>4</i>Domande</span>
                     </div>
-                    <div class="mini-griglia a" style="--j:4" aria-hidden="true">
-                      <span class="tessera tessera-serie"><b>Inflazione</b></span>
-                      <span class="tessera tessera-serie tessera-superficie"><b>TAN e TAEG</b></span>
-                      <span class="tessera tessera-serie"><b>Effetto gregge</b></span>
+                    <div class="griglia-post">
+                      <a class="tassello tassello-chiaro" href="#p-post1" data-apri="p-post1" aria-haspopup="dialog"><span class="tassello-alto"><svg class="glifo" aria-hidden="true" focusable="false"><use href="#i-carosello"/></svg><span class="pil p1" aria-hidden="true">1</span></span><span>Inflazione</span><span class="sr">. Carosello, pilastro: Le parole dei soldi. Apre il post di esempio.</span></a>
+                      <div class="tassello tassello-vuoto"><span class="tassello-alto"><svg class="glifo" aria-hidden="true" focusable="false"><use href="#i-reel"/></svg><span class="pil p1" aria-hidden="true">1</span></span><span>Interesse composto</span><span class="sr">. Reel, pilastro: Le parole dei soldi. Solo in calendario, senza esempio completo.</span></div>
+                      <div class="tassello tassello-vuoto"><span class="tassello-alto"><svg class="glifo" aria-hidden="true" focusable="false"><use href="#i-carosello"/></svg><span class="pil p2" aria-hidden="true">2</span></span><span>Busta paga</span><span class="sr">. Carosello, pilastro: Leggere un documento. Solo in calendario, senza esempio completo.</span></div>
+                      <a class="tassello" href="#p-post2" data-apri="p-post2" aria-haspopup="dialog"><span class="tassello-alto"><svg class="glifo" aria-hidden="true" focusable="false"><use href="#i-carosello"/></svg><span class="pil p2" aria-hidden="true">2</span></span><span>TAN e TAEG</span><span class="sr">. Carosello, pilastro: Leggere un documento. Apre il post di esempio.</span></a>
+                      <a class="tassello tassello-chiaro" href="#p-post3" data-apri="p-post3" aria-haspopup="dialog"><span class="tassello-alto"><svg class="glifo" aria-hidden="true" focusable="false"><use href="#i-reel"/></svg><span class="pil p3" aria-hidden="true">3</span></span><span>L’effetto gregge</span><span class="sr">. Reel, pilastro: Errori di ragionamento. Apre il post di esempio.</span></a>
+                      <a class="tassello" href="#p-post4" data-apri="p-post4" aria-haspopup="dialog"><span class="tassello-alto"><svg class="glifo" aria-hidden="true" focusable="false"><use href="#i-carosello"/></svg><span class="pil p4" aria-hidden="true">4</span></span><span>«Cosa dovrei fare?»</span><span class="sr">. Carosello, pilastro: Domande vere. Apre il post di esempio.</span></a>
                     </div>
-                  </div>
-
-                  <!-- 2-5: i quattro post (testi invariati; l’avviso sta sotto la copertina, così resta visibile anche nel telefono tagliato) -->
-                  <div class="scr" data-s="2" role="group" aria-label="Post 1, esempio">
-                    <div class="post-testa a" style="--j:0">
-                      <span class="avatar avatar-piccolo" aria-hidden="true">N</span>
-                      <p><strong>Numerella</strong></p>
-                      <span class="esempio-chip">Esempio</span>
-                    </div>
-                    <div class="copertina copertina-scura a" style="--j:1">
-                      <p class="copertina-formato">Carosello <span>1 / 6</span></p>
-                      <p class="copertina-titolo">Inflazione<span>in parole semplici</span></p>
-                      <p class="copertina-piede">Le parole dei soldi</p>
-                    </div>
-                    <p class="avviso a" style="--j:2">Contenuto educativo, non consulenza finanziaria.</p>
-                    <div class="azioni-post a" style="--j:3" aria-hidden="true">
-                      <svg><use href="#i-cuore"/></svg><svg><use href="#i-commento"/></svg><svg><use href="#i-invia"/></svg><svg class="salva"><use href="#i-salva"/></svg>
-                    </div>
-                    <p class="didascalia a" style="--j:4"><strong>Numerella</strong> L’inflazione è l’aumento generale dei prezzi nel tempo. Se lo stesso carrello della spesa passa da 100 a 103 euro, i prezzi sono saliti del 3% (numeri di esempio). Nelle prossime slide: come si misura e perché pesa in modo diverso da persona a persona. In Italia la misura ufficiale è pubblicata dall’Istat. Salva il post per rileggerlo.</p>
-                  </div>
-
-                  <div class="scr" data-s="3" role="group" aria-label="Post 2, esempio">
-                    <div class="post-testa a" style="--j:0">
-                      <span class="avatar avatar-piccolo" aria-hidden="true">N</span>
-                      <p><strong>Numerella</strong></p>
-                      <span class="esempio-chip">Esempio</span>
-                    </div>
-                    <div class="copertina copertina-superficie a" style="--j:1">
-                      <p class="copertina-formato">Carosello <span>1 / 7</span></p>
-                      <p class="copertina-titolo">TAN e TAEG<span>due sigle, due cose</span></p>
-                      <p class="copertina-piede">Leggere un documento</p>
-                    </div>
-                    <p class="avviso a" style="--j:2">Contenuto educativo, non consulenza finanziaria.</p>
-                    <div class="azioni-post a" style="--j:3" aria-hidden="true">
-                      <svg><use href="#i-cuore"/></svg><svg><use href="#i-commento"/></svg><svg><use href="#i-invia"/></svg><svg class="salva"><use href="#i-salva"/></svg>
-                    </div>
-                    <p class="didascalia a" style="--j:4"><strong>Numerella</strong> Compaiono nelle offerte di finanziamento. Il TAN è il tasso annuo nominale: riguarda gli interessi. Il TAEG include anche le spese collegate al finanziamento, quindi dà un’idea più completa del costo. Misurano cose diverse: saperlo è già un modo per leggere meglio un’offerta.</p>
-                  </div>
-
-                  <div class="scr" data-s="4" role="group" aria-label="Post 3, esempio">
-                    <div class="post-testa a" style="--j:0">
-                      <span class="avatar avatar-piccolo" aria-hidden="true">N</span>
-                      <p><strong>Numerella</strong></p>
-                      <span class="esempio-chip">Esempio</span>
-                    </div>
-                    <div class="copertina copertina-scura a" style="--j:1">
-                      <p class="copertina-formato">Reel <span>0:30</span></p>
-                      <p class="copertina-titolo">L’effetto gregge<span>perché ci muoviamo come gli altri</span></p>
-                      <p class="copertina-piede">Errori di ragionamento</p>
-                    </div>
-                    <p class="avviso a" style="--j:2">Contenuto educativo, non consulenza finanziaria.</p>
-                    <div class="azioni-post a" style="--j:3" aria-hidden="true">
-                      <svg><use href="#i-cuore"/></svg><svg><use href="#i-commento"/></svg><svg><use href="#i-invia"/></svg><svg class="salva"><use href="#i-salva"/></svg>
-                    </div>
-                    <p class="didascalia a" style="--j:4"><strong>Numerella</strong> Quando molte persone si muovono nella stessa direzione, tendiamo a pensare che abbiano ragione. In economia comportamentale si chiama effetto gregge. Riconoscerlo non ti dice cosa fare: ti aiuta a notare quando stai scegliendo solo perché lo fanno tutti.</p>
-                  </div>
-
-                  <div class="scr" data-s="5" role="group" aria-label="Post 4, esempio">
-                    <div class="post-testa a" style="--j:0">
-                      <span class="avatar avatar-piccolo" aria-hidden="true">N</span>
-                      <p><strong>Numerella</strong></p>
-                      <span class="esempio-chip">Esempio</span>
-                    </div>
-                    <div class="copertina copertina-superficie a" style="--j:1">
-                      <p class="copertina-formato">Carosello <span>1 / 5</span></p>
-                      <p class="copertina-titolo">«Cosa dovrei fare?»<span>perché non rispondiamo</span></p>
-                      <p class="copertina-piede">Domande vere</p>
-                    </div>
-                    <p class="avviso a" style="--j:2">Contenuto educativo, non consulenza finanziaria.</p>
-                    <div class="azioni-post a" style="--j:3" aria-hidden="true">
-                      <svg><use href="#i-cuore"/></svg><svg><use href="#i-commento"/></svg><svg><use href="#i-invia"/></svg><svg class="salva"><use href="#i-salva"/></svg>
-                    </div>
-                    <p class="didascalia a" style="--j:4"><strong>Numerella</strong> Ci scrivete spesso: «Ho dei risparmi, cosa dovrei fare?». Non possiamo rispondere: non conosciamo la tua situazione e non facciamo consulenza. Possiamo dirti quali domande ti farebbe un professionista abilitato: a cosa servono questi soldi, per quanto tempo, quanto rischio sei disposto a sopportare. Conoscerle aiuta a parlare con chi può consigliarti davvero.</p>
-                  </div>
-
-                  <!-- 6: calendario di due settimane (i numeri 1-4 sono i quattro pilastri; il dettaglio è nelle strisce più sotto) -->
-                  <div class="scr" data-s="6" role="group" aria-label="Calendario di due settimane, in sintesi">
-                    <p class="cal-titolo a" style="--j:0">Calendario di due settimane</p>
-                    <div class="giorni-sett a" style="--j:1" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span></div>
-                    <div class="cg" aria-hidden="true">
-                      <span class="cell p1" style="--j:0">1</span><span class="cell sp" style="--j:1"></span><span class="cell p1" style="--j:2">1</span><span class="cell" style="--j:3"></span><span class="cell p2" style="--j:4">2</span><span class="cell" style="--j:5"></span><span class="cell sp" style="--j:6"></span>
-                      <span class="cell p2" style="--j:7">2</span><span class="cell p4" style="--j:8">4</span><span class="cell p3" style="--j:9">3</span><span class="cell" style="--j:10"></span><span class="cell p4" style="--j:11">4</span><span class="cell" style="--j:12"></span><span class="cell p2" style="--j:13">2</span>
-                    </div>
-                    <ul class="legenda a" style="--j:9" aria-hidden="true">
-                      <li><b class="cell p1">1</b>Le parole dei soldi</li>
-                      <li><b class="cell p2">2</b>Leggere un documento</li>
-                      <li><b class="cell p3">3</b>Errori di ragionamento</li>
-                      <li><b class="cell p4">4</b>Domande vere</li>
-                    </ul>
                   </div>
 
                 </div>
               </div>
-              <p class="chalk cnote" id="cnote"></p>
-              <figcaption>Mockup in CSS. Profilo, post e testi sono esempi dimostrativi: non esiste alcun profilo reale.</figcaption>
+              <figcaption class="prof-didascalia">Mockup in CSS. Profilo, post e testi sono esempi dimostrativi: non esiste alcun profilo reale.</figcaption>
             </figure>
-          </div>
 
-          <div class="steps" id="steps">
-
-            <article class="step" data-s="0">
-              <!-- Su schermi bassi (sotto i 700px di altezza) la didascalia del telefono sta qui e scorre con il testo; sugli altri sta sotto il telefono -->
-              <p class="didascalia-passo">Mockup in CSS. Profilo, post e testi sono esempi dimostrativi: non esiste alcun profilo reale.</p>
-              <p class="k">Prima</p>
-              <h3>Audit del profilo</h3>
-              <p>Punto di partenza ipotetico, non l’analisi di un profilo reale.</p>
-              <ul class="elenco-semplice">
-                <li>Bio generica: non dice a chi parla.</li>
-                <li>Nessun passo successivo: né link né newsletter.</li>
-                <li>Argomenti mescolati: non nascono serie riconoscibili.</li>
-                <li>Tono incerto, senza avvisi né fonti.</li>
-              </ul>
-              <p class="step-nota"><strong>Prima.</strong> La bio è generica, non c’è un link e non esistono evidenze né serie riconoscibili: chi arriva non sa cosa aspettarsi.</p>
-            </article>
-
-            <article class="step" data-s="1">
-              <p class="k">Dopo, con la strategia</p>
-              <p class="step-nota"><strong>Dopo, come proposta di lavoro.</strong> La bio dichiara tema e limite, il link porta alla newsletter, le evidenze sono i quattro pilastri e i post formano una serie. È un esempio di metodo, non un risultato.</p>
-            </article>
-
-            <article class="step logica" data-s="2">
-              <h3 class="vetrina-titolo">Il feed, in quattro esempi</h3>
-              <p class="vetrina-guida">Scorri i post: da una parte com’è fatto, dall’altra perché esiste.</p>
-              <p class="k">Post 1 · Carosello</p>
-              <h4>Inflazione, in parole semplici</h4>
-              <dl>
-                <dt>Pilastro</dt>
-                <dd>Le parole dei soldi.</dd>
-                <dt>Logica</dt>
-                <dd>Definizione, esempio numerico dichiarato come tale e fonte indicata. Nessuna indicazione su cosa fare.</dd>
-                <dt>Passo successivo</dt>
-                <dd>Salvare il post o iscriversi alla newsletter.</dd>
-              </dl>
-            </article>
-
-            <article class="step logica" data-s="3">
-              <p class="k">Post 2 · Carosello</p>
-              <h4>TAN e TAEG, due sigle e due cose</h4>
-              <dl>
-                <dt>Pilastro</dt>
-                <dd>Leggere un documento.</dd>
-                <dt>Logica</dt>
-                <dd>Chiarisce due sigle senza nominare prodotti e senza dire cosa scegliere.</dd>
-                <dt>Passo successivo</dt>
-                <dd>L’ultima slide rimanda alla newsletter della domenica, dove si spiega come si legge un preventivo.</dd>
-              </dl>
-            </article>
-
-            <article class="step logica" data-s="4">
-              <p class="k">Post 3 · Reel di 30 secondi</p>
-              <h4>L’effetto gregge</h4>
-              <dl>
-                <dt>Pilastro</dt>
-                <dd>Errori di ragionamento.</dd>
-                <dt>Logica</dt>
-                <dd>Un errore di ragionamento astratto, senza strumenti finanziari né esempi di mercato. Il tono resta calmo: spiega un meccanismo, non mette paura.</dd>
-                <dt>Passo successivo</dt>
-                <dd>Seguire la serie e rispondere alla storia della settimana.</dd>
-              </dl>
-            </article>
-
-            <article class="step logica" data-s="5">
-              <p class="k">Post 4 · Carosello</p>
-              <h4>«Cosa dovrei fare?»</h4>
-              <dl>
-                <dt>Pilastro</dt>
-                <dd>Domande vere.</dd>
-                <dt>Logica</dt>
-                <dd>È il post più delicato e il più utile da mostrare: davanti a una richiesta di consiglio personale, il profilo spiega il proprio limite e lo trasforma in contenuto educativo. In un caso reale andrebbe verificato da un professionista del settore.</dd>
-                <dt>Passo successivo</dt>
-                <dd>Scrivere una domanda di carattere generale; per il proprio caso personale, rivolgersi a un professionista abilitato.</dd>
-              </dl>
-            </article>
-
-            <article class="step" data-s="6">
-              <h3>Calendario di due settimane</h3>
-              <p>Piano di lavoro, non contenuti pubblicati: tre post, una storia e una newsletter a settimana. Il ritmo è un’ipotesi di impegno sostenibile per una squadra piccolissima.</p>
-            </article>
-
-          </div>
-        </div>
-
-        <!-- ===== Calendario: due strisce di settimana (il titolo e il testo sono nel settimo passo della storia, qui sopra) ===== -->
-        <div class="calendario-caso rv">
-          <div class="settimana">
-            <h4>Settimana 1</h4>
-            <p class="suggerimento">Scorri di lato per vedere tutti i giorni.</p>
-            <div class="striscia-scorri" role="region" aria-label="Settimana 1" tabindex="0">
-              <ol class="striscia">
-                <li class="cella">
-                  <span class="giorno">Lun</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
-                  <span class="formato">Carosello</span>
-                  <span class="tema">Cos’è l’inflazione, in 6 slide</span>
-                  <span class="pilastro-nome">Le parole dei soldi</span>
-                </li>
-                <li class="cella">
-                  <span class="giorno">Mar</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
-                  <span class="formato">Storia</span>
-                  <span class="tema">Sondaggio: quale parola dei soldi ti suona più oscura?</span>
-                  <span class="pilastro-nome">Raccolta di temi</span>
-                </li>
-                <li class="cella">
-                  <span class="giorno">Mer</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
-                  <span class="formato">Reel di 30"</span>
-                  <span class="tema">Interesse semplice e composto, con un esempio numerico dichiarato come tale</span>
-                  <span class="pilastro-nome">Le parole dei soldi</span>
-                </li>
-                <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
-                <li class="cella">
-                  <span class="giorno">Ven</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
-                  <span class="formato">Carosello</span>
-                  <span class="tema">Le voci principali di una busta paga</span>
-                  <span class="pilastro-nome">Leggere un documento</span>
-                </li>
-                <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
-                <li class="cella">
-                  <span class="giorno">Dom</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
-                  <span class="formato">Newsletter</span>
-                  <span class="tema">Il glossario della settimana e le risposte al sondaggio</span>
-                  <span class="pilastro-nome">Tutti i pilastri</span>
-                </li>
-              </ol>
-            </div>
-          </div>
-
-          <div class="settimana">
-            <h4>Settimana 2</h4>
-            <div class="striscia-scorri" role="region" aria-label="Settimana 2" tabindex="0">
-              <ol class="striscia">
-                <li class="cella">
-                  <span class="giorno">Lun</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
-                  <span class="formato">Carosello</span>
-                  <span class="tema">TAN e TAEG: due sigle, due cose diverse</span>
-                  <span class="pilastro-nome">Leggere un documento</span>
-                </li>
-                <li class="cella">
-                  <span class="giorno">Mar</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
-                  <span class="formato">Storia</span>
-                  <span class="tema">Domanda aperta: cosa vorresti capire di un preventivo?</span>
-                  <span class="pilastro-nome">Domande vere</span>
-                </li>
-                <li class="cella">
-                  <span class="giorno">Mer</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
-                  <span class="formato">Reel di 30"</span>
-                  <span class="tema">L’effetto gregge: perché ci muoviamo come gli altri</span>
-                  <span class="pilastro-nome">Errori di ragionamento</span>
-                </li>
-                <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
-                <li class="cella">
-                  <span class="giorno">Ven</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
-                  <span class="formato">Carosello</span>
-                  <span class="tema">Perché non rispondiamo a «cosa dovrei fare?»</span>
-                  <span class="pilastro-nome">Domande vere</span>
-                </li>
-                <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
-                <li class="cella">
-                  <span class="giorno">Dom</span>
-                  <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
-                  <span class="formato">Newsletter</span>
-                  <span class="tema">Come si legge un preventivo</span>
-                  <span class="pilastro-nome">Leggere un documento</span>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-
-        <dl class="scheda">
-          <div class="rv">
-            <dt>Slogan (fittizio)</dt>
-            <dd>«Prima si capisce, poi si decide.»</dd>
-          </div>
-          <div class="rv" style="--d:80ms">
-            <dt>Fondatori (fittizi)</dt>
-            <dd>Due, descritti solo per ruolo: un profilo di divulgazione economica e uno di design di prodotto. Il brand non mostra volti.</dd>
-          </div>
-          <div class="rv">
-            <dt>Offerta</dt>
-            <dd>Contenuti gratuiti: caroselli e video brevi su Instagram, una newsletter settimanale, un glossario online.</dd>
-          </div>
-          <div class="rv" style="--d:80ms">
-            <dt>Cosa non fa</dt>
-            <dd>Non consiglia cosa comprare, non fa previsioni, non offre consulenza personalizzata, non ha link di affiliazione.</dd>
-          </div>
-        </dl>
-
-        <!-- ===== Strategia: sempre visibile, in quattro righe ===== -->
-        <div class="strategia rv">
-          <h3>Strategia</h3>
-          <dl class="righe">
-            <div>
-              <dt>Pubblico (ipotesi)</dt>
-              <dd>Adulti non esperti che evitano l’argomento perché lo percepiscono come tecnico.</dd>
-            </div>
-            <div>
-              <dt>Quattro pilastri</dt>
-              <dd>
-                <ul class="pilastri">
-                  <li><span class="it">1</span> Le parole dei soldi</li>
-                  <li><span class="it">2</span> Leggere un documento</li>
-                  <li><span class="it">3</span> Errori di ragionamento</li>
-                  <li><span class="it">4</span> Domande vere</li>
+            <div class="prof-note rv">
+              <div class="nota nota-prima">
+                <p class="label">Prima</p>
+                <h3>Audit del profilo</h3>
+                <p>Punto di partenza ipotetico, non l’analisi di un profilo reale.</p>
+                <ul class="elenco-semplice">
+                  <li>Bio generica: non dice a chi parla.</li>
+                  <li>Nessun passo successivo: né link né newsletter.</li>
+                  <li>Argomenti mescolati: non nascono serie riconoscibili.</li>
+                  <li>Tono incerto, senza avvisi né fonti.</li>
                 </ul>
-              </dd>
+              </div>
+              <div class="nota nota-dopo">
+                <p class="label">Dopo, con la strategia</p>
+                <h3>Una <span class="it">serie</span> riconoscibile</h3>
+                <p>La bio dichiara tema e limite, il link porta alla newsletter, le evidenze sono i quattro pilastri e i post formano una serie. È un esempio di metodo, non un risultato.</p>
+                <p>Tocca un post nella griglia per vedere com’è fatto e perché esiste. Le tessere senza fondo sono solo in calendario, senza esempio completo.</p>
+              </div>
             </div>
-            <div>
-              <dt>Tono e regole</dt>
-              <dd>Calmo, a frasi brevi, mai «devi». Nessuna previsione, nessun prodotto; ogni dato con la sua fonte, da verificare su Istat o Banca d’Italia.</dd>
-            </div>
-            <div>
-              <dt>Canali</dt>
-              <dd>Instagram, perché i caroselli si salvano e si rileggono; newsletter, per la relazione diretta. Esclusi per ora: video lunghi (produzione pesante), LinkedIn (pubblico privato), gruppi di messaggistica (rischio «segnali»). Da rivedere dopo otto settimane.</dd>
-            </div>
-          </dl>
+          </div>
         </div>
 
-        <!-- Dettagli secondari: restano chiusi di default per non allungare la pagina su telefono -->
-        <div class="blocchi">
-
-          <details class="blocco rv">
-            <summary>
-              <h3>Obiettivi, come ipotesi</h3>
-              <span class="blocco-sintesi">Nessun risultato: solo ciò che si vorrebbe verificare</span>
-              <span class="indicatore" aria-hidden="true"></span>
-            </summary>
-            <div class="corpo">
-              <p>Ipotesi di lavoro su otto settimane. I numeri sono inventati, non derivano da benchmark e non sono risultati.</p>
-              <ul class="elenco-semplice">
-                <li><strong>Newsletter:</strong> obiettivo ipotetico di 300 iscritti, partendo da zero.</li>
-                <li><strong>Salvataggi dei caroselli:</strong> crescita rispetto alle prime due settimane. Se la linea editoriale funziona, i post più didattici dovrebbero essere salvati di più.</li>
-                <li><strong>Domande:</strong> almeno una a settimana dalle storie, come segnale di interesse reale.</li>
-                <li><strong>Processo:</strong> nessun contenuto pubblicato senza avviso e senza fonte.</li>
+        <!-- ===== Approfondimenti: cinque pagine che scorrono di lato (Scheda, Strategia, Calendario, Obiettivi, Altri clienti).
+         Senza JavaScript i tasti non ci sono e le pagine stanno una sotto l’altra, tutte leggibili. ===== -->
+        <div class="approfondimenti pannello rv" data-sfoglia>
+          <p class="label">Approfondimenti</p>
+          <div class="sfoglia-tasti">
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-scheda">Scheda</button>
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-strategia">Strategia</button>
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-calendario">Calendario</button>
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-obiettivi">Obiettivi</button>
+            <button class="sfoglia-tasto" type="button" data-pagina="sf-altri">Altri clienti</button>
+          </div>
+          <div class="sfoglia-pagine">
+            <div class="sfoglia-pagina" id="sf-scheda">
+              <p class="k">Attività fittizia</p>
+              <h3>La scheda di Numerella</h3>
+              <dl class="tessere">
+                <div>
+                  <dt>Slogan (fittizio)</dt>
+                  <dd>«Prima si capisce, poi si decide.»</dd>
+                </div>
+                <div>
+                  <dt>Fondatori (fittizi)</dt>
+                  <dd>Due, descritti solo per ruolo: un profilo di divulgazione economica e uno di design di prodotto. Il brand non mostra volti.</dd>
+                </div>
+                <div>
+                  <dt>Offerta</dt>
+                  <dd>Contenuti gratuiti: caroselli e video brevi su Instagram, una newsletter settimanale, un glossario online.</dd>
+                </div>
+                <div>
+                  <dt>Cosa non fa</dt>
+                  <dd>Non consiglia cosa comprare, non fa previsioni, non offre consulenza personalizzata, non ha link di affiliazione.</dd>
+                </div>
+              </dl>
+            </div>
+            <div class="sfoglia-pagina" id="sf-strategia">
+              <p class="k">Metodo</p>
+              <h3>Strategia</h3>
+              <dl class="tessere">
+                <div>
+                  <dt>Pubblico (ipotesi)</dt>
+                  <dd>Adulti non esperti che evitano l’argomento perché lo percepiscono come tecnico.</dd>
+                </div>
+                <div>
+                  <dt>Quattro pilastri</dt>
+                  <dd>
+                    <ul class="pilastri">
+                      <li><span class="it">1</span> Le parole dei soldi</li>
+                      <li><span class="it">2</span> Leggere un documento</li>
+                      <li><span class="it">3</span> Errori di ragionamento</li>
+                      <li><span class="it">4</span> Domande vere</li>
+                    </ul>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Tono e regole</dt>
+                  <dd>Calmo, a frasi brevi, mai «devi». Nessuna previsione, nessun prodotto; ogni dato e ogni definizione con la sua fonte, da verificare su fonti ufficiali come Istat, Banca d’Italia o Consob.</dd>
+                </div>
+                <div>
+                  <dt>Canali</dt>
+                  <dd>Instagram, perché i caroselli si salvano e si rileggono; newsletter, per la relazione diretta. Esclusi per ora: video lunghi (produzione pesante), LinkedIn (pubblico privato), gruppi di messaggistica (rischio «segnali»). Da rivedere dopo otto settimane.</dd>
+                </div>
+              </dl>
+            </div>
+            <div class="sfoglia-pagina" id="sf-calendario">
+              <p class="k">Piano di lavoro</p>
+              <h3>Calendario di due settimane</h3>
+              <p class="nota-pop">Piano di lavoro, non contenuti pubblicati: tre post, una storia e una newsletter a settimana. Il ritmo è un’ipotesi di impegno sostenibile per una squadra piccolissima.</p>
+              <ul class="legenda-cal" role="list" aria-label="Pilastri">
+                <li><span class="pil p1" aria-hidden="true">1</span>Le parole dei soldi</li>
+                <li><span class="pil p2" aria-hidden="true">2</span>Leggere un documento</li>
+                <li><span class="pil p3" aria-hidden="true">3</span>Errori di ragionamento</li>
+                <li><span class="pil p4" aria-hidden="true">4</span>Domande vere</li>
               </ul>
+              <div class="calendario-caso">
+                <div class="settimana">
+                  <h4>Settimana 1</h4>
+                  <p class="suggerimento">Scorri di lato per vedere tutti i giorni.</p>
+                  <div class="striscia-scorri" role="region" aria-label="Settimana 1" tabindex="0">
+                    <ol class="striscia">
+                      <li class="cella">
+                        <span class="giorno">Lun</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
+                        <span class="formato">Carosello</span>
+                        <span class="tema">Cos’è l’inflazione, in 6 slide</span>
+                        <span class="pil p1" aria-hidden="true">1</span><span class="sr">Pilastro: Le parole dei soldi</span>
+                      </li>
+                      <li class="cella">
+                        <span class="giorno">Mar</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
+                        <span class="formato">Storia</span>
+                        <span class="tema">Sondaggio: quale parola dei soldi ti suona più oscura?</span>
+                        <span class="sr">Raccolta di temi</span>
+                      </li>
+                      <li class="cella">
+                        <span class="giorno">Mer</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
+                        <span class="formato">Reel di 30"</span>
+                        <span class="tema">Interesse semplice e composto, con un esempio numerico dichiarato come tale</span>
+                        <span class="pil p1" aria-hidden="true">1</span><span class="sr">Pilastro: Le parole dei soldi</span>
+                      </li>
+                      <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
+                      <li class="cella">
+                        <span class="giorno">Ven</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
+                        <span class="formato">Carosello</span>
+                        <span class="tema">Le voci principali di una busta paga</span>
+                        <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
+                      </li>
+                      <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
+                      <li class="cella">
+                        <span class="giorno">Dom</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
+                        <span class="formato">Newsletter</span>
+                        <span class="tema">Il glossario della settimana e le risposte al sondaggio</span>
+                        <span class="sr">Tutti i pilastri</span>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="settimana">
+                  <h4>Settimana 2</h4>
+                  <div class="striscia-scorri" role="region" aria-label="Settimana 2" tabindex="0">
+                    <ol class="striscia">
+                      <li class="cella">
+                        <span class="giorno">Lun</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
+                        <span class="formato">Carosello</span>
+                        <span class="tema">TAN e TAEG: due sigle, due cose diverse</span>
+                        <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
+                      </li>
+                      <li class="cella">
+                        <span class="giorno">Mar</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-storia"/></svg>
+                        <span class="formato">Storia</span>
+                        <span class="tema">Domanda aperta: cosa vorresti capire di un preventivo?</span>
+                        <span class="pil p4" aria-hidden="true">4</span><span class="sr">Pilastro: Domande vere</span>
+                      </li>
+                      <li class="cella">
+                        <span class="giorno">Mer</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-reel"/></svg>
+                        <span class="formato">Reel di 30"</span>
+                        <span class="tema">L’effetto gregge: perché ci muoviamo come gli altri</span>
+                        <span class="pil p3" aria-hidden="true">3</span><span class="sr">Pilastro: Errori di ragionamento</span>
+                      </li>
+                      <li class="cella cella-vuota"><span class="giorno">Gio</span><span class="riposo">Nessuna uscita</span></li>
+                      <li class="cella">
+                        <span class="giorno">Ven</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-carosello"/></svg>
+                        <span class="formato">Carosello</span>
+                        <span class="tema">Perché non rispondiamo a «cosa dovrei fare?»</span>
+                        <span class="pil p4" aria-hidden="true">4</span><span class="sr">Pilastro: Domande vere</span>
+                      </li>
+                      <li class="cella cella-vuota"><span class="giorno">Sab</span><span class="riposo">Nessuna uscita</span></li>
+                      <li class="cella">
+                        <span class="giorno">Dom</span>
+                        <svg class="glifo" aria-hidden="true"><use href="#i-newsletter"/></svg>
+                        <span class="formato">Newsletter</span>
+                        <span class="tema">Come si legge un preventivo</span>
+                        <span class="pil p2" aria-hidden="true">2</span><span class="sr">Pilastro: Leggere un documento</span>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sfoglia-pagina" id="sf-obiettivi">
+              <p class="k">Ipotesi di lavoro</p>
+              <h3>Obiettivi, come ipotesi</h3>
+              <p>Ipotesi di lavoro su otto settimane. I numeri sono inventati, non derivano da benchmark e non sono risultati.</p>
+              <dl class="tessere">
+                <div>
+                  <dt>Newsletter</dt>
+                  <dd>Obiettivo ipotetico di 300 iscritti, partendo da zero.</dd>
+                </div>
+                <div>
+                  <dt>Salvataggi dei caroselli</dt>
+                  <dd>Crescita rispetto alle prime due settimane. Se la linea editoriale funziona, i post più didattici dovrebbero essere salvati di più.</dd>
+                </div>
+                <div>
+                  <dt>Domande</dt>
+                  <dd>Almeno una a settimana dalle storie, come segnale di interesse reale.</dd>
+                </div>
+                <div>
+                  <dt>Processo</dt>
+                  <dd>Nessun contenuto pubblicato senza avviso; ogni definizione e ogni dato con la sua fonte.</dd>
+                </div>
+              </dl>
               <p>A ogni revisione mi chiederei quali pilastri non funzionano e se uno dei canali esclusi vada riconsiderato.</p>
             </div>
-          </details>
-
-          <details class="blocco rv">
-            <summary>
+            <div class="sfoglia-pagina" id="sf-altri">
+              <p class="k">Altri clienti</p>
               <h3>Come cambierebbe per altri clienti</h3>
-              <span class="blocco-sintesi">Lo stesso metodo per un creator e per un’attività locale</span>
-              <span class="indicatore" aria-hidden="true"></span>
-            </summary>
-            <div class="corpo">
-              <h4>Un creator, ad esempio YouTuber</h4>
-              <p>Il canale principale è il video: i contenuti brevi diventano un ponte verso quello lungo. Il tono è personale, non del brand. L’obiettivo diventa il ritorno sul canale e l’iscrizione, non la newsletter.</p>
-              <h4>Un’attività locale, ad esempio un barbiere o un ristorante</h4>
-              <p>L’obiettivo è la prenotazione: bio, link e storie portano a un numero o a un modulo. I contenuti mostrano il lavoro quotidiano e il luogo. Il ritmo è più basso, la zona geografica conta e la newsletter probabilmente non serve.</p>
+              <dl class="tessere">
+                <div>
+                  <dt>Un creator, ad esempio YouTuber</dt>
+                  <dd>Il canale principale è il video: i contenuti brevi diventano un ponte verso quello lungo. Il tono è personale, non del brand. L’obiettivo diventa il ritorno sul canale e l’iscrizione, non la newsletter.</dd>
+                </div>
+                <div>
+                  <dt>Un’attività locale, ad esempio un barbiere o un ristorante</dt>
+                  <dd>L’obiettivo è la prenotazione: bio, link e storie portano a un numero o a un modulo. I contenuti mostrano il lavoro quotidiano e il luogo. Il ritmo è più basso, la zona geografica conta e la newsletter probabilmente non serve.</dd>
+                </div>
+              </dl>
             </div>
-          </details>
-
+          </div>
         </div>
+
+        <dialog class="popup" id="p-post1" aria-labelledby="t-p-post1">
+          <span class="pop-luce" aria-hidden="true"></span>
+          <div class="popup-in">
+            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <p class="k">Post 1 · Carosello · Esempio</p>
+            <h3 id="t-p-post1">Inflazione, in parole semplici</h3>
+            <div class="copertina">
+              <p class="copertina-formato"><span>Carosello</span><span>1 / 6</span></p>
+              <p class="copertina-titolo">Inflazione<span>in parole semplici</span></p>
+              <p class="copertina-piede">Le parole dei soldi</p>
+            </div>
+            <p class="avviso">Contenuto educativo, non consulenza finanziaria.</p>
+            <p class="didascalia"><strong>Numerella</strong> L’inflazione è l’aumento generale e continuo dei prezzi nel tempo. Se lo stesso carrello della spesa passa da 100 a 103 euro, i prezzi sono saliti del 3% (numeri di esempio). Nelle prossime slide: come si misura e perché pesa in modo diverso da persona a persona. In Italia la misura ufficiale è pubblicata dall’Istat. Salva il post per rileggerlo.</p>
+            <dl>
+              <dt>Pilastro</dt>
+              <dd>Le parole dei soldi.</dd>
+              <dt>Logica</dt>
+              <dd>Definizione, esempio numerico dichiarato come tale e fonte indicata. Nessuna indicazione su cosa fare.</dd>
+              <dt>Passo successivo</dt>
+              <dd>Salvare il post o iscriversi alla newsletter.</dd>
+            </dl>
+          </div>
+        </dialog>
+
+        <dialog class="popup" id="p-post2" aria-labelledby="t-p-post2">
+          <span class="pop-luce" aria-hidden="true"></span>
+          <div class="popup-in">
+            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <p class="k">Post 2 · Carosello · Esempio</p>
+            <h3 id="t-p-post2">TAN e TAEG, due sigle e due cose</h3>
+            <div class="copertina copertina-chiara">
+              <p class="copertina-formato"><span>Carosello</span><span>1 / 7</span></p>
+              <p class="copertina-titolo">TAN e TAEG<span>due sigle, due cose</span></p>
+              <p class="copertina-piede">Leggere un documento</p>
+            </div>
+            <p class="avviso">Contenuto educativo, non consulenza finanziaria.</p>
+            <p class="didascalia"><strong>Numerella</strong> Compaiono nelle offerte di finanziamento. Il TAN è il tasso annuo nominale, cioè il tasso di interesse «puro». Il TAEG include anche commissioni, imposte e costi dei servizi accessori obbligatori, quindi dà un’idea più completa del costo. Misurano cose diverse: saperlo è già un modo per leggere meglio un’offerta. Fonte: Banca d’Italia, «Il credito ai consumatori in parole semplici».</p>
+            <dl>
+              <dt>Pilastro</dt>
+              <dd>Leggere un documento.</dd>
+              <dt>Logica</dt>
+              <dd>Chiarisce due sigle senza nominare prodotti e senza dire cosa scegliere.</dd>
+              <dt>Passo successivo</dt>
+              <dd>L’ultima slide rimanda alla newsletter della domenica, dove si spiega come si legge un preventivo.</dd>
+            </dl>
+          </div>
+        </dialog>
+
+        <dialog class="popup" id="p-post3" aria-labelledby="t-p-post3">
+          <span class="pop-luce" aria-hidden="true"></span>
+          <div class="popup-in">
+            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <p class="k">Post 3 · Reel · Esempio</p>
+            <h3 id="t-p-post3">L’effetto gregge</h3>
+            <div class="copertina">
+              <p class="copertina-formato"><span>Reel</span><span>0:30</span></p>
+              <p class="copertina-titolo">L’effetto gregge<span>perché ci muoviamo come gli altri</span></p>
+              <p class="copertina-piede">Errori di ragionamento</p>
+            </div>
+            <p class="avviso">Contenuto educativo, non consulenza finanziaria.</p>
+            <p class="didascalia"><strong>Numerella</strong> Nelle fasi di incertezza molte persone osservano cosa fanno gli altri e tendono a imitarli. In finanza comportamentale si parla di comportamento gregario, o effetto gregge. Riconoscerlo non ti dice cosa fare: ti aiuta a notare quando stai scegliendo solo perché lo fanno tutti. Fonte: Consob, «Errori e trappole comportamentali».</p>
+            <dl>
+              <dt>Pilastro</dt>
+              <dd>Errori di ragionamento.</dd>
+              <dt>Logica</dt>
+              <dd>Un errore di ragionamento astratto, senza strumenti finanziari né esempi di mercato. Il tono resta calmo: spiega un meccanismo, non mette paura.</dd>
+              <dt>Passo successivo</dt>
+              <dd>Seguire la serie e rispondere alla storia della settimana.</dd>
+            </dl>
+          </div>
+        </dialog>
+
+        <dialog class="popup" id="p-post4" aria-labelledby="t-p-post4">
+          <span class="pop-luce" aria-hidden="true"></span>
+          <div class="popup-in">
+            <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <p class="k">Post 4 · Carosello · Esempio</p>
+            <h3 id="t-p-post4">«Cosa dovrei fare?»</h3>
+            <div class="copertina copertina-chiara">
+              <p class="copertina-formato"><span>Carosello</span><span>1 / 5</span></p>
+              <p class="copertina-titolo">«Cosa dovrei fare?»<span>perché non rispondiamo</span></p>
+              <p class="copertina-piede">Domande vere</p>
+            </div>
+            <p class="avviso">Contenuto educativo, non consulenza finanziaria.</p>
+            <p class="didascalia"><strong>Numerella</strong> Ci scrivete spesso: «Ho dei risparmi, cosa dovrei fare?». Non possiamo rispondere: non conosciamo la tua situazione e non facciamo consulenza. Possiamo dirti quali domande ti farebbe un professionista abilitato: a cosa servono questi soldi, per quanto tempo, quanto rischio sei disposto a sopportare. Conoscerle aiuta a parlare con chi può consigliarti davvero.</p>
+            <dl>
+              <dt>Pilastro</dt>
+              <dd>Domande vere.</dd>
+              <dt>Logica</dt>
+              <dd>È il post più delicato e il più utile da mostrare: davanti a una richiesta di consiglio personale, il profilo spiega il proprio limite e lo trasforma in contenuto educativo. In un caso reale andrebbe verificato da un professionista del settore.</dd>
+              <dt>Passo successivo</dt>
+              <dd>Scrivere una domanda di carattere generale; per il proprio caso personale, rivolgersi a un professionista abilitato.</dd>
+            </dl>
+          </div>
+        </dialog>
 
         <p class="nota-fittizio rv">Numerella è un progetto dimostrativo: attività e dati fittizi. Non descrive un cliente e non presenta risultati.</p>
       </div>
     </section>
 
-    <!-- ============ 6. CHI SONO ============ -->
-    <section id="chi-sono" aria-labelledby="titolo-chi">
-      <div class="wrap">
-        <div class="sec">
-          <p class="label rv">Chi sono</p>
-          <div class="who">
-            <div>
-              <h2 class="rv" id="titolo-chi">Matteo <span class="it">Rapeso.</span></h2>
-              <p class="lead rv" style="--d:100ms">Mi occupo di strategia e contenuti per profili social. Analizzo come un profilo si presenta, definisco una linea editoriale, pianifico i contenuti e rivedo il lavoro sui dati disponibili.</p>
-              <p class="muted rv" style="--d:160ms">Mi rivolgo a creator, attività locali e startup e brand digitali.</p>
-              <p class="muted rv" style="--d:220ms">Questo sito è il mio primo progetto: non mostra clienti né risultati reali, ma il metodo con cui lavoro, applicato a un caso dimostrativo.</p>
-            </div>
-
-            <!-- RITRATTO: per inserire la foto basta salvare il file in assets/img/ritratto.webp (formato verticale 4:5, ad esempio 800×1000 px, sotto i 150 KB).
-                 Finché il file non c'è, resta visibile il segnaposto grigio qui sotto. -->
-            <figure class="ritratto rv" style="--d:120ms">
-              <div class="photo">
-                <div class="photo-in" aria-hidden="true"></div>
-                <img src="assets/img/ritratto.webp" alt="Matteo Rapeso, ritratto in bianco e nero" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()">
-              </div>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ 7. CONTATTI ============ -->
-    <section id="contatti" aria-labelledby="titolo-contatti">
+    <section class="sez-scura" id="contatti" aria-labelledby="titolo-contatti">
       <div class="wrap">
         <div class="sec">
           <p class="label rv">Contatti</p>
           <div>
             <h2 class="big rv" id="titolo-contatti"><span class="it">Scrivimi.</span></h2>
-            <p class="lead rv" style="--d:100ms">Il primo passo è una call conoscitiva gratuita di 15 minuti. Scrivimi per email o con un messaggio su Instagram, indicando il link al profilo e l’obiettivo che hai in mente: ti rispondo per accordarci su un orario.</p>
-            <div class="note-c note-contatti">
-              <span class="chalk" style="--d:300ms">scrivimi qui</span>
-              <svg class="draw" viewBox="0 0 56 44" aria-hidden="true" focusable="false" style="--d:800ms"><path pathLength="1" d="M4 8 C 22 2, 46 14, 50 36"/><path pathLength="1" d="M40 30 L50 38 L53 24"/></svg>
-            </div>
-            <!-- Cerchio a mano attorno all'email: si disegna da solo -->
-            <div class="mailwrap">
-              <svg class="draw" viewBox="0 0 400 80" preserveAspectRatio="none" aria-hidden="true" focusable="false" style="--d:700ms"><path pathLength="1" d="M26 42 C 20 14, 130 8, 214 10 C 318 12, 392 20, 388 44 C 384 68, 280 74, 190 72 C 100 70, 12 66, 22 38 C 28 24, 64 16, 104 15"/></svg>
-              <p class="mail">rapeso.matteo@gmail.com</p>
+            <p class="lead rv" style="--d:100ms">Il primo passo è una call conoscitiva gratuita di 15 minuti. Scrivimi per email o su Instagram, con il link al profilo e l’obiettivo che hai in mente.</p>
+            <div class="mailwrap rv" style="--d:200ms">
+              <a class="mail" href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti&body=Ciao%20Matteo%2C%0A%0Avorrei%20fissare%20la%20call%20conoscitiva%20gratuita%20di%2015%20minuti.%0A%0AIl%20mio%20profilo%3A%20%0AL%27obiettivo%20che%20ho%20in%20mente%3A%20%0AGiorni%20e%20orari%20che%20mi%20vanno%20bene%3A%20%0A%0AGrazie">rapeso.matteo@gmail.com</a>
             </div>
             <div class="links rv" style="--d:200ms">
-              <a href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti">Scrivi un’email <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
-              <a href="https://www.instagram.com/matteorapeso/">@matteorapeso su Instagram <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+              <a class="btn-o" href="https://www.instagram.com/matteorapeso/">@matteorapeso su Instagram <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+
+    <!-- Popup della call gratuita: si apre dai pulsanti "Scrivimi per la call gratuita". Senza JavaScript i pulsanti portano a #contatti. -->
+    <dialog class="popup" id="p-call" aria-labelledby="t-p-call">
+      <span class="pop-luce" aria-hidden="true"></span>
+      <div class="popup-in">
+        <button class="chiudi" type="button" data-chiudi aria-label="Chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <p class="k">Primo passo</p>
+        <h3 class="titolo-pop" id="t-p-call">Scrivimi per la <span class="it">call</span> gratuita</h3>
+        <p class="lead">Quindici minuti per capire se ha senso lavorare insieme. Nessun calendario di prenotazione: basta un messaggio.</p>
+        <ol class="passi-mini">
+          <li><p><strong>Mi scrivi</strong> il link al profilo e l’obiettivo che hai in mente.</p></li>
+          <li><p><strong>Ci sentiamo</strong> per 15 minuti, senza costi.</p></li>
+          <li><p><strong>Se ha senso</strong>, ti propongo il metodo: audit, strategia, calendario.</p></li>
+        </ol>
+        <p class="indirizzo">rapeso.matteo@gmail.com</p>
+        <div class="azioni">
+          <a class="btn-p" href="mailto:rapeso.matteo@gmail.com?subject=Call%20conoscitiva%20di%2015%20minuti&body=Ciao%20Matteo%2C%0A%0Avorrei%20fissare%20la%20call%20conoscitiva%20gratuita%20di%2015%20minuti.%0A%0AIl%20mio%20profilo%3A%20%0AL%27obiettivo%20che%20ho%20in%20mente%3A%20%0AGiorni%20e%20orari%20che%20mi%20vanno%20bene%3A%20%0A%0AGrazie">Scrivi un’email <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+          <a class="btn-o" href="https://www.instagram.com/matteorapeso/">Instagram <svg class="fr" aria-hidden="true" focusable="false"><use href="#i-freccia"/></svg></a>
+        </div>
+      </div>
+    </dialog>
+
   </main>
 
-  <footer>
+  <footer class="sez-scura">
     <div class="wrap">
       <p>© 2026 Matteo Rapeso. Nessun cookie, nessun tracker.</p>
       <p>Numerella è un progetto dimostrativo: attività e dati fittizi.</p>

@@ -1,18 +1,19 @@
 /* ==========================================================================
    Portfolio di Matteo Rapeso: foglio di stile
-   Direzione visiva: nero caldo, un solo accento beige (vedi CLAUDE.md, sezioni Design e Sistema di movimento).
+   Direzione visiva: crema chiaro e blu navy, sezioni che si alternano, angoli arrotondati
+   (vedi CLAUDE.md, sezioni Design e Sistema di movimento).
 
    Struttura del file:
    1. Font (self-hosted) e fallback
-   2. Variabili e base
-   3. Componenti comuni (etichette, barra, pulsanti, titoli)
+   2. Variabili e base (compresi i materiali del vetro, "Liquid Glass")
+   3. Componenti comuni (etichette, menu, pulsanti e bagliori, titoli)
    4. Sezioni, nell'ordine in cui compaiono nella pagina
-   5. Caso studio (scheda, telefono-mockup a sette stati, passi, calendario)
-   6. Tablet e desktop
-   7. Movimento (gesso, luce, barra "storie", cursore; gli stati nascosti sono solo qui e solo con .js)
-   8. Preferenze dell'utente (movimento ridotto)
+   5. Caso studio (testata, profilo prima/dopo, post di esempio, approfondimenti a pagine)
+   6. Popup
+   7. Tablet e desktop (si parte dal telefono, poi si allarga)
+   8. Movimento (gli stati nascosti esistono solo con .js e solo se l'utente non ha chiesto di ridurre il movimento)
+   9. Preferenze dell'utente (movimento ridotto)
    ========================================================================== */
-
 
 /* ==========================================================================
    1. FONT
@@ -23,36 +24,7 @@
    metriche, così il testo non salta quando arriva il font vero.
    ========================================================================== */
 
-/* Titoli: Inter Tight 600, 700, 800 */
-
-@font-face {
-  font-family: "Inter Tight";
-  src: url("../assets/fonts/inter-tight-latin-600-normal.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-@font-face {
-  font-family: "Inter Tight";
-  src: url("../assets/fonts/inter-tight-latin-700-normal.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-@font-face {
-  font-family: "Inter Tight";
-  src: url("../assets/fonts/inter-tight-latin-800-normal.woff2") format("woff2");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-/* Testo: Inter 400 e 500 */
+/* Testo e titoli: una sola famiglia, Inter 400, 500 e 700 */
 
 @font-face {
   font-family: "Inter";
@@ -72,16 +44,16 @@
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
-/* Parole chiave: Instrument Serif 400 e 400 corsivo */
-
 @font-face {
-  font-family: "Instrument Serif";
-  src: url("../assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Inter";
+  src: url("../assets/fonts/inter-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
+
+/* Corsivo d'accento: Instrument Serif 400 corsivo */
 
 @font-face {
   font-family: "Instrument Serif";
@@ -92,71 +64,8 @@
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
-/* Etichette: Geist Mono 400 e 500 */
-
-@font-face {
-  font-family: "Geist Mono";
-  src: url("../assets/fonts/geist-mono-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-@font-face {
-  font-family: "Geist Mono";
-  src: url("../assets/fonts/geist-mono-latin-500-normal.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-/* Annotazioni a gesso: Rock Salt 400 (il browser lo scarica solo se la pagina contiene un'annotazione) */
-
-@font-face {
-  font-family: "Rock Salt";
-  src: url("../assets/fonts/rock-salt-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
 
 /* Font di riserva con size-adjust e metriche regolate (valori calcolati con il testo reale della pagina) */
-
-@font-face {
-  font-family: "Inter Tight Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica-Bold"), local("Liberation Sans Bold"), local("Arimo Bold");
-  font-weight: 600;
-  font-style: normal;
-  size-adjust: 93.98%;
-  ascent-override: 103.08%;
-  descent-override: 25.67%;
-  line-gap-override: 0.00%;
-}
-
-@font-face {
-  font-family: "Inter Tight Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica-Bold"), local("Liberation Sans Bold"), local("Arimo Bold");
-  font-weight: 700;
-  font-style: normal;
-  size-adjust: 96.27%;
-  ascent-override: 100.63%;
-  descent-override: 25.05%;
-  line-gap-override: 0.00%;
-}
-
-@font-face {
-  font-family: "Inter Tight Fallback";
-  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica-Bold"), local("Liberation Sans Bold"), local("Arimo Bold");
-  font-weight: 800;
-  font-style: normal;
-  size-adjust: 98.57%;
-  ascent-override: 98.28%;
-  descent-override: 24.47%;
-  line-gap-override: 0.00%;
-}
 
 @font-face {
   font-family: "Inter Fallback";
@@ -173,6 +82,17 @@
   font-family: "Inter Fallback";
   src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Arimo");
   font-weight: 500;
+  font-style: normal;
+  size-adjust: 107.93%;
+  ascent-override: 89.76%;
+  descent-override: 22.35%;
+  line-gap-override: 0.00%;
+}
+
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica-Bold"), local("Liberation Sans Bold"), local("Arimo Bold");
+  font-weight: 700;
   font-style: normal;
   size-adjust: 107.93%;
   ascent-override: 89.76%;
@@ -202,72 +122,224 @@
   line-gap-override: 0.00%;
 }
 
-@font-face {
-  font-family: "Geist Mono Fallback";
-  src: local("Courier New"), local("CourierNewPSMT"), local("Courier"), local("Liberation Mono"), local("Cousine");
-  font-weight: 400;
-  font-style: normal;
-  size-adjust: 99.98%;
-  ascent-override: 100.52%;
-  descent-override: 29.50%;
-  line-gap-override: 0.00%;
-}
-
-@font-face {
-  font-family: "Geist Mono Fallback";
-  src: local("Courier New"), local("CourierNewPSMT"), local("Courier"), local("Liberation Mono"), local("Cousine");
-  font-weight: 500;
-  font-style: normal;
-  size-adjust: 99.98%;
-  ascent-override: 100.52%;
-  descent-override: 29.50%;
-  line-gap-override: 0.00%;
-}
-
-
 /* ==========================================================================
    2. VARIABILI E BASE
+   Due "ruoli" di sfondo che si alternano: scuro (--d-*) e chiaro (--l-*).
+   Tutto il sito usa i nomi corti (--bg, --fg, --accent...): sulla pagina valgono i valori del ruolo scuro,
+   dentro una sezione ".sez-chiara" valgono quelli del ruolo chiaro. 
    ========================================================================== */
 
 :root {
-  /* Palette: nero caldo e un solo accento, il beige. Definita una sola volta. */
-  --bg: #0B0B0A;
-  --surface: #131311;
-  --fg: #F2EEE6;
-  --muted: #BEBAB2;
-  --line: rgba(242, 238, 230, 0.16);
-  --accent: #E3D6BF;
-  --accent-ink: #0B0B0A;       /* testo sopra l'accento */
-  --accent-rgb: 227, 214, 191; /* lo stesso beige, in numeri: serve per le luci trasparenti */
-  --accent-50: rgba(227, 214, 191, 0.5);
-  --fg-22: rgba(242, 238, 230, 0.22);   /* fondo dei segmenti della barra "storie" */
+  /* Palette: blu navy e crema. Sfondi con una sfumatura delicata (--*-g1/g2) e un alone (--*-hi).
+     --key è il colore delle parole chiave nei titoli. */
+  --d-bg: #1A2A63;
+  --d-fg: #F6F1E6;
+  --d-muted: #CBD0E4;
+  --d-line: rgba(246, 241, 230, 0.2);
+  --d-accent: #EADFC8;
+  --d-accent-ink: #1A2A63;
+  --d-key: #EADFC8;
+  --d-rgb: 234, 223, 200;       /* l'accento in numeri: serve per le luci trasparenti */
+  --d-fg-rgb: 246, 241, 230;
+  --d-hi: rgba(120, 150, 235, 0.22);
+  --d-g1: #243580;
+  --d-g2: #1A2A63;
+
+  --l-bg: #F7F2E8;
+  --l-fg: #1B2A5E;
+  --l-muted: #46527F;
+  --l-line: rgba(27, 42, 94, 0.16);
+  --l-accent: #1B2A5E;
+  --l-accent-ink: #F7F2E8;
+  --l-key: #1A2A63;      /* parole chiave su fondo chiaro: lo stesso blu navy del sito, la differenza la fa il corsivo serif */
+  --l-rgb: 27, 42, 94;
+  --l-fg-rgb: 27, 42, 94;
+  --l-hi: rgba(255, 255, 255, 0.75);
+  --l-g1: #FBF8F0;
+  --l-g2: #F1EADA;
+
+  --glow-d: 234, 223, 200;      /* luce su sfondo scuro: beige */
+  --glow-l: 70, 100, 215;       /* luce su sfondo chiaro: blu */
+
+  /* ----- Vetro (Liquid Glass) -----
+     Un materiale traslucido con la luce sul bordo, usato su tutto il sito. Quattro regole:
+     1. lo sfocato vero (backdrop-filter) solo dove dietro c'è qualcosa di nitido: barra in alto, tendina del menu, popup e tasto di chiusura;
+     2. altrove il vetro è "dipinto": tinta trasparente + luce sul bordo + ombra morbida, senza sfocato (costa molto meno e dietro non c'è nulla da sfocare);
+     3. lo sfocato non si anima mai: si animano solo transform e opacità, come tutto il resto;
+     4. il testo sul vetro ha sempre il contrasto misurato sul rendering, anche dietro il punto più chiaro. */
+  --sfoca: blur(18px) saturate(1.7);
+  /* Luce sul bordo: un riflesso netto in alto e a sinistra, un'ombra sottile in basso, un filo di luce tutto intorno */
+  --bordo-l: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 1px 0 0 rgba(255, 255, 255, 0.45), inset 0 -1px 0 rgba(27, 42, 94, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  --bordo-d: inset 0 1px 0 rgba(255, 255, 255, 0.34), inset 1px 0 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  --ombra-l: 0 0 0 1px rgba(27, 42, 94, 0.06), 0 14px 32px -12px rgba(27, 42, 94, 0.3), 0 2px 6px rgba(27, 42, 94, 0.08);
+  --ombra-d: 0 20px 44px -16px rgba(3, 7, 34, 0.65), 0 3px 8px rgba(3, 7, 34, 0.25);
+  /* Tinte dei vetri con sfocato (e delle tessere). Con "riduci trasparenza" e dove manca backdrop-filter diventano opache: fine del foglio, sezione 9 */
+  --v-barra-a: rgba(255, 255, 255, 0.8);
+  --v-barra-b: rgba(251, 248, 240, 0.68);
+  --v-tendina-a: rgba(255, 255, 255, 0.88);
+  --v-tendina-b: rgba(251, 248, 240, 0.82);
+  --v-popup-a: rgba(28, 44, 116, 0.82);
+  --v-popup-b: rgba(20, 33, 92, 0.88);
+  --v-tessera: rgba(255, 255, 255, 0.04);
+  /* Macchie di colore dietro le sezioni (blu e beige, molto morbide): senza colore dietro un vetro non si vede.
+     Ogni macchia sta dentro una mattonella alta 1300px che si ripete in verticale, così non ci sono giunture. */
+  --macchie-l:
+    radial-gradient(320px 320px at 10% 20%, rgba(110, 130, 255, 0.2), transparent 70%),
+    radial-gradient(400px 400px at 90% 56%, rgba(232, 200, 140, 0.3), transparent 70%),
+    radial-gradient(300px 300px at 26% 82%, rgba(110, 130, 255, 0.12), transparent 70%);
+  /* Le stesse macchie per la hero, ma in due e misurate sull'altezza della sezione (non si ripetono): vedi "Hero" nella sezione 4 */
+  --macchie-hero:
+    radial-gradient(320px 320px at 10% 24%, rgba(110, 130, 255, 0.2), transparent 70%),
+    radial-gradient(400px 400px at 90% 50%, rgba(232, 200, 140, 0.3), transparent 70%);
+  --macchie-d:
+    radial-gradient(420px 420px at 86% 24%, rgba(var(--glow-l), 0.3), transparent 70%),
+    radial-gradient(340px 340px at 8% 50%, rgba(var(--glow-d), 0.07), transparent 70%),
+    radial-gradient(440px 440px at 74% 74%, rgba(var(--glow-l), 0.22), transparent 70%);
+
+  /* Valori correnti (ruolo scuro): le sezioni chiare li ridefiniscono */
+  --bg: var(--d-bg);
+  --fg: var(--d-fg);
+  --muted: var(--d-muted);
+  --line: var(--d-line);
+  --accent: var(--d-accent);
+  --accent-ink: var(--d-accent-ink);
+  --accent-rgb: var(--d-rgb);
+  --fg-rgb: var(--d-fg-rgb);
+  --key: var(--d-key);
+  --vetro-a: rgba(255, 255, 255, 0.14);       /* velo di vetro: più luminoso in alto (a), più trasparente in basso (b) */
+  --vetro-b: rgba(255, 255, 255, 0.04);
+  --bordo: var(--bordo-d);
+  --ombra: var(--ombra-d);
 
   /* Font: prima il font vero, poi il suo fallback regolato, poi i generici */
-  --f-display: "Inter Tight", "Inter Tight Fallback", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --f-body: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --f-serif: "Instrument Serif", "Instrument Serif Fallback", Georgia, "Times New Roman", serif;
-  --f-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --f-chalk: "Rock Salt", "Comic Sans MS", cursive;   /* annotazioni a gesso */
+  /* Scala dei titoli: solo tre misure (grande, media, piccola) */
+  --h-xl: clamp(34px, 6vw, 60px);
+  --h-l: clamp(28px, 4vw, 44px);
+  --h-m: clamp(22px, 2.6vw, 30px);
 
   --colonna: 1160px;
-  --barra: 78px;                            /* altezza della barra in alto (20 + 44 + 14): la hero ci passa sotto */
+  /* Aree sicure (iPhone con notch o isola dinamica, soprattutto in orizzontale): ci sono grazie a viewport-fit=cover nell'<head>.
+     Sono 0 dove non servono (desktop, iPad, iPhone in verticale dentro Safari). Per provarle basta ridefinire queste quattro variabili. */
+  --sa-t: env(safe-area-inset-top, 0px);
+  --sa-r: env(safe-area-inset-right, 0px);
+  --sa-b: env(safe-area-inset-bottom, 0px);
+  --sa-l: env(safe-area-inset-left, 0px);
+  --barra: calc(76px + var(--sa-t));        /* spazio occupato dal menu fisso in alto (barra + distanza dal bordo) */
+  --barra-h: 64px;                          /* altezza della barra vera e propria */
   --gutter: clamp(16px, 4vw, 40px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* l'unico easing del sito: ogni animazione usa questo */
 
   color-scheme: dark;
 }
 
+/* Ruolo chiaro: sezioni crema e menu in alto. Stessi nomi, valori del ruolo chiaro. */
+.sez-chiara,
+.nav {
+  --bg: var(--l-bg);
+  --fg: var(--l-fg);
+  --muted: var(--l-muted);
+  --line: var(--l-line);
+  --accent: var(--l-accent);
+  --accent-ink: var(--l-accent-ink);
+  --accent-rgb: var(--l-rgb);
+  --fg-rgb: var(--l-fg-rgb);
+  --key: var(--l-key);
+  --vetro-a: rgba(255, 255, 255, 0.62);
+  --vetro-b: rgba(255, 255, 255, 0.2);
+  --bordo: var(--bordo-l);
+  --ombra: var(--ombra-l);
+  color-scheme: light;
+}
+/* Ruolo scuro, scritto per esteso: sezioni blu, popup, pannelli e banner blu anche quando stanno dentro una sezione crema. */
+.sez-scura,
+dialog,
+.pannello,
+.banner,
+.card-blu,
+.commuta {
+  --bg: var(--d-bg);
+  --fg: var(--d-fg);
+  --muted: var(--d-muted);
+  --line: var(--d-line);
+  --accent: var(--d-accent);
+  --accent-ink: var(--d-accent-ink);
+  --accent-rgb: var(--d-rgb);
+  --fg-rgb: var(--d-fg-rgb);
+  --key: var(--d-key);
+  --vetro-a: rgba(255, 255, 255, 0.14);
+  --vetro-b: rgba(255, 255, 255, 0.04);
+  --bordo: var(--bordo-d);
+  --ombra: var(--ombra-d);
+  color-scheme: dark;
+}
+/* Sfumature di sfondo, molto delicate, dipinte su ::before (z-index -1) in ogni sezione:
+   così sotto il testo c'è sempre la luce del cursore (anch'essa a z-index -1, creata dopo), beige sullo scuro e blu sul chiaro.
+   Ogni sfondo ha cinque strati: tre macchie di colore (per il vetro), un alone d'angolo e la sfumatura verticale.
+   (La hero ne ha quattro, con due sole macchie: vedi "Hero" nella sezione 4.) */
+section, footer { position: relative; overflow-x: clip; }   /* le luci e le schede che arrivano di lato non allargano mai la pagina (clip: non crea un contenitore di scorrimento) */
+/* Safari fino alla 15 (iPhone 6s/7, iPad Air 2 e mini 4 non vanno oltre) non conosce overflow: clip: ripiego su hidden, che qui è equivalente */
+@supports not (overflow: clip) {
+  body, section, footer, .sfoglia-pagine { overflow-x: hidden; }
+  .hero { overflow: hidden; }
+}
+.sez-chiara { color: var(--fg); }
+section.sez-chiara::before,
+section.sez-scura::before,
+footer.sez-scura::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* le tre macchie si ripetono ogni 1300px; alone e sfumatura coprono tutta la sezione */
+  background-size: 100% 1300px, 100% 1300px, 100% 1300px, 100% 100%, 100% 100%;
+  background-repeat: repeat-y, repeat-y, repeat-y, no-repeat, no-repeat;
+}
+section.sez-chiara::before {
+  background-image:
+    var(--macchie-l),
+    radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
+    linear-gradient(180deg, var(--l-g1), var(--l-g2));
+}
+section.sez-scura::before,
+footer.sez-scura::before {
+  background-image:
+    var(--macchie-d),
+    radial-gradient(90% 70% at var(--gx, 85%) var(--gy, 0%), var(--d-hi), transparent 70%),
+    linear-gradient(180deg, var(--d-g1), var(--d-g2));
+}
+/* Hero e Chi sono sono vicine e tutte e due chiare: la seconda parte dal colore con cui finisce la prima, senza stacco */
+#chi-sono::before {
+  background-image:
+    var(--macchie-l),
+    radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
+    linear-gradient(180deg, var(--l-g2), var(--l-g1));
+}
+#metodo { --gx: 10%; --gy: 100%; }
+#contatti { --gx: 70%; --gy: 100%; }
+#clienti { --gx: 85%; --gy: 0%; }
+#chi-sono { --gx: 20%; --gy: 100%; }
+
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  background: var(--bg);
+  /* Il colore di html si vede dove la pagina non arriva: rimbalzo dello scroll su iPhone e iPad e, in Safari 26, la tinta delle barre
+     (Safari 26 non legge più theme-color: campiona sfondo di body e html; fonti: vedi CLAUDE.md). Di base crema, come l'inizio della pagina;
+     blu solo quando in vista ci sono contatti e piè di pagina (la classe fondo-scuro la mette js/main.js). Non si può dare lo sfondo a body:
+     coprirebbe gli sfondi delle sezioni e le luci, che stanno a z-index -1. */
+  background: var(--l-bg);
+  scroll-padding-top: var(--barra);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
+html.fondo-scuro { background: var(--d-bg); }
+
 body {
   margin: 0;
-  color: var(--fg);                  /* lo sfondo sta su html: così la luce del cursore (z-index -1) resta visibile sotto il testo */
+  color: var(--d-fg);                /* lo sfondo sta su html: così la luce del cursore (z-index -1) resta visibile sotto il testo */
   font: 400 18px/1.6 var(--f-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -277,6 +349,9 @@ body {
 h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 a { color: inherit; }
+/* Al tocco: iOS disegna un riquadro grigio sui comandi (qui ci sono già lampo e pressione) e ingrandisce la pagina con il doppio tocco
+   (utile da evitare sui tasti, come Prima/Dopo, che si toccano più volte di fila) */
+a, button, summary { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
 /* Focus ben visibile da tastiera */
@@ -288,13 +363,14 @@ a { color: inherit; }
   align-items: center;
   min-height: 44px;             /* area toccabile di almeno 44px anche per il link "Vai al contenuto" */
   position: absolute;
-  left: var(--gutter);
-  top: 0.75rem;
+  left: max(var(--gutter), var(--sa-l));
+  top: calc(0.75rem + var(--sa-t));
   z-index: 100;
   padding: 0.75rem 1rem;
+  border-radius: 999px;
   background: var(--accent);
   color: var(--accent-ink);
-  font: 500 14px/1.4 var(--f-mono);
+  font: 500 14px/1.4 var(--f-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
@@ -306,20 +382,19 @@ a { color: inherit; }
   width: 100%;
   max-width: var(--colonna);
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  padding-inline: max(var(--gutter), var(--sa-l)) max(var(--gutter), var(--sa-r));
 }
-
 
 /* ==========================================================================
    3. COMPONENTI COMUNI
    ========================================================================== */
 
-/* Etichette in Geist Mono: maiuscolo, spaziatura 0.12em, mai sotto i 14px */
+/* Etichette in Inter: maiuscolo, spaziatura 0.12em, mai sotto i 14px */
 .label,
 .tag,
 h4,
 dt {
-  font: 500 14px/1.4 var(--f-mono);
+  font: 500 14px/1.4 var(--f-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
@@ -335,928 +410,287 @@ dt {
   background: var(--muted);
 }
 
-/* Barra in alto: nome a sinistra, "Scrivimi ↗" a destra. Non è fissa. */
-.bar {
+/* Menu in alto: barra flottante con angoli arrotondati, staccata dal bordo.
+   Con JavaScript è fissa; senza, resta in cima alla pagina con i link sotto il nome. */
+.nav {
   position: relative;
-  z-index: 2;                   /* sopra la luce della hero */
-  min-height: var(--barra);
+  z-index: 30;
+  color: var(--fg);
+  border-radius: 24px;
+  box-shadow: var(--ombra-l);   /* l'ombra sta sulla barra, il vetro sul suo ::before */
+}
+/* Il vetro della barra: tinta chiara trasparente, sfocato e saturazione di ciò che scorre sotto, luce sul bordo.
+   Sta su ::before (non sulla barra) perché un elemento con backdrop-filter diventa la "radice" dello sfocato dei suoi figli:
+   la tendina del menu, che è un figlio della barra, non vedrebbe più la pagina dietro di sé. */
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--v-barra-a), var(--v-barra-b));
+  -webkit-backdrop-filter: var(--sfoca);
+  backdrop-filter: var(--sfoca);
+  box-shadow: var(--bordo-l);
+}
+html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max(10px, var(--sa-l)); }
+.js .nav {
+  position: fixed;
+  top: max(10px, var(--sa-t));
+  left: max(10px, var(--sa-l), calc((100vw - 1240px) / 2));
+  right: max(10px, var(--sa-r), calc((100vw - 1240px) / 2));
+}
+.nav-in {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
-  padding-block: 20px 14px;
+  justify-content: space-between;
+  gap: 4px 16px;
+  min-height: var(--barra-h);
 }
 .brand {
   display: inline-flex;
   align-items: center;
+  gap: 12px;
   min-height: 44px;
-  font: 500 14px/1 var(--f-mono);
-  letter-spacing: 0.14em;
+  /* Su telefono resta solo il marchio (36px): 4px di spazio per lato portano l'area toccabile a 44px, e il margine negativo
+     li compensa, così il marchio non si sposta. */
+  padding-inline: 4px;
+  margin-inline: -4px;
+  white-space: nowrap;
+  font: 500 14px/1 var(--f-body);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
 }
+/* Marchio MR (assets/logo.svg: lettere disegnate con i font del sito). Su telefono stretto il nome resta solo per gli screen reader
+   (stessa tecnica di .sr), da 480px compare accanto al marchio (misurato: a 440px non c'è posto accanto a «Scrivimi» e al menu). */
+.brand-logo { display: block; flex: none; width: 36px; height: 36px; }   /* 36px: sta a 6px dalla barra «storie» in basso */
+.brand-nome {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (min-width: 480px) {
+  .brand-nome { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
+}
+.nav-menu ul { display: flex; flex-wrap: wrap; gap: 0 22px; }
+.nav-menu a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font: 500 16px/1 var(--f-body);
+  text-decoration: none;
+}
+.nav-menu a::after {            /* filetto sotto la voce della sezione in lettura */
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 8px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.nav-menu a[aria-current="location"]::after { transform: scaleX(1); }
+@media (hover: hover) { .nav-menu a:hover::after { transform: scaleX(1); } }
+.menu-btn { display: none; }
+
+/* Telefono: con JavaScript c'è il pulsante "menu" e l'elenco si apre sotto la barra */
+@media (max-width: 859px) {
+  .js .nav-in { flex-wrap: nowrap; }
+  .js .nav-cta { order: 2; margin-left: auto; }
+  .js .menu-btn {
+    order: 3;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;           /* tondo come la X dei popup: anche il lampo resta dentro un tondo */
+    background: transparent;
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .menu-btn span { display: block; width: 22px; height: 2px; background: currentColor; }
+  .js .nav-menu {
+    position: absolute;
+    left: 0; right: 0; top: calc(100% + 8px);
+    padding: 8px var(--gutter) 24px;
+    background: linear-gradient(180deg, var(--v-tendina-a), var(--v-tendina-b));
+    -webkit-backdrop-filter: var(--sfoca);
+    backdrop-filter: var(--sfoca);
+    border-radius: 24px;
+    box-shadow: var(--bordo-l), var(--ombra-l);   /* tendina di vetro: sfoca la pagina che le scorre dietro */
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+  }
+  .js .nav.aperto .nav-menu { visibility: visible; opacity: 1; transform: none; pointer-events: auto; }
+  .js .nav-menu ul { display: grid; gap: 0; }
+  .js .nav-menu a { width: 100%; min-height: 56px; font: 700 28px/1 var(--f-body); letter-spacing: -0.03em; border-top: 1px solid var(--line); }
+  .js .nav-menu li:first-child a { border-top: 0; }
+  .js .nav-menu a::after { display: none; }
+  .nav-menu ul { width: 100%; }
+  .nav-menu { width: 100%; order: 4; }   /* senza JavaScript: i link vanno a capo sotto il nome */
+  .js .nav-menu { order: 0; width: auto; }
+}
+@media (min-width: 860px) {
+  .nav-in { flex-wrap: nowrap; }
+  .nav-menu { margin-left: auto; margin-right: 8px; }
+}
+
+/* Barra "storie" dentro il menu fisso (la crea JavaScript): un segmento per sezione, si riempie con lo scroll */
+.story-bar {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 5px;
+  display: flex;
+  gap: 3px;
+  pointer-events: none;
+}
+.seg { flex: 1; height: 3px; overflow: hidden; border-radius: 999px; background: rgba(var(--fg-rgb), 0.22); }
+.seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
+
+/* Pulsante vuoto: vetro chiaro (velo trasparente, riflesso in alto) con un contorno sottile.
+   Al passaggio si riempie del colore opposto a quello che ha intorno. */
 .btn-o {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid var(--fg);
-  background: transparent;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 99px;
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: inset 0 0 0 1px rgba(var(--fg-rgb), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 8px 18px -10px rgba(var(--fg-rgb), 0.4);
   color: var(--fg);
-  font: 500 14px/1 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font: 500 16px/1 var(--f-body);
   text-decoration: none;
 }
-.btn-o:hover,
+/* "Scrivimi" nella barra: vetro colorato, come il pulsante principale */
+.nav-cta {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 58%), var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 8px 16px -8px rgba(var(--accent-rgb), 0.6);
+  color: var(--accent-ink);
+}
+/* Il «passaggio» (hover) esiste solo con il mouse: al tocco, su iPhone e iPad, resterebbe attivo dopo il tap (il pulsante rimarrebbe pieno).
+   La pressione (:active) vale per tutti. */
 .btn-o:active { background: var(--fg); color: var(--bg); }
+@media (hover: hover) { .btn-o:hover { background: var(--fg); color: var(--bg); } }
+/* Pulsante principale: vetro colorato (tinta d'accento) con il riflesso in alto.
+   Al passaggio diventa vetro chiaro con il contorno d'accento. */
+.btn-p {
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 99px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 58%), var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 12px 24px -10px rgba(var(--accent-rgb), 0.65);
+  color: var(--accent-ink);
+  font: 500 16px/1.3 var(--f-body);
+  text-decoration: none;
+}
+.btn-p:active {
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: inset 0 0 0 1px var(--accent), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: var(--accent);
+}
+@media (hover: hover) {
+  .btn-p:hover {
+    background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+    box-shadow: inset 0 0 0 1px var(--accent), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    color: var(--accent);
+  }
+}
 
 /* Freccia ↗ disegnata con SVG (il font latin non contiene la freccia) */
 .fr { width: 0.9em; height: 0.9em; margin-left: 0.55em; flex: none; vertical-align: -0.05em; }
 
-/* Titoli: Inter Tight. Le parole chiave in Instrument Serif corsivo, colore accento. */
+/* ----- Bagliori sui tasti -----
+   Ogni tasto ha una luce morbida che segue il mouse (solo mouse) e un lampo che parte dal punto premuto (mouse, tocco e tastiera).
+   Le luci sono due cerchi sfumati che cambiano solo transform e opacità; stanno dietro il testo. Le crea js/main.js. */
+.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap, .commuta button, .sfoglia-tasto, a.tassello { overflow: hidden; isolation: isolate; }
+.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .mailwrap, .commuta button, .sfoglia-tasto { position: relative; }
+.lampo, .luce-b {
+  position: absolute;
+  left: 0; top: 0;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(var(--lc, 70, 100, 215), var(--la, 0.5)), rgba(var(--lc, 70, 100, 215), 0) 70%);
+}
+.luce-b { width: 240px; height: 240px; margin: -120px 0 0 -120px; opacity: 0; transform: translate(var(--mx, 50%), var(--my, 50%)); }
+.lampo { width: 260px; height: 260px; margin: -130px 0 0 -130px; opacity: 0; transform: translate(var(--lx, 50%), var(--ly, 50%)) scale(0.2); }
+
+/* Titoli: Inter 700. Le parole chiave in Instrument Serif corsivo, colore accento. */
 h1, h2 {
-  font-family: var(--f-display);
-  font-weight: 800;
+  font-family: var(--f-body);
+  font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 0.96;
   text-wrap: balance;
 }
-h1 { font-size: clamp(38px, 10.4vw, 112px); }
-h2 { font-size: clamp(32px, 6vw, 68px); font-weight: 700; }
+b, strong { font-weight: 500; }   /* i grassetti nel testo sono 500; il 700 è solo dei titoli (così il browser non inventa pesi) */
+h2 { font-size: var(--h-xl); }
 h3 {
-  font: 700 clamp(26px, 3.6vw, 42px)/1.04 var(--f-display);
+  font: 700 var(--h-l)/1.04 var(--f-body);
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
+/* Parole chiave dei titoli: Instrument Serif corsivo, una o due parole, colore --key */
 .it {
   font-family: var(--f-serif);
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.01em;
   font-size: 1.08em;
-  color: var(--accent);
+  color: var(--key);
 }
 
-.lead { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.5; max-width: 34em; }
-.muted { color: var(--muted); }
-
-/* Sezioni: filetto sopra, molto spazio verticale */
-section {
-  padding-block: clamp(72px, 12vw, 160px);
-  border-top: 1px solid var(--line);
-}
-/* Griglia asimmetrica: etichetta nella colonna stretta a sinistra, contenuto a destra */
-.sec {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 28px 40px;
-}
-
-/* Link di testo con sottolineatura beige */
-.link-testo {
-  display: inline-block;
-  padding-block: 10px;
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.3em;
-}
-.link-testo:hover { color: var(--accent); }
-
-
-/* ==========================================================================
-   4. SEZIONI
-   ========================================================================== */
-
-/* ----- Hero ----- */
-.hero {
-  position: relative;
-  overflow: clip;               /* la luce non esce dalla hero (né fa scorrere la pagina di lato) */
-  margin-top: calc(-1 * var(--barra));   /* la hero parte dall'alto della pagina, sotto la barra: così la luce non ha un bordo netto sopra */
-  border-top: 0;
-  padding-top: calc(var(--barra) + clamp(24px, 5vw, 64px));
-  padding-bottom: clamp(72px, 12vw, 160px);
-}
-.hero .wrap { position: relative; z-index: 1; }
-.toprow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 22px 32px;
-  margin-top: clamp(40px, 8vw, 104px);
-}
-/* Luce beige dietro il titolo. Quella esterna segue il mouse, quella interna respira (sezione 7) */
-.luce { position: absolute; left: 50%; top: 18%; z-index: 0; width: 0; height: 0; pointer-events: none; }
-.luce-in {
-  position: absolute;
-  width: min(80vmax, 1100px);
-  height: min(80vmax, 1100px);
-  left: calc(min(80vmax, 1100px) / -2);
-  top: calc(min(80vmax, 1100px) / -2);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.2), transparent 66%);
-  opacity: 0.6;
-}
-.hero h1 {
-  margin-top: clamp(24px, 3.4vw, 40px);
-  max-width: 11.5em;
-}
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 40px;
-  margin-top: clamp(40px, 7vw, 88px);
-}
-/* Evidenziatore: la frase onesta della hero, già nel suo stato finale */
-.hl {
-  padding: 0 0.14em;
-  margin: 0 0 0 -0.14em;       /* a destra niente margine negativo: il punto che segue non deve finire sopra il beige */
-  background: var(--accent);
-  color: var(--accent-ink);
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-/* Scheda a tre voci con filetto verticale */
-.meta {
-  position: relative;
-  display: grid;
-  gap: 22px;
-  align-content: start;
-  padding-left: 22px;
-}
-.meta::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--line);
-}
-.meta dt { margin-bottom: 4px; }
-.meta dd { font-size: 17px; line-height: 1.45; }
-/* "Primo passo": link a #contatti con freccia, l'unica azione della hero (il link-testo ha già la sottolineatura beige) */
-.azione .fr { color: var(--accent); }
-
-/* ----- Per chi lavoro: l'unica sezione costruita a righe (filetto sopra, titolo a sinistra, testo a destra) ----- */
-.rows { margin-top: clamp(32px, 5vw, 56px); }
-.row-c {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 28px 40px;
-  padding-block: 28px 32px;
-  border-top: 1px solid var(--line);
-}
-.row-c:last-child { border-bottom: 1px solid var(--line); }
-.row-c::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -1px;
-  width: 100%;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-.row-c h3 { font-size: clamp(28px, 4vw, 46px); line-height: 1.02; }
-.row-c .tag { display: block; margin-top: 10px; }
-.row-c dd { margin-top: 6px; color: var(--muted); font-size: 17px; max-width: 30em; }
-.row-c dt { margin-top: 22px; color: var(--accent); }
-.row-c dt:first-child { margin-top: 0; }
-.introduzione { margin-top: 28px; }
-
-/* Numeri 01-04 in Geist Mono (Cosa risolvo e i quattro passi) */
-.n { font: 500 14px/1 var(--f-mono); letter-spacing: 0.12em; color: var(--accent); }
-
-/* ----- Cosa risolvo: un blocco unico, senza filetti.
-   Frase grande in Inter Tight 700 e, di lato, il testo breve in colonna stretta. ----- */
-.sec-problemi {
-  grid-template-areas: "label" "frase" "testo";
-  row-gap: 32px;
-}
-.sec-problemi > .label { grid-area: label; }
-.frase {
-  grid-area: frase;
-  max-width: 12em;
-  font-size: clamp(40px, 9vw, 76px);
-}
-.problemi-testo {
-  grid-area: testo;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 40px;
-  max-width: 26rem;
-}
-.problema h3 { margin-top: 14px; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.1; }
-.problema p:last-child { margin-top: 10px; font-size: 17px; color: var(--muted); }
-
-/* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono), senza filetti ----- */
-.passi {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px 24px;
-  margin-top: clamp(40px, 6vw, 72px);
-}
-.passo h3 { margin-top: 14px; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.1; }
-.passo p:last-child { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--muted); }
-
-/* La striscia 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px 24px;
-  margin-top: clamp(48px, 7vw, 80px);
-}
-.num {
-  display: block;
-  font: 700 clamp(34px, 5vw, 46px)/1 var(--f-display);
-  letter-spacing: -0.04em;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-.stat p {
-  margin-top: 8px;
-  font: 500 14px/1.4 var(--f-mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.note { margin-top: 28px; max-width: 32em; font-size: 15px; color: var(--muted); }
-.rimando { margin-top: 20px; }
-
-/* ----- Chi sono ----- */
-.who {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 48px;
-}
-.who .lead { margin-top: 28px; }
-.who .muted { margin-top: 18px; max-width: 34em; }
-
-/* Ritratto: 4:5, in bianco e nero, sfumato verso il fondo.
-   Finché assets/img/ritratto.webp non esiste si vede il segnaposto (tre aloni grigi). */
-.ritratto { width: 100%; max-width: 440px; }
-.photo {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 98%);
-  mask-image: linear-gradient(to bottom, #000 60%, transparent 98%);
-}
-.photo-in {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(34% 26% at 50% 31%, #9a9892 0%, #5b5a56 62%, transparent 66%),
-    radial-gradient(70% 38% at 50% 78%, #4a4945 0%, #2b2a28 62%, transparent 66%),
-    radial-gradient(120% 80% at 50% 25%, #34332f 0%, #1a1a18 55%, #0B0B0A 100%);
-  filter: grayscale(1) contrast(1.05);
-}
-.photo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
-}
-
-/* ----- Contatti ----- */
-.big { font-size: clamp(56px, 15vw, 200px); line-height: 0.92; }
-#contatti .lead { margin-top: 28px; }
-/* L'email è testo: un clic la seleziona tutta, pronta da copiare */
-.mail {
-  margin-top: 28px;
-  font: 500 clamp(18px, 3vw, 28px)/1.3 var(--f-display);
-  letter-spacing: -0.01em;
-  word-break: break-word;
-  -webkit-user-select: all;
-  user-select: all;
-}
-.links { display: flex; flex-wrap: wrap; gap: 4px 28px; margin-top: 18px; }
-.links a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding-block: 10px;
-  border-bottom: 1px solid var(--accent);
-  font: 500 14px/1 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-.links a:hover { color: var(--accent); }
-
-/* ----- Piè di pagina ----- */
-footer {
-  padding-block: 28px 56px;
-  border-top: 1px solid var(--line);
-}
-footer p { font: 400 14px/1.5 var(--f-mono); color: var(--muted); }
-footer p + p { margin-top: 6px; }
-
-
-/* ==========================================================================
-   5. CASO STUDIO
-   I contenuti sono quelli di prima. Il telefono è uno solo e cambia stato
-   in base al passo che si sta leggendo (la logica è in js/main.js).
-   Senza JavaScript i sette stati del telefono stanno uno sotto l'altro.
-   ========================================================================== */
-
-.case-head { display: grid; gap: 22px; max-width: 54rem; }
-.case-head .lead { font-size: clamp(18px, 2vw, 21px); max-width: 40em; }
-.case-head h2 { max-width: 12em; }
-
-/* Etichetta ben visibile: il progetto è dimostrativo */
-.etichetta-fittizio span {
-  display: inline-block;
-  padding: 10px 14px;
-  border: 1px solid var(--accent);
-  font: 500 14px/1.4 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-/* Scheda di Numerella: quattro voci con filetto sopra */
-.scheda {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  margin-top: clamp(40px, 6vw, 72px);
-}
-.scheda > div { padding: 24px 24px 28px 0; border-top: 1px solid var(--line); }
-.scheda dd { margin-top: 10px; max-width: 30em; }
-
-/* Sotto la storia: strategia e approfondimenti, ognuno con il suo filetto e il suo spazio */
-.strategia,
-.blocchi {
-  margin-top: clamp(56px, 8vw, 110px);
-  padding-top: clamp(28px, 4vw, 48px);
-  border-top: 1px solid var(--line);
-}
-.strategia h3 { font-size: clamp(30px, 4.4vw, 52px); line-height: 1; }
-
-.elenco-semplice { margin-top: 24px; max-width: 32em; }
-.elenco-semplice li {
-  position: relative;
-  padding-left: 28px;
-  color: var(--fg);
-}
-.elenco-semplice li + li { margin-top: 12px; }
-.elenco-semplice li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.8em;
-  width: 16px;
-  height: 1px;
-  background: var(--accent);
-}
-
-/* ----- La storia: stage (telefono) + passi ----- */
-.story { margin-top: clamp(40px, 6vw, 72px); }
-
-/* Lo stage tiene il telefono. Con JavaScript resta fisso mentre i passi scorrono */
-.stage {
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-.js .stage {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  padding: 18px 0 10px;
-  background: var(--bg);          /* i passi che salgono scorrono "sotto" lo stage */
-  overflow: clip;
-}
-.telefono-area {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-.telefono-area figcaption {
-  max-width: 24rem;
-  font-size: 14px;
-  line-height: 1.4;
-  text-align: center;
-  color: var(--muted);
-}
-
-/* Didascalia alternativa dentro il primo passo: compare solo sugli schermi bassi (vedi più sotto) */
-.didascalia-passo { display: none; max-width: 24rem; font-size: 14px; line-height: 1.4; color: var(--muted); }
-
-/* Luce beige dietro il telefono: pulsa una volta a ogni cambio di stato (vedi sezione 8) */
-.halo { display: none; }
-.js .halo {
-  display: block;
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  z-index: -1;
-  width: 120%;
-  aspect-ratio: 1;
-  margin: -60% 0 0 -60%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.2), transparent 66%);
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-/* ----- Telefono-mockup: oggetto piatto con bordo beige sottile (nessun vetro) ----- */
-.phone {
-  position: relative;
-  width: min(270px, 74vw);
-  padding: 7px;
-  border: 1px solid var(--accent-50);
-  border-radius: 38px;
-  background: #050505;
-}
-/* Con JavaScript: su telefono è basso e sfuma in fondo, tagliato; i passi scorrono sotto */
-.js .phone {
-  height: 38vh;
-  height: 38svh;
-  min-height: 270px;
-  max-height: 360px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
-}
-
-/* Lo schermo misura i testi in "cqw" (1% della sua larghezza) tramite --u, con un minimo in pixel per le scritte piccole.
-   Dove le container query non esistono, --u resta un valore fisso. È interfaccia disegnata: l'eccezione ai 14px vale qui. */
-.screen {
-  --u: 2.5px;
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 32px;
-  background: var(--bg);
-  color: var(--fg);
-}
-@supports (width: 1cqw) {
-  .screen { container-type: inline-size; --u: 1cqw; }
-}
-.js .screen { height: 100%; }
-.notch {
-  position: absolute;
-  z-index: 3;
-  top: calc(3.4 * var(--u));
-  left: 50%;
-  width: calc(26 * var(--u));
-  height: calc(7 * var(--u));
-  margin-left: calc(-13 * var(--u));
-  border-radius: 99px;
-  background: #000;
-}
-
-/* Uno stato del telefono. Senza JS: uno sotto l'altro. Con JS: sovrapposti, se ne vede uno */
-.scr { padding: calc(13 * var(--u)) calc(6 * var(--u)) calc(6 * var(--u)); }
-.scr + .scr { border-top: 1px solid var(--line); }
-.js .scr {
-  position: absolute;
-  inset: 0;
-  padding-bottom: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-.js .scr + .scr { border-top: 0; }
-.js .scr.on { opacity: 1; }
-
-/* Profilo */
-.profilo-testa { display: flex; align-items: center; gap: calc(3.4 * var(--u)); }
-.avatar {
-  position: relative;
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: calc(17 * var(--u));
-  height: calc(17 * var(--u));
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: var(--surface);
-  font: 800 calc(7 * var(--u))/1 var(--f-display);
-  color: var(--accent);
-}
-.avatar-piccolo { width: calc(8.4 * var(--u)); height: calc(8.4 * var(--u)); font-size: max(10px, calc(3.6 * var(--u))); }
-/* Anello beige attorno all'avatar del "dopo": si disegna nella sezione 8 */
-.avatar svg {
-  position: absolute;
-  inset: -5px;
-  width: calc(100% + 10px);
-  height: calc(100% + 10px);
-  overflow: visible;
-}
-.avatar circle { fill: none; stroke: var(--accent); stroke-width: 2; }
-.nome { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-display); letter-spacing: -0.01em; }
-.stato {
-  margin-top: calc(1.2 * var(--u));
-  font: 500 max(10px, calc(3.2 * var(--u)))/1.3 var(--f-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.esempio-chip {
-  margin-left: auto;
-  padding: calc(1 * var(--u)) calc(2.4 * var(--u));
-  border: 1px solid var(--accent);
-  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.bio { margin-top: calc(4.5 * var(--u)); font-size: max(11px, calc(4.4 * var(--u))); line-height: 1.38; }
-.bio-fioca { color: var(--muted); }
-.bio-link { margin-top: calc(2.4 * var(--u)); font-size: max(11px, calc(4.4 * var(--u))); font-weight: 500; color: var(--accent); }
-
-/* Evidenze: i quattro pilastri */
-.storie { display: flex; justify-content: space-between; margin-top: calc(4 * var(--u)); }
-.storia {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: calc(1.4 * var(--u));
-  font-size: max(10px, calc(3.2 * var(--u)));
-  line-height: 1.2;
-  color: var(--muted);
-}
-.storia i {
-  display: grid;
-  place-items: center;
-  width: calc(11 * var(--u));
-  height: calc(11 * var(--u));
-  border: 1px solid var(--accent-50);
-  border-radius: 50%;
-  font: italic 400 max(14px, calc(5.4 * var(--u)))/1 var(--f-serif);
-  color: var(--accent);
-}
-
-/* Piccola griglia di post: prima disordinata (testo fitto), dopo ordinata (una serie) */
-.mini-griglia {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: calc(1 * var(--u));
-  margin-top: calc(4.5 * var(--u));
-}
-.tessera {
-  aspect-ratio: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: calc(1 * var(--u));
-  padding: calc(2.4 * var(--u));
-  border: 1px solid var(--line);
-  overflow: hidden;
-}
-.tessera i { display: block; height: max(3px, calc(1.2 * var(--u))); background: rgba(242, 238, 230, 0.3); }
-.tessera-densa i:nth-child(odd) { width: 100%; }
-.tessera-densa i:nth-child(even) { width: 78%; }
-.tessera-densa i:nth-child(3n) { width: 90%; }
-.tessera-densa:nth-child(2) { justify-content: flex-start; }
-.tessera-densa:nth-child(3) { justify-content: flex-end; }
-.tessera-serie { justify-content: flex-end; background: var(--surface); }
-.tessera-serie b { font: 800 max(11px, calc(4.4 * var(--u)))/1.05 var(--f-display); letter-spacing: -0.02em; }
-.tessera-superficie { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-
-/* Post */
-.post-testa { display: flex; align-items: center; gap: calc(2.6 * var(--u)); margin-bottom: calc(3 * var(--u)); }
-.post-testa p { font: 700 max(12px, calc(4 * var(--u)))/1 var(--f-display); }
-.copertina {
-  aspect-ratio: 2 / 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: calc(4.4 * var(--u)) calc(5 * var(--u));
-  border: 1px solid var(--line);
-}
-.copertina-scura { background: var(--bg); }
-.copertina-superficie { background: var(--surface); }
-.copertina-formato,
-.copertina-piede {
-  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.copertina-formato { display: flex; justify-content: space-between; color: var(--muted); }
-.copertina-piede { color: var(--accent); }
-.copertina-titolo { font: 800 max(18px, calc(8.2 * var(--u)))/1 var(--f-display); letter-spacing: -0.035em; }
-.copertina-titolo span {
-  display: block;
-  margin-top: calc(1.4 * var(--u));
-  font: 400 max(11px, calc(4 * var(--u)))/1.3 var(--f-body);
+/* Testi di apertura: Instrument Serif corsivo con un filetto sottile a sinistra, come le note discorsive di un articolo.
+   Il resto del testo resta in Inter. */
+.lead {
+  max-width: 28em;
+  padding-left: clamp(16px, 2vw, 24px);
+  border-left: 1px solid rgba(var(--accent-rgb), 0.55);
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 2.7vw, 29px);
+  line-height: 1.38;
   letter-spacing: 0;
   color: var(--muted);
 }
-/* L'avviso sta subito sotto la copertina, così si legge anche nel telefono tagliato */
-.avviso {
-  margin-top: calc(2.6 * var(--u));
-  font: 500 max(10.5px, calc(3.6 * var(--u)))/1.35 var(--f-mono);
-  letter-spacing: 0.02em;
-  color: var(--accent);
-}
-.azioni-post { display: flex; gap: calc(3.4 * var(--u)); margin-top: calc(3 * var(--u)); }
-.azioni-post svg { width: max(16px, calc(6 * var(--u))); height: max(16px, calc(6 * var(--u))); color: var(--fg); }
-.azioni-post .salva { margin-left: auto; }
-.didascalia { margin-top: calc(2.4 * var(--u)); font-size: max(11px, calc(4 * var(--u))); line-height: 1.4; }
-.didascalia strong { font-weight: 600; }
+.muted { color: var(--muted); }
 
-/* Calendario: 14 celle, i numeri 1-4 sono i quattro pilastri */
-.cal-titolo { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-display); letter-spacing: -0.01em; }
-.giorni-sett {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: calc(1.4 * var(--u));
-  margin-top: calc(4 * var(--u));
-  font: 500 max(10px, calc(3.2 * var(--u)))/1 var(--f-mono);
-  color: var(--muted);
-  text-align: center;
-}
-.cg {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: calc(1.4 * var(--u));
-  margin-top: calc(1.6 * var(--u));
-}
-.cell {
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  font: 700 max(11px, calc(4.4 * var(--u)))/1 var(--f-display);
-}
-.cell.p1 { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-.cell.p2 { background: rgba(var(--accent-rgb), 0.6); color: var(--accent-ink); border-color: transparent; }
-.cell.p3 { background: rgba(var(--accent-rgb), 0.3); color: var(--fg); border-color: transparent; }
-.cell.p4 { background: transparent; color: var(--fg); border-color: var(--accent); }
-.cell.sp { border: 1px dashed var(--accent-50); }
-.legenda {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: calc(2.4 * var(--u)) calc(3 * var(--u));
-  margin-top: calc(4.5 * var(--u));
-  font-size: max(10.5px, calc(3.7 * var(--u)));
-  line-height: 1.2;
-}
-.legenda li { display: flex; align-items: center; gap: calc(2 * var(--u)); }
-.legenda b {
-  flex: none;
-  width: max(14px, calc(5.6 * var(--u)));
-  height: max(14px, calc(5.6 * var(--u)));
-  font-size: max(9.5px, calc(3.2 * var(--u)));
-}
-
-/* Annotazione a gesso sotto il telefono (cambia a ogni passo) */
-.cnote { min-height: 1.3em; text-align: center; }
-.cnote:empty { display: none; }
-.js .cnote:empty { display: block; }
-@media (max-width: 359px) {
-  .js .cnote { min-height: 2.4em; }   /* schermi molto stretti: l'annotazione può andare su due righe, lo spazio è già riservato */
-}
-
-/* ----- I passi: i testi accanto (o sotto) al telefono ----- */
-.steps { margin-top: 48px; }   /* senza JS: sotto il telefono con un po' d'aria */
-.js .steps { margin-top: 0; }
-.step + .step { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }   /* senza JS: separati da un filetto */
-.step > * + * { margin-top: 16px; }
-.step p { color: var(--muted); max-width: 30em; }
-.step strong { color: var(--fg); font-weight: 600; }
-.step .k,
-.logica .k {
-  margin-top: 0;
-  font: 500 14px/1.4 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.step h3 { max-width: 14em; font-size: clamp(30px, 4.4vw, 52px); line-height: 1; }
-.step .k + h3,
-.step .k + h4,
-.step .k + .step-nota { margin-top: 12px; }
-.step .elenco-semplice { margin-top: 20px; }
-.step .step-nota { font-size: 17px; }
-.vetrina-guida + .k { margin-top: 44px; }
-.logica h4 {
-  font: 700 clamp(26px, 3.4vw, 38px)/1.04 var(--f-display);
-  letter-spacing: -0.03em;
-  text-transform: none;
-  color: var(--fg);
-  text-wrap: balance;
-}
-.logica dl { margin-top: 24px; }
-.logica dt { margin-top: 20px; }
-.logica dt:first-child { margin-top: 0; }
-.logica dd { margin-top: 6px; max-width: 30em; color: var(--muted); font-size: 17px; }
-
-/* Con JavaScript i passi sono alti e scorrono accanto al telefono; quello in lettura è al 100%, gli altri al 70% */
-.js .step {
-  min-height: 46vh;
-  min-height: 46svh;
-  padding-block: 28px 12px;
-  opacity: 0.7;
-}
-.js .step + .step { margin-top: 0; border-top: 0; padding-top: 28px; }
-.js .step.on { opacity: 1; }
-
-/* ----- Strategia ----- */
-.righe { margin-top: 32px; }
-.righe > div {
+/* Sezioni: molto spazio verticale */
+section { padding-block: clamp(80px, 12vw, 160px); }
+/* Testata di sezione: l'etichetta sta sempre sopra il titolo. Due composizioni che si alternano:
+   .sec-centro = tutto centrato; .sec-corpo = titolo a sinistra e nota (lead) a destra con il suo filetto (da 860px). */
+.sec {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 10px 40px;
-  padding-block: 24px 28px;
-  border-top: 1px solid var(--line);
+  gap: 22px;
 }
-.righe > div:last-child { border-bottom: 1px solid var(--line); }
-.righe dd { max-width: 34em; }
-.pilastri { display: flex; flex-wrap: wrap; gap: 8px; }
-.pilastri li {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 10px;
-  padding: 8px 16px;
-  border: 1px solid var(--line);
-  font-size: 16px;
-  line-height: 1.4;
-}
-.pilastri li span { font-size: 22px; line-height: 1; }
-
-/* ----- Calendario: una striscia per settimana (continua il settimo passo della storia) ----- */
-.calendario-caso { margin-top: clamp(40px, 6vw, 72px); }
-.settimana + .settimana { margin-top: 44px; }
-.settimana h4 { color: var(--accent); }
-.suggerimento { margin-top: 4px; font-size: 14px; color: var(--muted); }
-.striscia-scorri {
-  margin-top: 14px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
-  border: 1px solid var(--line);
-}
-.striscia { display: flex; }
-.cella {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  width: 11.5rem;
-  padding: 16px 16px 20px;
-  border-left: 1px solid var(--line);
-  border-top: 2px solid var(--accent);
-  scroll-snap-align: start;
-  font-size: 16px;
-  line-height: 1.4;
-}
-.cella:first-child { border-left: 0; }
-.cella .giorno { font: 500 14px/1.4 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
-.cella .glifo { width: 28px; height: 28px; color: var(--accent); }
-.cella .formato { font: 500 14px/1.4 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg); }
-.cella .pilastro-nome {
-  margin-top: auto;
-  font: italic 400 19px/1.2 var(--f-serif);
-  color: var(--muted);
-}
-.cella-vuota { width: 6.5rem; border-top-color: var(--line); }
-.cella-vuota .riposo { font-size: 14px; line-height: 1.35; color: var(--muted); }
-
-/* ----- Blocchi di approfondimento (<details>) ----- */
-.blocco { border-top: 1px solid var(--line); }
-.blocco:first-child { border-top: 0; }
-.blocchi { padding-top: 0; }
-.blocco:last-child { border-bottom: 1px solid var(--line); }
-.blocco > summary {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: "titolo indicatore" "sintesi indicatore";
-  align-items: center;
-  gap: 6px 16px;
-  min-height: 44px;
-  padding-block: 28px;
-  cursor: pointer;
-  list-style: none;
-}
-.blocco > summary::-webkit-details-marker { display: none; }
-.blocco > summary h3 { grid-area: titolo; font-size: clamp(24px, 3vw, 34px); }
-.blocco-sintesi { grid-area: sintesi; font-size: 15px; line-height: 1.5; color: var(--muted); }
-/* Segno "+" disegnato con due linee; quando il blocco è aperto diventa "×" */
-.indicatore {
-  grid-area: indicatore;
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-}
-.indicatore::before,
-.indicatore::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 14px;
-  height: 1px;
-  margin: -0.5px 0 0 -7px;
-  background: var(--accent);
-}
-.indicatore::after { transform: rotate(90deg); }
-.blocco[open] .indicatore { transform: rotate(45deg); }
-.corpo { padding-bottom: 40px; max-width: 40em; }
-.corpo > * + * { margin-top: 16px; }
-.corpo h4 { margin-top: 32px; color: var(--accent); }
-.corpo h4 + * { margin-top: 8px; }
-.corpo p { color: var(--muted); }
-.corpo strong { color: var(--fg); font-weight: 600; }
-
-.nota-fittizio { margin-top: 48px; max-width: 34em; font-size: 15px; color: var(--muted); }
-
-
-/* ==========================================================================
-   6. TABLET E DESKTOP (si parte dal telefono, poi si allarga)
-   ========================================================================== */
-
-@media (min-width: 860px) {
-  .sec { grid-template-columns: minmax(170px, 3fr) 9fr; }
-  .hero-grid { grid-template-columns: 7fr 4fr; gap: 80px; }
-  .sec-problemi { grid-template-areas: "label frase" ". testo"; row-gap: 48px; }
-  .problemi-testo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; max-width: 46rem; }
-  .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
-  .stats { grid-template-columns: repeat(3, auto); justify-content: start; column-gap: 56px; }
-  .row-c { grid-template-columns: 5fr 6fr; align-items: start; }
-  .who { grid-template-columns: 6fr 5fr; gap: 56px; }
-  .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
-  .righe > div { grid-template-columns: 12rem minmax(0, 1fr); }
-
-  /* Storia: passi a sinistra, telefono fisso a destra (alto quanto serve, mai oltre lo schermo) */
-  .story {
-    display: grid;
-    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    column-gap: 56px;
-    align-items: start;
-  }
-  .stage { order: 2; }
-  .js .stage { top: 64px; padding: 0; background: transparent; overflow: visible; align-self: start; }
-  .js .halo { width: 100%; margin: -50% 0 0 -50%; }   /* non deve uscire dalla colonna: la pagina non scorre di lato */
-  .js .phone {
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    aspect-ratio: 9 / 19;
-    width: min(300px, calc((100svh - 240px) * 9 / 19));
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-  .copertina { aspect-ratio: 6 / 5; }
-  .js .cnote { min-height: 2.5em; }
-  .js .step { min-height: 64vh; padding-block: 14vh 0; }
-  .js .step + .step { padding-top: 14vh; }
-  .js .step:last-child { min-height: 50vh; }
-}
-
-/* Schermi bassi (meno di 700px di altezza): la didascalia esce dallo stage, che così occupa meno schermo,
-   e scorre con il testo del primo passo. Dentro il telefono restano l'etichetta "Esempio" e l'avviso di ogni post. */
-@media (max-height: 699px) {
-  .telefono-area figcaption { display: none; }
-  .didascalia-passo { display: block; }
-  .didascalia-passo + .k { margin-top: 20px; }
-}
-
-@media (min-width: 1100px) {
-  /* Cosa risolvo: etichetta, frase grande e colonna stretta affiancate */
-  .sec-problemi {
-    grid-template-columns: minmax(170px, 3fr) 6fr 3fr;
-    grid-template-areas: "label frase testo";
-    column-gap: 48px;
-  }
-  .frase { font-size: clamp(56px, 5.4vw, 80px); }
-  .problemi-testo { grid-template-columns: minmax(0, 1fr); max-width: none; padding-top: 0.6rem; }
-
-  /* Sette giorni affiancati, senza scorrimento */
-  .striscia-scorri { overflow-x: visible; }
-  .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
-  .cella,
-  .cella-vuota { width: auto; }
-  .suggerimento { display: none; }
-}
-
-
-/* ==========================================================================
-   7. MOVIMENTO
-   Regole (le stesse di CLAUDE.md, "Sistema di movimento"):
-   - un solo easing, var(--ease), e una sola luce, il beige;
-   - si animano solo transform e opacity (eccezione: stroke-dashoffset per le linee a mano);
-   - gli stati iniziali nascosti esistono solo sotto ".js" e solo se l'utente non ha chiesto
-     di ridurre il movimento: senza JavaScript o con "riduci movimento" è tutto già al suo posto.
-   ========================================================================== */
-
-/* ----- Elementi sempre uguali (anche senza movimento) ----- */
+.sec-centro { justify-items: center; text-align: center; }
+.sec-centro > div { width: 100%; }
+.sec-centro h2 { max-width: 16em; margin-inline: auto; }
+.sec-centro .scheda-b { text-align: left; }   /* il titolo è centrato, il testo delle schede si legge da sinistra */
+.sec-corpo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px 64px; align-items: start; }
+.sec-nota { display: grid; gap: 22px; }
+.sec-nota .muted { max-width: 34em; }
 
 /* Testo solo per screen reader: nascosto alla vista, ma letto */
 .sr {
@@ -1269,90 +703,917 @@ footer p + p { margin-top: 6px; }
   white-space: nowrap;
 }
 
+/* ==========================================================================
+   4. SEZIONI
+   ========================================================================== */
+
+/* ----- Hero: presentazione personale, solo testo e centrata (una foto è stata provata e tolta) ----- */
+.hero {
+  position: relative;
+  overflow: clip;               /* la luce non esce dalla hero (né fa scorrere la pagina di lato) */
+  padding-top: calc(var(--barra) + clamp(32px, 6vw, 72px));
+  padding-bottom: clamp(48px, 6vw, 88px);
+}
+.hero .wrap { position: relative; z-index: 1; }
+/* Tutto in una colonna centrata: pillola, titolo, nota e pulsanti */
+.hero-testo { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.hero-testo .cta { align-self: stretch; justify-content: center; }
+/* Sfondo della hero: le macchie stanno tutte dentro la sezione. Quelle degli altri sfondi si ripetono ogni 1300px e il bordo inferiore
+   ne taglia una a metà; qui sotto comincia "Chi sono", anch'essa chiara, e il taglio si vedrebbe come un gradino. */
+section.hero::before {
+  background-image:
+    var(--macchie-hero),
+    radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
+    linear-gradient(180deg, var(--l-g1), var(--l-g2));
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+/* Luce dietro il titolo. Quella esterna segue il mouse, quella interna respira (vedi Movimento).
+   Il bordo inferiore della hero taglia tutto ciò che sta fuori: se la luce lo raggiungesse, tra la hero e "Chi sono" (che non la continua)
+   si vedrebbe un gradino. Per questo il gradiente finisce al 52% e il centro sta al 26% dell'altezza (e in JavaScript la luce non scende sotto
+   il suo posto di riposo). Misurato nel caso peggiore del respiro, da 390 a 1920px: gradino 0 livelli su 255 (con 66% e 34% erano fino a 10). */
+.luce { position: absolute; left: 50%; top: 26%; z-index: 0; width: 0; height: 0; pointer-events: none; }
+.luce-in {
+  position: absolute;
+  width: min(80vmax, 1100px);
+  height: min(80vmax, 1100px);
+  left: calc(min(80vmax, 1100px) / -2);
+  top: calc(min(80vmax, 1100px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--glow-l), 0.22), transparent 52%);   /* la hero è chiara: luce blu */
+  opacity: 0.6;
+}
+/* "Ciao, sono Matteo": una pillola a sé, sopra il titolo */
+.saluto {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 14px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: var(--bordo), var(--ombra);
+  font: 500 16px/1 var(--f-body);
+  color: var(--fg);
+}
+.punto { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.hero h1 {
+  margin-top: clamp(22px, 3vw, 32px);
+  font-size: clamp(34px, 8.6vw, 54px);
+  line-height: 1;
+  max-width: 15em;
+}
+/* La nota sotto il titolo è centrata, quindi qui il filetto verticale a sinistra non c'è: resta il corsivo serif */
+.hero-lead { margin-top: clamp(20px, 3vw, 28px); padding-left: 0; border-left: 0; color: var(--fg); }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
+/* Su telefono i due pulsanti della hero (principale e "caso studio") occupano tutta la larghezza, uno sotto l'altro, alti uguali:
+   affiancati non ci starebbero (le due scritte servono circa 520px, il telefono ne dà 358). Da 700px stanno in riga. */
+.cta > a { flex: 1 1 100%; justify-content: center; }
+.cta .btn-o { min-height: 52px; }
+/* Evidenziatore, come un pennarello: un tratto tenue sotto la parte bassa del testo. Il colore del testo non cambia. */
+.hl {
+  padding: 0 0.12em;
+  margin: 0 0 0 -0.12em;
+  background: linear-gradient(transparent 42%, rgba(var(--glow-l), 0.2) 42%, rgba(var(--glow-l), 0.2) 94%, transparent 94%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* Anche la frase in corsivo del titolo ha il suo tratto. Senza JavaScript: una banda sotto il testo; con JavaScript: un tratto arrotondato per parola (vedi sezione movimento) */
+html:not(.js) .hero h1 .it {
+  padding: 0 0.1em;
+  margin-left: -0.1em;
+  background: linear-gradient(transparent 52%, rgba(var(--glow-l), 0.16) 52%, rgba(var(--glow-l), 0.16) 94%, transparent 94%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ----- Chi sono: titolo a sinistra, nota a destra (composizione .sec-corpo) ----- */
+
+/* ----- Riquadri blu (schede, banner, pannelli, testata del caso studio) -----
+   Vetro dipinto, senza sfocato: dietro ci sono solo sfumature morbide. Le schede sulle sezioni blu sono un velo crema trasparente,
+   quelle sul crema un blu quasi pieno (su crema un vetro scuro trasparente non reggerebbe il contrasto del testo).
+   Il bordo non è una linea: è la luce sul bordo del vetro (--bordo-d) più un'ombra morbida.
+   Tutto sta su ::before (z-index -1), così la luce del cursore, che sta sopra gli sfondi ma sotto il testo, si vede anche qui. */
+.scheda-b,
+.banner,
+.pannello,
+.card-blu,
+.cliente { position: relative; }
+.scheda-b::before,
+.cliente::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 34%),
+    radial-gradient(90% 70% at 100% 0%, var(--d-hi), transparent 70%),
+    rgba(var(--d-fg-rgb), 0.05);
+  box-shadow: var(--bordo-d), var(--ombra-d);
+}
+.banner::before,
+.pannello::before,
+.card-blu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 36%),
+    radial-gradient(90% 120% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 62%),
+    linear-gradient(180deg, rgba(36, 53, 128, 0.95), rgba(26, 42, 99, 0.96));
+  box-shadow: var(--bordo-d), 0 24px 54px -20px rgba(27, 42, 94, 0.55), 0 4px 10px rgba(27, 42, 94, 0.14);
+}
+
+/* ----- Cosa risolvo: due schede blu sopra lo sfondo ----- */
+.schede { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(32px, 5vw, 56px); }
+.scheda-b {
+  padding: clamp(24px, 3.4vw, 36px);
+  border-radius: 26px;
+}
+.scheda-b h3 { font-size: var(--h-m); line-height: 1.08; }
+.scheda-b p { margin-top: 12px; color: var(--muted); }
+
+/* ----- Il metodo, in numeri: quattro passi in colonne affiancate (due per due su telefono) ----- */
+.passi {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 24px;
+  margin-top: clamp(40px, 6vw, 72px);
+}
+.passo h3 { font-size: var(--h-m); line-height: 1.1; }
+.passo p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--muted); }
+
+/* La striscia 2 / 4 / 15 sta subito sotto i passi, più piccola: le due cose si leggono come una sola sezione */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: clamp(48px, 7vw, 80px);
+  padding: clamp(20px, 3vw, 32px);
+  border-radius: 26px;
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: var(--bordo), var(--ombra);
+}
+.num {
+  position: relative;
+  display: block;
+  font: italic 400 clamp(48px, 6vw, 72px)/1 var(--f-serif);
+  letter-spacing: -0.01em;
+  color: var(--key);
+  font-variant-numeric: tabular-nums;
+}
+.stat p {
+  margin-top: 8px;
+  font: 500 14px/1.35 var(--f-body);
+  color: var(--muted);
+}
+/* Banner blu: la nota di onestà, con più peso */
+.banner {
+  display: grid;
+  gap: 24px;
+  margin-top: 16px;
+  padding: clamp(26px, 5vw, 48px);
+  border-radius: 28px;
+  color: var(--d-fg);
+}
+.banner .btn-p { justify-self: start; }
+.piccolo { font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.banner-testo { margin-top: 12px; max-width: 14em; font: 700 var(--h-l)/1.02 var(--f-body); letter-spacing: -0.035em; text-wrap: balance; }
 /* Numeri della striscia: la copia che sale esiste solo con JavaScript */
-.num { position: relative; }
 .num-an { display: none; }
 .js .num-an { display: block; position: absolute; left: 0; top: 0; }
 
-/* Annotazioni a gesso */
-.chalk {
-  margin: 0;
-  font-family: var(--f-chalk);
-  font-size: clamp(20px, 2.4vw, 26px);
-  line-height: 1.15;
+/* ----- Per chi lavoro: tre schede blu (problema, cosa faccio, obiettivo) e, sotto, il metodo comune ----- */
+.clienti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 72px); }
+.cliente {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(24px, 3vw, 34px);
+  border-radius: 28px;
+}
+.cliente .tag { display: block; }
+.cliente h3 { margin-top: 8px; font-size: var(--h-m); line-height: 1.04; }
+.cliente .apri-btn { margin-top: auto; }
+
+/* Tre voci una sotto l'altra: l'etichetta le distingue, nessuna linea */
+.percorso { display: grid; gap: 22px; width: 100%; margin: 26px 0 30px; }
+.pt { display: block; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.percorso p { margin-top: 4px; font-size: 16px; line-height: 1.5; color: var(--fg); }
+
+/* Il metodo comune: quattro parole, ognuna con un puntino */
+.filo { display: grid; gap: 18px; margin-top: clamp(32px, 4vw, 52px); }
+.filo-passi { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.filo-passi li { display: flex; align-items: center; gap: 10px; font: 500 16px/1.3 var(--f-body); color: var(--fg); }
+.filo-passi li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+/* ----- Contatti ----- */
+.big { font-size: clamp(56px, 15vw, 200px); line-height: 0.92; }
+#contatti .lead { margin-top: 28px; }
+/* L'email è un link: apre direttamente il programma di posta, con oggetto e testo già pronti.
+   Sta dentro una pillola di vetro con il contorno sottile, come i pulsanti. */
+.mail,
+.indirizzo {
+  font: 700 var(--h-m)/1.3 var(--f-body);
+  letter-spacing: -0.01em;
+  word-break: break-word;
+}
+.mail { display: inline-block; margin-top: 28px; color: var(--fg); text-decoration: none; }
+@media (hover: hover) { .mail:hover { color: var(--accent); } }
+.mailwrap {
+  display: inline-block;
+  margin-top: 28px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4), var(--ombra);
+}
+/* Lo spazio interno sta sul link e non sulla pillola: così tutta la pillola, non solo il testo, è area toccabile (almeno 44px di altezza). */
+.mailwrap .mail { display: block; margin: 0; padding: 12px 26px; }
+/* Il focus da tastiera cerchia tutta la pillola (arrotondata), non il solo testo; dove :has() non esiste resta l'anello standard sul link */
+@supports selector(:has(a)) {
+  .mailwrap:has(.mail:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .mailwrap .mail:focus-visible { outline: none; }
+}
+.links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+
+/* ----- Piè di pagina ----- */
+footer {
+  padding-block: 28px calc(56px + var(--sa-b));
+  border-top: 1px solid var(--d-line);
+}
+footer p { font: 400 14px/1.5 var(--f-body); color: var(--muted); }
+footer p + p { margin-top: 6px; }
+
+
+/* ==========================================================================
+   5. CASO STUDIO
+   Il profilo di Numerella ha due stati, prima e dopo la strategia: un interruttore li cambia (la logica è in js/main.js).
+   Senza JavaScript i due stati stanno uno sotto l'altro.
+   ========================================================================== */
+
+/* ----- Testata: scheda blu con l'etichetta "Progetto dimostrativo", il titolo e tre fatti ----- */
+.case-head { display: grid; gap: 22px; }
+.case-head.card-blu {
+  padding: clamp(26px, 5vw, 56px);
+  border-radius: 30px;
+  color: var(--fg);
+}
+.case-head h2 { max-width: 14em; }
+.fatti { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 28px; margin-top: 8px; }
+.fatti li { display: flex; align-items: baseline; gap: 10px; font-size: 16px; line-height: 1.4; color: var(--fg); }
+.fatti li::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+/* Etichetta ben visibile: il progetto è dimostrativo */
+.etichetta-fittizio span {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 99px;
+  background: rgba(var(--accent-rgb), 0.12);
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.3);   /* il contorno resta ben visibile: il progetto è dimostrativo */
+  font: 500 14px/1.4 var(--f-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--accent);
 }
-.chalk .cwd { display: inline-block; white-space: nowrap; }   /* una parola non si spezza mai */
-.chalk .ch { display: inline-block; white-space: pre; }
-.note-c {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  rotate: -2deg;
-  transform-origin: left bottom;
+
+.elenco-semplice { margin-top: 24px; max-width: 32em; }
+.elenco-semplice li {
+  position: relative;
+  padding-left: 28px;
+  color: var(--fg);
 }
-.note-c .draw { width: 56px; height: 44px; flex: none; }
-.noterow {
+.elenco-semplice li + li { margin-top: 12px; }
+.elenco-semplice li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ----- Prima e dopo: lo stesso profilo di Numerella in due stati -----
+   Con JavaScript un interruttore cambia data-v ("prima" o "dopo") sul contenitore .prof: il resto lo fa il CSS.
+   I due stati (e le due note) stanno nella stessa cella della griglia, quindi la scheda ha sempre l'altezza del più alto e la pagina non salta.
+   Senza JavaScript sono uno sotto l'altro. */
+.prof { display: grid; gap: 28px; margin-top: clamp(40px, 6vw, 72px); }
+
+/* Interruttore: capsula di vetro scuro con due tasti; sotto quello scelto scivola la "lente", un pezzo di vetro chiaro (si muove solo con transform) */
+.commuta {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  width: max-content;
+  max-width: 100%;
+  padding: 5px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, rgba(34, 50, 118, 0.94), rgba(20, 32, 84, 0.96));
+  box-shadow: var(--bordo-d), 0 14px 30px -14px rgba(27, 42, 94, 0.6);
+}
+.commuta::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: -1;
+  width: 104px;
+  height: 44px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), inset 0 -1px 0 rgba(0, 0, 0, 0.14), 0 6px 14px -6px rgba(3, 7, 34, 0.6);
+}
+.prof[data-v="dopo"] .commuta::before { transform: translateX(100%); }
+.commuta button {
+  width: 104px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--muted);
+  font: 500 16px/1 var(--f-body);
+  cursor: pointer;
+}
+.commuta button[aria-pressed="true"] { color: var(--fg); }
+html:not(.js) .commuta { display: none; }   /* senza JavaScript non serve: i due stati sono già entrambi in pagina */
+
+.prof-corpo { display: grid; gap: 32px; align-items: start; }
+.prof-sx { display: grid; gap: 12px; min-width: 0; margin: 0; }
+.prof-scheda { border-radius: 28px; color: var(--fg); }
+.prof-didascalia { font-size: 14px; line-height: 1.4; color: var(--muted); }
+
+/* Gli stati della scheda: nella stessa cella, ne resta visibile uno solo.
+   Si usa visibility (non display), così i link dello stato nascosto non si raggiungono con Tab. */
+.prof-strati { display: grid; }
+.prof-strato { grid-area: 1 / 1; min-width: 0; padding: 24px 22px 26px; }
+html:not(.js) .prof-strato { grid-area: auto; }
+.js .prof-dopo,
+.js .nota-dopo { visibility: hidden; }
+.js .prof[data-v="dopo"] .prof-dopo,
+.js .prof[data-v="dopo"] .nota-dopo { visibility: visible; }
+.js .prof[data-v="dopo"] .prof-prima,
+.js .prof[data-v="dopo"] .nota-prima { visibility: hidden; }
+
+/* Testata del profilo */
+.profilo-testa { display: flex; align-items: center; gap: 14px; }
+.avatar {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: 700 22px/1 var(--f-body);
+}
+/* Anello attorno all'avatar del "dopo": parte dall'alto e si disegna con il movimento (vedi Movimento) */
+.avatar svg {
+  position: absolute;
+  inset: -5px;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  overflow: visible;
+  transform: rotate(-90deg);
+}
+.avatar circle { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.js .prof:not([data-v="dopo"]) .avatar circle { stroke-dashoffset: 1; }   /* anello nascosto finché si guarda il "prima" */
+.nome { font: 700 18px/1.15 var(--f-body); letter-spacing: -0.01em; }
+.stato { margin-top: 2px; font: 500 14px/1.3 var(--f-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.chip-stato {
+  margin-left: auto;
+  flex: none;
+  padding: 5px 12px;
+  border-radius: 99px;
+  background: rgba(var(--accent-rgb), 0.08);
+  font: 500 14px/1.3 var(--f-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg);   /* crema, non beige: il chip sta nell'angolo più chiaro della scheda blu */
+}
+.bio { margin-top: 18px; font-size: 16px; line-height: 1.5; color: var(--fg); }
+.bio-fioca { color: var(--muted); }
+.bio-link { margin-top: 8px; font: 500 16px/1.4 var(--f-body); color: var(--accent); }
+
+/* Evidenze: i quattro pilastri */
+.storie { display: flex; justify-content: space-between; gap: 6px; margin-top: 20px; }
+.storia { display: flex; flex-direction: column; align-items: center; gap: 6px; font: 400 14px/1.2 var(--f-body); color: var(--muted); }
+.storia i {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(var(--fg-rgb), 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  font: 700 16px/1 var(--f-body);
+  font-style: normal;
+  color: var(--fg);
+}
+
+/* Griglia di post: prima disordinata (testo fitto), dopo ordinata (una serie, con i post che si aprono) */
+.griglia-post { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 20px; }
+.tassello {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  flex-direction: column;
   justify-content: space-between;
-  gap: 18px 40px;
-  margin-top: 28px;
+  gap: 8px;
+  aspect-ratio: 4 / 5;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(var(--fg-rgb), 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);   /* luce sul bordo, come tutto il vetro */
+  color: var(--fg);
+  font: 700 16px/1.08 var(--f-body);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  overflow-wrap: anywhere;
 }
-.noterow .note { margin-top: 0; }
-.note-contatti { margin-top: 28px; }
+.tassello-chiaro {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 55%), var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  color: var(--accent-ink);
+}
+.tassello-alto { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.tassello .glifo { flex: none; width: 20px; height: 20px; color: inherit; }
+.tassello .pil { width: 24px; height: 24px; }
+/* Sulle tessere beige (post 1 e 3) i pallini dei pilastri si invertono: scuro su chiaro */
+.tassello-chiaro .pil.p1 { background: var(--accent-ink); color: var(--accent); }
+.tassello-chiaro .pil.p3 { background: rgba(26, 42, 99, 0.28); color: var(--accent-ink); }
+.tassello-vuoto { background: transparent; box-shadow: none; color: var(--muted); }   /* solo in calendario: senza fondo e non si apre */
+.tassello-vuoto .pil { background: rgba(var(--fg-rgb), 0.16); border-color: transparent; color: var(--muted); }   /* anche il pallino del pilastro è smorzato */
+.tassello-fitto { justify-content: flex-start; gap: 5px; }
+.tassello-fitto i { display: block; height: 4px; border-radius: 2px; background: rgba(var(--fg-rgb), 0.3); }
+.tassello-fitto i:nth-child(odd) { width: 100%; }
+.tassello-fitto i:nth-child(even) { width: 76%; }
+.tassello-fitto i:nth-child(3n) { width: 90%; }
 
-/* Linee disegnate a mano (frecce, cerchio attorno all'email) */
-.draw { display: block; overflow: visible; }
-.draw path { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.mailwrap { position: relative; display: inline-block; margin-top: 22px; padding: 12px 22px; }
-.mailwrap .draw { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.mailwrap .mail { margin: 0; }
+/* Le due note accanto alla scheda: nella stessa cella, ne resta visibile una */
+.prof-note { display: grid; }
+.nota { grid-area: 1 / 1; display: grid; gap: 14px; align-content: start; min-width: 0; }
+html:not(.js) .nota { grid-area: auto; }
+html:not(.js) .nota + .nota { margin-top: 28px; }
+.nota h3 { max-width: 14em; font-size: var(--h-m); line-height: 1.08; }
+.nota > p:not(.label) { font-size: 16px; color: var(--muted); }
+.nota .elenco-semplice { margin-top: 6px; font-size: 16px; }
 
-/* Barra "storie" fissa in alto (la crea JavaScript): un segmento per sezione, si riempie con lo scroll */
-.story-bar {
-  position: fixed;
-  top: calc(8px + env(safe-area-inset-top, 0px));
-  left: var(--gutter);
-  right: var(--gutter);
-  z-index: 20;
+/* ----- Post di esempio (dentro i popup): copertina, avviso, didascalia ----- */
+.copertina {
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 26px;
+  min-height: 160px;
+  padding: 16px 18px 18px;
+  border-radius: 18px;
+  background: rgba(9, 14, 40, 0.3);   /* velo scuro: il testo chiaro resta sopra 4.5:1 anche dove l'alone blu del popup è al massimo */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  color: var(--fg);
+}
+.copertina-chiara {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 55%), var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: var(--accent-ink);
+}
+.copertina-formato,
+.copertina-piede { font: 500 14px/1.3 var(--f-body); letter-spacing: 0.1em; text-transform: uppercase; }
+.copertina-formato { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); }
+.copertina-piede { color: var(--accent); }
+.copertina-titolo { font: 700 var(--h-m)/1 var(--f-body); letter-spacing: -0.035em; }
+.copertina-titolo span { display: block; margin-top: 8px; font: 400 16px/1.3 var(--f-body); letter-spacing: 0; color: var(--muted); }
+.copertina-chiara .copertina-formato,
+.copertina-chiara .copertina-titolo span,
+.copertina-chiara .copertina-piede { color: var(--accent-ink); }
+.avviso { font: 500 14px/1.4 var(--f-body); letter-spacing: 0.02em; color: var(--accent); }
+.didascalia { max-width: 34em; font-size: 16px; line-height: 1.55; color: var(--fg); }
+.didascalia strong { font-weight: 500; }
+
+/* ----- Strategia: i quattro pilastri come pillole di vetro ----- */
+.pilastri { display: flex; flex-wrap: wrap; gap: 8px; }
+.pilastri li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  color: var(--fg);
+  font-size: 16px;
+  line-height: 1.4;
+}
+.pilastri li span { font-size: 22px; line-height: 1; }
+
+/* ----- Calendario: una striscia per settimana, schede morbide. Il pallino col numero è il pilastro (legenda sopra) ----- */
+.calendario-caso { margin-top: clamp(32px, 5vw, 56px); }
+.settimana + .settimana { margin-top: 40px; }
+.settimana h4 { color: var(--fg); }
+.suggerimento { margin-top: 4px; font-size: 14px; color: var(--muted); }
+.legenda-cal { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 4px; font-size: 16px; line-height: 1.3; }
+.legenda-cal li { display: flex; align-items: center; gap: 10px; }
+.pil {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font: 700 14px/1 var(--f-body);
+}
+.pil.p1 { background: var(--accent); color: var(--accent-ink); }
+.pil.p2 { background: rgba(var(--accent-rgb), 0.18); color: var(--fg); }
+.pil.p3 { background: rgba(var(--accent-rgb), 0.1); color: var(--fg); }
+.pil.p4 { border: 1.5px solid var(--accent); color: var(--fg); }
+.striscia-scorri {
+  margin-top: 14px;
+  padding-bottom: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+.striscia { display: flex; gap: 10px; }
+.cella {
+  position: relative;
+  flex: none;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "giorno giorno" "glifo formato" "tema tema" "pil pil";
+  grid-template-rows: auto auto 1fr auto;
+  align-content: start;
+  gap: 10px 8px;
+  width: 11.5rem;
+  padding: 16px;
+  border-radius: 16px;
+  scroll-snap-align: start;
+  font-size: 16px;
+  line-height: 1.35;
+}
+.cella .giorno { grid-area: giorno; font: 500 14px/1 var(--f-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.cella .glifo { grid-area: glifo; width: 22px; height: 22px; color: var(--accent); }
+.cella .formato { grid-area: formato; align-self: center; font: 500 14px/1.2 var(--f-body); letter-spacing: 0.04em; color: var(--accent); }
+.cella .tema { grid-area: tema; font-weight: 500; color: var(--fg); }
+.cella .pil { grid-area: pil; justify-self: start; align-self: end; margin-top: 6px; }
+.cella-vuota { display: flex; flex-direction: column; gap: 8px; width: 6.5rem; border: 1px dashed var(--line); }   /* giorno senza uscita: tessera fantasma, senza vetro */
+.cella-vuota .riposo { font-size: 14px; line-height: 1.35; color: var(--muted); }
+
+/* ----- Approfondimenti: scena "aurora" di vetro -----
+   Una grafica a parte rispetto al resto del sito: fondo blu profondo con macchie di luce morbide, una barra di vetro con la lente che scivola
+   sul tasto scelto e le voci come tessere di vetro (niente linee di separazione). Le pagine scorrono di lato come prima. */
+.approfondimenti { margin-top: clamp(56px, 8vw, 110px); }
+.pannello {
+  padding: clamp(24px, 4vw, 48px);
+  border-radius: 28px;
+  color: var(--fg);
+}
+.approfondimenti.pannello {
+  padding: clamp(20px, 4vw, 48px) clamp(14px, 4vw, 48px) clamp(24px, 4vw, 48px);
+  border-radius: 32px;
+}
+/* La scena: blu profondo e tre macchie (lavanda, cobalto, beige). Le macchie sono ancorate in alto o in basso, così non saltano quando cambia l'altezza della pagina. */
+.approfondimenti .label { color: var(--fg); }
+.approfondimenti::before {
+  background:
+    radial-gradient(460px 340px at 4% 0, rgba(143, 166, 240, 0.26), transparent 70%),
+    radial-gradient(560px 420px at 100% 280px, rgba(var(--glow-l), 0.38), transparent 70%),
+    radial-gradient(520px 380px at 14% calc(100% - 40px), rgba(var(--glow-d), 0.13), transparent 70%),
+    linear-gradient(165deg, #1C2E70, #121C4D);
+}
+/* Barra dei tasti: su telefono tre per riga (cinque tasti, la seconda riga è centrata), da 700px tutti in una riga.
+   I tasti sono tutti uguali, così la lente è un pezzo di vetro di misura fissa e si muove solo con transform. */
+.sfoglia-tasti {
+  --c: 0;   /* colonna della lente, in larghezze di tasto */
+  --r: 0;   /* riga della lente */
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 44px;
+  width: 100%;
+  max-width: 660px;
+  margin-top: 20px;
+  padding: 5px;
+  border-radius: 27px;
+  background: linear-gradient(180deg, rgba(8, 14, 48, 0.55), rgba(8, 14, 48, 0.38));
+  box-shadow: var(--bordo-d), inset 0 10px 20px -12px rgba(0, 0, 0, 0.35);
+}
+.sfoglia-tasti::before {   /* la lente */
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: -1;
+  width: calc((100% - 10px) / 3);
+  height: 44px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.1));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), inset 0 -1px 0 rgba(0, 0, 0, 0.14), 0 6px 14px -6px rgba(3, 7, 34, 0.6);
+  transform: translate(calc(var(--c) * 100%), calc(var(--r) * 100%));
+}
+/* Dove sta la lente: JavaScript scrive il numero del tasto scelto in data-a */
+.sfoglia-tasti[data-a="1"] { --c: 1; }
+.sfoglia-tasti[data-a="2"] { --c: 2; }
+.sfoglia-tasti[data-a="3"] { --c: 0.5; --r: 1; }
+.sfoglia-tasti[data-a="4"] { --c: 1.5; --r: 1; }
+.sfoglia-tasto {
+  grid-column: span 2;
+  min-height: 44px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--muted);
+  font: 500 14px/1 var(--f-body);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.sfoglia-tasto:nth-child(4) { grid-column: 2 / span 2; }
+.sfoglia-tasto:nth-child(5) { grid-column: 4 / span 2; }
+.sfoglia-tasto[aria-selected="true"] { color: var(--fg); }
+.sfoglia-tasto:focus-visible { outline-offset: -4px; }
+html:not(.js) .sfoglia-tasti { display: none; }
+/* Le pagine: con JavaScript i tasti scelgono quale vedere (classe "on") e le altre non occupano spazio (display: none),
+   così il pannello ha l'altezza della pagina visibile e non resta vuoto sotto le pagine corte.
+   Senza JavaScript non ci sono tasti e le pagine sono una sotto l'altra. */
+.sfoglia-pagine { position: relative; display: grid; gap: 56px; margin-top: 32px; overflow-x: clip; }   /* clip solo in orizzontale: la pagina che scorre non esce dal pannello, le ombre in basso non si tagliano */
+.sfoglia-pagina { min-width: 0; }
+.js .sfoglia-pagina { display: none; }
+.js .sfoglia-pagina.on { display: block; }
+
+/* Tessere di vetro: le voci di Scheda, Strategia, Obiettivi e Altri clienti (e i giorni del calendario).
+   Vetro smerigliato dipinto: più chiaro dello sfondo, con un velo di luce che sfuma verso il basso e la luce sul bordo.
+   Non c'è sfocato: dietro ci sono solo macchie morbide, e così il colore dello sfondo cambia da una tessera all'altra come attraverso un vetro vero. */
+.tessere { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.tessere > div { position: relative; padding: 22px; border-radius: 22px; }
+.tessere > div::before,
+.cella:not(.cella-vuota)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)),
+    var(--v-tessera);
+  box-shadow: var(--bordo-d);
+}
+.tessere > div::before { box-shadow: var(--bordo-d), 0 14px 30px -14px rgba(3, 7, 34, 0.6); }
+/* Segno "+" disegnato con due linee */
+.piu { position: relative; flex: none; }
+.piu::before, .piu::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 14px; height: 1px;
+  margin: -0.5px 0 0 -7px;
+  background: var(--accent);
+}
+.piu::after { transform: rotate(90deg); }
+
+.nota-fittizio { margin-top: 48px; max-width: 34em; font-size: 16px; color: var(--muted); }
+
+
+/* ==========================================================================
+   6. POPUP
+   Finestre <dialog> blu aperte dai pulsanti [data-apri]. Senza JavaScript sono contenuti normali, uno sotto l'altro.
+   ========================================================================== */
+
+.popup {
+  width: min(680px, calc(100vw - 24px - var(--sa-l) - var(--sa-r)));
+  max-height: calc(100vh - 32px);
+  max-height: calc(100svh - 32px - var(--sa-t) - var(--sa-b));
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 28px;
+  /* Vetro scuro: tinta blu trasparente che sfoca la pagina oscurata dietro, alone azzurro in alto a destra, luce sul bordo */
+  background-color: transparent;
+  background-image: radial-gradient(90% 60% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--v-popup-a), var(--v-popup-b));
+  -webkit-backdrop-filter: var(--sfoca);
+  backdrop-filter: var(--sfoca);
+  box-shadow: var(--bordo-d), 0 0 90px rgba(var(--glow-l), 0.3), 0 30px 70px -20px rgba(3, 7, 34, 0.6);
+  color: var(--fg);
+  overflow: hidden;           /* lo scorrimento sta in .popup-in */
+  overscroll-behavior: contain;
+}
+.popup::backdrop { background: rgba(8, 12, 32, 0.52); }
+.popup-in { position: relative; z-index: 1; padding: 0 clamp(22px, 5vw, 52px) clamp(28px, 5vw, 52px); }
+/* Stesso testo dei popup anche nelle pagine degli approfondimenti (.sfoglia-pagina) */
+.popup-in > h3, .sfoglia-pagina > h3 { margin-top: 10px; max-width: 14em; }
+.popup-in > * + *, .sfoglia-pagina > * + * { margin-top: 20px; }
+.popup-in > .k, .sfoglia-pagina > .k { margin-top: 0; font: 500 14px/1.4 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.popup-in > .chiudi + .k { margin-top: 0; }
+.popup-in dl, .sfoglia-pagina dl { margin-top: 24px; }
+.popup-in dt, .sfoglia-pagina dt { margin-top: 20px; color: var(--accent); }
+.popup-in dt:first-child, .sfoglia-pagina dt:first-child { margin-top: 0; }
+.popup-in dd, .sfoglia-pagina dd { margin-top: 6px; max-width: 34em; color: var(--muted); font-size: 16px; }
+.sfoglia-pagina .calendario-caso { margin-top: 28px; }
+.chiudi {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 10px -14px 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(34, 51, 120, 0.82);   /* abbastanza pieno da restare leggibile anche dove lo sfocato non c'è */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);           /* sfoca il testo che scorre sotto la X */
+  box-shadow: var(--bordo-d), 0 6px 14px -6px rgba(3, 7, 34, 0.6);
+  color: var(--fg);
+  cursor: pointer;
+}
+.chiudi svg { width: 22px; height: 22px; }
+html.blocca, html.blocca body { overflow: hidden; }
+
+/* Senza JavaScript (o dove <dialog> non esiste) i popup sono sezioni normali dentro la pagina */
+html:not(.js) .popup, html.no-popup .popup {
+  display: block;
+  position: static;
+  width: auto;
+  max-height: none;
+  margin: 24px 0 0;
+  /* senza JavaScript il popup è un riquadro in pagina, pieno (niente vetro) e con il bordo che lo stacca dallo sfondo */
+  background-color: var(--d-bg);
+  background-image: radial-gradient(90% 60% at 100% 0%, rgba(120, 150, 235, 0.3), transparent 70%), linear-gradient(180deg, var(--d-g1), var(--d-g2));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  border: 1px solid var(--line);
+}
+html:not(.js) .popup .chiudi, html.no-popup .popup .chiudi,
+html:not(.js) .apri-btn, html.no-popup .apri-btn { display: none; }
+/* "Come lavoro": link che apre il popup di una riga di "Per chi lavoro" */
+.apri-btn { gap: 12px; }
+.apri-btn .piu { width: 14px; height: 14px; }
+.apri-btn .piu::before, .apri-btn .piu::after { background: currentColor; }
+
+html.js:not(.no-popup) .popup-in {
+  max-height: calc(100vh - 32px);
+  max-height: calc(100svh - 32px - var(--sa-t) - var(--sa-b));
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+/* Luce che segue il mouse dentro il popup (beige su blu) */
+.pop-luce {
+  position: absolute;
+  left: 0; top: 0;
+  z-index: 0;
+  width: 480px; height: 480px;
+  margin: -240px 0 0 -240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--glow-d), 0.2), transparent 66%);
+  opacity: 0;
   pointer-events: none;
 }
-.seg { flex: 1; height: 3px; overflow: hidden; border-radius: 2px; background: var(--fg-22); }
-.seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
+.popup.luce-on .pop-luce { opacity: 1; }
+html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
+.popup-in > .titolo-pop { max-width: none; margin-top: 8px; font-size: var(--h-xl); line-height: 1.02; }
+.popup-in > .lead { max-width: 30em; }
+.sfoglia-pagina > .nota-pop { max-width: 34em; font-size: 16px; color: var(--muted); }
+.duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.blocco {
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(var(--fg-rgb), 0.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.04);   /* dentro il popup (che è già vetro) niente sfocato: solo luce sul bordo */
+}
+.blocco h4 { margin: 0; }
+.blocco p { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--fg); }
+.filo-pop { margin-top: 28px; }
+.popup-in > .filo-pop + .btn-p { margin-top: 28px; }
+.passi-mini { display: grid; gap: 14px; }
+.passi-mini li { position: relative; padding-left: 26px; }
+.passi-mini li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+.passi-mini p { font-size: 16px; line-height: 1.5; color: var(--fg); }
+.passi-mini strong { font-weight: 500; color: var(--accent); }
+.azioni { display: flex; flex-wrap: wrap; gap: 12px; }
+.azioni .btn-o, .azioni .btn-p { cursor: pointer; }
+button.btn-o, button.btn-p { font-family: var(--f-body); cursor: pointer; }
+html:not(.js) #p-call, html.no-popup #p-call { display: none; }
+html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] { display: none; }   /* senza JavaScript i popup sono in pagina: il pulsante della call non serve */
 
-/* Cursore ad anello con bagliore (lo crea JavaScript, solo con il mouse). Il cursore di sistema resta visibile */
+
+/* ==========================================================================
+   7. TABLET E DESKTOP (si parte dal telefono, poi si allarga)
+   ========================================================================== */
+
+@media (min-width: 700px) {
+  .cta > a { flex: 0 0 auto; }
+  .schede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  /* Barra dei tasti: cinque tasti in una riga, la lente è larga un quinto */
+  .sfoglia-tasti { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .sfoglia-tasti::before { width: calc((100% - 10px) / 5); }
+  .sfoglia-tasto,
+  .sfoglia-tasto:nth-child(4),
+  .sfoglia-tasto:nth-child(5) { grid-column: auto; padding: 0 12px; font-size: 16px; }
+  .sfoglia-tasti[data-a="3"] { --c: 3; --r: 0; }
+  .sfoglia-tasti[data-a="4"] { --c: 4; --r: 0; }
+  .tessere { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fatti { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* iPad in verticale (744-859px): il profilo di Numerella sta accanto alla sua nota, con la stessa larghezza che ha su telefono (360px),
+   invece di una scheda larga 700px con tre tessere enormi. Sotto i 744px la scheda resta in colonna ma non oltre 520px. */
+.prof-sx { max-width: 520px; }
+@media (min-width: 744px) {
+  .prof-sx { max-width: none; }
+  .prof-corpo { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 32px 40px; align-items: center; }
+}
+
+/* iPad in verticale e telefoni in orizzontale (700-999px): le schede di «Per chi lavoro» sono larghe e basse, quindi a due colonne.
+   A sinistra tipo di cliente, titolo e pulsante; a destra le tre voci. Da 1000px tornano tre schede in colonna. */
+@media (min-width: 700px) and (max-width: 999px) {
+  .cliente {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: "tag voci" "titolo voci" "tasto voci";
+    column-gap: clamp(28px, 5vw, 52px);
+    align-items: start;
+  }
+  .cliente .tag { grid-area: tag; }
+  .cliente h3 { grid-area: titolo; }
+  .cliente .percorso { grid-area: voci; margin: 0; }
+  .cliente .apri-btn { grid-area: tasto; align-self: end; justify-self: start; margin-top: 28px; }
+}
+
+@media (min-width: 860px) {
+  .sec-corpo { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .banner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+  .passi { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
+
+  /* Prima e dopo: scheda a sinistra, note a destra */
+  .prof-corpo { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: center; }
+  .prof-strato { padding: 30px 28px 32px; }
+}
+
+@media (min-width: 1000px) {
+  .clienti { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .cliente .tag { min-height: 2.8em; }
+  .cliente h3 { min-height: 2.08em; }
+}
+
+@media (min-width: 1100px) {
+  /* Sette giorni affiancati, senza scorrimento */
+  .striscia-scorri { overflow-x: visible; }
+  .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+  .cella,
+  .cella-vuota { width: auto; }
+  .cella { padding-inline: 10px; }   /* dentro il pannello le celle sono strette: così "Newsletter" ci sta */
+  .suggerimento { display: none; }
+}
+
+
+/* ==========================================================================
+   8. MOVIMENTO
+   Regole (le stesse di CLAUDE.md, "Sistema di movimento"):
+   - un solo easing, var(--ease);
+   - si animano solo transform e opacity (eccezione: stroke-dashoffset per l'anello dell'avatar);
+   - gli stati iniziali nascosti esistono solo sotto ".js" e solo se l'utente non ha chiesto
+     di ridurre il movimento: senza JavaScript o con "riduci movimento" è tutto già al suo posto.
+   ========================================================================== */
+
+/* ----- Cursore ad anello con bagliore (sempre uguale, anche senza movimento) ----- */
 .cur,
 .cur-glow { position: fixed; left: 0; top: 0; opacity: 0; pointer-events: none; }
 .cur { z-index: 40; width: 34px; height: 34px; margin: -17px 0 0 -17px; }
-.cur i { position: relative; display: block; width: 100%; height: 100%; border: 1px solid var(--accent); border-radius: 50%; }
-.cur i::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: rgba(var(--accent-rgb), 0.14); opacity: 0; }
+.cur i { position: relative; display: block; width: 100%; height: 100%; border: 1px solid var(--d-accent); border-radius: 50%; }
+.cur.su-chiaro i { border-color: var(--l-accent); }
+.cur i::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: rgba(var(--d-rgb), 0.14); opacity: 0; }
+.cur.su-chiaro i::before { background: rgba(var(--l-rgb), 0.1); }
 .cur.vis { opacity: 0.85; }
 .cur.big i { transform: scale(1.9); }
 .cur.big i::before { opacity: 1; }
 /* Il bagliore sta sotto il testo (z-index -1) */
 .cur-glow { z-index: -1; width: 420px; height: 420px; margin: -210px 0 0 -210px; }
-.cur-glow i { display: block; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(var(--accent-rgb), 0.24), transparent 66%); }
+ /* Due strati sovrapposti: beige (sfondo scuro) e blu (sfondo chiaro). Cambia solo l'opacità, che si dissolve dolcemente. */
+.cur-glow i { position: absolute; inset: 0; display: block; border-radius: 50%; }
+.cur-glow i.d { background: radial-gradient(circle, rgba(var(--glow-d), 0.24), transparent 66%); }
+.cur-glow i.l { background: radial-gradient(circle, rgba(var(--glow-l), 0.26), transparent 66%); opacity: 0; }
+.cur-glow.su-chiaro i.d { opacity: 0; }
+.cur-glow.su-chiaro i.l { opacity: 1; }
 .cur-glow.vis { opacity: 0.9; }
 .cur-glow.big { opacity: 1; }
 .cur-glow.big i { transform: scale(1.25); }
 .cur-glow.fuori { opacity: 0; }   /* nella hero c'è già la sua luce: una sola luce alla volta */
-
-/* "Per chi lavoro": con il mouse al passaggio; al tocco quando la riga è al centro dello schermo */
-@media (hover: hover) {
-  .row-c:hover::after { transform: scaleX(1); }
-  .row-c:hover h3 { transform: translateX(10px); }
-}
-.row-c.on::after { transform: scaleX(1); }
-.row-c.on h3 { transform: translateX(10px); }
-
-/* Ritratto: leggero parallasse (JavaScript scrive --py) */
-.js .photo-in,
-.js .photo img { transform: translate3d(0, var(--py, 0px), 0) scale(1.06); will-change: transform; }
-
 
 /* ----- Solo se l'utente non ha chiesto di ridurre il movimento ----- */
 @media (prefers-reduced-motion: no-preference) {
@@ -1360,63 +1621,72 @@ footer p + p { margin-top: 6px; }
   html { scroll-behavior: smooth; }
 
   /* Comparsa allo scroll: sale di 28px e appare. Il ritardo arriva da --d */
-  .js .rv { opacity: 0; transform: translateY(28px) scale(0.985); }
+  .js .rv { opacity: 0; transform: translate(var(--ax, 0px), var(--ay, 28px)) scale(var(--as, 0.985)); }
   .js .rv.in {
     opacity: 1;
     transform: none;
-    transition: opacity 0.8s var(--ease) var(--d, 0ms), transform 1s var(--ease) var(--d, 0ms);
+    transition: opacity calc(var(--dur, 1s) * 0.8) var(--ease) var(--d, 0ms), transform var(--dur, 1s) var(--ease) var(--d, 0ms);
   }
 
   /* Hero: barra che scende, titolo parola per parola */
-  .js .bar { opacity: 0; transform: translateY(-12px); }
-  .js.go .bar { opacity: 1; transform: none; transition: opacity 0.8s var(--ease), transform 0.9s var(--ease); }
+  .js .nav { opacity: 0; transform: translateY(-12px); }
+  .js.go .nav { opacity: 1; transform: none; transition: opacity 0.8s var(--ease), transform 0.9s var(--ease); }
+  .js .nav-menu, .menu-btn { transition: opacity 0.3s var(--ease), transform 0.4s var(--ease); }
+  .nav-menu a::after { transition: transform 0.5s var(--ease); }
   .js .hero h1:not(.diviso) { visibility: hidden; }   /* finché le parole non sono divise, per non farle lampeggiare */
   .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.04em 0.14em; margin: 0 -0.04em -0.14em; }
-  .wi { display: inline-block; }
-  .js .wi { transform: translateY(112%); }
-  .js.go .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 55ms + 180ms); }
-
-  /* Etichette che si scrivono, con cursore che lampeggia poche volte */
-  .label .pw { display: inline-block; white-space: nowrap; }
-  .js .label .c { opacity: 0; }
-  .js .label .c.v { opacity: 1; }
-  .caret { position: relative; display: inline-block; width: 0; height: 1em; vertical-align: -0.12em; }
-  .caret::after {
+  /* Frase in corsivo del titolo: un tratto morbido per parola, tinta piena così le parole vicine si fondono */
+  .hero h1 .it .w { position: relative; isolation: isolate; padding-inline: 0.15em; margin-inline: -0.15em; }
+  .hero h1 .it .w::before {
     content: "";
     position: absolute;
-    left: 2px;
-    top: 0;
-    width: 0.55em;
-    height: 1em;
-    background: var(--accent);
-    animation: lampeggia 0.9s var(--ease) 3;
-  }
-  @keyframes lampeggia { 50% { opacity: 0; } }
-
-  /* Evidenziatore: ogni parola ha il suo tratto beige che si stende; il testo si inverte con un cambio di opacità */
-  .js .hl { padding: 0; margin: 0; background: none; color: inherit; }
-  .js .hl .hw { position: relative; display: inline-block; isolation: isolate; padding: 0 0.14em; margin: 0 -0.14em; }
-  .js .hl .hw:last-child { margin-right: 0; }      /* il punto dopo l'ultima parola non deve finire sopra il beige */
-  .js .hl .hw::before {
-    content: "";
-    position: absolute;
-    inset: 0.04em 0 0.02em;
+    left: 0; right: 0; top: 46%; bottom: 8%;
     z-index: -1;
-    background: var(--accent);
+    border-radius: 0.3em;
+    background: #D4D6E5;
     transform: scaleX(0);
     transform-origin: left;
   }
-  .js .hl .hw .t1 { position: absolute; left: 0.14em; top: 0; color: var(--accent-ink); opacity: 0; white-space: nowrap; }
+  .js.go .hero h1 .it .w::before { transform: scaleX(1); transition: transform 0.7s var(--ease) calc(var(--i, 0) * 55ms + 700ms); }
+  .wi { display: inline-block; }
+  .js .wi { transform: translateY(112%); }
+  .js.go .hero .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 55ms + 180ms); }
+  /* Titoli di sezione: le parole salgono dalla maschera quando il titolo entra nello schermo */
+  .js .tit.in .wi { transform: none; transition: transform 1s var(--ease); transition-delay: calc(var(--i) * 50ms); }
+
+  /* Lente dell'interruttore e della barra degli approfondimenti: scivola da un tasto all'altro (solo transform) */
+  .commuta::before,
+  .sfoglia-tasti::before { transition: transform 0.6s var(--ease); }
+
+  /* Marchio nella barra: come i pulsanti, la pressione lo schiaccia un poco (solo transform) */
+  .brand-logo { transition: transform 0.5s var(--ease); }
+  .brand:active .brand-logo { transform: scale(0.94); }
+
+  /* Pulsanti: la freccia scatta in avanti, la pressione schiaccia un poco (solo transform) */
+  .btn-p, .btn-o { transition: transform 0.5s var(--ease); }
+  .btn-p:active, .btn-o:active { transform: scale(0.96); }
+  .btn-p .fr, .btn-o .fr { transition: transform 0.5s var(--ease); }
+  @media (hover: hover) { .btn-p:hover .fr, .btn-o:hover .fr { transform: translate(3px, -3px); } }
+
+  /* Evidenziatore: con JavaScript ogni parola ha il suo tratto che si stende da sinistra (solo transform). Il testo non cambia colore. */
+  .js .hl { padding: 0; margin: 0; background: none; }
+  .js .hl .hw { position: relative; display: inline-block; isolation: isolate; padding: 0 0.15em; margin: 0 -0.15em; }   /* i tratti si toccano: lo spazio tra le parole è coperto */
+  .js .hl .hw:last-child { margin-right: 0; }      /* il punto dopo l'ultima parola non deve finire sopra il tratto */
+  .js .hl .hw::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    top: 42%; bottom: 6%;
+    z-index: -1;
+    border-radius: 0.3em;
+    background: #D4D6E5;            /* tinta piena (non trasparente): le parole vicine si fondono in un solo tratto */
+    transform: scaleX(0);
+    transform-origin: left;
+  }
   .js .hl.in .hw::before { transform: scaleX(1); transition: transform 0.6s var(--ease) calc(0.35s + var(--w) * 0.2s); }
-  .js .hl.in .hw .t0 { opacity: 0; transition: opacity 0.4s var(--ease) calc(0.5s + var(--w) * 0.2s); }
-  .js .hl.in .hw .t1 { opacity: 1; transition: opacity 0.4s var(--ease) calc(0.5s + var(--w) * 0.2s); }
 
   /* Numeri: il numero vero resta nel testo ma invisibile (tiene il posto), quello che sale è una copia sovrapposta */
   .js .num .num-fin { opacity: 0; }
-
-  /* Filetto verticale della scheda della hero */
-  .js .meta::before { transform: scaleY(0); transform-origin: top; }
-  .js .meta.in::before { transform: scaleY(1); transition: transform 1s var(--ease); }
 
   /* Luce unica dietro il titolo: respira da sola (26 s). Con il mouse la sposta JavaScript */
   .luce-in { animation: respira 26s var(--ease) infinite alternate; will-change: transform, opacity; }
@@ -1426,53 +1696,105 @@ footer p + p { margin-top: 6px; }
     to { transform: translate3d(8%, 6%, 0) scale(1.08); opacity: 0.68; }
   }
 
-  /* Annotazioni a gesso: lettere che compaiono una per una, linee che si disegnano */
-  .js .chalk .ch { opacity: 0; transform: translateY(7px) rotate(-4deg); }
-  .js .chalk.in .ch {
-    opacity: 1;
-    transform: none;
-    transition: opacity 0.3s var(--ease), transform 0.5s var(--ease);
-    transition-delay: calc(var(--d, 0ms) + var(--k) * 34ms);
-  }
-  .js .draw path { stroke-dasharray: 1.03; stroke-dashoffset: 1.03; }
-  .js .draw.in path { stroke-dashoffset: 0; transition: stroke-dashoffset 1.1s var(--ease) var(--d, 0ms); }
-
-  /* Per chi lavoro */
-  .row-c::after { transition: transform 0.9s var(--ease); }
-  .row-c h3 { transition: transform 0.7s var(--ease); }
-
   /* Cursore e bagliore */
   .cur { transition: opacity 0.3s var(--ease); }
   .cur i { transition: transform 0.45s var(--ease); }
   .cur i::before { transition: opacity 0.3s var(--ease); }
   .cur-glow { transition: opacity 0.5s var(--ease); }
-  .cur-glow i { transition: transform 0.6s var(--ease); }
+  .cur-glow i { transition: transform 0.6s var(--ease), opacity 0.5s var(--ease); }
 
-  /* Telefono: lo stato entra con i suoi elementi a scalare */
-  .js .scr { transform: translateY(14px); transition: opacity 0.5s var(--ease), transform 0.7s var(--ease); }
-  .js .scr.on { transform: none; }
-  .js .scr .a { opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ease), transform 0.6s var(--ease); }
-  .js .scr.on .a { opacity: 1; transform: none; transition-delay: calc(var(--j, 0) * 80ms + 160ms); }
-  .js .scr .cg .cell { opacity: 0; transform: scale(0.6); transition: opacity 0.4s var(--ease), transform 0.6s var(--ease); }
-  .js .scr.on .cg .cell { opacity: 1; transform: none; transition-delay: calc(var(--j, 0) * 38ms + 260ms); }
-  .js .avatar circle { stroke-dasharray: 1.03; stroke-dashoffset: 1.03; transition: stroke-dashoffset 0.6s var(--ease); }
-  .js .scr.on .avatar circle { stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s var(--ease) 0.5s; }
-  .halo.pulse { animation: pulsa 1.4s var(--ease) 1; }
-  @keyframes pulsa {
-    0% { transform: scale(0.9); opacity: 0.2; }
-    40% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 0.5; }
+  /* ----- Per chi lavoro, popup, prima e dopo ----- */
+  /* Al passaggio del mouse (o, al tocco, quando la scheda è al centro) titolo ed etichetta scorrono di 8px */
+  .cliente .tag, .cliente h3 { transition: transform 0.6s var(--ease); }
+  .cliente.on .tag, .cliente.on h3 { transform: translateX(8px); }
+  @media (hover: hover) { .cliente:hover .tag, .cliente:hover h3 { transform: translateX(8px); } }
+
+  /* Le tre voci di ogni scheda compaiono una dopo l'altra */
+  .js .cliente .percorso li { opacity: 0; transform: translateY(10px); }
+  .js .cliente.in .percorso li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(var(--d, 0ms) + 0.4s + var(--k) * 0.18s), transform 0.8s var(--ease) calc(var(--d, 0ms) + 0.4s + var(--k) * 0.18s); }
+  .percorso li:nth-child(1) { --k: 0; }
+  .percorso li:nth-child(2) { --k: 1; }
+  .percorso li:nth-child(3) { --k: 2; }
+
+  /* Le quattro parole del metodo compaiono una dopo l'altra */
+  .js .filo.rv .filo-passi li { opacity: 0; transform: translateY(8px); }
+  .js .filo.rv.in .filo-passi li { opacity: 1; transform: none; transition: opacity 0.6s var(--ease) calc(0.3s + var(--k) * 0.12s), transform 0.8s var(--ease) calc(0.3s + var(--k) * 0.12s); }
+  .filo-passi li:nth-child(1) { --k: 0; }
+  .filo-passi li:nth-child(2) { --k: 1; }
+  .filo-passi li:nth-child(3) { --k: 2; }
+  .filo-passi li:nth-child(4) { --k: 3; }
+
+  /* Popup: entra dal basso, il fondo si schiarisce */
+  .popup[open] { animation: apri 0.55s var(--ease) 1; }
+  .popup[open]::backdrop { animation: sfondo 0.4s var(--ease) 1; }
+  /* Dentro il popup il contenuto entra a scalini, dopo che la finestra è comparsa */
+  .popup[open] .popup-in > * { animation: entra 0.7s var(--ease) both; animation-delay: calc(0.12s + var(--s, 0) * 0.07s); }
+  .popup-in > :nth-child(2) { --s: 1; } .popup-in > :nth-child(3) { --s: 2; } .popup-in > :nth-child(4) { --s: 3; }
+  .popup-in > :nth-child(5) { --s: 4; } .popup-in > :nth-child(6) { --s: 5; } .popup-in > :nth-child(n+7) { --s: 6; }
+  @keyframes entra { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes apri { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
+  @keyframes sfondo { from { opacity: 0; } to { opacity: 1; } }
+  .pop-luce { transition: transform 0.45s var(--ease), opacity 0.4s var(--ease); }
+
+  /* Prima e dopo. Cambia solo opacità e transform:
+     - il "prima" e le note si dissolvono in fretta e l'altro stato entra appena dopo (così non si sovrappongono);
+     - il "dopo" entra a blocchi, uno dopo l'altro, e l'anello dell'avatar si disegna;
+     - visibility serve solo a nascondere lo stato che esce quando ha finito di dissolversi. */
+  .js .prof-prima,
+  .js .nota { opacity: 0; transition: opacity 0.2s var(--ease), visibility 0s linear 0.2s; }
+  .js .prof:not([data-v="dopo"]) .prof-prima,
+  .js .prof:not([data-v="dopo"]) .nota-prima,
+  .js .prof[data-v="dopo"] .nota-dopo { opacity: 1; transition: opacity 0.6s var(--ease) 0.14s, visibility 0s; }
+  .js .prof-dopo { transition: visibility 0s linear 0.2s; }
+  .js .prof[data-v="dopo"] .prof-dopo { transition: visibility 0s; }
+  .js .prof-dopo > * { opacity: 0; transform: translateY(12px); transition: opacity 0.16s var(--ease), transform 0.2s var(--ease); }
+  .js .prof[data-v="dopo"] .prof-dopo > * {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.6s var(--ease) calc(0.14s + var(--j, 0) * 0.07s), transform 0.8s var(--ease) calc(0.14s + var(--j, 0) * 0.07s);
   }
-  .js .step { transition: opacity 0.6s var(--ease); }
+  .prof-dopo > :nth-child(2) { --j: 1; }
+  .prof-dopo > :nth-child(3) { --j: 2; }
+  .prof-dopo > :nth-child(4) { --j: 3; }
+  .prof-dopo > :nth-child(5) { --j: 4; }
+  .avatar circle { transition: stroke-dashoffset 1.1s var(--ease) 0.4s; }
+  /* Approfondimenti: la pagina nuova entra di lato (da destra se si va avanti, da sinistra se si torna indietro) e la vecchia esce dall'altra parte.
+     La direzione arriva da --dir (la imposta js/main.js sul pannello). Cambiano solo opacità e transform; la pagina che esce sta sopra le altre (position: absolute) solo per i 0,2 s della dissolvenza, poi JavaScript le toglie la classe "esce". */
+  .js .sfoglia-pagina.on { animation: pagina-entra 0.7s var(--ease) 0.14s both; }
+  .js .sfoglia-pagina.esce { display: block; position: absolute; inset: 0 0 auto 0; animation: pagina-esce 0.2s var(--ease) both; }
+  @keyframes pagina-entra { from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 36px)); } to { opacity: 1; transform: none; } }
+  @keyframes pagina-esce { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(calc(var(--dir, 1) * -36px)); } }
+  /* Le tessere dei post: con il mouse si alzano un poco, al tocco (e alla pressione) si schiacciano come i pulsanti */
+  a.tassello { transition: transform 0.5s var(--ease); }
+  a.tassello:active { transform: scale(0.96); }
+  @media (hover: hover) { a.tassello:hover { transform: translateY(-3px); } }
 
-  .indicatore { transition: transform 0.3s var(--ease); }
+  /* ----- Bagliori sui tasti ----- */
+  .luce-b { transition: opacity 0.45s var(--ease), transform 0.35s var(--ease); }
+  :hover > .luce-b { opacity: 1; }
+  .lampo { animation: lampo var(--ld, 0.8s) var(--ease) 1 forwards; }
+  @keyframes lampo {
+    0% { opacity: 0.95; transform: translate(var(--lx), var(--ly)) scale(0.2); }
+    100% { opacity: 0; transform: translate(var(--lx), var(--ly)) scale(var(--le, 2.4)); }
+  }
+}
+
+/* ----- Comparse variate -----
+   Stessa curva per tutto (--ease), ma direzione, distanza e durata cambiano secondo il ruolo dell'elemento (le assegna js/main.js). */
+.a-sx { --ax: -44px; --ay: 0px; --as: 0.99; }
+.a-dx { --ax: 44px; --ay: 0px; --as: 0.99; }
+.a-zoom { --ay: 14px; --as: 0.93; --dur: 1.25s; }
+.a-dolce { --ay: 14px; --as: 1; --dur: 1.5s; }
+.a-alto { --ay: -18px; --as: 1; --dur: 1.1s; }
+@media (max-width: 760px) {
+  .a-sx, .a-dx { --ax: 0px; --ay: 26px; }   /* in colonna le schede non arrivano di lato */
 }
 
 
 /* ==========================================================================
-   8. PREFERENZE DELL'UTENTE
+   9. PREFERENZE DELL'UTENTE
    Con "riduci movimento" ogni cosa sta già nel suo stato finale: le regole
-   di movimento sono tutte nel blocco "no-preference" qui sopra. Questo è
+   di movimento sono tutte nel blocco "no-preference" della sezione 8. Questo è
    solo un'ulteriore rete di sicurezza.
    ========================================================================== */
 
@@ -1482,4 +1804,32 @@ footer p + p { margin-top: 6px; }
     animation: none !important;
     scroll-behavior: auto !important;
   }
+}
+@media (prefers-reduced-motion: reduce) { .lampo, .luce-b { display: none; } }
+
+/* Vetro opaco: dove il browser non sa sfocare (backdrop-filter) e quando l'utente chiede meno trasparenza o più contrasto,
+   le tinte del vetro diventano piene e lo sfocato sparisce. Il sito resta uguale, solo senza trasparenze.
+   (prefers-reduced-transparency è ancora poco diffuso: per ora funziona solo in alcuni browser, gli altri leggono prefers-contrast.) */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root {
+    --sfoca: none;
+    --v-barra-a: #FBF8F0; --v-barra-b: #F7F2E8;
+    --v-tendina-a: #FBF8F0; --v-tendina-b: #F7F2E8;
+    --v-popup-a: #243580; --v-popup-b: #1A2A63;
+    --v-tessera: rgba(14, 24, 72, 0.92);
+  }
+  .chiudi { -webkit-backdrop-filter: none; backdrop-filter: none; background: #223378; }
+}
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  :root {
+    --v-barra-a: #FBF8F0; --v-barra-b: #F7F2E8;
+    --v-tendina-a: #FBF8F0; --v-tendina-b: #F7F2E8;
+    --v-popup-a: #243580; --v-popup-b: #1A2A63;
+  }
+}
+
+/* Colori forzati (alto contrasto di Windows): le luci sul bordo spariscono, quindi i tasti e le schede scelte ritrovano un contorno vero */
+@media (forced-colors: active) {
+  .btn-p, .btn-o, .mailwrap, .chiudi, .commuta, .sfoglia-tasti { border: 1px solid ButtonText; }
+  .commuta button[aria-pressed="true"], .sfoglia-tasto[aria-selected="true"] { border: 1px solid Highlight; }
 }
