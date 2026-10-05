@@ -15,15 +15,20 @@
   <meta property="og:locale" content="it_IT">
   <meta property="og:title" content="Matteo Rapeso | Strategia e contenuti per profili social">
   <meta property="og:description" content="Strategia e contenuti per profili social: creator, attività locali, startup. Il metodo è mostrato in un caso studio dimostrativo con dati fittizi.">
-  <meta property="og:image" content="https://matteorp.github.io/portfolio-matteo/assets/og-image.png">
+  <meta property="og:image" content="https://matteorp.github.io/portfolio-matteo/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Matteo Rapeso, strategia e contenuti per profili social">
+  <meta property="og:image:alt" content="Matteo Rapeso, strategia e contenuti per profili social. Caso studio dimostrativo con dati fittizi.">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Icone -->
+  <!-- Icone: favicon (ICO per i browser che non leggono l'SVG, come Safari su Mac; sizes="32x32" evita che Chrome scelga l'ICO al posto dell'SVG),
+   icona per la schermata Home di iPhone e iPad (180x180, piena: la maschera con gli angoli la mette iOS) e manifesto per Android -->
+  <link rel="icon" href="assets/favicon.ico" sizes="32x32">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="Matteo Rapeso">
 
   <!-- Font in locale. Si precaricano solo i tre critici per la prima schermata:
    titoli (Inter 700), testo (Inter 400 e 500) e parola chiave (Instrument Serif corsivo). -->
@@ -63,7 +68,8 @@
    Senza JavaScript il menu resta visibile sotto la barra e non è fisso. -->
   <header class="nav" id="nav">
     <div class="wrap nav-in">
-      <a class="brand" href="#top">Matteo Rapeso</a>
+      <!-- Marchio MR + nome. Su telefono stretto resta solo il marchio (il nome è letto comunque dagli screen reader) -->
+      <a class="brand" href="#top"><img class="brand-logo" src="assets/logo.svg" width="36" height="36" alt=""><span class="brand-nome">Matteo Rapeso</span></a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Apri il menu"><span></span><span></span></button>
       <nav class="nav-menu" id="menu" aria-label="Principale">
         <ul>
@@ -791,9 +797,12 @@
   </main>
 
   <footer class="sez-scura">
-    <div class="wrap">
-      <p>© 2026 Matteo Rapeso. Nessun cookie, nessun tracker.</p>
-      <p>Numerella è un progetto dimostrativo: attività e dati fittizi.</p>
+    <div class="wrap foot-in">
+      <img class="foot-logo" src="assets/logo.svg" width="40" height="40" alt="" loading="lazy">
+      <div>
+        <p>© 2026 Matteo Rapeso. Nessun cookie, nessun tracker.</p>
+        <p>Numerella è un progetto dimostrativo: attività e dati fittizi.</p>
+      </div>
     </div>
   </footer>
 

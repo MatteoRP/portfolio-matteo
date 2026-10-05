@@ -427,12 +427,26 @@ html:not(.js) .nav { margin: 10px 10px 0; }
 .brand {
   display: inline-flex;
   align-items: center;
+  gap: 12px;
   min-height: 44px;
   white-space: nowrap;
   font: 500 14px/1 var(--f-body);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
+}
+/* Marchio MR (assets/logo.svg: lettere disegnate con i font del sito). Su telefono stretto il nome resta solo per gli screen reader
+   (stessa tecnica di .sr), da 480px compare accanto al marchio (misurato: a 440px non c'è posto accanto a «Scrivimi» e al menu). */
+.brand-logo { display: block; flex: none; width: 36px; height: 36px; }   /* 36px: sta a 6px dalla barra «storie» in basso */
+.brand-nome {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (min-width: 480px) {
+  .brand-nome { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
 }
 .nav-menu ul { display: flex; flex-wrap: wrap; gap: 0 22px; }
 .nav-menu a {
@@ -896,6 +910,8 @@ footer {
 }
 footer p { font: 400 14px/1.5 var(--f-body); color: var(--muted); }
 footer p + p { margin-top: 6px; }
+.foot-in { display: flex; align-items: center; gap: 16px; }
+.foot-logo { flex: none; width: 40px; height: 40px; }
 
 
 /* ==========================================================================
@@ -1581,6 +1597,10 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   /* Lente dell'interruttore e della barra degli approfondimenti: scivola da un tasto all'altro (solo transform) */
   .commuta::before,
   .sfoglia-tasti::before { transition: transform 0.6s var(--ease); }
+
+  /* Marchio nella barra: come i pulsanti, la pressione lo schiaccia un poco (solo transform) */
+  .brand-logo { transition: transform 0.5s var(--ease); }
+  .brand:active .brand-logo { transform: scale(0.94); }
 
   /* Pulsanti: la freccia scatta in avanti, la pressione schiaccia un poco (solo transform) */
   .btn-p, .btn-o { transition: transform 0.5s var(--ease); }
