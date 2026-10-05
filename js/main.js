@@ -11,8 +11,8 @@
    2. Hero e comparse allo scroll
    3. Righe di "Per chi lavoro" al tocco, popup dei dettagli, bagliori sui tasti
    4. Luce della hero e cursore ad anello (solo mouse)
-   5. Storia del caso studio (telefono)
-   6. Menu in alto e scroll: barra "storie", voce attiva, stato del telefono
+   5. Prima e dopo del caso studio (interruttore del profilo)
+   6. Menu in alto e scroll: barra "storie" e voce attiva
    ========================================================================== */
 
 (function () {
@@ -59,7 +59,7 @@
     }
 
     // Tutti i riquadri e le sezioni con fondo blu: lì luce e cursore sono beige (altrove sono blu)
-    var BLU = '.sez-scura, dialog, .pannello, .banner, .card-blu, .scheda-b, .cliente';
+    var BLU = '.sez-scura, dialog, .pannello, .banner, .card-blu, .commuta, .scheda-b, .cliente';
 
     var hero = document.querySelector('.hero');
     var luceInterna = document.querySelector('.luce-in');
@@ -325,12 +325,13 @@
        ====================================================================== */
 
     if (!RIDOTTO) {
-      var TASTI = '.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap';
+      var TASTI = '.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap, .commuta button, a.tassello';
       // La luce deve vedersi sul fondo del tasto: beige su fondo scuro, blu su fondo chiaro.
-      // I tasti vuoti (.btn-o) al passaggio si riempiono del colore opposto a quello che hanno intorno, quindi qui la regola si inverte.
+      // I tasti vuoti (.btn-o) al passaggio si riempiono del colore opposto a quello che hanno intorno, e le tessere beige (.tassello-chiaro)
+      // sono chiare dentro una scheda blu: per loro la regola si inverte.
       var luceBeige = function (tasto) {
         var scuro = !!tasto.closest(BLU);
-        return tasto.matches('.btn-o') ? !scuro : scuro;
+        return tasto.matches('.btn-o, .tassello-chiaro') ? !scuro : scuro;
       };
       var coloreLuce = function (tasto) {
         return luceBeige(tasto) ? '234, 223, 200' : '70, 100, 215';
@@ -497,38 +498,25 @@
     }
 
     /* ======================================================================
-       5. STORIA DEL CASO STUDIO
-       Il telefono è uno solo e mostra lo stato del passo che si sta leggendo.
+       5. PRIMA E DOPO DEL CASO STUDIO
+       Un interruttore (Prima / Dopo) cambia l'attributo data-v del contenitore .prof.
+       Il resto (quale stato si vede, le dissolvenze, l'anello dell'avatar) lo fa il CSS.
        ====================================================================== */
 
-    var storia = document.getElementById('story');
-    var stage = document.getElementById('stage');
-    var passi = tutti('.step');
-    var stati = tutti('.scr');
-    var alone = document.getElementById('halo');
-    var telefono = document.querySelector('.phone');
-    var serieEtichette = tutti('.cset');          // etichette che escono dal telefono (solo schermi larghi)
-    var tacche = tutti('.avanzamento i');         // sette tacche: a che punto della storia siamo
-
-    var statoCorrente = -2;
-    function impostaStato(n) {
-      if (n === statoCorrente) return;
-      statoCorrente = n;
-      stati.forEach(function (s, i) { s.classList.toggle('on', i === n); });
-      passi.forEach(function (p, i) { p.classList.toggle('on', i === n); });
-      serieEtichette.forEach(function (c, i) { c.classList.toggle('on', i === n); });
-      tacche.forEach(function (t, i) { t.classList.toggle('on', i <= n); });
-      if (telefono) telefono.setAttribute('data-tilt', String(Math.max(0, n)));   // il telefono si inclina in modo diverso a ogni stato
-      // La luce dietro il telefono pulsa una volta a ogni cambio
-      if (alone) {
-        alone.classList.remove('pulse');
-        void alone.offsetWidth;
-        alone.classList.add('pulse');
+    tutti('[data-prof]').forEach(function (blocco) {
+      var tasti = tutti('.commuta button', blocco);
+      function impostaStato(stato) {
+        blocco.setAttribute('data-v', stato);
+        // aria-pressed dice allo screen reader quale dei due tasti è attivo
+        tasti.forEach(function (t) { t.setAttribute('aria-pressed', t.getAttribute('data-v') === stato ? 'true' : 'false'); });
       }
-    }
+      tasti.forEach(function (t) {
+        t.addEventListener('click', function () { impostaStato(t.getAttribute('data-v')); });
+      });
+    });
 
     /* ======================================================================
-       6. MENU E SCROLL: BARRA "STORIE", VOCE ATTIVA, STATO DEL TELEFONO
+       6. MENU E SCROLL: BARRA "STORIE" E VOCE ATTIVA
        Un solo gestore, al massimo una volta per frame. Le posizioni sono misurate una volta
        (e rimisurate se la pagina cambia dimensione), così a ogni scroll non si legge il layout.
        ====================================================================== */
@@ -570,8 +558,6 @@
     function misura() {
       var y = window.scrollY;
       misure.vh = window.innerHeight;
-      misure.barra = menu ? menu.offsetHeight : 0;
-      misure.larga = window.innerWidth >= 860;
       misure.massimo = Math.max(0, document.documentElement.scrollHeight - misure.vh);
       misure.sezioni = sezioni.map(function (s) {
         var r = s.getBoundingClientRect();
@@ -581,13 +567,6 @@
         var rh = hero.getBoundingClientRect();
         misure.heroTop = rh.top + y;
         misure.heroH = rh.height;
-      }
-      if (storia && stage) {
-        var rs = storia.getBoundingClientRect();
-        misure.storiaTop = rs.top + y;
-        misure.storiaH = rs.height;
-        misure.stageH = stage.offsetHeight;
-        misure.passi = passi.map(function (p) { return p.getBoundingClientRect().top + y; });
       }
     }
 
@@ -616,25 +595,6 @@
         if (voceCorrente) voceCorrente.removeAttribute('aria-current');
         if (voce) voce.setAttribute('aria-current', 'location');
         voceCorrente = voce;
-      }
-
-      // Telefono: quale passo si sta leggendo?
-      if (storia && misure.passi) {
-        if (y < misure.storiaTop - vh || y > misure.storiaTop + misure.storiaH) {
-          impostaStato(-1);
-        } else {
-          var soglia;   // un passo è "in lettura" quando la sua cima supera questa linea (in coordinate della pagina)
-          if (misure.larga) {
-            soglia = y + vh * 0.55;
-          } else {
-            // Su telefono lo stage è fisso sotto il menu: sotto il suo bordo inferiore (+ 40px) c'è il testo del passo
-            var cimaStage = Math.max(misure.barra, misure.storiaTop - y);
-            soglia = y + cimaStage + misure.stageH + 40;
-          }
-          var attivo = 0;
-          misure.passi.forEach(function (cima, i) { if (cima <= soglia) attivo = i; });
-          impostaStato(attivo);
-        }
       }
     }
     function pianifica() {

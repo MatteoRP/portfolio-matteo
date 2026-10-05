@@ -8,7 +8,7 @@
    2. Variabili e base
    3. Componenti comuni (etichette, menu, pulsanti e bagliori, titoli)
    4. Sezioni, nell'ordine in cui compaiono nella pagina
-   5. Caso studio (testata, telefono-mockup a sette stati, passi, strategia, calendario)
+   5. Caso studio (testata, profilo prima/dopo, post di esempio, strategia, calendario)
    6. Popup
    7. Tablet e desktop (si parte dal telefono, poi si allarga)
    8. Movimento (gli stati nascosti esistono solo con .js e solo se l'utente non ha chiesto di ridurre il movimento)
@@ -205,7 +205,6 @@
   --accent-rgb: var(--l-rgb);
   --fg-rgb: var(--l-fg-rgb);
   --key: var(--l-key);
-  --passo-op: 0.85;      /* passi non in lettura: su fondo chiaro serve un'opacità più alta per tenere il contrasto */
   color-scheme: light;
 }
 /* Ruolo scuro, scritto per esteso: sezioni blu, popup, pannelli e banner blu anche quando stanno dentro una sezione crema. */
@@ -213,7 +212,8 @@
 dialog,
 .pannello,
 .banner,
-.card-blu {
+.card-blu,
+.commuta {
   --bg: var(--d-bg);
   --surface: var(--d-surface);
   --fg: var(--d-fg);
@@ -224,12 +224,11 @@ dialog,
   --accent-rgb: var(--d-rgb);
   --fg-rgb: var(--d-fg-rgb);
   --key: var(--d-key);
-  --passo-op: 0.7;
   color-scheme: dark;
 }
 /* Sfumature di sfondo, molto delicate, dipinte su ::before (z-index -1) in ogni sezione:
    così sotto il testo c'è sempre la luce del cursore (anch'essa a z-index -1, creata dopo), beige sullo scuro e blu sul chiaro. */
-section, footer { position: relative; overflow-x: clip; }   /* le luci e le schede che arrivano di lato non allargano mai la pagina (clip, non hidden: lo sticky del telefono resta vivo) */
+section, footer { position: relative; overflow-x: clip; }   /* le luci e le schede che arrivano di lato non allargano mai la pagina (clip: non crea un contenitore di scorrimento) */
 .sez-chiara { color: var(--fg); }
 section.sez-chiara::before,
 section.sez-scura::before,
@@ -257,7 +256,6 @@ footer.sez-scura::before {
     radial-gradient(90% 70% at var(--gx, 15%) var(--gy, 0%), var(--l-hi), transparent 70%),
     linear-gradient(180deg, var(--l-g2), var(--l-g1));
 }
-#caso-studio::before { background: var(--l-bg); }   /* qui c'è il telefono fisso: sfondo piatto, così non si vedono bande */
 #metodo { --gx: 10%; --gy: 100%; }
 #contatti { --gx: 70%; --gy: 100%; }
 #clienti { --gx: 85%; --gy: 0%; }
@@ -494,8 +492,8 @@ html:not(.js) .nav { margin: 10px 10px 0; }
 /* ----- Bagliori sui tasti -----
    Ogni tasto ha una luce morbida che segue il mouse (solo mouse) e un lampo che parte dal punto premuto (mouse, tocco e tastiera).
    Le luci sono due cerchi sfumati che cambiano solo transform e opacità; stanno dietro il testo. Le crea js/main.js. */
-.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap { overflow: hidden; isolation: isolate; }
-.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .mailwrap { position: relative; }
+.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .chiudi, .mailwrap, .commuta button, a.tassello { overflow: hidden; isolation: isolate; }
+.btn-p, .btn-o, .apri-btn, .nav-cta, .menu-btn, .mailwrap, .commuta button { position: relative; }
 .lampo, .luce-b {
   position: absolute;
   left: 0; top: 0;
@@ -516,7 +514,6 @@ h1, h2 {
   text-wrap: balance;
 }
 b, strong { font-weight: 500; }   /* i grassetti nel testo sono 500; il 700 è solo dei titoli (così il browser non inventa pesi) */
-.phone strong { font-weight: inherit; }
 h2 { font-size: var(--h-xl); }
 h3 {
   font: 700 var(--h-l)/1.04 var(--f-body);
@@ -832,8 +829,8 @@ footer p + p { margin-top: 6px; }
 
 /* ==========================================================================
    5. CASO STUDIO
-   Il telefono è uno solo e cambia stato in base al passo che si sta leggendo (la logica è in js/main.js).
-   Senza JavaScript i sette stati del telefono stanno uno sotto l'altro.
+   Il profilo di Numerella ha due stati, prima e dopo la strategia: un interruttore li cambia (la logica è in js/main.js).
+   Senza JavaScript i due stati stanno uno sotto l'altro.
    ========================================================================== */
 
 /* ----- Testata: scheda blu con l'etichetta "Progetto dimostrativo", il titolo e tre fatti ----- */
@@ -888,376 +885,187 @@ footer p + p { margin-top: 6px; }
   content: "";
   position: absolute;
   left: 0;
-  top: 0.8em;
-  width: 16px;
-  height: 1px;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   background: var(--accent);
 }
 
-/* ----- La storia: stage (telefono) + passi ----- */
-.story { margin-top: clamp(40px, 6vw, 72px); }
+/* ----- Prima e dopo: lo stesso profilo di Numerella in due stati -----
+   Con JavaScript un interruttore cambia data-v ("prima" o "dopo") sul contenitore .prof: il resto lo fa il CSS.
+   I due stati (e le due note) stanno nella stessa cella della griglia, quindi la scheda ha sempre l'altezza del più alto e la pagina non salta.
+   Senza JavaScript sono uno sotto l'altro. */
+.prof { display: grid; gap: 28px; margin-top: clamp(40px, 6vw, 72px); }
 
-/* Lo stage tiene il telefono. Con JavaScript resta fisso mentre i passi scorrono */
-.stage {
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-.js .stage {
-  position: sticky;
-  top: var(--barra);
-  z-index: 5;
-  padding: 18px 0 10px;
-  background: var(--bg);          /* i passi che salgono scorrono "sotto" lo stage */
-  overflow: clip;
-}
-.telefono-area {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-.telefono-area figcaption {
-  max-width: 24rem;
-  font-size: 14px;
-  line-height: 1.4;
-  text-align: center;
-  color: var(--muted);
-}
-
-/* Didascalia alternativa dentro il primo passo: compare solo sugli schermi bassi (vedi più sotto) */
-.didascalia-passo { display: none; max-width: 24rem; font-size: 14px; line-height: 1.4; color: var(--muted); }
-
-/* Luce blu dietro il telefono: pulsa una volta a ogni cambio di stato (vedi Movimento) */
-.halo { display: none; }
-.js .halo {
-  display: block;
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  z-index: -1;
-  width: 120%;
-  aspect-ratio: 1;
-  margin: -60% 0 0 -60%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--glow-l), 0.2), transparent 66%);   /* sezione chiara: luce blu */
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-/* ----- Telefono-mockup: oggetto piatto, schermo crema dentro una cornice blu navy ----- */
-.phone {
-  /* Schermo chiaro (crema con testo navy) dentro una cornice blu: resta uguale in ogni sezione */
-  --bg: #FBF8F0; --surface: #EEE6D5; --fg: #1B2A5E; --muted: #46527F;
-  --line: rgba(27, 42, 94, 0.16); --accent: #1A2A63; --accent-ink: #F7F2E8;
-  --accent-rgb: 26, 42, 99; --fg-rgb: 27, 42, 94; --accent-50: rgba(26, 42, 99, 0.5);
-  color: #1B2A5E;
-  position: relative;
-  width: min(270px, 74vw);
-  padding: 7px;
-  border: 1px solid #1A2A63;
-  border-radius: 38px;
-  background: #1A2A63;
-}
-/* Con JavaScript: su telefono è basso e tagliato in fondo; i passi scorrono sotto */
-.js .phone {
-  height: 38vh;
-  height: 38svh;
-  min-height: 270px;
-  max-height: 360px;   /* cornice chiusa anche in basso: il contenuto lungo viene tagliato dentro lo schermo */
-  --incl: 0deg;        /* inclinazione dello stato corrente (la imposta data-tilt) */
-  --ampiezza: 0.55;    /* su telefono il dondolio è più piccolo */
-  /* Dondolio piatto (rotazione 2D): nessuna prospettiva, quindi nessuna cucitura sul bordo arrotondato */
-  transform: rotate(calc(var(--incl) * var(--ampiezza)));
-}
-.phone[data-tilt="0"] { --incl: -2.7deg; }
-.phone[data-tilt="1"] { --incl: 2.1deg; }
-.phone[data-tilt="2"] { --incl: -1.8deg; }
-.phone[data-tilt="3"] { --incl: 1.8deg; }
-.phone[data-tilt="4"] { --incl: -1.8deg; }
-.phone[data-tilt="5"] { --incl: 1.8deg; }
-.phone[data-tilt="6"] { --incl: 0deg; }
-
-/* Lo schermo misura i testi in "cqw" (1% della sua larghezza) tramite --u, con un minimo in pixel per le scritte piccole.
-   Dove le container query non esistono, --u resta un valore fisso. È interfaccia disegnata: l'eccezione ai 14px vale qui. */
-.screen {
-  --u: 2.5px;
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 32px;
-  background: var(--bg);
-  color: var(--fg);
-}
-@supports (width: 1cqw) {
-  .screen { container-type: inline-size; --u: 1cqw; }
-}
-.js .screen { height: 100%; }
-.notch {
-  position: absolute;
-  z-index: 3;
-  top: calc(3.4 * var(--u));
-  left: 50%;
-  width: calc(26 * var(--u));
-  height: calc(7 * var(--u));
-  margin-left: calc(-13 * var(--u));
+/* Interruttore: pillola blu con due tasti, quello attivo è beige */
+.commuta {
+  display: inline-flex;
+  gap: 4px;
+  width: max-content;
+  max-width: 100%;
+  padding: 5px;
   border-radius: 99px;
-  background: #1A2A63;
+  background: var(--bg);
 }
-
-/* Uno stato del telefono. Senza JS: uno sotto l'altro. Con JS: sovrapposti, se ne vede uno */
-.scr { padding: calc(13 * var(--u)) calc(6 * var(--u)) calc(6 * var(--u)); }
-.scr + .scr { border-top: 1px solid var(--line); }
-.js .scr {
-  position: absolute;
-  inset: 0;
-  padding-bottom: 0;
-  opacity: 0;
-  pointer-events: none;
+.commuta button {
+  min-width: 96px;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--fg);
+  font: 500 16px/1 var(--f-body);
+  cursor: pointer;
 }
-.js .scr + .scr { border-top: 0; }
-.js .scr.on { opacity: 1; }
+.commuta button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+html:not(.js) .commuta { display: none; }   /* senza JavaScript non serve: i due stati sono già entrambi in pagina */
 
-/* Profilo */
-.profilo-testa { display: flex; align-items: center; gap: calc(3.4 * var(--u)); }
+.prof-corpo { display: grid; gap: 32px; align-items: start; }
+.prof-sx { display: grid; gap: 12px; min-width: 0; margin: 0; }
+.prof-scheda { border-radius: 28px; color: var(--fg); }
+.prof-didascalia { font-size: 14px; line-height: 1.4; color: var(--muted); }
+
+/* Gli stati della scheda: nella stessa cella, ne resta visibile uno solo.
+   Si usa visibility (non display), così i link dello stato nascosto non si raggiungono con Tab. */
+.prof-strati { display: grid; }
+.prof-strato { grid-area: 1 / 1; min-width: 0; padding: 24px 22px 26px; }
+html:not(.js) .prof-strato { grid-area: auto; }
+.js .prof-dopo,
+.js .nota-dopo { visibility: hidden; }
+.js .prof[data-v="dopo"] .prof-dopo,
+.js .prof[data-v="dopo"] .nota-dopo { visibility: visible; }
+.js .prof[data-v="dopo"] .prof-prima,
+.js .prof[data-v="dopo"] .nota-prima { visibility: hidden; }
+
+/* Testata del profilo */
+.profilo-testa { display: flex; align-items: center; gap: 14px; }
 .avatar {
   position: relative;
   flex: none;
   display: grid;
   place-items: center;
-  width: calc(17 * var(--u));
-  height: calc(17 * var(--u));
-  border: 1px solid var(--line);
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background: var(--surface);
-  font: 700 calc(7 * var(--u))/1 var(--f-body);
-  color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: 700 22px/1 var(--f-body);
 }
-.avatar-piccolo { width: calc(8.4 * var(--u)); height: calc(8.4 * var(--u)); font-size: max(10px, calc(3.6 * var(--u))); }
-/* Anello attorno all'avatar del "dopo": si disegna con il movimento (vedi Movimento) */
+/* Anello attorno all'avatar del "dopo": parte dall'alto e si disegna con il movimento (vedi Movimento) */
 .avatar svg {
   position: absolute;
   inset: -5px;
   width: calc(100% + 10px);
   height: calc(100% + 10px);
   overflow: visible;
+  transform: rotate(-90deg);
 }
-.avatar circle { fill: none; stroke: var(--accent); stroke-width: 2; }
-.nome { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-body); letter-spacing: -0.01em; }
-.stato {
-  margin-top: calc(1.2 * var(--u));
-  font: 500 max(10px, calc(3.2 * var(--u)))/1.3 var(--f-body);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.esempio-chip {
+.avatar circle { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.js .prof:not([data-v="dopo"]) .avatar circle { stroke-dashoffset: 1; }   /* anello nascosto finché si guarda il "prima" */
+.nome { font: 700 18px/1.15 var(--f-body); letter-spacing: -0.01em; }
+.stato { margin-top: 2px; font: 500 14px/1.3 var(--f-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.chip-stato {
   margin-left: auto;
-  padding: calc(1 * var(--u)) calc(2.4 * var(--u));
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-body);
+  flex: none;
+  padding: 5px 12px;
+  border-radius: 99px;
+  background: rgba(var(--accent-rgb), 0.08);
+  font: 500 14px/1.3 var(--f-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
 }
-.bio { margin-top: calc(4.5 * var(--u)); font-size: max(11px, calc(4.4 * var(--u))); line-height: 1.38; }
+.bio { margin-top: 18px; font-size: 16px; line-height: 1.5; color: var(--fg); }
 .bio-fioca { color: var(--muted); }
-.bio-link { margin-top: calc(2.4 * var(--u)); font-size: max(11px, calc(4.4 * var(--u))); font-weight: 500; color: var(--accent); }
+.bio-link { margin-top: 8px; font: 500 16px/1.4 var(--f-body); color: var(--accent); }
 
 /* Evidenze: i quattro pilastri */
-.storie { display: flex; justify-content: space-between; margin-top: calc(4 * var(--u)); }
-.storia {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: calc(1.4 * var(--u));
-  font-size: max(10px, calc(3.2 * var(--u)));
-  line-height: 1.2;
-  color: var(--muted);
-}
+.storie { display: flex; justify-content: space-between; gap: 6px; margin-top: 20px; }
+.storia { display: flex; flex-direction: column; align-items: center; gap: 6px; font: 400 14px/1.2 var(--f-body); color: var(--muted); }
 .storia i {
   display: grid;
   place-items: center;
-  width: calc(11 * var(--u));
-  height: calc(11 * var(--u));
-  border: 1px solid var(--accent-50);
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  font: 700 max(14px, calc(5.4 * var(--u)))/1 var(--f-body);
-  color: var(--accent);
+  background: rgba(var(--fg-rgb), 0.1);
+  font: 700 16px/1 var(--f-body);
+  font-style: normal;
+  color: var(--fg);
 }
 
-/* Piccola griglia di post: prima disordinata (testo fitto), dopo ordinata (una serie) */
-.mini-griglia {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: calc(1 * var(--u));
-  margin-top: calc(4.5 * var(--u));
-}
-.tessera {
-  aspect-ratio: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: calc(1 * var(--u));
-  padding: calc(2.4 * var(--u));
-  border: 1px solid var(--line);
-  border-radius: calc(3.2 * var(--u));
-  overflow: hidden;
-}
-.tessera i { display: block; height: max(3px, calc(1.2 * var(--u))); background: rgba(var(--fg-rgb), 0.3); }
-.tessera-densa i:nth-child(odd) { width: 100%; }
-.tessera-densa i:nth-child(even) { width: 78%; }
-.tessera-densa i:nth-child(3n) { width: 90%; }
-.tessera-densa:nth-child(2) { justify-content: flex-start; }
-.tessera-densa:nth-child(3) { justify-content: flex-end; }
-.tessera-serie { justify-content: flex-end; background: var(--surface); }
-.tessera-serie b { font: 700 max(11px, calc(4.4 * var(--u)))/1.05 var(--f-body); letter-spacing: -0.02em; }
-.tessera-superficie { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-
-/* Post */
-.post-testa { display: flex; align-items: center; gap: calc(2.6 * var(--u)); margin-bottom: calc(3 * var(--u)); }
-.post-testa p { font: 700 max(12px, calc(4 * var(--u)))/1 var(--f-body); }
-.copertina {
-  aspect-ratio: 2 / 1;
+/* Griglia di post: prima disordinata (testo fitto), dopo ordinata (una serie, con i post che si aprono) */
+.griglia-post { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 20px; }
+.tassello {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: calc(4.4 * var(--u)) calc(5 * var(--u));
-  border: 1px solid var(--line);
-  border-radius: calc(4 * var(--u));
-}
-.copertina-scura { background: var(--bg); }
-.copertina-superficie { background: var(--surface); }
-.copertina-formato,
-.copertina-piede {
-  font: 500 max(10px, calc(3.1 * var(--u)))/1.3 var(--f-body);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.copertina-formato { display: flex; justify-content: space-between; color: var(--muted); }
-.copertina-piede { color: var(--accent); }
-.copertina-titolo { font: 700 max(18px, calc(8.2 * var(--u)))/1 var(--f-body); letter-spacing: -0.035em; }
-.copertina-titolo span {
-  display: block;
-  margin-top: calc(1.4 * var(--u));
-  font: 400 max(11px, calc(4 * var(--u)))/1.3 var(--f-body);
-  letter-spacing: 0;
-  color: var(--muted);
-}
-/* L'avviso sta subito sotto la copertina, così si legge anche nel telefono tagliato */
-.avviso {
-  margin-top: calc(2.6 * var(--u));
-  font: 500 max(10.5px, calc(3.6 * var(--u)))/1.35 var(--f-body);
-  letter-spacing: 0.02em;
-  color: var(--accent);
-}
-.azioni-post { display: flex; gap: calc(3.4 * var(--u)); margin-top: calc(3 * var(--u)); }
-.azioni-post svg { width: max(16px, calc(6 * var(--u))); height: max(16px, calc(6 * var(--u))); color: var(--fg); }
-.azioni-post .salva { margin-left: auto; }
-.didascalia { margin-top: calc(2.4 * var(--u)); font-size: max(11px, calc(4 * var(--u))); line-height: 1.4; }
-.didascalia strong { font-weight: 500; }
-
-/* Calendario: 14 celle, i numeri 1-4 sono i quattro pilastri */
-.cal-titolo { font: 700 max(13px, calc(5.4 * var(--u)))/1.1 var(--f-body); letter-spacing: -0.01em; }
-.giorni-sett {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: calc(1.4 * var(--u));
-  margin-top: calc(4 * var(--u));
-  font: 500 max(10px, calc(3.2 * var(--u)))/1 var(--f-body);
-  color: var(--muted);
-  text-align: center;
-}
-.cg {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: calc(1.4 * var(--u));
-  margin-top: calc(1.6 * var(--u));
-}
-.cell {
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: calc(2.6 * var(--u));
-  font: 700 max(11px, calc(4.4 * var(--u)))/1 var(--f-body);
-}
-.cell.p1 { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-.cell.p2 { background: rgba(var(--accent-rgb), 0.6); color: var(--accent-ink); border-color: transparent; }
-.cell.p3 { background: rgba(var(--accent-rgb), 0.3); color: var(--fg); border-color: transparent; }
-.cell.p4 { background: transparent; color: var(--fg); border-color: var(--accent); }
-.cell.sp { border: 1px dashed var(--accent-50); }
-.legenda {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: calc(2.4 * var(--u)) calc(3 * var(--u));
-  margin-top: calc(4.5 * var(--u));
-  font-size: max(10.5px, calc(3.7 * var(--u)));
-  line-height: 1.2;
-}
-.legenda li { display: flex; align-items: center; gap: calc(2 * var(--u)); }
-.legenda b {
-  flex: none;
-  width: max(14px, calc(5.6 * var(--u)));
-  height: max(14px, calc(5.6 * var(--u)));
-  font-size: max(9.5px, calc(3.2 * var(--u)));
-}
-
-/* Sette tacche di avanzamento sopra il telefono e chip di annotazione ai lati (questi solo da 1100px) */
-.avanzamento { display: none; }
-.js .avanzamento { display: flex; position: absolute; left: 50%; top: -14px; z-index: 2; gap: 5px; transform: translateX(-50%); }
-.avanzamento i { position: relative; display: block; width: 24px; height: 3px; overflow: hidden; border-radius: 999px; background: var(--line); }
-.avanzamento i::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; }
-.avanzamento i.on::after { transform: scaleX(1); }
-
-.callouts { display: none; }
-.cset li { display: none; }
-
-/* ----- I passi: i testi accanto (o sotto) al telefono ----- */
-.steps { margin-top: 48px; }   /* senza JS: sotto il telefono con un po' d'aria */
-.js .steps { margin-top: 0; }
-.step + .step { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }   /* senza JS: separati da un filetto */
-.step > * + * { margin-top: 16px; }
-.step p { color: var(--muted); max-width: 30em; }
-.step strong { color: var(--fg); font-weight: 500; }
-.step .k,
-.logica .k {
-  margin-top: 0;
-  font: 500 14px/1.4 var(--f-body);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.step h3 { max-width: 14em; font-size: var(--h-l); line-height: 1; }
-.step .k + h3,
-.step .k + h4,
-.step .k + .step-nota { margin-top: 12px; }
-.step .elenco-semplice { margin-top: 20px; }
-.step .step-nota { font-size: 16px; }
-.vetrina-guida + .k { margin-top: 44px; }
-.logica h4 {
-  font: 700 var(--h-l)/1.04 var(--f-body);
-  letter-spacing: -0.03em;
-  text-transform: none;
+  gap: 8px;
+  aspect-ratio: 4 / 5;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(var(--fg-rgb), 0.1);
   color: var(--fg);
-  text-wrap: balance;
+  font: 700 16px/1.08 var(--f-body);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  overflow-wrap: anywhere;
 }
-.logica dl { margin-top: 24px; }
-.logica dt { margin-top: 20px; }
-.logica dt:first-child { margin-top: 0; }
-.logica dd { margin-top: 6px; max-width: 30em; color: var(--muted); font-size: 16px; }
+.tassello-chiaro { background: var(--accent); color: var(--accent-ink); }
+.tassello-alto { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.tassello .glifo { flex: none; width: 20px; height: 20px; color: inherit; }
+.tassello .pil { width: 24px; height: 24px; }
+/* Sulle tessere beige i pallini dei pilastri si invertono (scuro su chiaro) */
+.tassello-chiaro .pil.p1 { background: var(--accent-ink); color: var(--accent); }
+.tassello-chiaro .pil.p2 { background: rgba(26, 42, 99, 0.62); color: var(--accent); }
+.tassello-chiaro .pil.p3 { background: rgba(26, 42, 99, 0.28); color: var(--accent-ink); }
+.tassello-chiaro .pil.p4 { background: transparent; border-color: var(--accent-ink); color: var(--accent-ink); }
+.tassello-vuoto { background: transparent; color: var(--muted); }   /* solo in calendario: senza fondo e non si apre */
+.tassello-vuoto .pil { background: rgba(var(--fg-rgb), 0.16); border-color: transparent; color: var(--muted); }   /* anche il pallino del pilastro è smorzato */
+.tassello-fitto { justify-content: flex-start; gap: 5px; }
+.tassello-fitto i { display: block; height: 4px; border-radius: 2px; background: rgba(var(--fg-rgb), 0.3); }
+.tassello-fitto i:nth-child(odd) { width: 100%; }
+.tassello-fitto i:nth-child(even) { width: 76%; }
+.tassello-fitto i:nth-child(3n) { width: 90%; }
 
-/* Con JavaScript i passi sono alti e scorrono accanto al telefono; quello in lettura è al 100%, gli altri al 70% */
-.js .step {
-  min-height: 46vh;
-  min-height: 46svh;
-  padding-block: 28px 12px;
-  opacity: var(--passo-op, 0.7);   /* passo non in lettura: l'opacità minima che tiene il contrasto, dipende dal tema */
+/* Le due note accanto alla scheda: nella stessa cella, ne resta visibile una */
+.prof-note { display: grid; }
+.nota { grid-area: 1 / 1; display: grid; gap: 14px; align-content: start; min-width: 0; }
+html:not(.js) .nota { grid-area: auto; }
+html:not(.js) .nota + .nota { margin-top: 28px; }
+.nota h3 { max-width: 14em; font-size: var(--h-m); line-height: 1.08; }
+.nota > p:not(.label) { font-size: 16px; color: var(--muted); }
+.nota .elenco-semplice { margin-top: 6px; font-size: 16px; }
+
+/* ----- Post di esempio (dentro i popup): copertina, avviso, didascalia ----- */
+.copertina {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 26px;
+  min-height: 160px;
+  padding: 16px 18px 18px;
+  border-radius: 18px;
+  background: rgba(9, 14, 40, 0.3);   /* velo scuro: il testo chiaro resta sopra 4.5:1 anche dove l'alone blu del popup è al massimo */
+  color: var(--fg);
 }
-.js .step + .step { margin-top: 0; border-top: 0; padding-top: 28px; }
-.js .step.on { opacity: 1; }
+.copertina-chiara { background: var(--accent); color: var(--accent-ink); }
+.copertina-formato,
+.copertina-piede { font: 500 14px/1.3 var(--f-body); letter-spacing: 0.1em; text-transform: uppercase; }
+.copertina-formato { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); }
+.copertina-piede { color: var(--accent); }
+.copertina-titolo { font: 700 var(--h-m)/1 var(--f-body); letter-spacing: -0.035em; }
+.copertina-titolo span { display: block; margin-top: 8px; font: 400 16px/1.3 var(--f-body); letter-spacing: 0; color: var(--muted); }
+.copertina-chiara .copertina-formato,
+.copertina-chiara .copertina-titolo span,
+.copertina-chiara .copertina-piede { color: var(--accent-ink); }
+.avviso { font: 500 14px/1.4 var(--f-body); letter-spacing: 0.02em; color: var(--accent); }
+.didascalia { max-width: 34em; font-size: 16px; line-height: 1.55; color: var(--fg); }
+.didascalia strong { font-weight: 500; }
 
 /* ----- Strategia ----- */
 .righe { margin-top: 32px; }
@@ -1300,7 +1108,7 @@ footer p + p { margin-top: 6px; }
   font: 700 14px/1 var(--f-body);
 }
 .pil.p1 { background: var(--accent); color: var(--accent-ink); }
-.pil.p2 { background: rgba(var(--accent-rgb), 0.34); color: var(--fg); }
+.pil.p2 { background: rgba(var(--accent-rgb), 0.26); color: var(--fg); }
 .pil.p3 { background: rgba(var(--accent-rgb), 0.14); color: var(--fg); }
 .pil.p4 { border: 1.5px solid var(--accent); color: var(--fg); }
 .striscia-scorri {
@@ -1479,6 +1287,7 @@ html.js:not(.no-popup) .popup-in {
 html:not(.js) .pop-luce, html.no-popup .pop-luce { display: none; }
 .popup-in > .titolo-pop { max-width: none; margin-top: 8px; font-size: var(--h-xl); line-height: 1.02; }
 .popup-in > .lead { max-width: 30em; }
+.popup-in > .nota-pop { max-width: 34em; font-size: 16px; color: var(--muted); }
 .duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .blocco {
   padding: 22px;
@@ -1524,89 +1333,24 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .scheda { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
   .righe > div { grid-template-columns: 12rem minmax(0, 1fr); }
 
-  /* Storia: passi a sinistra, telefono fisso a destra (alto quanto serve, mai oltre lo schermo) */
-  .story {
-    display: grid;
-    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    column-gap: 56px;
-    align-items: start;
-  }
-  .stage { order: 2; }
-  /* Lo stage è alto quanto lo schermo sotto il menu e il telefono sta al suo centro (didascalia e nota sono fuori dal calcolo, sotto il telefono) */
-  .js .stage {
-    top: var(--barra);
-    height: calc(100vh - var(--barra));
-    height: calc(100svh - var(--barra));
-    align-items: center;
-    padding: 0;
-    background: transparent;
-    overflow: visible;
-    align-self: start;
-  }
-  .js .telefono-area figcaption { position: absolute; left: 50%; width: 24rem; max-width: 90vw; margin: 0; transform: translateX(-50%); top: calc(100% + 14px); }
-  .js .halo { width: 100%; margin: -50% 0 0 -50%; }   /* non deve uscire dalla colonna: la pagina non scorre di lato */
-  .js .phone {
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    aspect-ratio: 9 / 19;
-    /* Il telefono sta al centro dello stage: sotto ci stanno la nota (56px) e la didascalia, e devono restare dentro lo schermo. */
-    width: min(300px, calc((100svh - var(--barra) - 262px) * 9 / 19));
-  }
-  .copertina { aspect-ratio: 6 / 5; }
-  .js .step { min-height: 64vh; padding-block: 14vh 0; }
-  .js .step + .step { padding-top: 14vh; }
-  .js .step:last-child { min-height: 50vh; }
-}
-
-/* Schermi non molto alti (meno di 900px): la didascalia esce dallo stage e scorre con il testo del primo passo,
-   così il telefono centrato può essere più grande. Dentro il telefono restano l'etichetta "Esempio" e l'avviso di ogni post. */
-@media (min-width: 860px) and (max-height: 899px) {
-  .js .phone { width: min(300px, calc((100svh - var(--barra) - 172px) * 9 / 19)); }
-}
-@media (max-height: 899px) {
-  .telefono-area figcaption { display: none; }
-  .didascalia-passo { display: block; }
-  .didascalia-passo + .k { margin-top: 20px; }
+  /* Prima e dopo: scheda a sinistra, note a destra */
+  .prof-corpo { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: center; }
+  .prof-strato { padding: 30px 28px 32px; }
 }
 
 @media (min-width: 1000px) {
   .clienti { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .cliente .tag { min-height: 2.8em; }
   .cliente h3 { min-height: 2.08em; }
-  .js .phone { --ampiezza: 1; }
 }
 
 @media (min-width: 1100px) {
-  .story { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
   /* Sette giorni affiancati, senza scorrimento */
   .striscia-scorri { overflow-x: visible; }
   .striscia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
   .cella,
   .cella-vuota { width: auto; }
   .suggerimento { display: none; }
-  /* Chip di annotazione ai lati del telefono */
-  .js .callouts { display: block; position: absolute; inset: 0; pointer-events: none; }
-  .cset { position: absolute; inset: 0; }
-  .cset li {
-    position: absolute;
-    top: var(--y);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 14px;
-    border: 1px solid rgba(246, 241, 230, 0.24);
-    border-radius: 99px;
-    background: #1A2A63;
-    color: #F6F1E6;
-    font: 500 14px/1 var(--f-body);
-    white-space: nowrap;
-    opacity: 0;
-  }
-  .cset li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #EADFC8; }
-  .cset li.r { left: calc(100% - 16px); }
-  .cset li.l { right: calc(100% - 16px); }
-  .cset.on li { opacity: 1; }
 }
 
 
@@ -1744,26 +1488,9 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .cur-glow { transition: opacity 0.5s var(--ease); }
   .cur-glow i { transition: transform 0.6s var(--ease), opacity 0.5s var(--ease); }
 
-  /* Telefono: lo stato entra con i suoi elementi a scalare */
-  .js .scr { transform: translateY(14px); transition: opacity 0.5s var(--ease), transform 0.7s var(--ease); }
-  .js .scr.on { transform: none; }
-  .js .scr .a { opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ease), transform 0.6s var(--ease); }
-  .js .scr.on .a { opacity: 1; transform: none; transition-delay: calc(var(--j, 0) * 80ms + 160ms); }
-  .js .scr .cg .cell { opacity: 0; transform: scale(0.6); transition: opacity 0.4s var(--ease), transform 0.6s var(--ease); }
-  .js .scr.on .cg .cell { opacity: 1; transform: none; transition-delay: calc(var(--j, 0) * 38ms + 260ms); }
-  .js .avatar circle { stroke-dasharray: 1.03; stroke-dashoffset: 1.03; transition: stroke-dashoffset 0.6s var(--ease); }
-  .js .scr.on .avatar circle { stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s var(--ease) 0.5s; }
-  .halo.pulse { animation: pulsa 1.4s var(--ease) 1; }
-  @keyframes pulsa {
-    0% { transform: scale(0.9); opacity: 0.2; }
-    40% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 0.5; }
-  }
-  .js .step { transition: opacity 0.6s var(--ease); }
-
   .indicatore { transition: transform 0.3s var(--ease); }
 
-  /* ----- Per chi lavoro, popup, telefono ----- */
+  /* ----- Per chi lavoro, popup, prima e dopo ----- */
   /* Al passaggio del mouse (o, al tocco, quando la scheda è al centro) titolo ed etichetta scorrono di 8px */
   .cliente .tag, .cliente h3 { transition: transform 0.6s var(--ease); }
   .cliente:hover .tag, .cliente.on .tag, .cliente:hover h3, .cliente.on h3 { transform: translateX(8px); }
@@ -1795,17 +1522,32 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   @keyframes sfondo { from { opacity: 0; } to { opacity: 1; } }
   .pop-luce { transition: transform 0.45s var(--ease), opacity 0.4s var(--ease); }
 
-  /* Telefono: inclinazione dolce a ogni cambio, etichette che escono dal bordo, cuoricino che batte una volta */
-  .js .phone { transition: transform 1.4s var(--ease); }
-  .avanzamento i::after { transition: transform 0.6s var(--ease); }
-  @media (min-width: 1100px) {
-    .cset li { transition: opacity 0.4s var(--ease), transform 0.8s var(--ease); }
-    .cset li.r { transform: translateX(-28px); }
-    .cset li.l { transform: translateX(28px); }
-    .cset.on li { transform: none; transition-delay: calc(0.5s + var(--n, 0) * 0.14s); }
+  /* Prima e dopo. Cambia solo opacità e transform:
+     - il "prima" e le note si dissolvono in fretta e l'altro stato entra appena dopo (così non si sovrappongono);
+     - il "dopo" entra a blocchi, uno dopo l'altro, e l'anello dell'avatar si disegna;
+     - visibility serve solo a nascondere lo stato che esce quando ha finito di dissolversi. */
+  .js .prof-prima,
+  .js .nota { opacity: 0; transition: opacity 0.2s var(--ease), visibility 0s linear 0.2s; }
+  .js .prof:not([data-v="dopo"]) .prof-prima,
+  .js .prof:not([data-v="dopo"]) .nota-prima,
+  .js .prof[data-v="dopo"] .nota-dopo { opacity: 1; transition: opacity 0.6s var(--ease) 0.14s, visibility 0s; }
+  .js .prof-dopo { transition: visibility 0s linear 0.2s; }
+  .js .prof[data-v="dopo"] .prof-dopo { transition: visibility 0s; }
+  .js .prof-dopo > * { opacity: 0; transform: translateY(12px); transition: opacity 0.16s var(--ease), transform 0.2s var(--ease); }
+  .js .prof[data-v="dopo"] .prof-dopo > * {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.6s var(--ease) calc(0.14s + var(--j, 0) * 0.07s), transform 0.8s var(--ease) calc(0.14s + var(--j, 0) * 0.07s);
   }
-  .js .scr.on .azioni-post svg:first-child { animation: batti 0.9s var(--ease) 1.4s 1; }
-  @keyframes batti { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
+  .prof-dopo > :nth-child(2) { --j: 1; }
+  .prof-dopo > :nth-child(3) { --j: 2; }
+  .prof-dopo > :nth-child(4) { --j: 3; }
+  .prof-dopo > :nth-child(5) { --j: 4; }
+  .avatar circle { transition: stroke-dashoffset 1.1s var(--ease) 0.4s; }
+  /* Le tessere dei post: con il mouse si alzano un poco, al tocco (e alla pressione) si schiacciano come i pulsanti */
+  a.tassello { transition: transform 0.5s var(--ease); }
+  a.tassello:active { transform: scale(0.96); }
+  @media (hover: hover) { a.tassello:hover { transform: translateY(-3px); } }
 
   /* ----- Bagliori sui tasti ----- */
   .luce-b { transition: opacity 0.45s var(--ease), transform 0.35s var(--ease); }
