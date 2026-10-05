@@ -454,6 +454,10 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   align-items: center;
   gap: 12px;
   min-height: 44px;
+  /* Su telefono resta solo il marchio (36px): 4px di spazio per lato portano l'area toccabile a 44px, e il margine negativo
+     li compensa, così il marchio non si sposta. */
+  padding-inline: 4px;
+  margin-inline: -4px;
   white-space: nowrap;
   font: 500 14px/1 var(--f-body);
   letter-spacing: 0.1em;
@@ -923,12 +927,12 @@ html:not(.js) .hero h1 .it {
 .mailwrap {
   display: inline-block;
   margin-top: 28px;
-  padding: 12px 26px;
   border-radius: 999px;
   background: linear-gradient(180deg, var(--vetro-a), var(--vetro-b));
   box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4), var(--ombra);
 }
-.mailwrap .mail { margin: 0; }
+/* Lo spazio interno sta sul link e non sulla pillola: così tutta la pillola, non solo il testo, è area toccabile (almeno 44px di altezza). */
+.mailwrap .mail { display: block; margin: 0; padding: 12px 26px; }
 /* Il focus da tastiera cerchia tutta la pillola (arrotondata), non il solo testo; dove :has() non esiste resta l'anello standard sul link */
 @supports selector(:has(a)) {
   .mailwrap:has(.mail:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
