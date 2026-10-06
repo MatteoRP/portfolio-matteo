@@ -280,7 +280,6 @@
         return tasto.matches('.btn-o, .tassello-chiaro') ? !scuro : scuro;
       };
       var coloreLuce = function (tasto) {
-        if (tasto.matches('.nav-cta')) return '150, 178, 255';   // «Scrivimi» è vetro blu: la sua luce è azzurra (più chiara del vetro, ma meno del beige: il testo resta leggibile)
         return luceBeige(tasto) ? '234, 223, 200' : '70, 100, 215';
       };
       var lampo = function (tasto, x, y) {
@@ -609,10 +608,7 @@
     // Vetro della barra che reagisce allo scorrimento (non con «riduci movimento»).
     // La velocità dello scroll (px per fotogramma) è ammorbidita con un'interpolazione: sale in fretta e scende piano, così il vetro si tende
     // subito e poi si assesta. JavaScript scrive tre variabili sulla barra: --tensione (0-1: quanto si tende la capsula), --luce (0-1: quanto si
-    // accende il riflesso) e --fase (0-1: la posizione nella pagina, che il riflesso della capsula segue); e una sul tasto «Scrivimi»: --fase-tasto
-    // (lo stesso, con un giro più corto). Il CSS le usa solo per transform e opacità.
-    // --fase-tasto sta sul tasto e non sulla barra di proposito: una variabile che cambia a ogni fotogramma sulla barra fa ricalcolare lo stile di
-    // tutti i suoi elementi (misurato: i fotogrammi oltre 34ms salivano da 5% a 9,5%); sul tasto, che ha pochi elementi, il costo sparisce (5,9%).
+    // accende il riflesso) e --fase (0-1: la posizione nella pagina, che il riflesso segue). Il CSS le usa solo per transform e opacità.
     // Il ciclo parte con lo scroll e si ferma da solo quando la pagina è ferma e il vetro si è assestato.
     if (menu && !RIDOTTO) {
       var ombra = crea('div', 'nav-ombra');        // l'ombra che si solleva sotto la capsula
@@ -622,7 +618,6 @@
       vetro.setAttribute('aria-hidden', 'true');
       vetro.appendChild(crea('i'));
       menu.appendChild(vetro);
-      var cta = menu.querySelector('.nav-cta');    // il tasto «Scrivimi»: la sua fase si scrive su di lui (vedi sopra)
       var velocita = 0;
       var yPrima = window.scrollY;
       var inCiclo = false;
@@ -639,14 +634,12 @@
         var tensione = t.toFixed(3);
         var luce = Math.min(1, t * 3).toFixed(3);
         var fase = (((y / 700) % 1 + 1) % 1).toFixed(3);      // il riflesso attraversa la capsula ogni 700px di pagina
-        var faseTasto = (((y / 300) % 1 + 1) % 1).toFixed(3); // e il tasto «Scrivimi», che è piccolo, ogni 300px
-        var valori = tensione + '|' + luce + '|' + fase + '|' + faseTasto;
+        var valori = tensione + '|' + luce + '|' + fase;
         if (valori !== ultimiValori) {
           ultimiValori = valori;
           menu.style.setProperty('--tensione', tensione);
           menu.style.setProperty('--luce', luce);
           menu.style.setProperty('--fase', fase);
-          if (cta) cta.style.setProperty('--fase-tasto', faseTasto);
         }
         if (t > 0 || dy !== 0) requestAnimationFrame(cicloVetro); else inCiclo = false;
       };

@@ -496,8 +496,8 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   text-decoration: none;
 }
 /* Marchio MR (assets/logo.svg: lettere disegnate con i font del sito). Su telefono il nome resta solo per gli screen reader
-   (stessa tecnica di .sr), da 540px compare accanto al marchio. Misurato: «Scrivimi» resta esattamente al centro solo se la colonna di sinistra
-   (marchio e nome, 183px) sta nella sua metà della riga, cioè da 532px in su; 540px lascia un po' di margine per i caratteri di ripiego. */
+   (stessa tecnica di .sr), da 480px compare accanto al marchio. Misurato: marchio con nome (193px), «Scrivimi» (97px) e pulsante del menu (44px) stanno
+   nella riga della capsula (444px a 480px di schermo) con 113px liberi. */
 .brand-logo { display: block; flex: none; width: 34px; height: 34px; }
 .brand-nome {
   position: absolute;
@@ -506,7 +506,7 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   overflow: hidden;
   clip-path: inset(50%);
 }
-@media (min-width: 540px) {
+@media (min-width: 480px) {
   .brand-nome { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
 }
 .nav-menu ul { display: flex; flex-wrap: wrap; gap: 0 22px; }
@@ -531,11 +531,11 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
 .menu-btn { display: none; }
 
 /* Telefono: con JavaScript c'è il pulsante "menu" e l'elenco si apre sotto la barra.
-   La riga della capsula ha tre colonne: marchio a sinistra, «Scrivimi» esattamente al centro, menu a destra. */
+   La riga della capsula ha tre colonne: marchio a sinistra (la colonna che si allarga) e, a destra, «Scrivimi» e il pulsante del menu, vicini. */
 @media (max-width: 859px) {
-  .js .nav-in { display: grid; grid-template-columns: 1fr auto 1fr; }
+  .js .nav-in { display: grid; grid-template-columns: 1fr auto auto; column-gap: 6px; }
   .js .brand { justify-self: start; }
-  .js .nav-cta { order: 2; justify-self: center; }
+  .js .nav-cta { order: 2; justify-self: end; }
   .js .menu-btn {
     order: 3;
     justify-self: end;
@@ -678,83 +678,25 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   font: 500 16px/1 var(--f-body);
   text-decoration: none;
 }
-/* "Scrivimi" nella barra: una goccia di vetro blu dentro la capsula di vetro crema. Piccola: 36px visibili dentro 44px di area toccabile
-   (l'area in più è un bordo trasparente di 4px: lo sfondo si ferma al bordo interno, background-clip).
-   Il vetro è «dipinto», senza sfocato (dietro c'è già quello della capsula): tinta blu scura al centro, dove sta il testo, e più chiara e
-   trasparente verso l'orlo, come un vetro spesso che rifrange la luce; sull'orlo un filo di luce, un riflesso netto in alto a sinistra e uno
-   caldo in basso a destra. Con lo scorrimento si accendono due luci del tasto (::before e ::after, sotto il testo): un riflesso bianco sul
-   bordo alto e una banda azzurra che lo attraversa. Cambiano solo transform e opacità. La banda è volutamente poco luminosa: il testo
-   crema, misurato sul rendering reale, resta sopra 4,5:1 anche nel suo punto più chiaro. */
+/* "Scrivimi" nella barra: vetro colorato, come il pulsante principale, ma piccolo: 36px visibili dentro 44px di area toccabile.
+   L'area in più è un bordo trasparente di 4px (lo sfondo si ferma al bordo interno: background-clip). */
 .nav-cta {
   padding: 0 14px;
   border: 4px solid transparent;
-  --cta-fondo:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 30%),
-    radial-gradient(ellipse 92% 125% at 50% 42%, rgba(24, 42, 128, 0.9) 42%, rgba(70, 98, 214, 0.72));
-  background: var(--cta-fondo);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 58%), var(--accent);
   background-clip: padding-box;   /* dopo la scorciatoia «background», che lo riporterebbe a border-box */
-  /* Luce sul bordo (tutte interne, tranne l'ultima): filo azzurro tutto intorno, riflesso netto in alto a sinistra e uno caldo in basso a destra
-     (ognuno con la sua coda morbida), alone dell'orlo. L'ombra sotto ha la spread negativa di 8px: parte dal bordo trasparente, ma si disegna
-     come se il tasto fosse quello visibile (senza, resterebbe un alone staccato di 4px). */
-  box-shadow:
-    inset 0 0 0 1px rgba(205, 218, 255, 0.7),
-    inset 2px 2.5px 1px -1px rgba(255, 255, 255, 1),
-    inset 4px 6px 8px -6px rgba(255, 255, 255, 0.9),
-    inset -2px -2.5px 1px -1px rgba(255, 236, 200, 0.95),
-    inset -4px -6px 8px -6px rgba(255, 236, 200, 0.65),
-    inset 0 0 9px 0 rgba(120, 148, 255, 0.4),
-    0 7px 10px -8px rgba(18, 30, 92, 0.7);
-  --la: 0.24;                     /* il lampo della pressione sul vetro scuro è meno forte del solito (0,5): con 0,5 il testo scenderebbe sotto 4,5:1 */
+  /* solo luce interna: un'ombra esterna si fermerebbe al bordo trasparente e disegnerebbe un alone chiaro intorno al tasto */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.18);
   color: var(--accent-ink);
 }
 .nav-cta:focus-visible { outline-offset: -1px; }   /* il bordo trasparente allontanerebbe l'anello: con -1px resta a 3px dal tasto visibile */
-.nav-cta::before {              /* riflesso bianco sul bordo alto: scivola da un lato all'altro con lo scorrimento e si accende con la velocità */
-  content: "";
-  position: absolute;
-  left: 12%; right: 12%; top: 0;
-  height: 8px;                  /* finisce sopra le lettere: la scatola del testo inizia a 8px dall'alto, le lettere a 12px */
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(ellipse 50% 100% at 50% 0%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
-  opacity: calc(0.5 + var(--luce, 0) * 0.5);   /* a riposo è a mezza opacità; con lo scorrimento sale (--luce arriva dalla barra) */
-}
-.nav-cta::after {               /* banda azzurra con un filo caldo: attraversa il tasto ogni 300px di pagina; invisibile a pagina ferma */
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(105deg, transparent 20%, rgba(70, 110, 255, 0.28) 36%, rgba(80, 125, 255, 0.45) 47%, rgba(120, 120, 220, 0.22) 56%, rgba(230, 190, 150, 0.14) 64%, transparent 78%);
-  opacity: var(--luce, 0);
-}
-.nav-cta::before,
-.nav-cta::after { will-change: transform, opacity; }   /* come gli strati della capsula: cambiano a ogni fotogramma dello scorrimento */
 /* Il «passaggio» (hover) esiste solo con il mouse: al tocco, su iPhone e iPad, resterebbe attivo dopo il tap (il pulsante rimarrebbe pieno).
    La pressione (:active) vale per tutti. */
 .btn-o:active { background: var(--fg); color: var(--bg); }
 @media (hover: hover) { .btn-o:hover { background: var(--fg); color: var(--bg); } }
-/* «Scrivimi» nella barra resta vetro al passaggio e alla pressione (gli altri tasti vuoti si riempiono di colore): ridichiaro la tinta, il colore del testo
-   e riporto lo sfondo dentro il bordo trasparente (la scorciatoia «background» azzera background-clip). Alla pressione l'alone dell'orlo si fa più luminoso. */
-.nav-cta:active {
-  background: var(--cta-fondo);
-  background-clip: padding-box;
-  box-shadow:
-    inset 0 0 0 1px rgba(215, 226, 255, 0.85),
-    inset 2px 2.5px 1px -1px rgba(255, 255, 255, 1),
-    inset 4px 6px 8px -6px rgba(255, 255, 255, 1),
-    inset -2px -2.5px 1px -1px rgba(255, 238, 205, 1),
-    inset -4px -6px 8px -6px rgba(255, 238, 205, 0.8),
-    inset 0 0 14px 1px rgba(140, 165, 255, 0.65),
-    0 3px 6px -6px rgba(18, 30, 92, 0.6);
-  color: var(--accent-ink);
-}
-@media (hover: hover) {
-  .nav-cta:hover {
-    background: var(--cta-fondo);
-    background-clip: padding-box;
-    color: var(--accent-ink);
-  }
-}
+/* Nel tasto della barra passaggio e pressione non devono stendere lo sfondo sotto il bordo trasparente (la scorciatoia «background» azzera background-clip) */
+.nav-cta:active { background-clip: padding-box; }
+@media (hover: hover) { .nav-cta:hover { background-clip: padding-box; } }
 /* Pulsante principale: vetro colorato (tinta d'accento) con il riflesso in alto.
    Al passaggio diventa vetro chiaro con il contorno d'accento. */
 .btn-p {
@@ -1813,11 +1755,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .nav-vetro,
   .nav-ombra { transform: scale(calc(1 + var(--tensione, 0) * var(--allarga)), calc(1 - var(--tensione, 0) * var(--schiaccia))); }
   .story-bar { transform: translateY(calc(var(--tensione, 0) * -3px)); }
-  /* Le due luci di «Scrivimi» scorrono sul tasto con la posizione nella pagina: --fase-tasto (0-1) la scrive JavaScript sul tasto stesso e non sulla barra
-     (una variabile che cambia a ogni fotogramma sulla barra fa ricalcolare lo stile di tutti i suoi elementi). La luce sul bordo fa ±38% della sua
-     larghezza, la banda ±100% di quella del tasto. Con movimento ridotto non c'è nessuna di queste regole: le luci restano ferme al centro. */
-  .nav-cta::before { transform: translateX(calc((var(--fase-tasto, 0.5) * 2 - 1) * 38%)); }
-  .nav-cta::after { transform: translateX(calc((var(--fase-tasto, 0.5) * 2 - 1) * 100%)); }
   /* Lente sotto la voce attiva: scivola da una voce all'altra (transform) e si dissolve quando non c'è una voce attiva (opacità) */
   .nav-lente { transition: transform 0.6s var(--ease), opacity 0.4s var(--ease); }
   .nav-lente.subito { transition: none; }   /* la prima volta compare già al suo posto, senza arrivare da lontano */
@@ -1852,8 +1789,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 
   /* Pulsanti: la freccia scatta in avanti, la pressione schiaccia un poco (solo transform) */
   .btn-p, .btn-o { transition: transform 0.5s var(--ease); }
-  /* «Scrivimi» nella barra: col mouse il vetro si gonfia del 4% (la pressione viene dopo e vince: schiaccia a 0.96) */
-  @media (hover: hover) { .nav-cta:hover { transform: scale(1.04); } }
   .btn-p:active, .btn-o:active { transform: scale(0.96); }
   .btn-p .fr, .btn-o .fr { transition: transform 0.5s var(--ease); }
   @media (hover: hover) { .btn-p:hover .fr, .btn-o:hover .fr { transform: translate(3px, -3px); } }
@@ -1962,8 +1897,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   /* ----- Bagliori sui tasti ----- */
   .luce-b { transition: opacity 0.45s var(--ease), transform 0.35s var(--ease); }
   :hover > .luce-b { opacity: 1; }
-  /* «Scrivimi»: alla pressione la luce del mouse cede il posto al lampo (sommate, sul vetro scuro abbasserebbero il contrasto del testo sotto 4,5:1) */
-  .nav-cta:active > .luce-b { opacity: 0; transition-duration: 0.12s; }
   .lampo { animation: lampo var(--ld, 0.8s) var(--ease) 1 forwards; }
   @keyframes lampo {
     0% { opacity: 0.95; transform: translate(var(--lx), var(--ly)) scale(0.2); }
@@ -2014,10 +1947,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   }
   .chiudi { -webkit-backdrop-filter: none; backdrop-filter: none; background: #223378; }
   .nav-vetro, .nav-ombra { display: none; }   /* il riflesso che attraversa il vetro e l'ombra che si solleva non servono dove il vetro è pieno */
-  /* «Scrivimi»: tinta piena (come prima del vetro), senza riflessi, luce sul bordo né ombra: resta solo un filo chiaro */
-  .nav-cta { --cta-fondo: var(--accent); }
-  .nav-cta, .nav-cta:active { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
-  .nav-cta::before, .nav-cta::after { display: none; }
 }
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   :root {
@@ -2032,7 +1961,6 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 @media (forced-colors: active) {
   .btn-p, .btn-o, .mailwrap, .chiudi, .commuta, .sfoglia-tasti { border: 1px solid ButtonText; }
   .nav-vetro, .nav-ombra, .nav-lente { display: none; }                      /* niente riflessi e lente: la voce attiva si riconosce dalla sottolineatura */
-  .nav-cta::before, .nav-cta::after { display: none; }                       /* i riflessi di «Scrivimi» non servono: tinta e contorno li decide il sistema */
   .nav-menu a[aria-current="location"] { text-decoration: underline; }
   .nav::before { background: Canvas; border: 1px solid CanvasText; }         /* la capsula ritrova un fondo pieno e un contorno (il vetro e le sue luci spariscono) */
   .menu-btn span { background: ButtonText; forced-color-adjust: none; }      /* le righe del menu: il colore forzato cancellerebbe lo sfondo e il pulsante sembrerebbe vuoto */
