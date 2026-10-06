@@ -624,7 +624,14 @@
     if (pulsante && menu) {
       pulsante.addEventListener('click', function () { apriMenu(!menu.classList.contains('aperto')); });
       menu.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.nav-menu a')) apriMenu(false); });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') apriMenu(false); });
+      // Con Esc il menu si chiude; se il focus era su una voce dell'elenco (che ora sparisce), torna al pulsante: così chi usa la tastiera non perde il posto
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape' || !menu.classList.contains('aperto')) return;
+        var elenco = menu.querySelector('.nav-menu');
+        var sullaVoce = elenco && elenco.contains(document.activeElement);
+        apriMenu(false);
+        if (sullaVoce) pulsante.focus();
+      });
       document.addEventListener('click', function (e) { if (!menu.contains(e.target)) apriMenu(false); });
     }
 
