@@ -173,9 +173,25 @@
   --bordo-d: inset 0 1px 0 rgba(255, 255, 255, 0.34), inset 1px 0 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.07);
   --ombra-l: 0 0 0 1px rgba(27, 42, 94, 0.06), 0 14px 32px -12px rgba(27, 42, 94, 0.3), 0 2px 6px rgba(27, 42, 94, 0.08);
   --ombra-d: 0 20px 44px -16px rgba(3, 7, 34, 0.65), 0 3px 8px rgba(3, 7, 34, 0.25);
+  /* Vetro della barra (la capsula in alto): più marcato delle altre superfici. Sfocato più largo e più saturo; luce sul bordo più spessa
+     (filo netto e alone morbido dentro, con un filo di blu in basso e di beige a destra: sono i colori delle macchie); ombra lunga e morbida;
+     due riflessi (uno grande in alto a sinistra, uno piccolo in basso a destra). */
+  --sfoca-barra: blur(22px) saturate(1.9);
+  --bordo-barra:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(27, 42, 94, 0.14),
+    inset 0 12px 20px -12px rgba(255, 255, 255, 0.8),
+    inset 0 -14px 22px -12px rgba(110, 130, 255, 0.26),
+    inset 14px 0 18px -14px rgba(255, 255, 255, 0.6),
+    inset -14px 0 18px -14px rgba(232, 200, 140, 0.45);
+  --ombra-barra: 0 0 0 1px rgba(27, 42, 94, 0.05), 0 22px 40px -20px rgba(27, 42, 94, 0.4), 0 6px 14px -6px rgba(27, 42, 94, 0.14);
+  --riflesso-barra:
+    radial-gradient(70% 160% at 16% -30%, rgba(255, 255, 255, 0.75), transparent 62%),
+    radial-gradient(45% 130% at 94% 140%, rgba(255, 255, 255, 0.4), transparent 62%);
   /* Tinte dei vetri con sfocato (e delle tessere). Con "riduci trasparenza" e dove manca backdrop-filter diventano opache: fine del foglio, sezione 9 */
-  --v-barra-a: rgba(255, 255, 255, 0.8);
-  --v-barra-b: rgba(251, 248, 240, 0.68);
+  --v-barra-a: rgba(255, 255, 255, 0.74);   /* misurato: con un velo più trasparente il testo della barra, sopra le sezioni blu, scende sotto 4,5:1 */
+  --v-barra-b: rgba(244, 246, 255, 0.6);
   --v-tendina-a: rgba(255, 255, 255, 0.88);
   --v-tendina-b: rgba(251, 248, 240, 0.82);
   --v-popup-a: rgba(28, 44, 116, 0.82);
@@ -227,7 +243,7 @@
   --sa-b: env(safe-area-inset-bottom, 0px);
   --sa-l: env(safe-area-inset-left, 0px);
   --barra: calc(76px + var(--sa-t));        /* spazio occupato dal menu fisso in alto (barra + distanza dal bordo) */
-  --barra-h: 64px;                          /* altezza della barra vera e propria */
+  --barra-h: 52px;                          /* altezza della capsula: 52px su telefono, 56px da 860px */
   --gutter: clamp(16px, 4vw, 40px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* l'unico easing del sito: ogni animazione usa questo */
 
@@ -410,16 +426,15 @@ dt {
   background: var(--muted);
 }
 
-/* Menu in alto: barra flottante con angoli arrotondati, staccata dal bordo.
+/* Menu in alto: una capsula di vetro compatta e centrata, staccata dal bordo (10-12px).
    Con JavaScript è fissa; senza, resta in cima alla pagina con i link sotto il nome. */
 .nav {
   position: relative;
   z-index: 30;
   color: var(--fg);
-  border-radius: 24px;
-  box-shadow: var(--ombra-l);   /* l'ombra sta sulla barra, il vetro sul suo ::before */
+  border-radius: 32px;          /* oltre metà altezza: il browser lo limita a metà e la barra diventa una capsula */
 }
-/* Il vetro della barra: tinta chiara trasparente, sfocato e saturazione di ciò che scorre sotto, luce sul bordo.
+/* Il vetro della capsula: tinta chiara trasparente, sfocato e saturazione di ciò che scorre sotto, luce sul bordo.
    Sta su ::before (non sulla barra) perché un elemento con backdrop-filter diventa la "radice" dello sfocato dei suoi figli:
    la tendina del menu, che è un figlio della barra, non vedrebbe più la pagina dietro di sé. */
 .nav::before {
@@ -430,16 +445,26 @@ dt {
   border-radius: inherit;
   pointer-events: none;
   background: linear-gradient(180deg, var(--v-barra-a), var(--v-barra-b));
-  -webkit-backdrop-filter: var(--sfoca);
-  backdrop-filter: var(--sfoca);
-  box-shadow: var(--bordo-l);
+  -webkit-backdrop-filter: var(--sfoca-barra);
+  backdrop-filter: var(--sfoca-barra);
+  box-shadow: var(--bordo-barra), var(--ombra-barra);   /* luce sul bordo e ombra stanno sul vetro: quando la capsula si tende, si tendono insieme */
+}
+/* Riflessi fissi del vetro: sopra la tinta, dietro il testo */
+.nav::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--riflesso-barra);
 }
 html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max(10px, var(--sa-l)); }
 .js .nav {
   position: fixed;
   top: max(10px, var(--sa-t));
-  left: max(10px, var(--sa-l), calc((100vw - 1240px) / 2));
-  right: max(10px, var(--sa-r), calc((100vw - 1240px) / 2));
+  left: max(10px, var(--sa-l));
+  right: max(10px, var(--sa-r));
 }
 .nav-in {
   display: flex;
@@ -447,6 +472,11 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   align-items: center;
   justify-content: space-between;
   gap: 4px 16px;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  /* 4px in basso: la barra «storie» occupa il fondo della capsula, così il contenuto sta al centro dello spazio sopra di lei */
+  padding: 0 8px 4px;
   min-height: var(--barra-h);
 }
 .brand {
@@ -454,19 +484,20 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   align-items: center;
   gap: 12px;
   min-height: 44px;
-  /* Su telefono resta solo il marchio (36px): 4px di spazio per lato portano l'area toccabile a 44px, e il margine negativo
+  /* Su telefono resta solo il marchio (34px): 5px di spazio per lato portano l'area toccabile a 44px, e il margine negativo
      li compensa, così il marchio non si sposta. */
-  padding-inline: 4px;
-  margin-inline: -4px;
+  padding-inline: 5px;
+  margin-inline: -5px;
   white-space: nowrap;
   font: 500 14px/1 var(--f-body);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
 }
-/* Marchio MR (assets/logo.svg: lettere disegnate con i font del sito). Su telefono stretto il nome resta solo per gli screen reader
-   (stessa tecnica di .sr), da 480px compare accanto al marchio (misurato: a 440px non c'è posto accanto a «Scrivimi» e al menu). */
-.brand-logo { display: block; flex: none; width: 36px; height: 36px; }   /* 36px: sta a 6px dalla barra «storie» in basso */
+/* Marchio MR (assets/logo.svg: lettere disegnate con i font del sito). Su telefono il nome resta solo per gli screen reader
+   (stessa tecnica di .sr), da 540px compare accanto al marchio. Misurato: «Scrivimi» resta esattamente al centro solo se la colonna di sinistra
+   (marchio e nome, 183px) sta nella sua metà della riga, cioè da 532px in su; 540px lascia un po' di margine per i caratteri di ripiego. */
+.brand-logo { display: block; flex: none; width: 34px; height: 34px; }
 .brand-nome {
   position: absolute;
   width: 1px;
@@ -474,7 +505,7 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   overflow: hidden;
   clip-path: inset(50%);
 }
-@media (min-width: 480px) {
+@media (min-width: 540px) {
   .brand-nome { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
 }
 .nav-menu ul { display: flex; flex-wrap: wrap; gap: 0 22px; }
@@ -486,7 +517,7 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   font: 500 16px/1 var(--f-body);
   text-decoration: none;
 }
-.nav-menu a::after {            /* filetto sotto la voce della sezione in lettura */
+.nav-menu a::after {            /* filetto sotto la voce su cui passa il mouse (la voce della sezione in lettura ha la lente di vetro) */
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: 8px;
@@ -495,16 +526,18 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   transform: scaleX(0);
   transform-origin: left;
 }
-.nav-menu a[aria-current="location"]::after { transform: scaleX(1); }
 @media (hover: hover) { .nav-menu a:hover::after { transform: scaleX(1); } }
 .menu-btn { display: none; }
 
-/* Telefono: con JavaScript c'è il pulsante "menu" e l'elenco si apre sotto la barra */
+/* Telefono: con JavaScript c'è il pulsante "menu" e l'elenco si apre sotto la barra.
+   La riga della capsula ha tre colonne: marchio a sinistra, «Scrivimi» esattamente al centro, menu a destra. */
 @media (max-width: 859px) {
-  .js .nav-in { flex-wrap: nowrap; }
-  .js .nav-cta { order: 2; margin-left: auto; }
+  .js .nav-in { display: grid; grid-template-columns: 1fr auto 1fr; }
+  .js .brand { justify-self: start; }
+  .js .nav-cta { order: 2; justify-self: center; }
   .js .menu-btn {
     order: 3;
+    justify-self: end;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -512,7 +545,7 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
     gap: 6px;
     width: 44px;
     height: 44px;
-    margin-right: -10px;
+    margin-right: -5px;           /* le due righe stanno alla stessa distanza dal bordo del marchio dall'altro lato */
     padding: 0;
     border: 0;
     border-radius: 50%;           /* tondo come la X dei popup: anche il lampo resta dentro un tondo */
@@ -526,10 +559,10 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
     left: 0; right: 0; top: calc(100% + 8px);
     padding: 8px var(--gutter) 24px;
     background: linear-gradient(180deg, var(--v-tendina-a), var(--v-tendina-b));
-    -webkit-backdrop-filter: var(--sfoca);
-    backdrop-filter: var(--sfoca);
+    -webkit-backdrop-filter: var(--sfoca-barra);
+    backdrop-filter: var(--sfoca-barra);
     border-radius: 24px;
-    box-shadow: var(--bordo-l), var(--ombra-l);   /* tendina di vetro: sfoca la pagina che le scorre dietro */
+    box-shadow: var(--bordo-barra), var(--ombra-barra);   /* tendina di vetro: sfoca la pagina che le scorre dietro */
     visibility: hidden;
     opacity: 0;
     transform: translateY(-8px);
@@ -544,23 +577,90 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   .nav-menu { width: 100%; order: 4; }   /* senza JavaScript: i link vanno a capo sotto il nome */
   .js .nav-menu { order: 0; width: auto; }
 }
+/* Da 860px la capsula è larga quanto il suo contenuto e sta al centro: marchio e nome, quattro voci, «Scrivimi».
+   Le voci hanno 14px di spazio per lato: è lì che scivola la lente di vetro. */
 @media (min-width: 860px) {
-  .nav-in { flex-wrap: nowrap; }
-  .nav-menu { margin-left: auto; margin-right: 8px; }
+  :root { --barra-h: 56px; }
+  .js .nav { top: max(12px, var(--sa-t)); width: fit-content; margin-inline: auto; }
+  .nav-in { flex-wrap: nowrap; gap: 4px; padding-bottom: 6px; }
+  .brand { gap: 10px; padding: 0 12px 0 4px; margin: 0; }
+  .nav-menu { position: relative; isolation: isolate; margin: 0 6px 0 8px; }
+  .nav-menu ul { flex-wrap: nowrap; gap: 2px; }
+  .nav-menu a { padding: 0 14px; }
+  .nav-menu a::after { left: 14px; right: 14px; }
 }
 
 /* Barra "storie" dentro il menu fisso (la crea JavaScript): un segmento per sezione, si riempie con lo scroll */
 .story-bar {
   position: absolute;
-  left: 22px;
-  right: 22px;
-  bottom: 5px;
+  left: 26px;
+  right: 26px;
+  bottom: 3px;
   display: flex;
   gap: 3px;
   pointer-events: none;
 }
-.seg { flex: 1; height: 3px; overflow: hidden; border-radius: 999px; background: rgba(var(--fg-rgb), 0.22); }
+.seg { flex: 1; height: 2px; overflow: hidden; border-radius: 999px; background: rgba(var(--fg-rgb), 0.16); }
 .seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
+@media (min-width: 860px) { .story-bar { left: 30px; right: 30px; bottom: 4px; } }
+
+/* Vetro che reagisce allo scorrimento (gli strati li crea JavaScript; non con «riduci movimento»): mentre la pagina scorre un riflesso
+   colorato attraversa la capsula, un alone si accende sul bordo e sotto la capsula si solleva un'ombra. A pagina ferma è tutto invisibile.
+   Gli strati stanno dietro il testo (z-index -1) e cambiano solo transform e opacità: JavaScript scrive --luce (0-1, sale con la velocità),
+   --fase (0-1, la posizione nella pagina) e --tensione (0-1: la usa la sezione 8 per allargare e schiacciare la capsula). */
+.nav-ombra,
+.nav-vetro {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--luce, 0);
+}
+.nav-ombra {                    /* l'ombra che si solleva: sta fuori dal vetro, quindi non può stare nello strato tagliato dagli angoli */
+  box-shadow: 0 22px 36px -12px rgba(var(--l-rgb), 0.62), 0 8px 16px -6px rgba(var(--l-rgb), 0.38);
+}
+.nav-vetro { overflow: hidden; }
+/* Strati propri (will-change): opacità e transform cambiano a ogni fotogramma, e senza questo il browser ridisegnerebbe le ombre sfocate e i gradienti
+   ogni volta. Misurato (Chromium senza GPU, CPU 4x, desktop): i fotogrammi oltre 34ms scendono da circa 13% a circa 7% (la barra senza vetro reattivo: circa 3%). */
+.nav-ombra,
+.nav-vetro,
+.nav-vetro i { will-change: transform, opacity; }
+.nav-vetro i {                  /* il riflesso: una banda inclinata con il cuore bianco e ai lati una frangia blu e una beige, così si vede sul crema come sul blu */
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 22%, rgba(140, 160, 255, 0.42) 36%, rgba(255, 255, 255, 0.98) 46%, rgba(255, 255, 255, 0.98) 54%, rgba(240, 212, 165, 0.66) 64%, transparent 78%);
+  transform: translateX(calc((var(--fase, 0.5) * 2 - 1) * 100%));
+}
+.nav-vetro::after {             /* alone sul bordo: filo di luce, nebbia blu in alto e in basso, luce bianca in basso e una nota beige in alto */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 1), inset 0 0 18px rgba(110, 132, 255, 0.45), inset 0 -9px 16px rgba(255, 255, 255, 0.65), inset 0 9px 14px rgba(240, 212, 165, 0.5);
+}
+
+/* Lente di vetro sotto la voce della sezione in lettura (da 860px; la crea JavaScript): una sola lente che scivola da una voce all'altra.
+   JavaScript scrive la sua larghezza (la media delle voci) e, per ogni voce, --lx (posizione) e --lk (scala): solo transform. */
+.nav-lente { display: none; }
+@media (min-width: 860px) {
+  .js .nav-lente {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;                /* alta 36px: la voce è alta 44px */
+    z-index: -1;
+    border-radius: 999px;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(var(--l-rgb), 0.12), rgba(var(--l-rgb), 0.05));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.35), inset 0 -1px 0 rgba(var(--l-rgb), 0.1), 0 6px 12px -6px rgba(var(--l-rgb), 0.45);
+    transform-origin: 0 50%;
+    transform: translateX(var(--lx, 0px)) scaleX(var(--lk, 1));
+    opacity: 0;
+  }
+  .js .nav-lente.on { opacity: 1; }
+}
 
 /* Pulsante vuoto: vetro chiaro (velo trasparente, riflesso in alto) con un contorno sottile.
    Al passaggio si riempie del colore opposto a quello che ha intorno. */
@@ -577,16 +677,25 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
   font: 500 16px/1 var(--f-body);
   text-decoration: none;
 }
-/* "Scrivimi" nella barra: vetro colorato, come il pulsante principale */
+/* "Scrivimi" nella barra: vetro colorato, come il pulsante principale, ma piccolo: 36px visibili dentro 44px di area toccabile.
+   L'area in più è un bordo trasparente di 4px (lo sfondo si ferma al bordo interno: background-clip). */
 .nav-cta {
+  padding: 0 14px;
+  border: 4px solid transparent;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 58%), var(--accent);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 8px 16px -8px rgba(var(--accent-rgb), 0.6);
+  background-clip: padding-box;   /* dopo la scorciatoia «background», che lo riporterebbe a border-box */
+  /* solo luce interna: un'ombra esterna si fermerebbe al bordo trasparente e disegnerebbe un alone chiaro intorno al tasto */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.18);
   color: var(--accent-ink);
 }
+.nav-cta:focus-visible { outline-offset: -1px; }   /* il bordo trasparente allontanerebbe l'anello: con -1px resta a 3px dal tasto visibile */
 /* Il «passaggio» (hover) esiste solo con il mouse: al tocco, su iPhone e iPad, resterebbe attivo dopo il tap (il pulsante rimarrebbe pieno).
    La pressione (:active) vale per tutti. */
 .btn-o:active { background: var(--fg); color: var(--bg); }
 @media (hover: hover) { .btn-o:hover { background: var(--fg); color: var(--bg); } }
+/* Nel tasto della barra passaggio e pressione non devono stendere lo sfondo sotto il bordo trasparente (la scorciatoia «background» azzera background-clip) */
+.nav-cta:active { background-clip: padding-box; }
+@media (hover: hover) { .nav-cta:hover { background-clip: padding-box; } }
 /* Pulsante principale: vetro colorato (tinta d'accento) con il riflesso in alto.
    Al passaggio diventa vetro chiaro con il contorno d'accento. */
 .btn-p {
@@ -1633,6 +1742,21 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .js.go .nav { opacity: 1; transform: none; transition: opacity 0.8s var(--ease), transform 0.9s var(--ease); }
   .js .nav-menu, .menu-btn { transition: opacity 0.3s var(--ease), transform 0.4s var(--ease); }
   .nav-menu a::after { transition: transform 0.5s var(--ease); }
+
+  /* Vetro della barra che reagisce allo scorrimento: la capsula si tende con la velocità (si allarga e si schiaccia; il testo non si muove)
+     e si assesta quando la pagina si ferma. JavaScript scrive --tensione (0-1) e --luce; il riflesso, l'alone e l'ombra che si accendono sono
+     gli strati .nav-vetro e .nav-ombra. Cambiano solo transform e opacità. Su telefono la capsula arriva a 10px dal bordo dello schermo:
+     si allarga meno (4,5%) di quanto faccia su desktop (8%). La barra «storie» sale con il bordo basso del vetro, per restare dentro. */
+  .nav { --allarga: 0.045; --schiaccia: 0.15; }
+  @media (min-width: 860px) { .nav { --allarga: 0.08; } }
+  .nav::before,
+  .nav::after,
+  .nav-vetro,
+  .nav-ombra { transform: scale(calc(1 + var(--tensione, 0) * var(--allarga)), calc(1 - var(--tensione, 0) * var(--schiaccia))); }
+  .story-bar { transform: translateY(calc(var(--tensione, 0) * -4px)); }
+  /* Lente sotto la voce attiva: scivola da una voce all'altra (transform) e si dissolve quando non c'è una voce attiva (opacità) */
+  .nav-lente { transition: transform 0.6s var(--ease), opacity 0.4s var(--ease); }
+  .nav-lente.subito { transition: none; }   /* la prima volta compare già al suo posto, senza arrivare da lontano */
   .js .hero h1:not(.diviso) { visibility: hidden; }   /* finché le parole non sono divise, per non farle lampeggiare */
   .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.04em 0.14em; margin: 0 -0.04em -0.14em; }
   /* Frase in corsivo del titolo: un tratto morbido per parola, tinta piena così le parole vicine si fondono */
@@ -1813,15 +1937,19 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   :root {
     --sfoca: none;
+    --sfoca-barra: none;
+    --riflesso-barra: none;
     --v-barra-a: #FBF8F0; --v-barra-b: #F7F2E8;
     --v-tendina-a: #FBF8F0; --v-tendina-b: #F7F2E8;
     --v-popup-a: #243580; --v-popup-b: #1A2A63;
     --v-tessera: rgba(14, 24, 72, 0.92);
   }
   .chiudi { -webkit-backdrop-filter: none; backdrop-filter: none; background: #223378; }
+  .nav-vetro, .nav-ombra { display: none; }   /* il riflesso che attraversa il vetro e l'ombra che si solleva non servono dove il vetro è pieno */
 }
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   :root {
+    --riflesso-barra: none;
     --v-barra-a: #FBF8F0; --v-barra-b: #F7F2E8;
     --v-tendina-a: #FBF8F0; --v-tendina-b: #F7F2E8;
     --v-popup-a: #243580; --v-popup-b: #1A2A63;
@@ -1831,5 +1959,10 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 /* Colori forzati (alto contrasto di Windows): le luci sul bordo spariscono, quindi i tasti e le schede scelte ritrovano un contorno vero */
 @media (forced-colors: active) {
   .btn-p, .btn-o, .mailwrap, .chiudi, .commuta, .sfoglia-tasti { border: 1px solid ButtonText; }
+  .nav-vetro, .nav-ombra, .nav-lente { display: none; }                      /* niente riflessi e lente: la voce attiva si riconosce dalla sottolineatura */
+  .nav-menu a[aria-current="location"] { text-decoration: underline; }
+  .nav::before { background: Canvas; border: 1px solid CanvasText; }         /* la capsula ritrova un fondo pieno e un contorno (il vetro e le sue luci spariscono) */
+  .menu-btn span { background: ButtonText; forced-color-adjust: none; }      /* le righe del menu: il colore forzato cancellerebbe lo sfondo e il pulsante sembrerebbe vuoto */
+  @media (max-width: 859px) { .js .nav-menu { background: Canvas; border: 1px solid CanvasText; } }   /* la tendina del menu su telefono: fondo pieno, altrimenti il testo della pagina le passa sotto */
   .commuta button[aria-pressed="true"], .sfoglia-tasto[aria-selected="true"] { border: 1px solid Highlight; }
 }

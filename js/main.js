@@ -287,8 +287,9 @@
         var l = crea('span', 'lampo');
         l.setAttribute('aria-hidden', 'true');
         l.style.setProperty('--lc', coloreLuce(tasto));
-        l.style.setProperty('--lx', (x - r.left) + 'px');
-        l.style.setProperty('--ly', (y - r.top) + 'px');
+        // clientLeft e clientTop sono lo spessore del bordo: le luci sono posizionate dal bordo interno, non da quello esterno
+        l.style.setProperty('--lx', (x - r.left - tasto.clientLeft) + 'px');
+        l.style.setProperty('--ly', (y - r.top - tasto.clientTop) + 'px');
         // Ogni lampo è un po' diverso: durata e grandezza variano a caso
         l.style.setProperty('--ld', (0.65 + Math.random() * 0.45).toFixed(2) + 's');
         l.style.setProperty('--le', (2 + Math.random() * 1.2).toFixed(2));
@@ -320,8 +321,8 @@
             t.appendChild(luce);
           }
           var r = t.getBoundingClientRect();
-          luce.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-          luce.style.setProperty('--my', (e.clientY - r.top) + 'px');
+          luce.style.setProperty('--mx', (e.clientX - r.left - t.clientLeft) + 'px');
+          luce.style.setProperty('--my', (e.clientY - r.top - t.clientTop) + 'px');
         }, { passive: true });
       }
     }
@@ -549,7 +550,7 @@
     });
 
     /* ======================================================================
-       6. MENU E SCROLL: BARRA "STORIE" E VOCE ATTIVA
+       6. MENU E SCROLL: BARRA "STORIE", VOCE ATTIVA, LENTE E VETRO CHE REAGISCE ALLO SCORRIMENTO
        Un solo gestore, al massimo una volta per frame. Le posizioni sono misurate una volta
        (e rimisurate se la pagina cambia dimensione), così a ogni scroll non si legge il layout.
        ====================================================================== */
@@ -572,6 +573,81 @@
     var vociMenu = {};
     tutti('.nav-menu a').forEach(function (a) { vociMenu[a.getAttribute('href').slice(1)] = a; });
     var voceCorrente = null;
+
+    // Lente di vetro sotto la voce attiva (da 860px: sotto, il CSS la nasconde): una sola lente che scivola da una voce all'altra.
+    // Qui si calcolano solo posizione e scala (transform): la lente è larga quanto la media delle voci e la scala la adatta a ciascuna.
+    var contenitoreVoci = document.querySelector('.nav-menu');
+    var lente = null;
+    var lenteSulPosto = false;
+    if (contenitoreVoci) {
+      lente = crea('i', 'nav-lente');
+      lente.setAttribute('aria-hidden', 'true');
+      contenitoreVoci.insertBefore(lente, contenitoreVoci.firstChild);
+    }
+    function posizionaLente(subito) {
+      if (!lente) return;
+      // Senza voce attiva, o sotto 860px (lì la lente è display: none e le misure valgono 0), la lente si dissolve
+      if (!voceCorrente || !lente.offsetParent || !voceCorrente.offsetWidth) {
+        lente.classList.remove('on');
+        lenteSulPosto = false;
+        return;
+      }
+      var voci = tutti('.nav-menu a');
+      var media = Math.round(voci.reduce(function (somma, a) { return somma + a.offsetWidth; }, 0) / voci.length);
+      lente.style.width = media + 'px';
+      // La prima volta (o dopo un ridimensionamento) la lente compare già al suo posto: per un fotogramma senza transizione
+      var salta = subito || !lenteSulPosto;
+      if (salta) lente.classList.add('subito');
+      lente.style.setProperty('--lx', voceCorrente.offsetLeft + 'px');
+      lente.style.setProperty('--lk', (voceCorrente.offsetWidth / media).toFixed(4));
+      if (salta) { void lente.offsetWidth; lente.classList.remove('subito'); }
+      lente.classList.add('on');
+      lenteSulPosto = true;
+    }
+
+    // Vetro della barra che reagisce allo scorrimento (non con «riduci movimento»).
+    // La velocità dello scroll (px per fotogramma) è ammorbidita con un'interpolazione: sale in fretta e scende piano, così il vetro si tende
+    // subito e poi si assesta. JavaScript scrive tre variabili sulla barra: --tensione (0-1: quanto si tende la capsula), --luce (0-1: quanto si
+    // accende il riflesso) e --fase (0-1: la posizione nella pagina, che il riflesso segue). Il CSS le usa solo per transform e opacità.
+    // Il ciclo parte con lo scroll e si ferma da solo quando la pagina è ferma e il vetro si è assestato.
+    if (menu && !RIDOTTO) {
+      var ombra = crea('div', 'nav-ombra');        // l'ombra che si solleva sotto la capsula
+      ombra.setAttribute('aria-hidden', 'true');
+      menu.appendChild(ombra);
+      var vetro = crea('div', 'nav-vetro');        // il riflesso che attraversa la capsula e l'alone sul bordo
+      vetro.setAttribute('aria-hidden', 'true');
+      vetro.appendChild(crea('i'));
+      menu.appendChild(vetro);
+      var velocita = 0;
+      var yPrima = window.scrollY;
+      var inCiclo = false;
+      var ultimiValori = '';
+      var cicloVetro = function () {
+        var y = window.scrollY;
+        var dy = y - yPrima;
+        yPrima = y;
+        if (Math.abs(dy) > 600) dy = 0;                       // un salto istantaneo (pagina ripristinata) non è uno scorrimento
+        var bersaglio = Math.max(-1, Math.min(1, dy / 16));   // 16px per fotogramma (circa 1000px al secondo) = tensione massima
+        velocita += (bersaglio - velocita) * (Math.abs(bersaglio) > Math.abs(velocita) ? 0.4 : 0.06);
+        var t = Math.abs(velocita);
+        if (t < 0.004 && dy === 0) { velocita = 0; t = 0; }
+        var tensione = t.toFixed(3);
+        var luce = Math.min(1, t * 3).toFixed(3);
+        var fase = (((y / 700) % 1 + 1) % 1).toFixed(3);      // il riflesso attraversa la capsula ogni 700px di pagina
+        var valori = tensione + '|' + luce + '|' + fase;
+        if (valori !== ultimiValori) {
+          ultimiValori = valori;
+          menu.style.setProperty('--tensione', tensione);
+          menu.style.setProperty('--luce', luce);
+          menu.style.setProperty('--fase', fase);
+        }
+        if (t > 0 || dy !== 0) requestAnimationFrame(cicloVetro); else inCiclo = false;
+      };
+      window.addEventListener('scroll', function () {
+        if (!inCiclo) { inCiclo = true; requestAnimationFrame(cicloVetro); }
+      }, { passive: true });
+      window.addEventListener('load', function () { yPrima = window.scrollY; });
+    }
 
     // Pulsante "menu" sul telefono: apre e chiude l'elenco. Si chiude con Esc, con un tocco su una voce o sul resto della pagina
     var pulsante = document.querySelector('.menu-btn');
@@ -635,6 +711,7 @@
         if (voceCorrente) voceCorrente.removeAttribute('aria-current');
         if (voce) voce.setAttribute('aria-current', 'location');
         voceCorrente = voce;
+        posizionaLente(false);
       }
     }
     function pianifica() {
@@ -643,7 +720,7 @@
       requestAnimationFrame(aggiorna);
     }
 
-    function rimisura() { misura(); pianifica(); }
+    function rimisura() { misura(); posizionaLente(true); pianifica(); }
     window.addEventListener('scroll', pianifica, { passive: true });
     window.addEventListener('resize', rimisura);
     window.addEventListener('load', rimisura);
