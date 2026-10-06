@@ -447,7 +447,7 @@ dt {
   background: linear-gradient(180deg, var(--v-barra-a), var(--v-barra-b));
   -webkit-backdrop-filter: var(--sfoca-barra);
   backdrop-filter: var(--sfoca-barra);
-  box-shadow: var(--bordo-barra), var(--ombra-barra);   /* luce sul bordo e ombra stanno sul vetro: quando la capsula si tende, si tendono insieme */
+  box-shadow: var(--bordo-barra), var(--ombra-barra);   /* luce sul bordo e ombra leggera stanno sul vetro; quella profonda dello scorrimento è lo strato .nav-ombra */
 }
 /* Riflessi fissi del vetro: sopra la tinta, dietro il testo */
 .nav::after {
@@ -605,41 +605,19 @@ html:not(.js) .nav { margin: max(10px, var(--sa-t)) max(10px, var(--sa-r)) 0 max
 .seg i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; will-change: transform; }
 @media (min-width: 860px) { .story-bar { left: 30px; right: 30px; bottom: 4px; } }
 
-/* Vetro che reagisce allo scorrimento (gli strati li crea JavaScript; non con «riduci movimento»): mentre la pagina scorre un riflesso
-   colorato attraversa la capsula, un alone si accende sul bordo e sotto la capsula si solleva un'ombra. A pagina ferma è tutto invisibile.
-   Gli strati stanno dietro il testo (z-index -1) e cambiano solo transform e opacità: JavaScript scrive --luce (0-1, sale con la velocità),
-   --fase (0-1, la posizione nella pagina) e --tensione (0-1: la usa la sezione 8 per allargare e schiacciare la capsula). */
-.nav-ombra,
-.nav-vetro {
+/* Ombra della capsula quando la pagina scorre (la crea JavaScript). In cima la capsula ha solo la sua ombra leggera; appena la pagina comincia a scorrere
+   (JavaScript mette .scorre sulla barra dopo 24px) sotto il vetro passa il contenuto e l'ombra si approfondisce, come se il vetro si posasse.
+   Un solo cambio di stato, nessun lavoro a ogni fotogramma. Sta fuori dal vetro: dentro lo strato tagliato dagli angoli non si vedrebbe. */
+.nav-ombra {
   position: absolute;
   inset: 0;
   z-index: -1;
   border-radius: inherit;
   pointer-events: none;
-  opacity: var(--luce, 0);
+  box-shadow: 0 18px 30px -14px rgba(var(--l-rgb), 0.45), 0 6px 12px -6px rgba(var(--l-rgb), 0.25);
+  opacity: 0;
 }
-.nav-ombra {                    /* l'ombra che si solleva: sta fuori dal vetro, quindi non può stare nello strato tagliato dagli angoli */
-  box-shadow: 0 22px 36px -12px rgba(var(--l-rgb), 0.62), 0 8px 16px -6px rgba(var(--l-rgb), 0.38);
-}
-.nav-vetro { overflow: hidden; }
-/* Strati propri (will-change): opacità e transform cambiano a ogni fotogramma, e senza questo il browser ridisegnerebbe le ombre sfocate e i gradienti
-   ogni volta. Misurato (Chromium senza GPU, CPU 4x, desktop): i fotogrammi oltre 34ms scendono da circa 13% a circa 7% (la barra senza vetro reattivo: circa 3%). */
-.nav-ombra,
-.nav-vetro,
-.nav-vetro i { will-change: transform, opacity; }
-.nav-vetro i {                  /* il riflesso: una banda inclinata con il cuore bianco e ai lati una frangia blu e una beige, così si vede sul crema come sul blu */
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 22%, rgba(140, 160, 255, 0.42) 36%, rgba(255, 255, 255, 0.98) 46%, rgba(255, 255, 255, 0.98) 54%, rgba(240, 212, 165, 0.66) 64%, transparent 78%);
-  transform: translateX(calc((var(--fase, 0.5) * 2 - 1) * 100%));
-}
-.nav-vetro::after {             /* alone sul bordo: filo di luce, nebbia blu in alto e in basso, luce bianca in basso e una nota beige in alto */
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 1), inset 0 0 18px rgba(110, 132, 255, 0.45), inset 0 -9px 16px rgba(255, 255, 255, 0.65), inset 0 9px 14px rgba(240, 212, 165, 0.5);
-}
+.nav.scorre .nav-ombra { opacity: 1; }
 
 /* Lente di vetro sotto la voce della sezione in lettura (da 860px; la crea JavaScript): una sola lente che scivola da una voce all'altra.
    JavaScript scrive la sua larghezza (la media delle voci) e, per ogni voce, --lx (posizione) e --lk (scala): solo transform. */
@@ -1744,17 +1722,8 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
   .js .nav-menu, .menu-btn { transition: opacity 0.3s var(--ease), transform 0.4s var(--ease); }
   .nav-menu a::after { transition: transform 0.5s var(--ease); }
 
-  /* Vetro della barra che reagisce allo scorrimento: la capsula si tende con la velocità (si allarga e si schiaccia; il testo non si muove)
-     e si assesta quando la pagina si ferma. JavaScript scrive --tensione (0-1) e --luce; il riflesso, l'alone e l'ombra che si accendono sono
-     gli strati .nav-vetro e .nav-ombra. Cambiano solo transform e opacità. Su telefono la capsula arriva a 10px dal bordo dello schermo:
-     si allarga meno (4,5%) di quanto faccia su desktop (8%). La barra «storie» sale con il bordo basso del vetro, per restare dentro. */
-  .nav { --allarga: 0.045; --schiaccia: 0.15; }
-  @media (min-width: 860px) { .nav { --allarga: 0.08; } }
-  .nav::before,
-  .nav::after,
-  .nav-vetro,
-  .nav-ombra { transform: scale(calc(1 + var(--tensione, 0) * var(--allarga)), calc(1 - var(--tensione, 0) * var(--schiaccia))); }
-  .story-bar { transform: translateY(calc(var(--tensione, 0) * -3px)); }
+  /* Capsula «posata»: l'ombra profonda compare e scompare con una dissolvenza (solo opacità; il cambio di stato lo decide JavaScript) */
+  .nav-ombra { transition: opacity 0.6s var(--ease); }
   /* Lente sotto la voce attiva: scivola da una voce all'altra (transform) e si dissolve quando non c'è una voce attiva (opacità) */
   .nav-lente { transition: transform 0.6s var(--ease), opacity 0.4s var(--ease); }
   .nav-lente.subito { transition: none; }   /* la prima volta compare già al suo posto, senza arrivare da lontano */
@@ -1946,7 +1915,7 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
     --v-tessera: rgba(14, 24, 72, 0.92);
   }
   .chiudi { -webkit-backdrop-filter: none; backdrop-filter: none; background: #223378; }
-  .nav-vetro, .nav-ombra { display: none; }   /* il riflesso che attraversa il vetro e l'ombra che si solleva non servono dove il vetro è pieno */
+  .nav-ombra { display: none; }   /* l'ombra che si approfondisce con lo scorrimento non serve dove il vetro è pieno */
 }
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   :root {
@@ -1960,7 +1929,7 @@ html:not(.js) .popup .btn-p[data-apri], html.no-popup .popup .btn-p[data-apri] {
 /* Colori forzati (alto contrasto di Windows): le luci sul bordo spariscono, quindi i tasti e le schede scelte ritrovano un contorno vero */
 @media (forced-colors: active) {
   .btn-p, .btn-o, .mailwrap, .chiudi, .commuta, .sfoglia-tasti { border: 1px solid ButtonText; }
-  .nav-vetro, .nav-ombra, .nav-lente { display: none; }                      /* niente riflessi e lente: la voce attiva si riconosce dalla sottolineatura */
+  .nav-ombra, .nav-lente { display: none; }                                  /* niente ombra profonda e lente: la voce attiva si riconosce dalla sottolineatura */
   .nav-menu a[aria-current="location"] { text-decoration: underline; }
   .nav::before { background: Canvas; border: 1px solid CanvasText; }         /* la capsula ritrova un fondo pieno e un contorno (il vetro e le sue luci spariscono) */
   .menu-btn span { background: ButtonText; forced-color-adjust: none; }      /* le righe del menu: il colore forzato cancellerebbe lo sfondo e il pulsante sembrerebbe vuoto */

@@ -550,7 +550,7 @@
     });
 
     /* ======================================================================
-       6. MENU E SCROLL: BARRA "STORIE", VOCE ATTIVA, LENTE E VETRO CHE REAGISCE ALLO SCORRIMENTO
+       6. MENU E SCROLL: BARRA "STORIE", VOCE ATTIVA, LENTE E OMBRA DELLA CAPSULA
        Un solo gestore, al massimo una volta per frame. Le posizioni sono misurate una volta
        (e rimisurate se la pagina cambia dimensione), così a ogni scroll non si legge il layout.
        ====================================================================== */
@@ -605,48 +605,12 @@
       lenteSulPosto = true;
     }
 
-    // Vetro della barra che reagisce allo scorrimento (non con «riduci movimento»).
-    // La velocità dello scroll (px per fotogramma) è ammorbidita con un'interpolazione: sale in fretta e scende piano, così il vetro si tende
-    // subito e poi si assesta. JavaScript scrive tre variabili sulla barra: --tensione (0-1: quanto si tende la capsula), --luce (0-1: quanto si
-    // accende il riflesso) e --fase (0-1: la posizione nella pagina, che il riflesso segue). Il CSS le usa solo per transform e opacità.
-    // Il ciclo parte con lo scroll e si ferma da solo quando la pagina è ferma e il vetro si è assestato.
-    if (menu && !RIDOTTO) {
-      var ombra = crea('div', 'nav-ombra');        // l'ombra che si solleva sotto la capsula
+    // Ombra della capsula quando la pagina scorre: la crea JavaScript e la accende la classe .scorre (la mette aggiorna(), una volta sola
+    // quando si passa i 24px di scorrimento: nessun lavoro a ogni fotogramma). Il CSS la fa comparire con una dissolvenza.
+    if (menu) {
+      var ombra = crea('div', 'nav-ombra');
       ombra.setAttribute('aria-hidden', 'true');
       menu.appendChild(ombra);
-      var vetro = crea('div', 'nav-vetro');        // il riflesso che attraversa la capsula e l'alone sul bordo
-      vetro.setAttribute('aria-hidden', 'true');
-      vetro.appendChild(crea('i'));
-      menu.appendChild(vetro);
-      var velocita = 0;
-      var yPrima = window.scrollY;
-      var inCiclo = false;
-      var ultimiValori = '';
-      var cicloVetro = function () {
-        var y = window.scrollY;
-        var dy = y - yPrima;
-        yPrima = y;
-        if (Math.abs(dy) > 600) dy = 0;                       // un salto istantaneo (pagina ripristinata) non è uno scorrimento
-        var bersaglio = Math.max(-1, Math.min(1, dy / 16));   // 16px per fotogramma (circa 1000px al secondo) = tensione massima
-        velocita += (bersaglio - velocita) * (Math.abs(bersaglio) > Math.abs(velocita) ? 0.4 : 0.06);
-        var t = Math.abs(velocita);
-        if (t < 0.004 && dy === 0) { velocita = 0; t = 0; }
-        var tensione = t.toFixed(3);
-        var luce = Math.min(1, t * 3).toFixed(3);
-        var fase = (((y / 700) % 1 + 1) % 1).toFixed(3);      // il riflesso attraversa la capsula ogni 700px di pagina
-        var valori = tensione + '|' + luce + '|' + fase;
-        if (valori !== ultimiValori) {
-          ultimiValori = valori;
-          menu.style.setProperty('--tensione', tensione);
-          menu.style.setProperty('--luce', luce);
-          menu.style.setProperty('--fase', fase);
-        }
-        if (t > 0 || dy !== 0) requestAnimationFrame(cicloVetro); else inCiclo = false;
-      };
-      window.addEventListener('scroll', function () {
-        if (!inCiclo) { inCiclo = true; requestAnimationFrame(cicloVetro); }
-      }, { passive: true });
-      window.addEventListener('load', function () { yPrima = window.scrollY; });
     }
 
     // Pulsante "menu" sul telefono: apre e chiude l'elenco. Si chiude con Esc, con un tocco su una voce o sul resto della pagina
@@ -682,6 +646,7 @@
     var inAttesa = false;
     var ultimaBarra = [];
     var fondoBlu = false;
+    var barraScorre = false;
     function aggiorna() {
       inAttesa = false;
       if (!misure.sezioni) return;
@@ -692,6 +657,10 @@
       var ultima = misure.sezioni[misure.sezioni.length - 1];
       var blu = ultima ? (y + vh > ultima.top + 80) : false;
       if (blu !== fondoBlu) { fondoBlu = blu; radice.classList.toggle('fondo-scuro', blu); }
+
+      // Capsula «posata»: dopo 24px di scorrimento l'ombra si approfondisce; si toglie solo tornando sotto i 6px, così un piccolo tremolio a 24px non la fa lampeggiare
+      var scorre = barraScorre ? y > 6 : y > 24;
+      if (scorre !== barraScorre) { barraScorre = scorre; if (menu) menu.classList.toggle('scorre', scorre); }
 
       // Barra "storie": un segmento per sezione, si riempie mentre quella sezione passa a metà schermo
       misure.sezioni.forEach(function (s, i) {
